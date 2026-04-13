@@ -1,0 +1,215 @@
+# =============================================================================
+# Docker Compose - Laravel DDD E-Commerce Layihəsi
+# =============================================================================
+#
+# Docker nədir?
+# -------------
+# Docker — proqram təminatını "konteyner" adlanan izolə olunmuş mühitlərdə
+# işlətmək üçün platformadır. Hər konteyner öz əməliyyat sistemi, kitabxanaları
+# və asılılıqları ilə gəlir. Bu, "mənim kompüterimdə işləyir" problemini həll edir,
+# çünki hər kəs eyni mühitdə işləyir.
+#
+# Docker Compose nədir?
+# ---------------------
+# Docker Compose — birdən çox konteyneri eyni vaxtda idarə etmək üçün alətdir.
+# Bir YAML faylında bütün servisləri, şəbəkələri və həcmləri (volumes) təyin edirik.
+# `docker compose up` əmri ilə bütün infrastruktur bir dəfəyə qalxır.
+#
+# Şəbəkə əlaqəsi (Networking):
+# -----------------------------
+# Docker Compose avtomatik olaraq bütün servislər üçün daxili şəbəkə yaradır.
+# Hər servis öz adı ilə digər servislərə müraciət edə bilər. Məsələn, PHP
+# konteyneri MySQL-ə "mysql" adı ilə, Redis-ə "redis" adı ilə qoşula bilər.
+# Bu, DNS əsaslı servis kəşfi (service discovery) adlanır.
+# =============================================================================
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # APP servisi — PHP 8.3-FPM ilə Laravel tətbiqi
+  # ---------------------------------------------------------------------------
+  # Bu, əsas tətbiq konteynerimizdir. Laravel kodu burada işləyir.
+  # PHP-FPM (FastCGI Process Manager) — PHP sorğularını emal edən prosesdir.
+  # Nginx sorğuları qəbul edir və PHP-FPM-ə ötürür (port 9000 vasitəsilə).
+  app:
+    # Dockerfile-dan image qurulacaq (build konteksti cari qovluqdur)
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecommerce_app
+
+    # Həcm bağlama (Volume mount):
+    # Host maşındakı kodu konteynerin içinə bağlayırıq.
+    # Bu, kodu dəyişdikdə konteyneri yenidən qurmağa ehtiyac qalmır.
+    # "Hot reload" effekti yaranır — dəyişikliklər dərhal əks olunur.
+    volumes:
+      - ./:/var/www/html
+
+    # Bu servis MySQL, RabbitMQ və Redis-dən asılıdır.
+    # Docker əvvəlcə asılı servisləri işə salacaq.
+    depends_on:
+      - mysql
+      - rabbitmq
+      - redis
+
+    # Daxili şəbəkəyə qoşuluruq
+    networks:
+      - ecommerce_network
+
+    # Giriş nöqtəsi skripti — konteyner başlayanda bu skript işləyəcək
+    entrypoint: ["/var/www/html/docker/entrypoint.sh"]
+
+  # ---------------------------------------------------------------------------
+  # NGINX servisi — Veb server (reverse proxy)
+  # ---------------------------------------------------------------------------
+  # Nginx brauzerdən gələn HTTP sorğularını qəbul edir.
+  # Statik faylları (CSS, JS, şəkillər) özü verir.
+  # PHP sorğularını isə app konteynerinə (PHP-FPM, port 9000) yönləndirir.
+  # "nginx:alpine" — kiçik ölçülü Linux (Alpine) üzərində Nginx image-idir.
+  nginx:
+    image: nginx:alpine
+    container_name: ecommerce_nginx
+
+    # Port xəritələmə: host_portu:konteyner_portu
+    # Brauzerdən localhost:8080 yazdıqda konteyner daxilində port 80-ə yönlənir
+    ports:
+      - "8080:80"
+
+    # Nginx konfiqurasiya faylını konteynerə bağlayırıq
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+
+    # Nginx app servisindən asılıdır — əvvəlcə PHP-FPM işə düşməlidir
+    depends_on:
+      - app
+
+    networks:
+      - ecommerce_network
+
+  # ---------------------------------------------------------------------------
+  # MYSQL servisi — Əlaqəli verilənlər bazası (Relational Database)
+  # ---------------------------------------------------------------------------
+  # DDD (Domain-Driven Design) yanaşmasında hər bounded context öz verilənlər
+  # bazasına malikdir. Bu, servislərin bir-birindən asılılığını azaldır.
+  # 4 ayrı verilənlər bazası yaradırıq:
+  #   - user_db:    İstifadəçi konteksti (qeydiyyat, autentifikasiya, profil)
+  #   - product_db: Məhsul konteksti (kataloq, kateqoriya, inventar)
+  #   - order_db:   Sifariş konteksti (səbət, sifariş, çatdırılma)
+  #   - payment_db: Ödəniş konteksti (tranzaksiya, faktura, geri qaytarma)
+  mysql:
+    image: mysql:8.0
+    container_name: ecommerce_mysql
+
+    # Mühit dəyişənləri — MySQL-in ilkin quraşdırma parametrləri
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: secret
+
+    ports:
+      - "3306:3306"
+
+    # Həcmlər (Volumes):
+    # 1. mysql_data — verilənlər konteyner silinəndə belə qalır (persistence)
+    # 2. init.sql — konteyner ilk dəfə yarananda icra olunacaq SQL skripti
+    #    /docker-entrypoint-initdb.d/ qovluğuna qoyulan fayllar avtomatik işlənir
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+    networks:
+      - ecommerce_network
+
+  # ---------------------------------------------------------------------------
+  # RABBITMQ servisi — Mesaj brokeri (Message Broker)
+  # ---------------------------------------------------------------------------
+  # RabbitMQ servisler arası asinxron əlaqə üçün istifadə olunur.
+  # Məsələn, sifariş yaradılanda ödəniş servisinə mesaj göndərilir.
+  # Bu, servislərin bir-birini gözləməməsinə imkan verir (async communication).
+  # "3-management" image-i idarəetmə paneli ilə gəlir (port 15672).
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: ecommerce_rabbitmq
+
+    # Mühit dəyişənləri — standart giriş məlumatları
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+    # 5672  — AMQP protokolu (tətbiq buraya qoşulur)
+    # 15672 — İdarəetmə paneli (brauzerdən baxmaq üçün)
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+    networks:
+      - ecommerce_network
+
+  # ---------------------------------------------------------------------------
+  # REDIS servisi — Keş və növbə (Cache & Queue)
+  # ---------------------------------------------------------------------------
+  # Redis — yaddaşda işləyən açar-dəyər (key-value) verilənlər bazasıdır.
+  # Əsas istifadə sahələri:
+  #   - Keşləmə (caching): Tez-tez istifadə olunan verilənləri yadda saxlayır
+  #   - Növbə (queue): Laravel job-larını sıraya qoyur və icra edir
+  #   - Sessiya (session): İstifadəçi sessiyalarını saxlayır
+  # "redis:alpine" — kiçik ölçülü Redis image-idir
+  redis:
+    image: redis:alpine
+    container_name: ecommerce_redis
+
+    ports:
+      - "6379:6379"
+
+    # Redis verilənlərini davamlı saxlamaq üçün həcm
+    volumes:
+      - redis_data:/data
+
+    networks:
+      - ecommerce_network
+
+  # ---------------------------------------------------------------------------
+  # MAILPIT servisi — Yerli e-poçt test serveri
+  # ---------------------------------------------------------------------------
+  # Mailpit göndərilən e-poçtları tutur və brauzerdə göstərir.
+  # Həqiqi e-poçt göndərilmir — yalnız inkişaf mühitində test üçündür.
+  # Bu, qeydiyyat təsdiq e-poçtları, sifariş bildirişləri və s. test etməyə
+  # imkan verir.
+  mailpit:
+    image: axllent/mailpit
+    container_name: ecommerce_mailpit
+
+    # 1025 — SMTP portu (Laravel buraya e-poçt göndərir)
+    # 8025 — Veb interfeys (brauzerdən e-poçtlara baxmaq üçün)
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+    networks:
+      - ecommerce_network
+
+# =============================================================================
+# Həcmlər (Volumes) — Davamlı saxlama
+# =============================================================================
+# Docker konteynerləri silinəndə içindəki verilənlər də silinir.
+# "Named volumes" istifadə edərək verilənləri konteyner xaricində saxlayırıq.
+# Beləcə, `docker compose down` edəndə verilənlər itmir.
+# Tamamilə silmək üçün `docker compose down -v` istifadə edin.
+volumes:
+  mysql_data:
+  redis_data:
+
+# =============================================================================
+# Şəbəkə (Network)
+# =============================================================================
+# Bütün servislər eyni şəbəkəyə qoşulur. Bu şəbəkə daxilində hər servis
+# öz adı ilə DNS vasitəsilə tapıla bilər:
+#   - app konteynerindən MySQL-ə qoşulmaq: mysql:3306
+#   - app konteynerindən Redis-ə qoşulmaq: redis:6379
+#   - app konteynerindən RabbitMQ-ya qoşulmaq: rabbitmq:5672
+#   - nginx konteynerindən PHP-FPM-ə qoşulmaq: app:9000
+# "bridge" drayver — standart Docker şəbəkə növüdür, konteynerləri izolə edir
+networks:
+  ecommerce_network:
+    driver: bridge
