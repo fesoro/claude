@@ -6,8 +6,6 @@ namespace App\Listeners;
 
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\LowStockAlertMail;
 
 /**
  * FAILED JOB NOTIFICATION LISTENER
@@ -37,7 +35,7 @@ class FailedJobNotificationListener
             'job' => $jobName,
             'connection' => $connectionName,
             'exception' => $exception,
-            'failed_at' => now()->toISOString(),
+            'failed_at' => now()->toIso8601String(),
         ]);
 
         // Production-da admin-ə email göndərilə bilər:

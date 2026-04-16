@@ -101,6 +101,20 @@ class DispatchPaymentJobListener implements ShouldQueue
      * Burada ProcessPaymentJob dispatch olunmalıdır.
      * Job ödəniş gateway ilə əlaqə qurub ödənişi emal edəcək.
      */
+    /**
+     * Sifariş yaradılanda ödəniş prosesini avtomatik başladır.
+     *
+     * ProcessPaymentJob dispatch olunur — queue worker arxa planda
+     * ödəniş gateway-ə (Stripe/PayPal) sorğu göndərir.
+     *
+     * NƏYƏ LİSTENER JOB DİSPATCH EDİR?
+     * Listener özü ShouldQueue-dur, amma ödəniş prosesi üçün ayrı Job
+     * istifadə edirik çünki:
+     * 1. Job-un öz retry/backoff/timeout konfiqurasiyası var.
+     * 2. Job chain-ə (zəncirə) qoşula bilər.
+     * 3. Job uğursuz olanda öz failed() metodu var.
+     * 4. Separation of Concerns: listener qərar verir, job icra edir.
+     */
     public function handle(OrderPlacedEvent $event): void
     {
         Log::info('Sifariş üçün ödəniş prosesi başladılır', [
@@ -109,19 +123,16 @@ class DispatchPaymentJobListener implements ShouldQueue
             'total_amount' => $event->totalAmount,
         ]);
 
-        /**
-         * TODO: ProcessPaymentJob dispatch et.
-         * Bu Job yaradıldıqda belə olacaq:
-         *
-         * ProcessPaymentJob::dispatch(
-         *     orderId: $event->orderId,
-         *     amount: $event->totalAmount,
-         * );
-         *
-         * Hələlik log yazırıq — Job hələ yaradılmayıb.
-         */
-        Log::info('ProcessPaymentJob dispatch edilməlidir (TODO)', [
+        \App\Jobs\ProcessPaymentJob::dispatch(
+            orderId: $event->orderId,
+            amount: (float) $event->totalAmount,
+            currency: $event->currency,
+            paymentMethod: $event->paymentMethod,
+        );
+
+        Log::info('ProcessPaymentJob dispatch olundu', [
             'order_id' => $event->orderId,
+            'amount' => $event->totalAmount,
         ]);
     }
 

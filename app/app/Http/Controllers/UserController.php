@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Src\Shared\Application\Bus\CommandBus;
 use Src\Shared\Application\Bus\QueryBus;
 use Src\User\Application\Commands\RegisterUser\RegisterUserCommand;
+use Src\User\Application\DTOs\RegisterUserDTO;
 use Src\User\Application\Queries\GetUser\GetUserQuery;
 
 /**
@@ -63,9 +64,11 @@ class UserController extends Controller
     public function register(RegisterUserRequest $request): JsonResponse
     {
         $command = new RegisterUserCommand(
-            name: $request->input('name'),
-            email: $request->input('email'),
-            password: $request->input('password'),
+            dto: new RegisterUserDTO(
+                name: $request->input('name'),
+                email: $request->input('email'),
+                password: $request->input('password'),
+            ),
         );
 
         $userId = $this->commandBus->dispatch($command);

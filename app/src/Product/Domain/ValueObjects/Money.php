@@ -102,6 +102,39 @@ final class Money extends ValueObject
     }
 
     /**
+     * Pul məbləğini tam ədədlə vurur və YENİ Money qaytarır.
+     *
+     * OrderItem::lineTotal() bu metodu çağırır:
+     *   $this->price->multiply($this->quantity)
+     *   Məsələn: 1050 qəpik × 3 ədəd = 3150 qəpik (31.50 AZN)
+     *
+     * @param int $factor Vurucu (miqdar, say və s.)
+     * @throws DomainException Əgər factor mənfidirsə
+     */
+    public function multiply(int $factor): self
+    {
+        if ($factor < 0) {
+            throw new DomainException(
+                "Vurma əmsalı mənfi ola bilməz. Verilən dəyər: {$factor}"
+            );
+        }
+
+        return new self($this->amount * $factor, $this->currency);
+    }
+
+    /**
+     * Money-ni array-ə çevir — serialization üçün.
+     * OrderItem::toArray() bu metodu çağırır.
+     */
+    public function toArray(): array
+    {
+        return [
+            'amount' => $this->amount,
+            'currency' => $this->currency,
+        ];
+    }
+
+    /**
      * Valyutaların eyni olmasını yoxlayır.
      * Private metod - yalnız bu sinifin daxilində istifadə olunur.
      */

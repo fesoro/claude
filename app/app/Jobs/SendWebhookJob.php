@@ -56,7 +56,7 @@ class SendWebhookJob implements ShouldQueue
         $jsonPayload = json_encode([
             'event' => $this->eventType,
             'data' => $this->payload,
-            'timestamp' => now()->toISOString(),
+            'timestamp' => now()->toIso8601String(),
         ]);
 
         // HMAC imza yarat
@@ -100,6 +100,25 @@ class SendWebhookJob implements ShouldQueue
         }
     }
 
+    /**
+     * Bütün retry cəhdləri bitdikdən sonra çağırılır.
+     *
+     * EXPONENTIAL BACKOFF NƏDİR?
+     * ===========================
+     * Hər uğursuz cəhddən sonra gözləmə müddəti artır:
+     *   Cəhd 1 → 30 san gözlə  (xarici server bərpa olsun)
+     *   Cəhd 2 → 120 san gözlə (daha çox vaxt ver)
+     *   Cəhd 3 → 300 san gözlə (son şans)
+     *
+     * NƏYƏ LİNEAR DEYİL?
+     * Linear: 30, 30, 30 — server hələ bərpa olmayıbsa, faydasız sorğu göndərirsən.
+     * Exponential: 30, 120, 300 — hər dəfə daha çox vaxt verirsən, serveri "narahat etmirsən".
+     *
+     * CONSECUTIVE FAILURE TRACKING:
+     * Webhook ardıcıl neçə dəfə uğursuz olduğunu izləyirik.
+     * Əgər ardıcıl 10 dəfə uğursuz olubsa → webhook-u avtomatik deaktiv edirik.
+     * Bu, "dead endpoint"-lərə davamlı sorğu göndərməyin qarşısını alır.
+     */
     public function failed(\Throwable $exception): void
     {
         Log::error("Webhook tamamilə uğursuz oldu (bütün cəhdlər bitdi)", [
@@ -107,5 +126,29 @@ class SendWebhookJob implements ShouldQueue
             'event' => $this->eventType,
             'error' => $exception->getMessage(),
         ]);
+
+        // Ardıcıl uğursuzluq sayını artır
+        $webhook = WebhookModel::find($this->webhookId);
+
+        if (!$webhook) {
+            return;
+        }
+
+        $consecutiveFailures = ($webhook->consecutive_failures ?? 0) + 1;
+        $webhook->update(['consecutive_failures' => $consecutiveFailures]);
+
+        // 10 ardıcıl uğursuzluqdan sonra webhook-u deaktiv et
+        // Bu, "dead endpoint" problemi həll edir:
+        // - Server bağlanıb, URL dəyişib, və ya müştəri artıq webhook istifadə etmir
+        // - Hər event-də faydasız HTTP sorğusu göndərməyin mənası yoxdur
+        // - Müştəri webhook-u yenidən aktivləşdirə bilər (admin paneldən)
+        if ($consecutiveFailures >= 10) {
+            $webhook->update(['is_active' => false]);
+
+            Log::warning("Webhook avtomatik deaktiv edildi — ardıcıl {$consecutiveFailures} uğursuzluq", [
+                'webhook_id' => $webhook->id,
+                'url' => $webhook->url,
+            ]);
+        }
     }
 }

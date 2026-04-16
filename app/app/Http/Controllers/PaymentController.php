@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Src\Shared\Application\Bus\CommandBus;
 use Src\Shared\Application\Bus\QueryBus;
 use Src\Payment\Application\Commands\ProcessPayment\ProcessPaymentCommand;
+use Src\Payment\Application\Queries\GetPayment\GetPaymentQuery;
 
 /**
  * PAYMENT CONTROLLER
@@ -83,22 +84,21 @@ class PaymentController extends Controller
     /**
      * GET /api/payments/{id}
      * Ödəniş detalları.
+     *
+     * CQRS AXINI:
+     * Controller → GetPaymentQuery → QueryBus → GetPaymentHandler → PaymentDTO
+     *
+     * PaymentResource — when() ilə şərtli sahələr qaytarır:
+     * - transaction_id → yalnız completed statusda
+     * - failure_reason → yalnız failed statusda
      */
     public function show(string $id): JsonResponse
     {
-        /**
-         * TODO: GetPaymentQuery implement et.
-         * Hazırda placeholder — CQRS prinsipinə görə Query istifadə etmək lazımdır.
-         *
-         * Gələcəkdə belə olacaq:
-         *   $query = new GetPaymentQuery(paymentId: $id);
-         *   $payment = $this->queryBus->ask($query);
-         *   return ApiResponse::success(new PaymentResource($payment));
-         *
-         * PaymentResource — when() ilə şərtli sahələr qaytarır:
-         * - transaction_id → yalnız completed statusda
-         * - failure_reason → yalnız failed statusda
-         */
-        return ApiResponse::error('PaymentQuery hələ implement edilməyib', code: 501);
+        $query = new GetPaymentQuery(paymentId: $id);
+        $payment = $this->queryBus->ask($query);
+
+        return ApiResponse::success(
+            data: new PaymentResource($payment),
+        );
     }
 }

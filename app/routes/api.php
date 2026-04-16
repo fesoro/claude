@@ -63,6 +63,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\NotificationPreferenceController;
 use App\Http\Controllers\TwoFactorController;
 use App\Http\Controllers\WebhookController;
+use App\Http\Controllers\HealthCheckController;
 
 /*
 |--------------------------------------------------------------------------
@@ -132,6 +133,22 @@ Route::prefix('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::get('/search', [SearchController::class, 'search']);
+
+/*
+|--------------------------------------------------------------------------
+| Health Check Routes — Sistem sağlamlığı yoxlaması
+|--------------------------------------------------------------------------
+| /api/health       → Ətraflı health check (monitoring üçün)
+| /api/health/live  → Liveness probe (Kubernetes — proses sağdırmı?)
+| /api/health/ready → Readiness probe (Kubernetes — traffic qəbul edə bilərmi?)
+|
+| Bu route-lar PUBLİK-dir — load balancer və Kubernetes auth istifadə etmir.
+*/
+Route::prefix('health')->group(function () {
+    Route::get('/', HealthCheckController::class);            // __invoke
+    Route::get('/live', [HealthCheckController::class, 'liveness']);
+    Route::get('/ready', [HealthCheckController::class, 'readiness']);
+});
 
 Route::prefix('users')->group(function () {
     // GET /api/users/{id} → İstifadəçi məlumatlarını al (Query)

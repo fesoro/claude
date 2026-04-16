@@ -52,10 +52,12 @@ final class PaymentServiceProvider extends ServiceProvider
         // 1. Repository interface-ini Eloquent implementasiyasına bind et
         //    Artıq kodda PaymentRepositoryInterface istifadə olunanda,
         //    Laravel avtomatik EloquentPaymentRepository yaradacaq.
-        $this->app->bind(
-            PaymentRepositoryInterface::class,
-            EloquentPaymentRepository::class,
-        );
+        //    EventDispatcher injection edilir ki, domain event-lər dispatch olunsun.
+        $this->app->bind(PaymentRepositoryInterface::class, function ($app) {
+            return new EloquentPaymentRepository(
+                eventDispatcher: $app->make(\Src\Shared\Infrastructure\Bus\EventDispatcher::class),
+            );
+        });
 
         // 2. Strategy pattern — ödəniş gateway-lərini qeydiyyata al
         //    PaymentStrategyResolver-ə hansı gateway-lərin mövcud olduğunu bildiririk.

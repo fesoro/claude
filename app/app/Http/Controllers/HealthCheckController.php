@@ -291,6 +291,76 @@ class HealthCheckController extends Controller
     }
 
     /**
+     * LIVENESS CHECK — Tətbiq prosesi işləyirmi?
+     * GET /api/health/live
+     *
+     * KUBERNETES LIVENESS PROBE ÜÇÜN:
+     * ================================
+     * Bu endpoint yalnız tətbiqin "sağ" olduğunu yoxlayır.
+     * Heç bir xarici dependency yoxlanmır — yalnız prosesin cavab verə bildiyini sübut edir.
+     *
+     * Kubernetes liveness probe bu endpoint-ə müraciət edir:
+     * - 200 qaytarsa → konteyner sağdır, toxunma
+     * - Cavab gəlməsə/timeout olsa → konteyner donub → RESTART!
+     *
+     * FƏRQ: liveness vs readiness:
+     * - liveness: "proses işləyir" (donmayıb, loop-a düşməyib)
+     * - readiness: "traffic qəbul edə bilər" (DB var, Redis var)
+     *
+     * Kubernetes yaml nümunəsi:
+     *   livenessProbe:
+     *     httpGet:
+     *       path: /api/health/live
+     *       port: 80
+     *     periodSeconds: 10
+     *     failureThreshold: 3
+     */
+    public function liveness(): JsonResponse
+    {
+        return response()->json([
+            'status' => 'alive',
+            'timestamp' => now()->toIso8601String(),
+        ]);
+    }
+
+    /**
+     * READINESS CHECK — Tətbiq traffic qəbul etməyə hazırdırmı?
+     * GET /api/health/ready
+     *
+     * KUBERNETES READINESS PROBE ÜÇÜN:
+     * =================================
+     * Bu endpoint database bağlantısını yoxlayır.
+     * Database işləmirsə → 503 qaytarılır → Kubernetes traffic göndərmir.
+     *
+     * Nümunə ssenari:
+     * - Tətbiq yenicə başlayıb, amma database migration hələ bitməyib
+     * - liveness → 200 (proses var)
+     * - readiness → 503 (DB yoxdur, traffic göndərmə!)
+     * - Migration bitdi → readiness → 200 (indi traffic göndər)
+     *
+     * Kubernetes yaml nümunəsi:
+     *   readinessProbe:
+     *     httpGet:
+     *       path: /api/health/ready
+     *       port: 80
+     *     periodSeconds: 5
+     *     failureThreshold: 2
+     */
+    public function readiness(): JsonResponse
+    {
+        $dbChecks = $this->checkDatabases();
+        $anyDbDown = in_array(false, $dbChecks, true);
+
+        $statusCode = $anyDbDown ? 503 : 200;
+
+        return response()->json([
+            'status' => $anyDbDown ? 'not_ready' : 'ready',
+            'checks' => ['database' => $dbChecks],
+            'timestamp' => now()->toIso8601String(),
+        ], $statusCode);
+    }
+
+    /**
      * Ümumi sağlamlıq statusunu hesabla.
      *
      * ALGORİTM:

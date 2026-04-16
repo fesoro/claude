@@ -30,9 +30,18 @@ abstract class DomainEvent
     private string $eventId;
     private \DateTimeImmutable $occurredAt;
 
+    /**
+     * uuid_create() — PHP uuid extension-undan gəlir.
+     * Əgər extension yoxdursa (əksər hallarda Docker-da əl ilə quraşdırılmalıdır),
+     * Ramsey UUID və ya Illuminate Str::uuid() istifadə et.
+     *
+     * function_exists() ilə runtime yoxlama edirik ki, hər mühitdə işləsin.
+     */
     public function __construct()
     {
-        $this->eventId = uuid_create();
+        $this->eventId = function_exists('uuid_create')
+            ? uuid_create()
+            : \Illuminate\Support\Str::uuid()->toString();
         $this->occurredAt = new \DateTimeImmutable();
     }
 

@@ -58,6 +58,7 @@ class OrderObserver
             orderId: $order->id,
             userId: $order->user_id,
             totalAmount: (float) $order->total_amount,
+            currency: $order->currency ?? 'AZN',
         );
     }
 

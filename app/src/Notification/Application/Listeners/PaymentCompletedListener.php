@@ -77,9 +77,34 @@ class PaymentCompletedListener
 
         // Ödəniş məlumatlarını alırıq.
         $orderId = $eventData['order_id'] ?? 'N/A';
-        $customerEmail = $eventData['customer_email'] ?? '';
         $amount = $eventData['amount'] ?? 0;
         $paymentMethod = $eventData['payment_method'] ?? 'unknown';
+
+        /**
+         * MÜŞTƏRİ EMAİL-İNİ TAPMAQ
+         * ===========================
+         * PaymentCompletedIntegrationEvent-də customer_email yoxdur.
+         * Integration event-lər yalnız aggregate ID-lərini daşıyır.
+         * Email-i order_id → user_id → email zənciri ilə tapırıq.
+         *
+         * Bu, bounded context autonomy prinsipinə uyğundur:
+         * Payment context User context-dən asılı olmamalıdır.
+         * Notification context öz ehtiyacı üçün User data-sını özü tapır.
+         */
+        $customerEmail = '';
+        $orderModel = \Src\Order\Infrastructure\Models\OrderModel::find($orderId);
+
+        if ($orderModel !== null) {
+            $user = \Src\User\Infrastructure\Models\UserModel::find($orderModel->user_id);
+            $customerEmail = $user?->email ?? '';
+        }
+
+        if (empty($customerEmail)) {
+            \Illuminate\Support\Facades\Log::warning('Müştəri email-i tapılmadı, ödəniş qəbzi göndərilə bilmir', [
+                'order_id' => $orderId,
+            ]);
+            return;
+        }
 
         // Email mövzusu.
         $subject = "Ödəniş qəbzi - Sifariş #{$orderId}";

@@ -113,10 +113,9 @@ class EloquentOrderRepository implements OrderRepositoryInterface
 
         // Domain Event-ləri dispatch et
         // pullDomainEvents() event-ləri qaytarır VƏ siyahını təmizləyir
+        // dispatch() array gözləyir — tək event deyil, bütün event siyahısını göndəririk
         $events = $order->pullDomainEvents();
-        foreach ($events as $event) {
-            $this->eventDispatcher->dispatch($event);
-        }
+        $this->eventDispatcher->dispatch($events);
     }
 
     /**
@@ -152,7 +151,7 @@ class EloquentOrderRepository implements OrderRepositoryInterface
         $items = $itemRows->map(fn ($itemRow) => new OrderItem(
             productId: $itemRow->product_id,
             quantity: (int) $itemRow->quantity,
-            price: new Money((float) $itemRow->price, $itemRow->currency),
+            price: new Money((int) $itemRow->price, $itemRow->currency),
         ))->all();
 
         // Order entity-ni reconstitute et (event qeydə almadan)
@@ -166,7 +165,7 @@ class EloquentOrderRepository implements OrderRepositoryInterface
                 country: $row->country,
             ),
             status: new OrderStatus($row->status),
-            totalAmount: new Money((float) $row->total_amount, $row->currency),
+            totalAmount: new Money((int) $row->total_amount, $row->currency),
             items: $items,
             createdAt: new \DateTimeImmutable($row->created_at),
         );

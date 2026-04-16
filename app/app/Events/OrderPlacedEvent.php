@@ -63,5 +63,7 @@ class OrderPlacedEvent
         public readonly string $orderId,
         public readonly string $userId,
         public readonly float $totalAmount,
+        public readonly string $currency = 'AZN',
+        public readonly string $paymentMethod = 'credit_card',
     ) {}
 }

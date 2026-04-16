@@ -44,6 +44,21 @@ class SendOrderConfirmationListener implements ShouldQueue
      */
     public int $backoff = 60;
 
+    /**
+     * Sifariş yaradılanda müştəriyə təsdiq email-i göndərir.
+     *
+     * AXIN:
+     * 1. OrderPlacedEvent baş verir (AppServiceProvider-da qeydiyyatdan keçib).
+     * 2. Laravel Event Dispatcher bu listener-i çağırır.
+     * 3. ShouldQueue olduğu üçün bu metod arxa planda (queue worker-də) işləyir.
+     * 4. İstifadəçi gözləmir — cavab dərhal qayıdır.
+     *
+     * Mail::to()->queue() vs Mail::to()->send() fərqi:
+     * - send(): Elə indi göndərir (sinxron, yavaş).
+     * - queue(): Mail-i queue-yə yazır, worker göndərir (asinxron, sürətli).
+     * Burada queue() istifadə edirik çünki listener onsuz da queue-dadır,
+     * amma Mail::queue() əlavə olaraq mail-i ayrı job kimi idarə edir.
+     */
     public function handle(OrderPlacedEvent $event): void
     {
         Log::info('Sifariş təsdiq email-i göndərilir', [
@@ -51,18 +66,27 @@ class SendOrderConfirmationListener implements ShouldQueue
             'user_id' => $event->userId,
         ]);
 
-        /**
-         * TODO: SendOrderConfirmationJob və ya Mailable dispatch et.
-         *
-         * Nümunə:
-         * $user = UserModel::findOrFail($event->userId);
-         * Mail::to($user->email)->queue(new OrderConfirmationMail($event->orderId));
-         *
-         * və ya:
-         * SendOrderConfirmationJob::dispatch($event->orderId, $event->userId);
-         */
-        Log::info('SendOrderConfirmationJob dispatch edilməlidir (TODO)', [
+        $user = \Src\User\Infrastructure\Models\UserModel::find($event->userId);
+
+        if ($user === null) {
+            Log::warning('İstifadəçi tapılmadı, email göndərilə bilmir', [
+                'user_id' => $event->userId,
+            ]);
+            return;
+        }
+
+        \Illuminate\Support\Facades\Mail::to($user->email)->queue(
+            new \App\Mail\OrderConfirmationMail(
+                orderId: (int) $event->orderId,
+                userEmail: $user->email,
+                totalAmount: $event->totalAmount,
+                items: [], // Order items ayrıca sorğu ilə alına bilər
+            ),
+        );
+
+        Log::info('Sifariş təsdiq email-i queue-yə əlavə olundu', [
             'order_id' => $event->orderId,
+            'email' => $user->email,
         ]);
     }
 

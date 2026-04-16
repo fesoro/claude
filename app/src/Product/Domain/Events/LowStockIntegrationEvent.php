@@ -38,6 +38,9 @@ final class LowStockIntegrationEvent extends IntegrationEvent
         public readonly string $productName,
         public readonly int $currentStock,
     ) {
+        // parent::__construct() DomainEvent-in eventId və occurredAt sahələrini yaradır.
+        // Bu çağırış olmadan event-in unikal ID-si və vaxt damğası olmaz.
+        parent::__construct();
     }
 
     /**
@@ -47,5 +50,32 @@ final class LowStockIntegrationEvent extends IntegrationEvent
     public function sourceContext(): string
     {
         return self::SOURCE_CONTEXT;
+    }
+
+    /**
+     * Event-in adı — RabbitMQ routing key-in bir hissəsi olur.
+     * sourceContext() + eventName() = "product.low_stock" routing key.
+     * RabbitMQ bu key-ə görə mesajı düzgün queue-ya yönləndirir.
+     */
+    public function eventName(): string
+    {
+        return 'low_stock';
+    }
+
+    /**
+     * Event-i array-ə çevir — serialization üçün.
+     * RabbitMQ-ya JSON formatında göndərilir.
+     * Consumer (dinləyici) bu array-dən məlumatları oxuyur.
+     */
+    public function toArray(): array
+    {
+        return [
+            'event_id' => $this->eventId(),
+            'occurred_at' => $this->occurredAt()->format('c'),
+            'product_id' => $this->productId,
+            'product_name' => $this->productName,
+            'current_stock' => $this->currentStock,
+            'threshold' => self::LOW_STOCK_THRESHOLD,
+        ];
     }
 }

@@ -8,6 +8,7 @@ use Src\Notification\Application\DTOs\NotificationDTO;
 use Src\Notification\Domain\Events\NotificationSentEvent;
 use Src\Notification\Domain\Services\NotificationServiceInterface;
 use Src\Shared\Domain\Exceptions\DomainException;
+use Src\Shared\Infrastructure\Bus\EventDispatcher;
 
 /**
  * NOTIFICATION APPLICATION SERVICE (Tətbiq Xidməti)
@@ -58,8 +59,21 @@ class NotificationApplicationService
      *   Infrastructure layer-də EmailChannel və ya SmsChannel implement edir.
      *   Laravel Service Container hansını inject edəcəyini ServiceProvider-dən bilir.
      */
+    /**
+     * Konstruktor — dependency injection vasitəsilə service-ləri alır.
+     *
+     * @param NotificationServiceInterface $notificationService
+     *   Domain service interface — bildiriş göndərmə müqaviləsi.
+     *   Infrastructure layer-də EmailChannel və ya SmsChannel implement edir.
+     *
+     * @param EventDispatcher $eventDispatcher
+     *   Event-ləri listener-lərə çatdıran dispatcher.
+     *   Bildiriş göndərildikdən sonra NotificationSentEvent dispatch edir.
+     *   Bu event-i statistika, audit və ya digər listener-lər dinləyə bilər.
+     */
     public function __construct(
         private readonly NotificationServiceInterface $notificationService,
+        private readonly EventDispatcher $eventDispatcher,
     ) {
     }
 
@@ -124,8 +138,16 @@ class NotificationApplicationService
             channel: $channel,
         );
 
-        // TODO: Event dispatcher vasitəsilə event göndər.
-        // $this->eventDispatcher->dispatch($event);
+        // ─── 5. EVENT DISPATCH ───
+        // Event dispatcher vasitəsilə NotificationSentEvent göndəririk.
+        // Bu event-i dinləyən listener-lər:
+        // - StatisticsListener: göndərilən bildiriş sayını artırır.
+        // - AuditListener: bildiriş tarixçəsini log-a yazır.
+        // - AnalyticsListener: bildiriş performansını izləyir.
+        //
+        // dispatch() metodu array qəbul edir — bir neçə event eyni anda göndərilə bilər.
+        // Burada yalnız bir event göndəririk.
+        $this->eventDispatcher->dispatch([$event]);
 
         return $dto;
     }

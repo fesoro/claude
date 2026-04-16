@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use Src\Product\Domain\Repositories\ProductRepositoryInterface;
 use Src\Product\Infrastructure\Repositories\EloquentProductRepository;
 use Src\Product\Infrastructure\Repositories\CachedProductRepository;
+use Src\Shared\Infrastructure\Cache\TaggedCacheService;
 
 /**
  * ProductServiceProvider - Product Bounded Context üçün Laravel Service Provider.
@@ -54,7 +55,10 @@ class ProductServiceProvider extends ServiceProvider
                 // Sonra cache Decorator-unu üstünə qoyuruq
                 // Bu, Decorator pattern-in tətbiqidir:
                 // CachedProductRepository "bükür" (wraps) EloquentProductRepository-ni
-                return new CachedProductRepository($eloquentRepository);
+                return new CachedProductRepository(
+                    inner: $eloquentRepository,
+                    cache: $app->make(TaggedCacheService::class),
+                );
             }
         );
     }

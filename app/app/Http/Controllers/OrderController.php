@@ -197,7 +197,7 @@ class OrderController extends Controller
 
         $command = new UpdateOrderStatusCommand(
             orderId: $id,
-            status: $request->input('status'),
+            newStatus: $request->input('status'),
         );
 
         $this->commandBus->dispatch($command);

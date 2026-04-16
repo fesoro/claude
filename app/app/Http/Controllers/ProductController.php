@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Src\Shared\Application\Bus\CommandBus;
 use Src\Shared\Application\Bus\QueryBus;
 use Src\Product\Application\Commands\CreateProduct\CreateProductCommand;
+use Src\Product\Application\DTOs\CreateProductDTO;
 use Src\Product\Application\Commands\UpdateStock\UpdateStockCommand;
 use Src\Product\Application\Queries\GetProduct\GetProductQuery;
 use Src\Product\Application\Queries\ListProducts\ListProductsQuery;
@@ -123,10 +124,12 @@ class ProductController extends Controller
         $this->authorize('create', ProductModel::class);
 
         $command = new CreateProductCommand(
-            name: $request->input('name'),
-            price: (float) $request->input('price'),
-            currency: $request->input('currency', 'USD'),
-            stock: (int) $request->input('stock'),
+            dto: new CreateProductDTO(
+                name: $request->input('name'),
+                priceAmount: (int) ($request->input('price') * 100), // AZN → qəpik
+                currency: $request->input('currency', 'AZN'),
+                stock: (int) $request->input('stock'),
+            ),
         );
 
         $productId = $this->commandBus->dispatch($command);
@@ -155,8 +158,8 @@ class ProductController extends Controller
 
         $command = new UpdateStockCommand(
             productId: $id,
-            quantity: (int) $request->input('quantity'),
-            operation: $request->input('operation', 'decrease'),
+            amount: (int) $request->input('quantity'),
+            type: $request->input('operation', 'decrease'),
         );
 
         $this->commandBus->dispatch($command);

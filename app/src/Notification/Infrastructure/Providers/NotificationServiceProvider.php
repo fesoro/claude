@@ -93,8 +93,11 @@ class NotificationServiceProvider extends ServiceProvider
             PaymentFailedListener::class,
         ],
 
-        // Inventory Context-dən gələn event → admin-ə stok xəbərdarlığı.
-        'Src\Inventory\Domain\Events\LowStockIntegrationEvent' => [
+        // Product Context-dən gələn event → admin-ə stok xəbərdarlığı.
+        // DİQQƏT: Əvvəl burada 'Src\Inventory\...' yazılmışdı — yanlış idi!
+        // Inventory bounded context mövcud deyil, stok məntiqi Product context-dədir.
+        // Bu tip xəta compile-time-da tutulmur çünki string-dir — runtime-da silent fail olur.
+        'Src\Product\Domain\Events\LowStockIntegrationEvent' => [
             LowStockListener::class,
         ],
     ];
@@ -149,9 +152,18 @@ class NotificationServiceProvider extends ServiceProvider
 
         // ─── APPLICATION SERVICE QEYDİYYATI ───
         // NotificationApplicationService — listener-lərin istifadə etdiyi service.
+        //
+        // DİQQƏT: Bu service-in iki dependency-si var:
+        // 1. NotificationServiceInterface — bildiriş göndərən kanal
+        // 2. EventDispatcher — bildiriş göndərildikdən sonra event dispatch edir
+        //
+        // Əvvəl burada EventDispatcher inject OLUNMURDU — runtime xətası verirdi!
+        // Konstruktorda required parametr var, amma provider onu vermirdi.
+        // Bu tip bug compile-time-da tutulmur, yalnız runtime-da (send() çağırılanda) ortaya çıxır.
         $this->app->singleton(NotificationApplicationService::class, function ($app) {
             return new NotificationApplicationService(
                 notificationService: $app->make(NotificationServiceInterface::class),
+                eventDispatcher: $app->make(\Src\Shared\Infrastructure\Bus\EventDispatcher::class),
             );
         });
     }

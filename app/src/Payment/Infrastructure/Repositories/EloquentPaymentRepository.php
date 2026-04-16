@@ -11,6 +11,7 @@ use Src\Payment\Domain\ValueObjects\PaymentId;
 use Src\Payment\Domain\ValueObjects\PaymentMethod;
 use Src\Payment\Domain\ValueObjects\PaymentStatus;
 use Src\Product\Domain\ValueObjects\Money;
+use Src\Shared\Infrastructure\Bus\EventDispatcher;
 
 /**
  * ELOQUENT PAYMENT REPOSITORY
@@ -33,6 +34,9 @@ use Src\Product\Domain\ValueObjects\Money;
  */
 final class EloquentPaymentRepository implements PaymentRepositoryInterface
 {
+    public function __construct(
+        private readonly EventDispatcher $eventDispatcher,
+    ) {}
     /**
      * Ödənişi ID-sinə görə tap.
      */
@@ -79,18 +83,10 @@ final class EloquentPaymentRepository implements PaymentRepositoryInterface
             array_merge($data, ['created_at' => now()]),
         );
 
-        // Domain Event-ləri çıxar — persist uğurlu olduqdan sonra dispatch ediləcək
-        // Real proyektdə: event($event) və ya EventDispatcher istifadə olunardı
+        // Domain Event-ləri dispatch et — persist uğurlu olduqdan sonra
+        // EventDispatcher sinxron (Laravel listener) + asinxron (RabbitMQ) göndərir
         $events = $payment->pullDomainEvents();
-
-        foreach ($events as $event) {
-            // event($event); — Laravel event dispatcher
-            // Burada sadəcə log yazırıq (simulyasiya)
-            logger()->info('Domain Event dispatch edildi', [
-                'event' => $event->eventName(),
-                'data' => $event->toArray(),
-            ]);
-        }
+        $this->eventDispatcher->dispatch($events);
     }
 
     /**
@@ -128,7 +124,7 @@ final class EloquentPaymentRepository implements PaymentRepositoryInterface
         $this->setProperty($payment, 'id', $row->id);
         $this->setProperty($payment, 'paymentId', PaymentId::fromString($row->id));
         $this->setProperty($payment, 'orderId', $row->order_id);
-        $this->setProperty($payment, 'amount', new Money((float) $row->amount, $row->currency));
+        $this->setProperty($payment, 'amount', new Money((int) $row->amount, $row->currency));
         $this->setProperty($payment, 'method', PaymentMethod::fromString($row->method));
         $this->setProperty($payment, 'status', PaymentStatus::fromString($row->status));
         $this->setProperty($payment, 'transactionId', $row->transaction_id ?? null);

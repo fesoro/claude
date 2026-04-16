@@ -28,5 +28,22 @@ final class ProductCreatedEvent extends DomainEvent
         public readonly string $priceCurrency,
         public readonly int $stock,
     ) {
+        parent::__construct();
+    }
+
+    public function eventName(): string
+    {
+        return 'product.created';
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'product_id'     => $this->productId,
+            'product_name'   => $this->productName,
+            'price_amount'   => $this->priceAmount,
+            'price_currency' => $this->priceCurrency,
+            'stock'          => $this->stock,
+        ];
     }
 }

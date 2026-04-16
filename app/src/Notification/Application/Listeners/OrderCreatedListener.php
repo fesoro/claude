@@ -153,8 +153,33 @@ class OrderCreatedListener
 
         // Sifariş məlumatlarını event-dən alırıq.
         $orderId = $eventData['order_id'] ?? 'N/A';
-        $customerEmail = $eventData['customer_email'] ?? '';
         $totalAmount = $eventData['total_amount'] ?? 0;
+
+        /**
+         * MÜŞTƏRİ EMAİL-İNİ TAPMAQ
+         * ===========================
+         * Integration Event-də customer_email OLMUR — çünki bu, User context-ə aiddir.
+         * Bounded context-lər arasında yalnız ID paylaşılır, şəxsi data deyil.
+         * Bu, DDD-nin "minimal data in integration events" prinsipinə uyğundur.
+         *
+         * Email-i user_id vasitəsilə öz DB-mizdən tapırıq.
+         * Əgər tapılmasa — bildiriş göndərilə bilməz, log yazıb skip edirik.
+         */
+        $userId = $eventData['user_id'] ?? null;
+        $customerEmail = '';
+
+        if ($userId !== null) {
+            $user = \Src\User\Infrastructure\Models\UserModel::find($userId);
+            $customerEmail = $user?->email ?? '';
+        }
+
+        if (empty($customerEmail)) {
+            \Illuminate\Support\Facades\Log::warning('Müştəri email-i tapılmadı, bildiriş göndərilə bilmir', [
+                'order_id' => $orderId,
+                'user_id' => $userId,
+            ]);
+            return;
+        }
 
         // Email mövzusunu hazırlayırıq.
         $subject = "Sifariş təsdiqi - #{$orderId}";

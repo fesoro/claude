@@ -50,22 +50,35 @@ class CheckLowStockListener implements ShouldQueue
         ]);
 
         /**
-         * TODO: LowStockAlertMail göndər.
+         * Anbar menecerinə stok xəbərdarlığı email-i göndəririk.
          *
-         * Nümunə:
-         * $product = ProductModel::findOrFail($event->productId);
-         * Mail::to('warehouse@example.com')->queue(
-         *     new LowStockAlertMail($product, $event->newStock)
-         * );
+         * WAREHOUSE_EMAIL .env-dən oxunur. Default: warehouse@example.com
+         * Real layihədə bu bir neçə yerə göndərilə bilər:
+         * - Email (burada)
+         * - Slack notification
+         * - Dashboard alert
          *
-         * Əgər stok 0-dırsa, daha təcili bildiriş göndərmək olar:
-         * if ($event->newStock === 0) {
-         *     // Urgent notification
-         * }
+         * Stok 0-dırsa təcili (urgent) olaraq qeyd edirik —
+         * mail subject-ində fərq olacaq ki, diqqət çəksin.
          */
-        Log::info('LowStockAlertMail göndərilməlidir (TODO)', [
+        $recipientEmail = config('mail.warehouse_email', 'warehouse@example.com');
+
+        // LowStockAlertMail productName (ad) gözləyir, productId deyil.
+        // Product-u DB-dən tapıb adını alırıq.
+        $product = \Src\Product\Infrastructure\Models\ProductModel::find($event->productId);
+        $productName = $product?->name ?? "Məhsul #{$event->productId}";
+
+        \Illuminate\Support\Facades\Mail::to($recipientEmail)->queue(
+            new \App\Mail\LowStockAlertMail(
+                productName: $productName,
+                currentStock: $event->newStock,
+            ),
+        );
+
+        Log::info('LowStockAlertMail queue-yə əlavə olundu', [
             'product_id' => $event->productId,
             'new_stock' => $event->newStock,
+            'recipient' => $recipientEmail,
         ]);
     }
 }

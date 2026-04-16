@@ -129,10 +129,7 @@ final class EloquentUserRepository implements UserRepositoryInterface
          * Beləliklə eyni event iki dəfə göndərilmir.
          */
         $events = $user->pullDomainEvents();
-
-        foreach ($events as $event) {
-            $this->eventDispatcher->dispatch($event);
-        }
+        $this->eventDispatcher->dispatch($events);
     }
 
     /**

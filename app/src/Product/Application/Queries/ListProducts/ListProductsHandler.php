@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Src\Product\Application\Queries\ListProducts;
 
-use Src\Shared\Application\Bus\QueryHandler;
 use Src\Product\Application\DTOs\ProductDTO;
+use Src\Product\Application\Queries\ListProducts\ListProductsQuery;
 use Src\Product\Infrastructure\Models\ProductModel;
+use Src\Shared\Application\Bus\Query;
+use Src\Shared\Application\Bus\QueryHandler;
 
 /**
  * ListProductsHandler — Filtrlənmiş və səhifələnmiş məhsul siyahısı.
