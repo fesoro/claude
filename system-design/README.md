@@ -56,6 +56,66 @@ Hər fayl ətraflı izahat, PHP/Laravel nümunələri və real-world misallar eh
 40. [Object-Oriented Design](40-object-oriented-design.md) - Parking lot, elevator, ATM, chess, SOLID, patterns
 41. [SQL vs NoSQL Selection](41-sql-vs-nosql-selection.md) - Decision tree, NoSQL types, real-world choices
 
+### Core Fundamentals (Extra)
+42. [CAP & PACELC Theorem](42-cap-pacelc.md) - Consistency, availability, partition, latency trade-offs
+43. [Database Replication](43-database-replication.md) - Leader-follower, multi-leader, leaderless, quorum
+44. [SLA, SLO, SLI & Error Budgets](44-sla-slo-sli.md) - SRE fundamentals, availability math, burn rates
+45. [Distributed Transactions & Saga](45-distributed-transactions-saga.md) - 2PC, 3PC, Saga orchestration/choreography
+46. [CDC & Outbox Pattern](46-cdc-outbox-pattern.md) - Change Data Capture, Debezium, transactional outbox
+47. [Service Mesh](47-service-mesh.md) - Istio, Linkerd, Envoy sidecar, mTLS, traffic management
+
+### Classic Design Interviews (Extra)
+48. [Web Crawler Design](48-web-crawler-design.md) - URL frontier, politeness, dedup, Bloom filter
+49. [Distributed Cache Design](49-distributed-cache-design.md) - Memcached/Redis cluster, sharding, hot keys
+50. [Key-Value Store Design](50-key-value-store-design.md) - Dynamo paper, vector clocks, Merkle trees
+51. [Collaborative Editing Design](51-collaborative-editing-design.md) - Google Docs: OT vs CRDT, presence
+52. [Dropbox / Drive Design](52-dropbox-design.md) - Chunking, delta sync, content-addressable storage
+53. [Metrics & Monitoring Design](53-metrics-monitoring-design.md) - Prometheus-like TSDB, cardinality, alerting
+
+### Advanced Patterns (Extra)
+54. [Stream Processing](54-stream-processing.md) - Lambda vs Kappa, Flink, windowing, exactly-once
+55. [API Design Patterns](55-api-design-patterns.md) - REST/gRPC/GraphQL/WebSocket selection, versioning
+56. [Chaos Engineering](56-chaos-engineering.md) - Netflix Chaos Monkey, fault injection, game days
+57. [Backpressure & Load Shedding](57-backpressure-load-shedding.md) - Adaptive concurrency, CoDel, priority drop
+
+### Əlavə Design Nümunələri (More Design Interviews)
+58. [Live Streaming Design](58-live-streaming-design.md) - Twitch/YouTube Live, LL-HLS, WebRTC, chat fan-out
+59. [Ticketing System Design](59-ticketing-system-design.md) - Ticketmaster: virtual queue, seat lock, fairness
+60. [Matchmaking System Design](60-matchmaking-system-design.md) - Elo/TrueSkill, adaptive bucketing, dedicated servers
+61. [Social Graph Design](61-social-graph-design.md) - Twitter/LinkedIn graph, FoF, celebrity shard
+62. [Email System Design](62-email-system-design.md) - Gmail: SMTP, storage, threading, spam, SPF/DKIM/DMARC
+63. [Ad Serving Design](63-ad-serving-design.md) - RTB, targeting, attribution, click fraud
+64. [Food Delivery Design](64-food-delivery-design.md) - DoorDash/Wolt: dispatch, ETA, batching
+65. [Distributed File System](65-distributed-file-system.md) - HDFS/GFS: NameNode, write pipeline, replication
+
+### Data & AI Systems
+66. [Time-Series Database](66-time-series-database.md) - TSDB internals: Gorilla compression, downsampling
+67. [Data Lake / Warehouse / Mesh](67-data-lake-warehouse-mesh.md) - Lakehouse (Iceberg/Delta/Hudi), medallion, mesh
+68. [Distributed ID Generation](68-distributed-id-generation.md) - Snowflake, ULID, UUIDv7, clock drift
+69. [Vector Database Design](69-vector-database-design.md) - HNSW, IVF, embeddings, RAG, pgvector/Pinecone
+70. [Feature Store Design](70-feature-store-design.md) - Feast/Tecton, offline vs online store, point-in-time join
+71. [Geospatial System Design](71-geospatial-system-design.md) - Geohash, quadtree, S2/H3, PostGIS, Redis GEO
+72. [Deployment Strategies](72-deployment-strategies.md) - Blue-green, canary, shadow, feature flags, rollback
+
+### Platform & Product Design
+73. [News Aggregator Design](73-news-aggregator-design.md) - Reddit/HN: hot score, Wilson, nested comments
+74. [GitHub-like Platform Design](74-github-like-design.md) - Repo storage, PR workflow, Spokes replication
+75. [Typeahead / Autocomplete](75-typeahead-autocomplete.md) - Trie, top-K per node, typo tolerance, ranking
+76. [Document Search Design](76-document-search-design.md) - Algolia-like: instant search, facets, synonyms
+77. [Digital Wallet Design](77-digital-wallet-design.md) - Double-entry ledger, multi-currency, KYC/AML
+78. [AI Inference Serving](78-ai-inference-serving.md) - Triton/vLLM, dynamic batching, KV cache, MIG GPUs
+79. [Push Notification Backend](79-push-notification-backend.md) - APNs/FCM/Web Push, fan-out, priority
+80. [Video Conferencing Design](80-video-conferencing-design.md) - WebRTC, SFU vs MCU, simulcast, signaling
+81. [Pub/Sub System Design](81-pubsub-system-design.md) - Topics/subscriptions, delivery semantics, filtering
+82. [Webhook Delivery System](82-webhook-delivery-system.md) - Retry, HMAC sig, circuit breaker, SSRF guard
+
+### Distributed Systems Deep Dives
+83. [Distributed Locks Deep Dive](83-distributed-locks-deep-dive.md) - Redlock critique, ZK/etcd, fencing tokens
+84. [Raft, Paxos, ZAB Consensus](84-raft-paxos-consensus.md) - Leader election, log replication, variants
+85. [Multi-Region Active-Active](85-multi-region-active-active.md) - Geo-distributed writes, conflict resolution
+86. [Edge Computing](86-edge-computing.md) - Cloudflare Workers, Lambda@Edge, V8 isolates, D1/KV
+87. [Live Auction Design](87-live-auction-design.md) - eBay-like: bid concurrency, anti-sniping, closing
+
 ## Necə İstifadə Etməli?
 1. Hər mövzunu sıra ilə oxuyun
 2. PHP/Laravel nümunələrini praktik edin
