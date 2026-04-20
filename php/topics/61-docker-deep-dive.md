@@ -116,6 +116,7 @@ README.md
 ## Multi-stage Build
 
 *Multi-stage Build üçün kod nümunəsi:*
+
 ```dockerfile
 # Bu kod multi-stage build ilə composer, node və production image-lərini ayrı mərhələlərdə qurur
 # Stage 1: Dependencies (build stage)
@@ -146,10 +147,10 @@ RUN apk add --no-cache \
     && docker-php-ext-install pdo_mysql zip gd opcache
 
 # Yalnız production dependencies kopyala
-COPY --from=composer-stage /app/vendor /var/www/vendor
+COPY --from=composer-stage /app-laravel/vendor /var/www/vendor
 
 # Build edilmiş assets
-COPY --from=node-stage /app/public/build /var/www/public/build
+COPY --from=node-stage /app-laravel/public/build /var/www/public/build
 
 # Kod
 COPY . /var/www

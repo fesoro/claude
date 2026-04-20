@@ -225,7 +225,7 @@ RUN php artisan route:cache
 # RELEASE stage — config inject (runtime-da, burada deyil)
 FROM php:8.3-fpm AS release
 WORKDIR /app
-COPY --from=build /app .
+COPY --from=build /app-laravel .
 
 # Config environment variable-lardan gəlir (docker run -e ya da K8s secret)
 # Image-ə hardcode deyil!

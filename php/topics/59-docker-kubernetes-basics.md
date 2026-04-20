@@ -94,6 +94,7 @@ tests/
 Multi-stage build-lər build vaxtı lazım olan alətləri (Composer, Node.js) final image-ə daxil etmədən build etməyə imkan verir.
 
 *Multi-stage build-lər build vaxtı lazım olan alətləri (Composer, Node üçün kod nümunəsi:*
+
 ```dockerfile
 # ---- Stage 1: Composer dependency-ləri ----
 FROM composer:2.7 AS composer_stage
@@ -146,8 +147,8 @@ RUN addgroup -g 1000 appgroup \
 WORKDIR /var/www/html
 
 # Yalnız lazımi faylları əvvəlki stage-lərdən kopyalayın
-COPY --from=composer_stage --chown=appuser:appgroup /app/vendor ./vendor
-COPY --from=node_stage --chown=appuser:appgroup /app/public/build ./public/build
+COPY --from=composer_stage --chown=appuser:appgroup /app-laravel/vendor ./vendor
+COPY --from=node_stage --chown=appuser:appgroup /app-laravel/public/build ./public/build
 COPY --chown=appuser:appgroup . .
 
 USER appuser
