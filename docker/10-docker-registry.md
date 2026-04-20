@@ -1,4 +1,4 @@
-# Docker Registry (Docker Reyestri)
+# Docker Registry
 
 ## Nədir? (What is it?)
 
@@ -6,7 +6,7 @@ Docker Registry — Docker image-lərini saxlamaq və paylamaq üçün istifadə
 
 Registry olmadan Docker image-lərini başqa maşınlara köçürmək çətin olardı. Registry `docker push` və `docker pull` əmrləri ilə işləyir.
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### 1. Docker Hub
 
@@ -212,7 +212,7 @@ Image tags:
   myapp:1                 (major version alias)
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### CI/CD Pipeline-da Registry İstifadəsi
 
@@ -303,7 +303,7 @@ skopeo copy \
     docker://123456789.dkr.ecr.eu-west-1.amazonaws.com/myapp:1.0.0
 ```
 
-## PHP/Laravel ilə İstifadə (Usage with PHP/Laravel)
+## PHP/Laravel ilə İstifadə
 
 ### Laravel Image-ini Registry-ə Push Etmək
 
@@ -333,7 +333,7 @@ RUN --mount=type=secret,id=composer_auth,target=/root/.composer/auth.json \
     composer install --no-dev --prefer-dist
 
 FROM php:8.3-fpm-alpine
-COPY --from=deps /app/vendor /var/www/html/vendor
+COPY --from=deps /app-laravel/vendor /var/www/html/vendor
 COPY . /var/www/html
 ```
 
@@ -355,7 +355,7 @@ docker buildx build \
     --push .
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 ### S1: Docker Hub ilə private registry arasında fərq nədir?
 **C:** Docker Hub — public, Docker şirkəti tərəfindən idarə olunan registry-dir. Free planda pull rate limit var. Private registry (self-hosted və ya cloud) — şirkətin öz nəzarətindədir, data şirkətin infrastrukturunda saxlanır, rate limit yoxdur, güclü access control var. Produksiya mühitlərində adətən private registry (ECR, GCR, ACR) istifadə olunur.

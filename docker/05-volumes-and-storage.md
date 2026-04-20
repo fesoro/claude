@@ -21,7 +21,7 @@ Docker konteynerləri ephemeral-dır — konteyner silinəndə içindəki data i
 └────────────────────────────────────────────────┘
 ```
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### Named Volumes
 
@@ -231,7 +231,7 @@ docker run -d --name app \
   alpine cat /data/somefile
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Docker Compose ilə Volume-lar
 
@@ -263,7 +263,7 @@ volumes:
   node_modules:
 ```
 
-## PHP/Laravel ilə İstifadə (Usage with PHP/Laravel)
+## PHP/Laravel ilə İstifadə
 
 ### Laravel Storage Volume Strategiyası
 
@@ -370,7 +370,7 @@ docker compose exec app chown -R www-data:www-data storage bootstrap/cache
 docker compose exec app chmod -R 775 storage bootstrap/cache
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 ### 1. Docker volume-ların üç tipi hansılardır?
 **Cavab:** Named volumes (Docker idarə edir, /var/lib/docker/volumes-da saxlanır), bind mounts (host filesystem-dən müəyyən qovluq mount olunur), tmpfs mounts (yalnız yaddaşda saxlanır, disk-ə yazılmır). Hər birinin öz istifadə sahəsi var.

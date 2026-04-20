@@ -6,7 +6,7 @@ Laravel Sail — Laravel üçün light-weight command-line interface olub, Docke
 
 Sail əslində Docker Compose üzərində qurulmuş bir wrapper-dir. `sail` əmri `docker compose exec` əmrlərinin qısaldılmış versiyasıdır.
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### 1. Sail Arxitekturası
 
@@ -159,7 +159,7 @@ RUN apt-get update \
 RUN curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Ümumi Sail Əmrləri
 
@@ -286,8 +286,8 @@ RUN apk add --no-cache \
     nginx supervisor \
     && docker-php-ext-install pdo_mysql opcache
 
-COPY --from=vendor /app/vendor /var/www/html/vendor
-COPY --from=frontend /app/public/build /var/www/html/public/build
+COPY --from=vendor /app-laravel/vendor /var/www/html/vendor
+COPY --from=frontend /app-laravel/public/build /var/www/html/public/build
 COPY . .
 
 RUN chown -R www-data:www-data storage bootstrap/cache
@@ -332,7 +332,7 @@ sail build --no-cache
 sail up -d
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 **1. Laravel Sail nədir və Docker-dən nə ilə fərqlənir?**
 Sail Docker Compose üzərində wrapper-dir. `sail artisan migrate` əslində `docker compose exec laravel.test php artisan migrate`. Sail Laravel üçün pre-konfiqurə edilmiş servis stack təklif edir.

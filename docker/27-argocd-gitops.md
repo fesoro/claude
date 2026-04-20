@@ -6,7 +6,7 @@
 
 **ArgoCD** — Kubernetes üçün ən populyar GitOps continuous delivery alətidir. Git repository-ni izləyir və cluster-i o state-ə çatdırır.
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### 1. GitOps Prinsipləri
 
@@ -73,7 +73,7 @@ Pull model üstünlükləri:
 └─────────────────────────┘
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### 1. ArgoCD Quraşdırma
 

@@ -6,7 +6,7 @@
 
 Docker əslində bir orkestrator-dur. Real iş ona daxil olan runtime-lar tərəfindən görülür.
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### 1. Container Runtime Hierarchy
 
@@ -38,7 +38,7 @@ Bütün müasir runtime-lar OCI-uyğundur.
 
 Kubernetes kubelet-in runtime ilə əlaqə qurmaq üçün standart interfeysi. `dockershim` Kubernetes 1.24-dən çıxarıldı, indi CRI-uyğun runtime-lar işlədilir (containerd, CRI-O).
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### containerd
 

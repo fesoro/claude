@@ -14,7 +14,7 @@ Container Status:
   start_period   interval      retries exhausted
 ```
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### HEALTHCHECK Dockerfile İnstruksiyası
 
@@ -193,7 +193,7 @@ services:
 | unless-stopped | Həmişə başladır | Əl ilə dayandırılıbsa — xeyr |
 | on-failure | Yalnız non-zero exit | Yalnız non-zero exit |
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Müxtəlif Service-lər üçün Health Check-lər
 
@@ -288,7 +288,7 @@ docker ps --format "table {{.Names}}\t{{.Status}}"
 docker ps --filter health=unhealthy
 ```
 
-## PHP/Laravel ilə İstifadə (Usage with PHP/Laravel)
+## PHP/Laravel ilə İstifadə
 
 ### PHP-FPM Health Check
 
@@ -513,7 +513,7 @@ services:
       retries: 3
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 ### 1. Docker health check nədir?
 **Cavab:** Konteynerin düzgün işlədiyini yoxlamaq üçün mütəmadi icra olunan əmrdir. Exit code 0 healthy, 1 unhealthy deməkdir. Docker konteyneri starting, healthy, unhealthy kimi işarələyir. Orchestrator-lar bu məlumatı konteynerləri yenidən başlatmaq və ya traffic-i yönləndirmək üçün istifadə edir.

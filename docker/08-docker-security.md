@@ -4,7 +4,7 @@
 
 Docker təhlükəsizliyi — konteynerləşdirilmiş tətbiqləri, host sistemini və data-nı qorumaq üçün tətbiq edilən praktikalar və mexanizmlər toplusudur. Konteynerlər VM-lərdən daha az izolyasiya təmin edir (host kernel paylaşılır), ona görə təhlükəsizlik tədbirləri çox vacibdir.
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### Non-Root İstifadəçilər
 
@@ -303,7 +303,7 @@ networks:
     internal: true   # Xarici internet yoxdur
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Hardened Dockerfile
 
@@ -405,7 +405,7 @@ networks:
     internal: true
 ```
 
-## PHP/Laravel ilə İstifadə (Usage with PHP/Laravel)
+## PHP/Laravel ilə İstifadə
 
 ### Laravel Təhlükəsiz Dockerfile
 
@@ -449,7 +449,7 @@ secrets:
         trim(file_get_contents(env('DB_PASSWORD_FILE'))) : ''),
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 ### 1. Docker konteynerləri niyə non-root kimi işləməlidir?
 **Cavab:** Root konteyner kompromis olduqda, host-un root hüquqlarına giriş riski var (kernel exploit vasitəsilə). Non-root istifadəçi ilə blast radius azalır. Kubernetes-də `runAsNonRoot: true` ilə məcbur edilə bilər.

@@ -1,4 +1,4 @@
-# Docker Logging (Docker-da Log İdarəetməsi)
+# Docker Logging
 
 ## Nədir? (What is it?)
 
@@ -6,7 +6,7 @@ Docker logging — konteynerlərdən log məlumatlarını toplamaq, saxlamaq və
 
 Produksiya mühitində düzgün logging olmadan problem-ləri tapmaq, performansı izləmək və audit tələblərini yerinə yetirmək mümkün deyil.
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### 1. Docker Logging Arxitekturası
 
@@ -253,7 +253,7 @@ services:
         awslogs-stream-prefix: app
 ```
 
-## PHP/Laravel ilə İstifadə (Usage with PHP/Laravel)
+## PHP/Laravel ilə İstifadə
 
 ### Laravel-i stdout/stderr-ə Log Yazmaq
 
@@ -387,7 +387,7 @@ php_admin_value[error_log] = /proc/self/fd/2
 php_admin_flag[log_errors] = on
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 ### S1: Docker-da log-lar harada saxlanılır?
 **C:** Default olaraq (json-file driver), log-lar `/var/lib/docker/containers/<container-id>/<container-id>-json.log` faylında JSON formatında saxlanılır. Hər log sətri timestamp, stream tipi (stdout/stderr) və log məzmununu ehtiva edir. Logging driver dəyişdirildikdə log-lar fərqli yerə yönləndirilir.

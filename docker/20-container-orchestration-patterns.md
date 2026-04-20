@@ -6,7 +6,7 @@ Container orchestration patterns — konteynerləşdirilmiş tətbiqlərin dizay
 
 Bu pattern-lər Kubernetes-in Pod abstraksiyası üzərində qurulub — bir Pod daxilində çoxlu konteyner, Pod-lar arası əlaqə və iş axını pattern-ləri.
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### 1. Sidecar Pattern
 
@@ -587,7 +587,7 @@ spec:
         name: nginx-config
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Tam Laravel Production Pattern-ləri
 
@@ -679,7 +679,7 @@ spec:
           emptyDir: {}
 ```
 
-## PHP/Laravel ilə İstifadə (Usage with PHP/Laravel)
+## PHP/Laravel ilə İstifadə
 
 ### Laravel Horizon Deployment Pattern
 
@@ -768,7 +768,7 @@ spec:
       targetPort: 8080
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 ### S1: Sidecar pattern nədir və nə vaxt istifadə olunur?
 **C:** Sidecar — əsas konteynerə əlavə funksionallıq verən köməkçi konteynerdir. Eyni Pod-da olduğu üçün network və storage paylaşır. İstifadə halları: log collection (Fluentbit), monitoring (metrics exporter), proxy (Envoy/Istio), TLS termination. Əsas prinsipi: əsas tətbiqin kodunu dəyişmədən funksionallıq əlavə etmək.

@@ -6,7 +6,7 @@ Kubernetes Storage — konteynerlərdə data saxlanmasını idarə edən sistemd
 
 Database, fayl upload-ları, session data kimi stateful tətbiqlər üçün persistent storage vacibdir.
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### 1. Volume Tipləri
 
@@ -352,7 +352,7 @@ kubectl patch pvc mysql-pvc -p '{"spec":{"resources":{"requests":{"storage":"100
 kubectl get pvc mysql-pvc
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Laravel File Storage (Shared Volume)
 
@@ -436,7 +436,7 @@ spec:
           restartPolicy: OnFailure
 ```
 
-## PHP/Laravel ilə İstifadə (Usage with PHP/Laravel)
+## PHP/Laravel ilə İstifadə
 
 ### Laravel Storage Konfiqurasiyası
 
@@ -504,7 +504,7 @@ spec:
             claimName: redis-pvc
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 ### S1: PersistentVolume ilə PersistentVolumeClaim arasında fərq nədir?
 **C:** PV — cluster-level storage resursdur (disk). Admin və ya StorageClass tərəfindən yaradılır. PVC — developer-in storage tələbidir (nə qədər, hansı access mode). PVC yaradıldıqda uyğun PV-yə bind olur. Bu, storage provider-dən abstraksiya yaradır — developer disk detalllarını bilməli deyil.

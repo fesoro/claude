@@ -6,7 +6,7 @@
 
 **Operator** — spesifik tətbiqin idarəçiliyini avtomatlaşdıran K8s controller-idir. Operator = CRD + Controller. Operator tətbiq üçün domain knowledge-i kod şəklində ehtiva edir (backup, restore, scaling, upgrade).
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### 1. Operator Pattern
 
@@ -64,7 +64,7 @@ for {
 | Level 4 | Deep insights (monitoring, alerts) |
 | Level 5 | Auto pilot (auto-scaling, auto-healing) |
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### 1. Sadə CRD Yaratmaq
 

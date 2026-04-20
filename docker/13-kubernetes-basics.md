@@ -1,4 +1,4 @@
-# Kubernetes Əsasları (Kubernetes Basics)
+# Kubernetes Əsasları
 
 ## Nədir? (What is it?)
 
@@ -17,7 +17,7 @@ Docker Compose bir maşında konteynerləri idarə edir. Bəs yüzlərlə kontey
 - **Rolling updates** — downtime olmadan yeniləmə
 - **Load balancing** — trafiği konteynerlər arasında bölür
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### 1. Kubernetes Arxitekturası
 
@@ -308,7 +308,7 @@ echo -n "secret123" | base64         # encode
 echo "c2VjcmV0MTIz" | base64 -d     # decode
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Laravel-i Kubernetes-ə Deploy Etmək
 
@@ -498,7 +498,7 @@ kubectl apply -f file.yaml    # Yaradır və ya yeniləyir (deklarativ)
 kubectl create -f file.yaml   # Yalnız yaradır (imperativ)
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 ### S1: Kubernetes nədir və niyə lazımdır?
 **C:** Kubernetes konteyner orkestrasiya platformasıdır. Konteynerlərin avtomatik deployment, scaling, self-healing, load balancing və rolling update-lərini idarə edir. Docker tək maşında konteynerləri idarə edir, Kubernetes isə klaster (çoxlu maşın) səviyyəsində. Mikroservis arxitekturasında yüzlərlə konteyner olduqda manual idarəetmə mümkün deyil.

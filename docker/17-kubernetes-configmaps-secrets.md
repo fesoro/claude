@@ -6,7 +6,7 @@ ConfigMap və Secret — Kubernetes-də konfiqurasiya datanı konteynerdən ayı
 
 Bu yanaşma "12-Factor App" prinsipinə uyğundur — konfiqurasiya koddan ayrılır. Eyni image müxtəlif mühitlərdə (dev, staging, production) fərqli konfiqurasiya ilə istifadə oluna bilər.
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### 1. ConfigMap
 
@@ -440,7 +440,7 @@ spec:
     APP_KEY: AgCx9P...long-encrypted-string...
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Laravel Full ConfigMap + Secret Setup
 
@@ -526,7 +526,7 @@ spec:
               cpu: "1000m"
 ```
 
-## PHP/Laravel ilə İstifadə (Usage with PHP/Laravel)
+## PHP/Laravel ilə İstifadə
 
 ### Laravel .env-i ConfigMap/Secret-ə Çevirmək
 
@@ -588,7 +588,7 @@ kustomize/
       └── kustomization.yaml
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 ### S1: ConfigMap ilə Secret arasında fərq nədir?
 **C:** ConfigMap adi konfiqurasiya datası üçün (APP_ENV, DB_HOST), Secret isə həssas data üçün (password, API key). Secret-lər base64 encoded saxlanır (encryption deyil!), RBAC ilə ayrıca control oluna bilər, etcd-də encryption-at-rest konfiqurasiya oluna bilər. Amma default olaraq Secret-lər çox da "secret" deyil — əlavə təhlükəsizlik tədbirləri lazımdır.

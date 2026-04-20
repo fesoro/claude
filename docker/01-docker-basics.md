@@ -1,12 +1,12 @@
-# Docker Əsasları (Docker Basics)
+# Docker Əsasları
 
-## Nədir? (What is it?)
+## Nədir?
 
 Docker, tətbiqləri konteynerlərdə paketləmək, göndərmək və işlətmək üçün açıq mənbəli platformadır. Konteyner — tətbiqi bütün asılılıqları ilə birlikdə izolə edilmiş mühitdə işlədən yüngül, portativ vahiddir.
 
 Docker 2013-cü ildə Solomon Hykes tərəfindən yaradılıb. Linux kernel xüsusiyyətlərindən (namespaces, cgroups, UnionFS) istifadə edərək prosesləri izolə edir.
 
-### Konteyner vs Virtual Maşın (Container vs VM)
+### Konteyner vs Virtual Maşın
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -47,7 +47,7 @@ Docker 2013-cü ildə Solomon Hykes tərəfindən yaradılıb. Linux kernel xüs
 | Portativlik | Çox yüksək | Orta |
 | Sıxlıq | Bir host-da minlərlə | Bir host-da onlarla |
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### Docker Engine Arxitekturası
 
@@ -119,7 +119,7 @@ docker login
 docker push myusername/myapp:v1.0
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Əsas Docker Əmrləri
 
@@ -339,7 +339,7 @@ docker system df
 docker system df -v
 ```
 
-## PHP/Laravel ilə İstifadə (Usage with PHP/Laravel)
+## PHP/Laravel ilə İstifadə
 
 ```bash
 # PHP CLI konteyneri ilə sürətli test
@@ -376,7 +376,7 @@ docker run -d --name laravel-redis \
   redis:7-alpine
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 ### 1. Docker nədir və niyə istifadə olunur?
 **Cavab:** Docker konteynerləşdirmə platformasıdır. Tətbiqləri bütün asılılıqları ilə birlikdə izolə edilmiş mühitdə paketləyir. Bu, "mənim maşınımda işləyir" problemini həll edir, development və production mühitlərini eyniləşdirir, tez deployment təmin edir.

@@ -2,9 +2,9 @@
 
 Bu qovluq Docker və Kubernetes mövzularını əhatə edən ətraflı materiallar təqdim edir.
 
-## Mündəricat (Table of Contents)
+## Mündəricat
 
-### Docker Əsasları (Docker Fundamentals)
+### Docker Əsasları
 
 | # | Fayl | Mövzu |
 |---|------|-------|
@@ -32,7 +32,7 @@ Bu qovluq Docker və Kubernetes mövzularını əhatə edən ətraflı materiall
 | 17 | [kubernetes-configmaps-secrets.md](17-kubernetes-configmaps-secrets.md) | ConfigMap, Secret, Vault ilə inteqrasiya |
 | 18 | [kubernetes-helm.md](18-kubernetes-helm.md) | Helm chart-lar, values.yaml, Laravel Helm chart |
 
-### Orkestrasiya (Orchestration)
+### Orkestrasiya
 
 | # | Fayl | Mövzu |
 |---|------|-------|

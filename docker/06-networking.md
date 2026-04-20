@@ -4,7 +4,7 @@
 
 Docker networking konteynerlərin bir-biri ilə və xarici dünya ilə əlaqə qurmasını idarə edir. Docker bir neçə şəbəkə driver-i təqdim edir — hər birinin öz istifadə sahəsi var. Konteynerlər eyni şəbəkədə olduqda service adı ilə bir-birini tapır (DNS resolution).
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### Şəbəkə Tipləri
 
@@ -232,7 +232,7 @@ docker exec app ping db
 docker network connect frontend app
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Multi-Service Şəbəkə Topologiyası
 
@@ -290,7 +290,7 @@ networks:
     internal: true
 ```
 
-## PHP/Laravel ilə İstifadə (Usage with PHP/Laravel)
+## PHP/Laravel ilə İstifadə
 
 ### Laravel App MySQL/Redis ilə Əlaqə
 
@@ -408,7 +408,7 @@ server {
 }
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 ### 1. Docker-da hansı şəbəkə tipləri var?
 **Cavab:** Bridge (default, tək host, NAT ilə), host (host şəbəkəsini paylaşır, NAT yoxdur), overlay (çox host, Swarm/K8s), macvlan (fiziki şəbəkədə öz MAC adresi), none (şəbəkə yoxdur). Ən çox bridge və overlay istifadə olunur.

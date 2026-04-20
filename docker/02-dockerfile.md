@@ -10,7 +10,7 @@ docker build -t myapp:v1.0 .
 docker build -t myapp:v1.0 -f Dockerfile.production .
 ```
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### FROM — Base Image
 
@@ -273,7 +273,7 @@ README.md
 phpunit.xml
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Sadə PHP Dockerfile
 
@@ -300,7 +300,7 @@ EXPOSE 80 443
 CMD ["nginx", "-g", "daemon off;"]
 ```
 
-## PHP/Laravel ilə İstifadə (Usage with PHP/Laravel)
+## PHP/Laravel ilə İstifadə
 
 ### Tam Laravel Dockerfile
 
@@ -431,7 +431,7 @@ ENTRYPOINT ["entrypoint.sh"]
 CMD ["php-fpm"]
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 ### 1. CMD və ENTRYPOINT arasında fərq nədir?
 **Cavab:** CMD konteyner başlayanda default əmr verir, `docker run` ilə asanlıqla override olunur. ENTRYPOINT sabit icra olunan əmri təyin edir, override üçün `--entrypoint` lazımdır. Birlikdə istifadə olunanda ENTRYPOINT əmri, CMD isə default arqumentləri təyin edir.

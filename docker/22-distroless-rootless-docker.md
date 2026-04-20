@@ -6,7 +6,7 @@
 
 **Rootless Docker** — Docker daemon və konteynerlərin root olmayan istifadəçi altında işlədilməsidir. Təhlükəsizlik baxımından çox vacibdir — container escape baş verərsə, root imtiyazları alınmır.
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### 1. Distroless Image-in Üstünlükləri
 
@@ -53,7 +53,7 @@ dockerd → istifadəçi (UID 1000)
 container → container daxilində UID 0, host-da UID 100000 (namespace remap)
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Distroless ilə Go Application
 
@@ -68,7 +68,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o app .
 
 # Distroless final stage
 FROM gcr.io/distroless/static-debian12
-COPY --from=build /app/app /
+COPY --from=build /app-laravel/app /
 USER nonroot:nonroot
 EXPOSE 8080
 ENTRYPOINT ["/app"]
@@ -187,7 +187,7 @@ RUN apk add --no-cache \
 RUN addgroup -g 1000 laravel && adduser -u 1000 -G laravel -s /bin/sh -D laravel
 
 WORKDIR /var/www/html
-COPY --from=build --chown=laravel:laravel /app /var/www/html
+COPY --from=build --chown=laravel:laravel /app-laravel /var/www/html
 
 USER laravel
 
@@ -209,7 +209,7 @@ RUN composer install --no-dev --optimize-autoloader
 COPY . .
 
 FROM cgr.dev/chainguard/php:latest
-COPY --from=build /app /app
+COPY --from=build /app-laravel /app
 WORKDIR /app
 USER nonroot
 EXPOSE 8080

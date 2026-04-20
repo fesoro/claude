@@ -4,7 +4,7 @@
 
 Kubernetes troubleshooting — pod-ların, service-lərin və cluster komponentlərinin gözlənildiyi kimi işləməməsini tapıb həll etmək prosesidir. K8s kompleks distributed sistem olduğu üçün problemlərin səbəbini tapmaq sistemli yanaşma tələb edir.
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### 1. Troubleshooting Ağacı
 
@@ -37,7 +37,7 @@ kubectl debug            # Ephemeral container
 kubectl events           # Cluster events
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### 1. ImagePullBackOff / ErrImagePull
 

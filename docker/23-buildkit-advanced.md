@@ -6,7 +6,7 @@
 
 BuildKit Docker 18.09-dan buyana mövcuddur, Docker 23+ versiyalarda default olaraq aktivdir.
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### 1. BuildKit-in Üstünlükləri
 
@@ -53,7 +53,7 @@ FROM php:8.3-fpm-alpine
 ...
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### 1. Cache Mount (composer install-ı sürətləndirmək)
 
@@ -157,6 +157,7 @@ docker buildx build \
 ```
 
 Dockerfile multi-platform ucün:
+
 ```dockerfile
 # syntax=docker/dockerfile:1.7
 ARG TARGETPLATFORM
@@ -168,7 +169,7 @@ COPY . .
 RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o app .
 
 FROM alpine:3.19
-COPY --from=build /app/app /app
+COPY --from=build /app-laravel/app /app
 CMD ["/app"]
 ```
 
@@ -290,8 +291,8 @@ RUN --mount=type=cache,target=/var/cache/apk \
 RUN addgroup -g 1000 laravel && adduser -u 1000 -G laravel -s /bin/sh -D laravel
 
 WORKDIR /var/www/html
-COPY --from=vendor --chown=laravel:laravel /app/vendor vendor/
-COPY --from=frontend --chown=laravel:laravel /app/public/build public/build/
+COPY --from=vendor --chown=laravel:laravel /app-laravel/vendor vendor/
+COPY --from=frontend --chown=laravel:laravel /app-laravel/public/build public/build/
 COPY --chown=laravel:laravel . .
 
 RUN composer dump-autoload --optimize --classmap-authoritative

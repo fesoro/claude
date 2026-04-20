@@ -1,4 +1,4 @@
-# Docker Optimization (Docker Optimallaşdırması)
+# Docker Optimallaşdırması
 
 ## Nədir? (What is it?)
 
@@ -6,7 +6,7 @@ Docker optimization — image ölçüsünü kiçiltmək, build vaxtını azaltma
 
 Docker build prosesi layer-lər üzərində qurulub. Hər Dockerfile instruksiyası yeni bir layer yaradır. Bu layer-lərin necə idarə olunması birbaşa performansa təsir edir.
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### 1. Docker Layer Caching
 
@@ -169,7 +169,7 @@ RUN --mount=type=secret,id=composer_auth,target=/root/.composer/auth.json \
 # docker build --secret id=composer_auth,src=auth.json .
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Tam Optimallaşdırılmış Laravel Dockerfile
 
@@ -230,13 +230,13 @@ COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 WORKDIR /var/www/html
 
 # Composer dependencies (from stage 1)
-COPY --from=composer-deps /app/vendor vendor/
+COPY --from=composer-deps /app-laravel/vendor vendor/
 
 # Application kodu
 COPY . .
 
 # Frontend assets (from stage 2)
-COPY --from=frontend /app/public/build public/build/
+COPY --from=frontend /app-laravel/public/build public/build/
 
 # Autoloader optimize
 RUN composer dump-autoload --optimize --classmap-authoritative
@@ -300,7 +300,7 @@ RUN composer install --no-dev --optimize-autoloader \
         /root/.composer/cache
 ```
 
-## PHP/Laravel ilə İstifadə (Usage with PHP/Laravel)
+## PHP/Laravel ilə İstifadə
 
 ### OPcache Konfiqurasiyası
 
@@ -353,7 +353,7 @@ pm.max_requests = 1000
 ; Məs: 2GB / 40MB = 50
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 ### S1: Docker layer caching necə işləyir?
 **C:** Docker hər Dockerfile instruksiyasını layer olaraq cache-ləyir. Build zamanı Docker hər layer üçün cache-i yoxlayır. Əgər instruksiya və onun input-ları (COPY üçün fayl checksumları, RUN üçün əmr stringi) dəyişməyibsə, cached layer istifadə olunur. Bir layer dəyişdikdə, ondan sonrakı BÜTÜN layer-lər yenidən build olur. Buna görə az dəyişən instruksiyalar yuxarıda, çox dəyişənlər aşağıda olmalıdır.

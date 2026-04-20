@@ -1,4 +1,4 @@
-# Kubernetes Helm (Helm Paket Meneceri)
+# Kubernetes Helm
 
 ## Nədir? (What is it?)
 
@@ -20,7 +20,7 @@ Helm olmadan:                    Helm ilə:
 └── ... (hər mühit üçün ayrı)
 ```
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### 1. Helm Komponentləri
 
@@ -465,7 +465,7 @@ spec:
 {{- end }}
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Chart Yaratma və İstifadə
 
@@ -588,7 +588,7 @@ helm repo index . --url https://mycompany.github.io/charts
 helm push laravel-app-1.0.0.tgz oci://ghcr.io/mycompany/charts
 ```
 
-## PHP/Laravel ilə İstifadə (Usage with PHP/Laravel)
+## PHP/Laravel ilə İstifadə
 
 ### Artisan Komandaları üçün Job Template
 
@@ -649,7 +649,7 @@ spec:
 {{- end }}
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 ### S1: Helm nədir və niyə lazımdır?
 **C:** Helm — K8s paket meneceridir. Bir neçə problemi həll edir: 1) Çoxlu YAML fayllarını bir paket (chart) olaraq idarə etmək, 2) Templating ilə mühitlər arası fərqli konfiqurasiya, 3) Versiyalama və rollback, 4) Dependency management (MySQL, Redis chart-ları), 5) Release lifecycle (install, upgrade, rollback, uninstall).

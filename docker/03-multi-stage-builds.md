@@ -19,7 +19,7 @@ Build Stage (böyük)              Final Stage (kiçik)
    ~500MB+                         ~50-100MB
 ```
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### Niyə Multi-Stage? (Why Multi-Stage?)
 
@@ -47,6 +47,7 @@ RUN npm install && npm run build
 ```
 
 **Multi-stage ilə:**
+
 ```dockerfile
 # Stage 1: Composer dependency-lər
 FROM composer:2 AS composer-stage
@@ -66,8 +67,8 @@ RUN npm run build
 # Stage 3: Final production image
 FROM php:8.3-fpm-alpine
 WORKDIR /var/www/html
-COPY --from=composer-stage /app/vendor ./vendor
-COPY --from=frontend-stage /app/public/build ./public/build
+COPY --from=composer-stage /app-laravel/vendor ./vendor
+COPY --from=frontend-stage /app-laravel/public/build ./public/build
 COPY . .
 # Ölçü: ~150MB
 ```
@@ -98,14 +99,14 @@ RUN go build -o myapp
 
 # Başqa stage-dən kopyalamaq
 FROM alpine:3.18
-COPY --from=builder /app/myapp /usr/local/bin/myapp
+COPY --from=builder /app-laravel/myapp /usr/local/bin/myapp
 
 # Xarici image-dən kopyalamaq
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 COPY --from=nginx:alpine /etc/nginx/nginx.conf /etc/nginx/nginx.conf
 
 # Stage nömrəsi ilə (0-dan başlayır)
-COPY --from=0 /app/output /app/
+COPY --from=0 /app-laravel/output /app/
 ```
 
 ### Müəyyən Stage-i Build Etmək
@@ -120,7 +121,7 @@ docker build --target test -t myapp-test .
 docker run myapp-test php artisan test
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Go Tətbiqi (Ən klassik nümunə)
 
@@ -135,7 +136,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o server .
 
 # Final stage
 FROM scratch
-COPY --from=builder /app/server /server
+COPY --from=builder /app-laravel/server /server
 EXPOSE 8080
 ENTRYPOINT ["/server"]
 # Final ölçü: ~10-15MB (Go binary-dən əvvəl ~1GB+)
@@ -161,8 +162,8 @@ RUN npm run build
 # Final stage
 FROM node:20-alpine
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
+COPY --from=deps /app-laravel/node_modules ./node_modules
+COPY --from=builder /app-laravel/dist ./dist
 COPY package.json ./
 
 USER node
@@ -200,7 +201,7 @@ USER www-data
 CMD ["php-fpm"]
 ```
 
-## PHP/Laravel ilə İstifadə (Usage with PHP/Laravel)
+## PHP/Laravel ilə İstifadə
 
 ### Tam Laravel Production Dockerfile (Multi-Stage)
 
@@ -288,10 +289,10 @@ RUN echo "opcache.enable=1" >> /usr/local/etc/php/conf.d/opcache.ini \
 WORKDIR /var/www/html
 
 # Composer dependency-ləri (Stage 1-dən)
-COPY --from=composer-deps /app/vendor ./vendor
+COPY --from=composer-deps /app-laravel/vendor ./vendor
 
 # Frontend asset-ləri (Stage 2-dən)
-COPY --from=frontend-build /app/public/build ./public/build
+COPY --from=frontend-build /app-laravel/public/build ./public/build
 
 # Tətbiq kodu
 COPY . .
@@ -337,7 +338,7 @@ COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf
 
 # Statik fayllar
 COPY public/ /var/www/html/public/
-COPY --from=frontend /app/public/build /var/www/html/public/build
+COPY --from=frontend /app-laravel/public/build /var/www/html/public/build
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
@@ -356,7 +357,7 @@ CMD ["nginx", "-g", "daemon off;"]
 docker images myapp
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 ### 1. Multi-stage build nədir və niyə istifadə olunur?
 **Cavab:** Bir Dockerfile-da birdən çox FROM istifadə edərək build prosesini mərhələlərə ayırmaq texnikasıdır. Build alətləri və aralıq fayllar son image-ə daxil olmur. Nəticədə image ölçüsü kiçilir, təhlükəsizlik artır (az komponent = az attack surface), build prosesi təmiz qalır.

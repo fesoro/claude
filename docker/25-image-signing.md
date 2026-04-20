@@ -8,7 +8,7 @@
 
 **SLSA (Supply-chain Levels for Software Artifacts)** və **sigstore** layihələri container təhlükəsizliyinin müasir standartlarıdır.
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### 1. Niyə İmage Signing?
 
@@ -51,7 +51,7 @@ Threat: Registry compromise
 └─────────────────────────────────┘
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Cosign Quraşdırma
 

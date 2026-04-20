@@ -6,7 +6,7 @@ Kubernetes Service — Pod-lara stabil şəbəkə endpointi təqdim edən abstra
 
 Service olmadan bir Pod digərinə necə müraciət edəcək? Pod restart olduqda yeni IP alacaq. Service bu problemi həll edir — label selector vasitəsilə Pod-ları tapır və load balance edir.
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### 1. Service Tipləri
 
@@ -309,7 +309,7 @@ spec:
     - port: 3306
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Laravel Full Stack Service Konfiqurasiyası
 
@@ -441,7 +441,7 @@ kubectl run test --rm -it --image=busybox -- nslookup laravel-service
 kubectl logs -n kube-system -l k8s-app=kube-proxy
 ```
 
-## PHP/Laravel ilə İstifadə (Usage with PHP/Laravel)
+## PHP/Laravel ilə İstifadə
 
 ### Laravel .env Service Connection-ları
 
@@ -514,7 +514,7 @@ Route::get('/ready', function () {
 });
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 ### S1: ClusterIP, NodePort və LoadBalancer arasında fərq nədir?
 **C:** ClusterIP — yalnız cluster daxilindən əlçatan (default). NodePort — hər node-da sabit port açır (30000-32767), xaricdən əlçatan. LoadBalancer — cloud provider-in LB-sini yaradır, xarici IP verir. Hər tip əvvəlkini ehtiva edir: LoadBalancer → NodePort → ClusterIP.

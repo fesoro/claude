@@ -15,7 +15,7 @@ docker compose down
 docker compose logs -f
 ```
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### docker-compose.yml Strukturu
 
@@ -270,7 +270,7 @@ services:
       - "9000:9000"
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Əsas Docker Compose Əmrləri
 
@@ -314,7 +314,7 @@ docker compose config
 docker compose pull
 ```
 
-## PHP/Laravel ilə İstifadə (Usage with PHP/Laravel)
+## PHP/Laravel ilə İstifadə
 
 ### Tam Laravel Stack: PHP-FPM + Nginx + MySQL + Redis
 
@@ -604,7 +604,7 @@ WWWUSER=1000
 WWWGROUP=1000
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 ### 1. Docker Compose nədir?
 **Cavab:** Çox konteynerli tətbiqləri YAML faylında təyin edib, bir əmrlə idarə etmək üçün alətdir. Service-lər, şəbəkələr, volume-lar bir yerdə təyin olunur. Development mühitində çox istifadə olunur.

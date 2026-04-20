@@ -6,7 +6,7 @@ Kubernetes Deployment — Pod-ların deklarativ idarə olunmasını təmin edən
 
 Deployment → ReplicaSet → Pod zənciri ilə işləyir. Siz Deployment-ə istədiyiniz vəziyyəti (desired state) təsvir edirsiniz, Kubernetes onu gerçəkləşdirir.
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### 1. Rolling Update
 
@@ -514,7 +514,7 @@ spec:
 # 9/10 Pod v1.0.0, 1/10 Pod v1.1.0 → ~10% canary traffic
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Laravel Production Deployment
 
@@ -639,7 +639,7 @@ spec:
             failureThreshold: 3
 ```
 
-## PHP/Laravel ilə İstifadə (Usage with PHP/Laravel)
+## PHP/Laravel ilə İstifadə
 
 ### Graceful Shutdown
 
@@ -698,7 +698,7 @@ class HealthController extends Controller
 }
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 ### S1: Rolling update necə işləyir?
 **C:** Köhnə Pod-ları tədricən yeniləri ilə əvəz edir. `maxSurge` eyni anda neçə əlavə Pod yaradılacağını, `maxUnavailable` neçə Pod-un eyni anda unavailable olacağını müəyyən edir. Hər yeni Pod ready olduqda köhnə Pod silinir. Bu strategiya zero-downtime deployment təmin edir.

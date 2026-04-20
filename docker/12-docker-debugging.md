@@ -1,10 +1,10 @@
-# Docker Debugging (Docker-da Debug Etmə)
+# Docker Debugging
 
 ## Nədir? (What is it?)
 
 Docker debugging — konteynerləşdirilmiş tətbiqlərdə yaranan problemləri tapmaq və həll etmək prosesidir. Konteynerlər izolə olduğu üçün ənənəvi debug üsulları fərqlidir. Docker bir sıra güclü alətlər təqdim edir: `docker exec`, `docker inspect`, `docker stats`, `docker logs` və s.
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Konseptlər
 
 ### 1. docker exec — Konteyner İçində Əmr İcra Etmə
 
@@ -162,7 +162,7 @@ docker diff myapp
 # C /tmp
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktiki Nümunələr
 
 ### Crashed Konteynerləri Debug Etmək
 
@@ -365,7 +365,7 @@ docker compose exec app env
 docker compose exec app bash
 ```
 
-## PHP/Laravel ilə İstifadə (Usage with PHP/Laravel)
+## PHP/Laravel ilə İstifadə
 
 ### Laravel Telescope Docker-da
 
@@ -439,7 +439,7 @@ docker exec myapp composer diagnose
 docker exec myapp composer show --installed
 ```
 
-## Interview Sualları (Interview Questions)
+## İntervyu Sualları
 
 ### S1: Konteyner exit code 137 nə deməkdir?
 **C:** Exit code 137 = 128 + 9 (SIGKILL). Bu adətən OOM (Out of Memory) killer tərəfindən konteyner öldürüldüyünü göstərir. `docker inspect` ilə `State.OOMKilled` yoxlanılmalıdır. Həll: memory limit artırmaq, memory leak tapmaq, və ya tətbiqin memory istifadəsini optimallaşdırmaq.
