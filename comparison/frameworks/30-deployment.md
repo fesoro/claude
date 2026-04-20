@@ -110,7 +110,7 @@ WORKDIR /app
 # Non-root istifadeci yaratmaq
 RUN groupadd -r spring && useradd -r -g spring spring
 
-COPY --from=builder /app/target/*.jar app.jar
+COPY --from=builder /app-laravel/target/*.jar app.jar
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s \
