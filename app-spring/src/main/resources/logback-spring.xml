@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Laravel: config/logging.php (StructuredLogger.php JSON formatlı log üçün)
+  Spring: logback-spring.xml + logstash-logback-encoder
+-->
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <appender name="CONSOLE_PLAIN" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{correlationId:-}] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="CONSOLE_JSON" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <includeMdcKeyName>correlationId</includeMdcKeyName>
+            <includeMdcKeyName>userId</includeMdcKeyName>
+            <includeMdcKeyName>tenantId</includeMdcKeyName>
+            <customFields>{"app":"ecommerce-spring"}</customFields>
+        </encoder>
+    </appender>
+
+    <springProfile name="dev,test">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE_PLAIN"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="docker,prod">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE_JSON"/>
+        </root>
+    </springProfile>
+</configuration>

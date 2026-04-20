@@ -1,0 +1,37 @@
+# Test profile — H2 in-memory + sync execution (Laravel phpunit.xml qarşılığı)
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
+  flyway:
+    enabled: false
+  cache:
+    type: simple
+  rabbitmq:
+    listener:
+      simple:
+        auto-startup: false
+
+app:
+  datasource:
+    user:
+      jdbc-url: jdbc:h2:mem:user_db;MODE=MySQL;DB_CLOSE_DELAY=-1
+      driver-class-name: org.h2.Driver
+      username: sa
+      password:
+    product:
+      jdbc-url: jdbc:h2:mem:product_db;MODE=MySQL;DB_CLOSE_DELAY=-1
+      driver-class-name: org.h2.Driver
+      username: sa
+      password:
+    order:
+      jdbc-url: jdbc:h2:mem:order_db;MODE=MySQL;DB_CLOSE_DELAY=-1
+      driver-class-name: org.h2.Driver
+      username: sa
+      password:
+    payment:
+      jdbc-url: jdbc:h2:mem:payment_db;MODE=MySQL;DB_CLOSE_DELAY=-1
+      driver-class-name: org.h2.Driver
+      username: sa
+      password:

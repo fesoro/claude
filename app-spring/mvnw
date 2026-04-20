@@ -1,0 +1,37 @@
+#!/bin/sh
+# ----------------------------------------------------------------------------
+# Apache Maven Wrapper startup script
+# ----------------------------------------------------------------------------
+set -euf
+[ "${MVNW_VERBOSE-}" != debug ] || set -x
+
+if [ -z "${JAVA_HOME-}" ]; then
+  if command -v java >/dev/null; then
+    JAVA_HOME="$(dirname "$(dirname "$(readlink -f "$(command -v java)")")")"
+    export JAVA_HOME
+  else
+    echo "Error: JAVA_HOME not set and 'java' not found." >&2
+    exit 1
+  fi
+fi
+
+wrapper_url=$(awk -F= '/^wrapperUrl=/{print $2}' .mvn/wrapper/maven-wrapper.properties 2>/dev/null || echo "")
+wrapper_jar=".mvn/wrapper/maven-wrapper.jar"
+
+if [ ! -f "$wrapper_jar" ]; then
+  if [ -n "$wrapper_url" ]; then
+    if command -v curl >/dev/null; then
+      curl -fsSL -o "$wrapper_jar" "$wrapper_url"
+    elif command -v wget >/dev/null; then
+      wget -q -O "$wrapper_jar" "$wrapper_url"
+    else
+      echo "Error: curl or wget required to bootstrap maven-wrapper.jar" >&2
+      exit 1
+    fi
+  fi
+fi
+
+exec "$JAVA_HOME/bin/java" \
+  -classpath "$wrapper_jar" \
+  -Dmaven.multiModuleProjectDirectory="$PWD" \
+  org.apache.maven.wrapper.MavenWrapperMain "$@"

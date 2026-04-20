@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Sifariş təsdiqi</title></head>
+<body>
+<h2>Salam!</h2>
+<p>Sifarişiniz uğurla qəbul edildi.</p>
+<p><strong>Sifariş ID:</strong> <span th:text="${orderId}"></span></p>
+<p><strong>Məbləğ:</strong> <span th:text="${amount}"></span> qəpik <span th:text="${currency}"></span></p>
+<p>Tezliklə əlaqə saxlayacağıq.</p>
+</body>
+</html>

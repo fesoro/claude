@@ -1,0 +1,49 @@
+### Build
+target/
+build/
+out/
+*.class
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+### Maven
+.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
+
+### IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.classpath
+.project
+.settings/
+.factorypath
+.eclipse-pmd
+
+### OS
+.DS_Store
+Thumbs.db
+
+### Spring Boot
+HELP.md
+application-local.yml
+application-secrets.yml
+
+### Logs
+logs/
+*.log
+
+### Env
+.env
+.env.local
+
+### Docker volumes
+mysql-data/
+redis-data/

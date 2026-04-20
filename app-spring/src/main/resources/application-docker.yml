@@ -1,0 +1,21 @@
+# Docker profile — Bütün host-lar docker-compose servis adlarına işarə edir
+app:
+  datasource:
+    user:
+      jdbc-url: jdbc:mysql://mysql:3306/user_db
+    product:
+      jdbc-url: jdbc:mysql://mysql:3306/product_db
+    order:
+      jdbc-url: jdbc:mysql://mysql:3306/order_db
+    payment:
+      jdbc-url: jdbc:mysql://mysql:3306/payment_db
+
+spring:
+  rabbitmq:
+    host: rabbitmq
+  data:
+    redis:
+      host: redis
+  mail:
+    host: mailpit
+    port: 1025

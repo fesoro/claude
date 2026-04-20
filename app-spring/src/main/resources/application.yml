@@ -1,0 +1,186 @@
+# =====================================================================
+# Laravel: config/*.php (14 fayl) → Spring: application.yml + profilelər
+# Default profile: docker (production-ready setup)
+# =====================================================================
+spring:
+  application:
+    name: ecommerce-spring
+  profiles:
+    active: ${SPRING_PROFILE:dev}
+  main:
+    allow-bean-definition-overriding: true
+  jpa:
+    open-in-view: false        # Laravel-də N+1-i önləmək üçün eager-i explicit edirik
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    virtual-host: /
+    listener:
+      simple:
+        prefetch: 10
+        retry:
+          enabled: true
+          initial-interval: 2s
+          max-attempts: 3
+          multiplier: 2
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      timeout: 5s
+  cache:
+    type: redis
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USER:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail.smtp.auth: false
+      mail.smtp.starttls.enable: false
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+
+# =====================================================================
+# 4 ayrıca datasource — Laravel-də config/database.php-də 4 connection
+# =====================================================================
+app:
+  datasource:
+    user:
+      jdbc-url: jdbc:mysql://${DB_USER_HOST:localhost}:${DB_USER_PORT:3306}/user_db
+      username: ${DB_USERNAME:laravel}
+      password: ${DB_PASSWORD:secret}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        maximum-pool-size: 10
+        minimum-idle: 2
+    product:
+      jdbc-url: jdbc:mysql://${DB_PRODUCT_HOST:localhost}:${DB_PRODUCT_PORT:3306}/product_db
+      username: ${DB_USERNAME:laravel}
+      password: ${DB_PASSWORD:secret}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        maximum-pool-size: 10
+    order:
+      jdbc-url: jdbc:mysql://${DB_ORDER_HOST:localhost}:${DB_ORDER_PORT:3306}/order_db
+      username: ${DB_USERNAME:laravel}
+      password: ${DB_PASSWORD:secret}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        maximum-pool-size: 15
+    payment:
+      jdbc-url: jdbc:mysql://${DB_PAYMENT_HOST:localhost}:${DB_PAYMENT_PORT:3306}/payment_db
+      username: ${DB_USERNAME:laravel}
+      password: ${DB_PASSWORD:secret}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        maximum-pool-size: 10
+
+  # Laravel: config/circuit_breaker.php
+  circuit-breaker:
+    failure-threshold: 5
+    recovery-timeout: 30s
+    retry-attempts: 3
+
+  # Laravel: routes/api.php → throttle:xxx middleware
+  rate-limit:
+    register: 3            # 3 req/minute
+    login: 5
+    products: 60
+    orders: 30
+    payment: 10
+    api-default: 60
+
+  # Laravel: config/features.php
+  features:
+    new-checkout-flow: false
+    advanced-search: true
+    sms-notifications: false
+
+  # Laravel: Outbox cron
+  outbox:
+    publish-interval: PT1M      # hər dəqiqə
+    prune-after-days: 7
+    batch-size: 100
+
+  # Laravel: Bulkhead (DomainServiceProvider-da)
+  bulkhead:
+    payment-concurrent: 20
+    notification-concurrent: 50
+
+  # Laravel: AuthController, JWT secret
+  jwt:
+    secret: ${JWT_SECRET:please-change-in-production-min-256-bits-required-for-hs256-algorithm}
+    access-token-ttl: PT1H
+    refresh-token-ttl: P7D
+
+  # Laravel: TaggedCacheService TTL
+  cache:
+    product-ttl: PT10M
+    order-ttl: PT5M
+    user-ttl: PT15M
+
+# Resilience4j — circuit breaker + bulkhead + retry konfiqurasiyaları
+resilience4j:
+  circuitbreaker:
+    instances:
+      paymentGateway:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
+        permittedNumberOfCallsInHalfOpenState: 3
+        minimumNumberOfCalls: 5
+  bulkhead:
+    instances:
+      paymentGateway:
+        maxConcurrentCalls: 20
+      notificationChannel:
+        maxConcurrentCalls: 50
+  retry:
+    instances:
+      paymentGateway:
+        maxAttempts: 3
+        waitDuration: 2s
+        exponentialBackoffMultiplier: 2
+
+# Spring Modulith Event Publication Registry — Outbox Pattern out-of-the-box
+spring.modulith:
+  events:
+    jdbc-schema-initialization:
+      enabled: true
+    completion-mode: archive
+    republish-outstanding-events-on-restart: true
+
+# Actuator — Laravel HealthCheckController qarşılığı
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,modulith
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true              # Kubernetes liveness/readiness
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+
+logging:
+  level:
+    az.ecommerce: INFO
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
