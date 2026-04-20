@@ -136,8 +136,8 @@ RUN apk add --no-cache nginx supervisor \
 
 RUN addgroup -g 1000 www && adduser -u 1000 -G www -D www
 
-COPY --from=composer --chown=www:www /app/vendor /var/www/html/vendor
-COPY --from=frontend --chown=www:www /app/public/build /var/www/html/public/build
+COPY --from=composer --chown=www:www /app-laravel/vendor /var/www/html/vendor
+COPY --from=frontend --chown=www:www /app-laravel/public/build /var/www/html/public/build
 COPY --chown=www:www . /var/www/html
 
 USER www
