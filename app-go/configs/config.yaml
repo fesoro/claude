@@ -1,0 +1,94 @@
+# Laravel: config/*.php  ·  Spring: application.yml  ·  Go: viper YAML
+app:
+  name: ecommerce-go
+  port: 8080
+  env: dev   # dev | docker | test
+
+# 4 ayrı DB (Database-per-Bounded-Context)
+database:
+  user:
+    host: localhost
+    port: 3306
+    name: user_db
+    username: laravel
+    password: secret
+    max_open_conns: 10
+    max_idle_conns: 5
+  product:
+    host: localhost
+    port: 3306
+    name: product_db
+    username: laravel
+    password: secret
+    max_open_conns: 10
+  order:
+    host: localhost
+    port: 3306
+    name: order_db
+    username: laravel
+    password: secret
+    max_open_conns: 15
+  payment:
+    host: localhost
+    port: 3306
+    name: payment_db
+    username: laravel
+    password: secret
+    max_open_conns: 10
+
+redis:
+  host: localhost
+  port: 6379
+  db: 0
+
+rabbitmq:
+  url: amqp://guest:guest@localhost:5672/
+  exchange: domain_events
+
+mail:
+  host: localhost
+  port: 1025
+  from: noreply@ecommerce.az
+
+# Laravel JWT secret · Spring app.jwt.secret
+jwt:
+  secret: please-change-in-production-must-be-at-least-32-bytes-long-key-here
+  ttl: 1h
+
+# Laravel: throttle:xxx · Spring: app.rate-limit
+rate_limit:
+  register: 3        # req/min
+  login: 5
+  products: 60
+  orders: 30
+  payment: 10
+  api_default: 60
+
+# Laravel: config/circuit_breaker.php · Spring: resilience4j
+circuit_breaker:
+  failure_threshold: 5
+  recovery_timeout: 30s
+  retry_attempts: 3
+
+# Laravel: config/features.php · Spring: app.features
+features:
+  new_checkout_flow: false
+  advanced_search: true
+  sms_notifications: false
+
+# Outbox publisher
+outbox:
+  publish_interval: 1m
+  batch_size: 100
+  prune_after_days: 7
+
+# Bulkhead (concurrent call limit)
+bulkhead:
+  payment_concurrent: 20
+  notification_concurrent: 50
+
+# Cache TTL
+cache:
+  product_ttl: 10m
+  order_ttl: 5m
+  user_ttl: 15m

@@ -1,0 +1,69 @@
+name: Go CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+          cache: true
+
+      - name: go vet
+        run: go vet ./...
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: latest
+          args: --timeout=5m
+        continue-on-error: true
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+          cache: true
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Build
+        run: |
+          CGO_ENABLED=0 go build -o bin/api ./cmd/api
+          CGO_ENABLED=0 go build -o bin/cli ./cmd/cli
+
+      - name: Unit tests
+        run: go test -v -race ./test/unit/... ./test/feature/...
+
+      - name: Integration tests (Testcontainers — Docker lazımdır)
+        run: go test -v -tags=integration ./test/integration/...
+        continue-on-error: true
+
+      - name: Coverage
+        run: go test -coverprofile=coverage.out -covermode=atomic ./internal/...
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage.out
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Docker build (multi-stage)
+        run: docker build -t ecommerce-go:${{ github.sha }} .
