@@ -110,10 +110,10 @@ RUN groupadd -r spring && useradd -r -g spring spring
 WORKDIR /app
 
 # Hər qat ayrı COPY — dəyişməyən qatlar cache-ə alınır
-COPY --from=builder /app/dependencies/ ./
-COPY --from=builder /app/spring-boot-loader/ ./
-COPY --from=builder /app/snapshot-dependencies/ ./
-COPY --from=builder /app/application/ ./      # Yalnız bu dəyişir!
+COPY --from=builder /app-laravel/dependencies/ ./
+COPY --from=builder /app-laravel/spring-boot-loader/ ./
+COPY --from=builder /app-laravel/snapshot-dependencies/ ./
+COPY --from=builder /app-laravel/application/ ./      # Yalnız bu dəyişir!
 
 USER spring
 
@@ -169,7 +169,7 @@ RUN mvn package -DskipTests -q
 # Layered jar-dan qatları çıxar
 FROM eclipse-temurin:21-jre-jammy as layers
 WORKDIR /app
-COPY --from=build /app/target/myapp.jar app.jar
+COPY --from=build /app-laravel/target/myapp.jar app.jar
 RUN java -Djarmode=layertools -jar app.jar extract
 
 # Stage 2: Runtime (yüngül image)
@@ -182,10 +182,10 @@ RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 
 # Layered qatları kopyala
-COPY --from=layers /app/dependencies/ ./
-COPY --from=layers /app/spring-boot-loader/ ./
-COPY --from=layers /app/snapshot-dependencies/ ./
-COPY --from=layers /app/application/ ./
+COPY --from=layers /app-laravel/dependencies/ ./
+COPY --from=layers /app-laravel/spring-boot-loader/ ./
+COPY --from=layers /app-laravel/snapshot-dependencies/ ./
+COPY --from=layers /app-laravel/application/ ./
 
 USER spring
 
