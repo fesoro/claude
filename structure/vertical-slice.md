@@ -1,15 +1,15 @@
 # Vertical Slice Architecture
 
-Vertical Slice Architecture (Jimmy Bogard) organizes code by feature instead of by technical layer.
-Each feature/slice contains everything it needs: handler, validation, data access, response.
+Vertical Slice Architecture (Jimmy Bogard) kodu texniki layer əvəzinə feature əsasında təşkil edir.
+Hər feature/slice ehtiyac duyduğu hər şeyi özündə saxlayır: handler, validation, data access, response.
 
-**Key concepts:**
-- **Slice/Feature** — A complete vertical cut through all layers for one use case
-- **No shared abstractions** — Each slice owns its full implementation
-- **Minimal coupling** — Slices don't depend on each other
-- **MediatR/CQRS** — Often used to dispatch requests to slices
+**Əsas anlayışlar:**
+- **Slice/Feature** — Bir use case üçün bütün layer-lərdən keçən tam vertical kəsik
+- **Paylaşılan abstraction yoxdur** — Hər slice öz tam implementation-ına sahibdir
+- **Minimal coupling** — Slice-lar bir-birindən asılı deyil
+- **MediatR/CQRS** — Tez-tez request-ləri slice-lara yönləndirmək üçün istifadə olunur
 
-**Advantage:** Changing a feature only touches one folder. No shotgun surgery across layers.
+**Üstünlük:** Feature-i dəyişmək yalnız bir folder-ə toxunur. Layer-lər üzrə "shotgun surgery" yoxdur.
 
 ---
 

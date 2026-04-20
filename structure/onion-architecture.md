@@ -1,15 +1,15 @@
 # Onion Architecture
 
-Onion Architecture (Jeffrey Palermo) organizes code in concentric layers where
-dependencies flow inward. The domain model sits at the center, free from infrastructure concerns.
+Onion Architecture (Jeffrey Palermo) kodu concentric layer-lərə bölür — burada
+dependency-lər içəriyə axır. Domain model mərkəzdə dayanır, infrastructure narahatlıqlarından azaddır.
 
-**Layers (inside-out):**
-- **Domain Model** — Entities, Value Objects (innermost)
-- **Domain Services** — Business logic interfaces
-- **Application Services** — Use cases, orchestration
-- **Infrastructure** — Persistence, external services (outermost)
+**Layer-lər (içdən çölə):**
+- **Domain Model** — Entity, Value Object (ən iç)
+- **Domain Services** — Business logic interface-ləri
+- **Application Services** — Use case-lər, orchestration
+- **Infrastructure** — Persistence, external servislər (ən çöl)
 
-**Key rule:** Outer layers depend on inner layers, never the reverse.
+**Əsas qayda:** Çöl layer-lər iç layer-lərdən asılıdır, heç vaxt əksinə deyil.
 
 ---
 

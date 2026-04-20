@@ -1,18 +1,18 @@
 # Test-Driven Development (TDD)
 
-TDD is a development methodology where tests are written before the implementation code.
-The folder structure reflects a test-first approach with tests mirroring the source structure.
+TDD development metodologiyasıdır — test-lər implementation kodundan əvvəl yazılır.
+Folder strukturu test-first yanaşmanı əks etdirir — test-lər source strukturunu mirror edir.
 
-**Cycle: Red -> Green -> Refactor**
-1. **Red** — Write a failing test
-2. **Green** — Write minimal code to pass the test
-3. **Refactor** — Clean up without breaking tests
+**Dövr: Red -> Green -> Refactor**
+1. **Red** — Uğursuz (failing) bir test yaz
+2. **Green** — Test-i keçmək üçün minimal kod yaz
+3. **Refactor** — Test-ləri pozmadan kodu təmizlə
 
-**Test types:**
-- **Unit Tests** — Test a single class/function in isolation
-- **Integration Tests** — Test multiple components together
-- **Functional/E2E Tests** — Test the full system from the outside
-- **Contract Tests** — Test API contracts between services
+**Test növləri:**
+- **Unit Tests** — Tək class/function-ı təcrid olunmuş şəkildə test edir
+- **Integration Tests** — Bir neçə komponenti birlikdə test edir
+- **Functional/E2E Tests** — Bütün sistemi kənardan test edir
+- **Contract Tests** — Servislər arası API contract-ları test edir
 
 ---
 

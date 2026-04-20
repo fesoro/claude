@@ -1,14 +1,14 @@
 # Repository Pattern
 
-The Repository Pattern mediates between the domain and data mapping layers.
-It provides a collection-like interface for accessing domain objects, abstracting away the data source.
+Repository Pattern domain ilə data mapping layer-ləri arasında vasitəçilik edir.
+Domain obyektlərinə müraciət üçün collection kimi interface verir və data mənbəyini abstract edir.
 
-**Key concepts:**
-- **Repository Interface** — Defines the contract (domain layer)
-- **Repository Implementation** — Concrete data access (infrastructure layer)
-- **Specification** — Encapsulates query criteria
-- **Unit of Work** — Tracks changes across multiple repositories
-- **Generic Repository** — Base with common CRUD operations
+**Əsas anlayışlar:**
+- **Repository Interface** — Kontrakt təyin edir (domain layer-də)
+- **Repository Implementation** — Konkret data access (infrastructure layer-də)
+- **Specification** — Query kriteriyalarını kapsullaşdırır
+- **Unit of Work** — Bir neçə repository üzrə dəyişiklikləri izləyir
+- **Generic Repository** — Ümumi CRUD əməliyyatları olan base
 
 ---
 

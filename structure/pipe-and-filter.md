@@ -1,16 +1,16 @@
 # Pipe and Filter Architecture
 
-Data flows through a series of processing components (filters) connected by pipes.
-Each filter transforms data independently and passes it to the next filter.
+Data pipe-lərlə birləşdirilmiş processing komponentlər (filter-lər) silsiləsi boyunca axır.
+Hər filter data-nı müstəqil transformasiya edir və növbəti filter-ə ötürür.
 
-**Key concepts:**
-- **Filter** — Independent processing component that transforms data
-- **Pipe** — Connector that passes data between filters
-- **Pipeline** — A chain of filters connected by pipes
-- **Source** — Origin of data (input)
-- **Sink** — Final destination (output)
+**Əsas anlayışlar:**
+- **Filter** — Data-nı transformasiya edən müstəqil processing komponenti
+- **Pipe** — Filter-lər arasında data ötürən connector
+- **Pipeline** — Pipe-larla birləşdirilmiş filter-lər zənciri
+- **Source** — Data mənbəyi (input)
+- **Sink** — Son təyinat (output)
 
-**Common use cases:** ETL pipelines, image processing, data validation, middleware chains.
+**Adi istifadə yerləri:** ETL pipeline-ları, image processing, data validation, middleware zəncirləri.
 
 ---
 

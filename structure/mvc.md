@@ -1,9 +1,9 @@
 # MVC (Model-View-Controller)
 
-MVC is the most fundamental architectural pattern separating an application into three components:
-- **Model** — Data and business logic
-- **View** — User interface presentation
-- **Controller** — Handles input and coordinates between Model and View
+MVC ən fundamental architectural pattern-dir — application-ı üç komponentə ayırır:
+- **Model** — Data və business logic
+- **View** — User interface təqdimatı
+- **Controller** — Input-u idarə edir və Model ilə View arasında koordinasiya yaradır
 
 ---
 

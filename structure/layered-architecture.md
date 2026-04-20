@@ -1,13 +1,13 @@
 # Layered (N-Tier) Architecture
 
-The most traditional architecture pattern. Code is organized into horizontal layers,
-each with a specific responsibility. Each layer only communicates with the layer directly below it.
+Ən ənənəvi architecture pattern. Kod horizontal layer-lərə bölünür,
+hər birinin öz spesifik məsuliyyəti var. Hər layer yalnız birbaşa altındakı layer ilə ünsiyyət qurur.
 
-**Layers (top-down):**
-- **Presentation** — UI, Controllers, API endpoints
+**Layer-lər (yuxarıdan aşağı):**
+- **Presentation** — UI, Controller-lər, API endpoint-lər
 - **Business/Service** — Business logic, validation
-- **Data Access** — Database queries, ORM, repositories
-- **Database** — Actual data storage
+- **Data Access** — Database query-ləri, ORM, repository-lər
+- **Database** — Real data storage
 
 ---
 

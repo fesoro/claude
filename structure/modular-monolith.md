@@ -1,16 +1,16 @@
 # Modular Monolith
 
-A Modular Monolith organizes code into independent modules within a single deployable unit.
-Each module has clear boundaries and encapsulated data, but they share the same process and deployment.
+Modular Monolith kodu tək deploy olunan vahidin içində müstəqil modullara bölür.
+Hər module-un aydın sərhədləri və kapsullaşdırılmış data-sı var, amma onlar eyni process və deployment-i paylaşırlar.
 
-**Key concepts:**
-- **Module** — Self-contained business capability with its own domain, data, and API
-- **Module API** — Public interface exposed to other modules
-- **Internal** — Private implementation hidden from other modules
-- **Integration Events** — Async communication between modules
-- **Module Registry** — Registers and bootstraps all modules
+**Əsas anlayışlar:**
+- **Module** — Öz domain, data və API-si olan self-contained business bacarığı
+- **Module API** — Digər module-lara açıq olan public interface
+- **Internal** — Digər module-lardan gizlədilmiş private implementation
+- **Integration Events** — Module-lar arası async kommunikasiya
+- **Module Registry** — Bütün module-ları qeydiyyata alır və bootstrap edir
 
-**Advantages over traditional monolith:** Strong boundaries. Over microservices: No distributed system complexity.
+**Adi monolith üzərində üstünlüyü:** Güclü sərhədlər. Microservices üzərində: Distributed sistem mürəkkəbliyi yoxdur.
 
 ---
 

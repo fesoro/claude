@@ -1,15 +1,15 @@
 # Event Sourcing
 
-Event Sourcing stores all changes to application state as a sequence of events.
-Instead of storing current state, the system rebuilds state by replaying events.
+Event Sourcing application state-inə edilən bütün dəyişiklikləri event ardıcıllığı kimi saxlayır.
+Cari state-i saxlamaq əvəzinə sistem state-i event-ləri replay edərək yenidən qurur.
 
-**Key concepts:**
-- **Event Store** — Append-only log of all domain events
-- **Aggregate** — Rebuilds its state from events
-- **Projection/Read Model** — Materialized views built from events
-- **Projector** — Processes events to update read models
-- **Snapshot** — Periodic state capture to avoid replaying all events
-- **Event Stream** — Sequence of events for a specific aggregate
+**Əsas anlayışlar:**
+- **Event Store** — Bütün domain event-lərinin append-only log-u
+- **Aggregate** — State-ini event-lərdən yenidən qurur
+- **Projection/Read Model** — Event-lərdən qurulmuş materialized view-lar
+- **Projector** — Event-ləri emal edərək read model-ləri yeniləyir
+- **Snapshot** — Bütün event-ləri replay etməmək üçün vaxtaşırı state kəsikləri
+- **Event Stream** — Konkret aggregate üçün event ardıcıllığı
 
 ---
 

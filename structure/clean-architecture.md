@@ -1,13 +1,13 @@
 # Clean Architecture
 
-Clean Architecture (Robert C. Martin) separates software into concentric layers where dependencies point inward.
-The core principle: inner layers know nothing about outer layers.
+Clean Architecture (Robert C. Martin) software-i concentric layer-lərə bölür — burada dependency-lər içəriyə doğru baxır.
+Əsas prinsip: iç layer-lər çöl layer-lər haqqında heç nə bilmir.
 
-**Layers (inside-out):**
-- **Entities** — Enterprise business rules
-- **Use Cases** — Application business rules
-- **Interface Adapters** — Controllers, Presenters, Gateways
-- **Frameworks & Drivers** — DB, Web, UI, External APIs
+**Layer-lər (içdən çölə):**
+- **Entities** — Enterprise business rule-ları
+- **Use Cases** — Application business rule-ları
+- **Interface Adapters** — Controller, Presenter, Gateway
+- **Frameworks & Drivers** — DB, Web, UI, External API-lər
 
 ---
 

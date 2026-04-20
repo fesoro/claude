@@ -1,16 +1,16 @@
 # Service-Oriented Architecture (SOA)
 
-SOA organizes software as a collection of coarse-grained services that communicate through
-well-defined contracts. Unlike microservices, SOA services are larger, share more infrastructure,
-and often use an Enterprise Service Bus (ESB) for communication.
+SOA software-i aydın təyin edilmiş contract-lar vasitəsilə ünsiyyət quran coarse-grained servislərin toplusu kimi təşkil edir.
+Microservices-dən fərqli olaraq, SOA servisləri daha böyükdür, daha çox infrastructure paylaşır
+və ünsiyyət üçün tez-tez Enterprise Service Bus (ESB) istifadə edir.
 
-**Key concepts:**
-- **Service** — Coarse-grained, reusable business capability
-- **Service Contract** — WSDL/OpenAPI defining the service interface
-- **ESB (Enterprise Service Bus)** — Central communication backbone
-- **Service Registry** — Service discovery and metadata
-- **Orchestration** — Central coordinator manages service interactions
-- **Choreography** — Services react to events independently
+**Əsas anlayışlar:**
+- **Service** — Coarse-grained, yenidən istifadə oluna bilən business bacarığı
+- **Service Contract** — Servisin interface-ini təyin edən WSDL/OpenAPI
+- **ESB (Enterprise Service Bus)** — Mərkəzi kommunikasiya onurğası
+- **Service Registry** — Service discovery və metadata
+- **Orchestration** — Mərkəzi koordinator servis qarşılıqlı əlaqələrini idarə edir
+- **Choreography** — Servislər event-lərə müstəqil reaksiya verir
 
 ---
 

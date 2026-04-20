@@ -1,19 +1,19 @@
 # Domain-Driven Design (DDD)
 
-DDD focuses on modeling software around the core business domain.
-It uses a shared language (Ubiquitous Language) between developers and domain experts.
+DDD software-i əsas business domain ətrafında modelləşdirməyə fokuslanır.
+Developer-lərlə domain mütəxəssisləri arasında ortaq dil (Ubiquitous Language) istifadə edir.
 
-**Key concepts:**
-- **Bounded Context** — A boundary within which a model is defined and applicable
-- **Entity** — An object with identity that persists over time
-- **Value Object** — An immutable object defined by its attributes
-- **Aggregate** — A cluster of entities/value objects treated as a unit
-- **Aggregate Root** — The entry point to an aggregate
-- **Repository** — Abstracts data persistence for aggregates
-- **Domain Service** — Business logic that doesn't belong to an entity
-- **Domain Event** — Something that happened in the domain
-- **Factory** — Creates complex aggregates
-- **Specification** — Encapsulates query criteria
+**Əsas anlayışlar:**
+- **Bounded Context** — Modelin təyin olunduğu və tətbiq olunduğu sərhəd
+- **Entity** — Zaman keçdikcə identity-si saxlanan obyekt
+- **Value Object** — Öz atribut-ları ilə təyin olunan dəyişməz (immutable) obyekt
+- **Aggregate** — Bir vahid kimi qəbul edilən entity/value object klasteri
+- **Aggregate Root** — Aggregate-ə giriş nöqtəsi
+- **Repository** — Aggregate-lər üçün data persistence-ni abstract edir
+- **Domain Service** — Hər hansı entity-yə aid olmayan business logic
+- **Domain Event** — Domain-də baş vermiş nəsə
+- **Factory** — Mürəkkəb aggregate-lər yaradır
+- **Specification** — Query kriteriyalarını kapsullaşdırır
 
 ---
 

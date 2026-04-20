@@ -1,15 +1,15 @@
 # Microservices Architecture
 
-Microservices splits an application into small, independently deployable services.
-Each service owns its data, runs in its own process, and communicates via APIs or messaging.
+Microservices application-ı kiçik, müstəqil deploy oluna bilən servislərə bölür.
+Hər servis öz data-sına sahibdir, öz process-ində işləyir və API-lər və ya messaging vasitəsilə ünsiyyət qurur.
 
-**Key concepts:**
-- **Service** — Independent, deployable unit with its own database
-- **API Gateway** — Single entry point for clients
-- **Service Discovery** — How services find each other
-- **Message Broker** — Async communication between services
-- **Circuit Breaker** — Fault tolerance pattern
-- **Saga** — Distributed transaction management
+**Əsas anlayışlar:**
+- **Service** — Müstəqil, deploy olunabilən vahid — öz database-i ilə
+- **API Gateway** — Client-lər üçün tək giriş nöqtəsi
+- **Service Discovery** — Servislər bir-birini necə tapır
+- **Message Broker** — Servislər arası async kommunikasiya
+- **Circuit Breaker** — Fault tolerance pattern-i
+- **Saga** — Distributed transaction idarəetməsi
 
 ---
 

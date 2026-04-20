@@ -7,31 +7,31 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## Laravel Haqqında
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Laravel expressive, elegant sintaksisi olan web application framework-üdür. Biz inanırıq ki, development həqiqətən qane olmaq üçün zövqlü və yaradıcı təcrübə olmalıdır. Laravel çoxlu web layihədə istifadə olunan adi tapşırıqları asanlaşdıraraq development ağrısını aradan qaldırır:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- [Sadə, sürətli routing engine](https://laravel.com/docs/routing).
+- [Güclü dependency injection container](https://laravel.com/docs/container).
+- [Session](https://laravel.com/docs/session) və [cache](https://laravel.com/docs/cache) storage üçün çoxlu backend.
 - Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
+- Database-dən asılı olmayan [schema migration-lar](https://laravel.com/docs/migrations).
+- [Güclü background job processing](https://laravel.com/docs/queues).
 - [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Laravel əlçatandır, güclüdür və böyük, güclü application-lar üçün lazım olan alətləri təqdim edir.
 
-## Learning Laravel
+## Laravel Öyrənmək
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Laravel-in bütün modern web application framework-ləri arasında ən geniş və əhatəli [sənədləri](https://laravel.com/docs) və video tutorial kitabxanası var — bu da framework ilə başlamağı çox asanlaşdırır.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Əlavə olaraq, [Laracasts](https://laracasts.com) Laravel, modern PHP, unit testing və JavaScript daxil olmaqla müxtəlif mövzularda minlərlə video tutorial ehtiva edir. Bizim əhatəli video kitabxanasına dalaraq bacarıqlarını artır.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+Həmçinin [Laravel Learn](https://laravel.com/learn) saytında kiçik dərslərə bax — burada sıfırdan Laravel application qurmağı öyrənərkən PHP əsasları da öyrədilir.
 
 ## Agentic Development
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+Laravel-in proqnozlaşdırıla bilən strukturu və konvensiyaları onu Claude Code, Cursor və GitHub Copilot kimi AI coding agent-ləri üçün ideal edir. AI workflow-unu gücləndirmək üçün [Laravel Boost](https://laravel.com/docs/ai) quraşdır:
 
 ```bash
 composer require laravel/boost --dev
@@ -39,20 +39,20 @@ composer require laravel/boost --dev
 php artisan boost:install
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Boost agent-ə Laravel application qurmağa kömək edən 15+ tool və skill təqdim edir — best practice-lərə əməl edərək.
 
-## Contributing
+## Töhfə vermək (Contributing)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Laravel framework-ünə töhfə verməyi düşündüyünüz üçün təşəkkür edirik! Töhfə təlimatı [Laravel sənədlərində](https://laravel.com/docs/contributions) yerləşir.
 
-## Code of Conduct
+## Davranış Kodeksi (Code of Conduct)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Laravel icmasının hər kəs üçün hoşgəldin olmasını təmin etmək üçün [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct) ilə tanış olub ona riayət edin.
 
-## Security Vulnerabilities
+## Təhlükəsizlik Zəiflikləri
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Laravel daxilində təhlükəsizlik zəifliyi aşkar etsəniz, xahiş olunur [taylor@laravel.com](mailto:taylor@laravel.com) ünvanına Taylor Otwell-ə e-poçt göndərin. Bütün təhlükəsizlik zəiflikləri operativ həll olunacaq.
 
-## License
+## Lisenziya
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Laravel framework [MIT lisenziyası](https://opensource.org/licenses/MIT) altında açıq mənbəli software-dir.

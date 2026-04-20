@@ -1,15 +1,15 @@
 # Event-Driven Architecture
 
-Event-Driven Architecture uses events as the primary communication mechanism between components.
-Components produce and consume events asynchronously, enabling loose coupling and scalability.
+Event-Driven Architecture event-ləri komponentlər arasında əsas kommunikasiya mexanizmi kimi istifadə edir.
+Komponentlər event-ləri async olaraq produce və consume edir — bu, loose coupling və scalability verir.
 
-**Key concepts:**
-- **Event** — A record of something that happened
-- **Event Producer** — Creates and publishes events
-- **Event Consumer** — Listens and reacts to events
-- **Event Bus/Broker** — Transports events between producers and consumers
-- **Event Store** — Persists events (in Event Sourcing)
-- **Saga/Process Manager** — Coordinates multi-step workflows via events
+**Əsas anlayışlar:**
+- **Event** — Baş vermiş nəyinsə qeydi
+- **Event Producer** — Event yaradır və yayımlayır
+- **Event Consumer** — Event-i dinləyir və reaksiya verir
+- **Event Bus/Broker** — Event-ləri producer ilə consumer arasında daşıyır
+- **Event Store** — Event-ləri saxlayır (Event Sourcing-də)
+- **Saga/Process Manager** — Çoxmərhələli workflow-ları event-lər vasitəsilə koordinasiya edir
 
 ---
 

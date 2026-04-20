@@ -1,16 +1,16 @@
 # Space-Based Architecture
 
-Space-Based Architecture handles high-volume, high-concurrency workloads by distributing
-processing and storage across multiple processing units. It eliminates the database as
-a central bottleneck by using in-memory data grids.
+Space-Based Architecture yüksək həcmli, yüksək concurrency yüklərini processing və storage-i
+bir neçə processing unit arasında paylayaraq idarə edir. In-memory data grid istifadə edərək
+database-i mərkəzi bottleneck olmaqdan çıxarır.
 
-**Key concepts:**
-- **Processing Unit** — Self-contained unit with business logic, in-memory data, and replication
-- **Virtualized Middleware** — Manages data sync, messaging, and request routing
-- **Data Grid** — Distributed in-memory cache shared across processing units
-- **Messaging Grid** — Routes requests to available processing units
-- **Data Pump** — Async writes from in-memory to persistent storage
-- **Data Reader** — Loads data from DB into in-memory grid on startup
+**Əsas anlayışlar:**
+- **Processing Unit** — Business logic, in-memory data və replication olan self-contained vahid
+- **Virtualized Middleware** — Data sync, messaging və request routing-i idarə edir
+- **Data Grid** — Processing unit-lər arasında paylaşılan distributed in-memory cache
+- **Messaging Grid** — Request-ləri mövcud processing unit-lərə yönləndirir
+- **Data Pump** — In-memory-dən persistent storage-ə async write-lar
+- **Data Reader** — Startup zamanı DB-dən data-nı in-memory grid-ə yükləyir
 
 ---
 

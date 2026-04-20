@@ -1,16 +1,16 @@
 # Hexagonal Architecture (Ports and Adapters)
 
-Hexagonal Architecture (Alistair Cockburn) isolates the application core from external concerns
-using ports (interfaces) and adapters (implementations).
+Hexagonal Architecture (Alistair Cockburn) application core-unu port-lar (interface-lər) və adapter-lər (implementation-lar) vasitəsilə
+xarici narahatlıqlardan təcrid edir.
 
-**Key concepts:**
+**Əsas anlayışlar:**
 - **Application Core** — Business logic, domain
-- **Ports** — Interfaces defining how the core interacts with the outside
-  - **Driving/Primary Ports** — How the outside world calls the core (use cases)
-  - **Driven/Secondary Ports** — How the core calls the outside world (repositories, services)
-- **Adapters** — Implementations of ports
-  - **Driving/Primary Adapters** — HTTP controllers, CLI, gRPC
-  - **Driven/Secondary Adapters** — Database, email, external APIs
+- **Ports** — Core-un xaricdənkilərlə necə ünsiyyət qurduğunu təyin edən interface-lər
+  - **Driving/Primary Ports** — Xarici dünya core-u necə çağırır (use case-lər)
+  - **Driven/Secondary Ports** — Core xarici dünyanı necə çağırır (repository-lər, servislər)
+- **Adapters** — Port-ların implementation-ları
+  - **Driving/Primary Adapters** — HTTP controller-lər, CLI, gRPC
+  - **Driven/Secondary Adapters** — Database, email, external API-lər
 
 ---
 

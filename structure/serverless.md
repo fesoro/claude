@@ -1,14 +1,14 @@
 # Serverless Architecture
 
-Serverless architecture runs code in stateless, event-triggered functions managed by a cloud provider.
-No server management, auto-scaling, and pay-per-execution.
+Serverless architecture kodu cloud provider tərəfindən idarə olunan stateless, event-triggered function-larda işlədir.
+Server idarəetməsi yoxdur, auto-scaling var, yalnız icra üçün ödəyirsən.
 
-**Key concepts:**
-- **Function** — Single-purpose, stateless unit of execution
-- **Trigger/Event Source** — What invokes the function (HTTP, queue, schedule, etc.)
-- **API Gateway** — Routes HTTP requests to functions
-- **Event Bus** — Routes events between functions
-- **Layer** — Shared code/dependencies across functions
+**Əsas anlayışlar:**
+- **Function** — Tək məqsədli, stateless execution vahidi
+- **Trigger/Event Source** — Function-u nə çağırır (HTTP, queue, schedule və s.)
+- **API Gateway** — HTTP request-ləri function-lara yönləndirir
+- **Event Bus** — Event-ləri function-lar arasında yönləndirir
+- **Layer** — Function-lar arasında paylaşılan kod/dependency-lər
 
 ---
 

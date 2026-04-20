@@ -1,15 +1,15 @@
 # CQRS (Command Query Responsibility Segregation)
 
-CQRS separates read (Query) and write (Command) operations into different models.
-Each side can have its own data store, optimized for its workload.
+CQRS read (Query) və write (Command) əməliyyatlarını ayrı model-lərə bölür.
+Hər tərəfin öz data store-u ola bilər — öz yükünə optimallaşdırılmış.
 
-**Key concepts:**
-- **Command** — Changes state, returns nothing (or just an ID)
-- **Query** — Returns data, changes nothing
-- **Command Handler** — Processes a command
-- **Query Handler** — Processes a query
-- **Read Model** — Optimized for querying
-- **Write Model** — Optimized for business rules and writes
+**Əsas anlayışlar:**
+- **Command** — State-i dəyişir, heç nə qaytarmır (yalnız ID qaytara bilər)
+- **Query** — Data qaytarır, heç nə dəyişmir
+- **Command Handler** — Command-i emal edir
+- **Query Handler** — Query-ni emal edir
+- **Read Model** — Sorğu üçün optimallaşdırılıb
+- **Write Model** — Business rule-lar və write-lar üçün optimallaşdırılıb
 
 ---
 

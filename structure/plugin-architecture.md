@@ -1,14 +1,14 @@
 # Plugin (Microkernel) Architecture
 
-The core system provides minimal functionality, with features added through plugins.
-The kernel handles core operations; plugins extend behavior without modifying the core.
+Core sistem minimal funksionallıq təqdim edir, feature-lər isə plugin-lər vasitəsilə əlavə olunur.
+Kernel core əməliyyatları idarə edir; plugin-lər core-u dəyişdirmədən davranışı genişləndirir.
 
-**Key concepts:**
-- **Core/Kernel** — Minimal system with plugin management and core services
-- **Plugin** — Self-contained extension that adds functionality
-- **Plugin Interface** — Contract that all plugins must implement
-- **Plugin Registry** — Discovers, loads, and manages plugins
-- **Extension Point** — Where plugins can hook into the core
+**Əsas anlayışlar:**
+- **Core/Kernel** — Plugin idarəetməsi və core servislər olan minimal sistem
+- **Plugin** — Funksionallıq əlavə edən self-contained extension
+- **Plugin Interface** — Bütün plugin-lərin implement etməli olduğu contract
+- **Plugin Registry** — Plugin-ləri aşkarlayır, yükləyir və idarə edir
+- **Extension Point** — Plugin-lərin core-a bağlandığı yer
 - **Plugin Lifecycle** — Install, activate, deactivate, uninstall
 
 ---
