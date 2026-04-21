@@ -52,6 +52,17 @@ Bu qovluq Docker və Kubernetes mövzularını əhatə edən ətraflı materiall
 | 27 | [argocd-gitops.md](27-argocd-gitops.md) | GitOps, ArgoCD, App of Apps, sync waves, ApplicationSet |
 | 28 | [kubernetes-troubleshooting.md](28-kubernetes-troubleshooting.md) | CrashLoopBackOff, OOMKilled, ImagePullBackOff, DNS, debug |
 
+### Kubernetes Advanced
+
+| # | Fayl | Mövzu |
+|---|------|-------|
+| 29 | [kubernetes-rbac.md](29-kubernetes-rbac.md) | ServiceAccount, Role/ClusterRole, RoleBinding, aggregated roles, OIDC, audit policy |
+| 30 | [kubernetes-autoscaling.md](30-kubernetes-autoscaling.md) | HPA (custom/external metrics), VPA, Cluster Autoscaler, Karpenter, KEDA, scale to zero |
+| 31 | [kubernetes-networking-cni.md](31-kubernetes-networking-cni.md) | Pod network model, Flannel, Calico (BGP), Cilium (eBPF), AWS VPC CNI, NetworkPolicy, CoreDNS |
+| 32 | [service-mesh-comparison.md](32-service-mesh-comparison.md) | Istio (sidecar/ambient), Linkerd, Consul Connect, Kuma, mTLS, traffic splitting |
+| 33 | [kubernetes-jobs-cronjobs.md](33-kubernetes-jobs-cronjobs.md) | Job (completions, parallelism, Indexed), CronJob, Laravel scheduler vs K8s |
+| 34 | [kubernetes-observability.md](34-kubernetes-observability.md) | Prometheus/ServiceMonitor, Grafana, Loki, Tempo/Jaeger, OpenTelemetry, SLO burn rate |
+
 ## Necə İstifadə Etməli
 
 1. Faylları sıra ilə oxuyun (01-dən 21-ə qədər)
