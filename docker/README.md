@@ -63,12 +63,47 @@ Bu qovluq Docker və Kubernetes mövzularını əhatə edən ətraflı materiall
 | 33 | [kubernetes-jobs-cronjobs.md](33-kubernetes-jobs-cronjobs.md) | Job (completions, parallelism, Indexed), CronJob, Laravel scheduler vs K8s |
 | 34 | [kubernetes-observability.md](34-kubernetes-observability.md) | Prometheus/ServiceMonitor, Grafana, Loki, Tempo/Jaeger, OpenTelemetry, SLO burn rate |
 
+### Senior PHP Developer üçün Praktik Docker
+
+Bu bölmə Laravel/PHP layihələrinizi rahat dockerize etmək üçün praktik, "kopyala-istifadə et" səviyyəsində hazırlanıb. Hər fayl production-ready config verir, tipik səhvləri (gotchas) göstərir.
+
+| # | Fayl | Mövzu |
+|---|------|-------|
+| 35 | [php-laravel-production-dockerfile.md](35-php-laravel-production-dockerfile.md) | Tam production Laravel Dockerfile — multi-stage, Alpine, OpCache, non-root, tini |
+| 36 | [php-fpm-tuning-docker.md](36-php-fpm-tuning-docker.md) | FPM pool (`pm.max_children` hesablama), OpCache + JIT config, FPM status monitoring |
+| 37 | [nginx-php-fpm-container-setup.md](37-nginx-php-fpm-container-setup.md) | Sidecar vs supervisord, Unix socket vs TCP, Nginx config, FastCGI cache, HTTPS |
+| 38 | [docker-entrypoint-scripts-laravel.md](38-docker-entrypoint-scripts-laravel.md) | Entrypoint pattern, wait-for-db, migration strategies, SIGTERM / PID 1 / tini |
+| 39 | [laravel-queue-workers-scheduler-docker.md](39-laravel-queue-workers-scheduler-docker.md) | Queue worker, Horizon, Scheduler (CronJob), KEDA autoscaling, graceful shutdown |
+| 40 | [composer-in-docker-best-practices.md](40-composer-in-docker-best-practices.md) | Vendor stage, layer caching, `--no-dev`, BuildKit cache mount, private packages |
+| 41 | [dev-vs-prod-docker-setup.md](41-dev-vs-prod-docker-setup.md) | `docker-compose.override.yml`, profiles, multi-stage target, Xdebug dev-only |
+| 42 | [docker-file-permissions-php.md](42-docker-file-permissions-php.md) | www-data UID/GID problemi, bind mount, build-time UID match, fsGroup K8s |
+| 43 | [docker-env-secrets-laravel.md](43-docker-env-secrets-laravel.md) | `.env`, `config:cache` gotcha, `APP_KEY` rotation, Docker Secret, K8s Secret, Vault |
+| 44 | [dockerize-existing-laravel-step-by-step.md](44-dockerize-existing-laravel-step-by-step.md) | Addım-addım mövcud Laravel layihəni dockerize — fayl strukturu, Makefile, VS Code |
+| 45 | [frankenphp-roadrunner-octane-docker.md](45-frankenphp-roadrunner-octane-docker.md) | Application server-lər — FrankenPHP, Swoole, RoadRunner, Octane, worker mode riskləri |
+| 46 | [docker-ci-cd-github-actions-php.md](46-docker-ci-cd-github-actions-php.md) | GitHub Actions workflow, cache, multi-arch, Trivy, Cosign, K8s deploy, ArgoCD |
+
 ## Necə İstifadə Etməli
 
-1. Faylları sıra ilə oxuyun (01-dən 21-ə qədər)
+1. Faylları sıra ilə oxuyun (01-dən 46-ya qədər)
 2. Hər fayldakı praktiki nümunələri öz maşınınızda sınayın
 3. Interview suallarını cavablandırmağa çalışın
 4. Best practice-ləri yadda saxlayın
+
+### Mövcud Laravel layihəni dockerize etmək istəyirsinizsə
+
+Bu sıra ilə oxuyun:
+1. **01-04** — Docker, Dockerfile, Compose əsasları
+2. **44** — Addım-addım mövcud layihəni dockerize et (praktik gid)
+3. **35** — Production Dockerfile template
+4. **42** — Fayl icazələri problemi (ən çox rast gələn)
+5. **41** — Dev vs Prod setup (override.yml, Xdebug)
+6. **40** — Composer best practices
+7. **38** — Entrypoint script-lər
+8. **43** — Env/Secrets management
+9. **39** — Queue worker və scheduler
+10. **36-37** — PHP-FPM və Nginx tuning (performans üçün)
+11. **46** — CI/CD GitHub Actions
+12. **45** — FrankenPHP/Octane (next-level performans)
 
 ## Əsas Texnologiyalar
 
