@@ -25,6 +25,22 @@ Bu layihə Java/Spring Framework və PHP/Laravel arasındakı bütün vacib möv
 | 17 | Reflection API | [17-reflection-api.md](languages/17-reflection-api.md) |
 | 18 | Regular Expressions | [18-regular-expressions.md](languages/18-regular-expressions.md) |
 | 19 | Design Patterns | [19-design-patterns.md](languages/19-design-patterns.md) |
+| 20 | Async və Coroutines (Virtual Threads vs Fibers) | [20-async-and-coroutines.md](languages/20-async-and-coroutines.md) |
+| 21 | Package Manager və Build (Maven/Gradle vs Composer) | [21-package-managers-build.md](languages/21-package-managers-build.md) |
+| 22 | Testing Idioms (JUnit/Mockito vs PHPUnit/Pest) | [22-testing-idioms.md](languages/22-testing-idioms.md) |
+| 23 | Records və Data Classes (Java 14/16 vs PHP readonly) | [23-records-and-data-classes.md](languages/23-records-and-data-classes.md) |
+| 24 | Sealed Classes və Pattern Matching (Java 17) | [24-sealed-classes-and-pattern-matching.md](languages/24-sealed-classes-and-pattern-matching.md) |
+| 25 | Switch Expressions və Record Patterns (Java 21) | [25-switch-expressions-and-record-patterns.md](languages/25-switch-expressions-and-record-patterns.md) |
+| 26 | JVM Internals — JIT, GC, ClassLoader vs Zend Engine | [26-jvm-internals-jit-gc.md](languages/26-jvm-internals-jit-gc.md) |
+| 27 | Virtual Threads Deep Dive (Java 21+ Loom) | [27-virtual-threads-deep.md](languages/27-virtual-threads-deep.md) |
+| 28 | Structured Concurrency və Scoped Values (Java 21+) | [28-structured-concurrency-and-scoped-values.md](languages/28-structured-concurrency-and-scoped-values.md) |
+| 29 | Modules (JPMS / Project Jigsaw) vs Composer Namespaces | [29-modules-jpms.md](languages/29-modules-jpms.md) |
+| 30 | NIO.2 — Channels və Buffers | [30-nio2-channels-buffers.md](languages/30-nio2-channels-buffers.md) |
+| 31 | Foreign Function & Memory API (Project Panama) vs PHP FFI | [31-foreign-function-memory-api.md](languages/31-foreign-function-memory-api.md) |
+| 32 | Sequenced Collections, Stream Gatherers, Unnamed Variables (Java 21-25) | [32-sequenced-collections-stream-gatherers.md](languages/32-sequenced-collections-stream-gatherers.md) |
+| 33 | CompletableFuture və Parallelism | [33-completablefuture-and-parallelism.md](languages/33-completablefuture-and-parallelism.md) |
+| 34 | Serialization Deep (Jackson, Protobuf, Avro) | [34-serialization-deep.md](languages/34-serialization-deep.md) |
+| 35 | Functional Interfaces və Method References | [35-functional-interfaces-method-references.md](languages/35-functional-interfaces-method-references.md) |
 
 ## Frameworks (Spring vs Laravel - Framework Səviyyəsi)
 
@@ -70,6 +86,44 @@ Bu layihə Java/Spring Framework və PHP/Laravel arasındakı bütün vacib möv
 | 38 | API Documentation (Swagger/OpenAPI) | [38-api-documentation.md](frameworks/38-api-documentation.md) |
 | 39 | Microservices | [39-microservices.md](frameworks/39-microservices.md) |
 | 40 | Health Checks və Monitoring | [40-health-checks-and-monitoring.md](frameworks/40-health-checks-and-monitoring.md) |
+| 41 | Observability və OpenTelemetry | [41-observability-opentelemetry.md](frameworks/41-observability-opentelemetry.md) |
+| 42 | GraphQL Support | [42-graphql-support.md](frameworks/42-graphql-support.md) |
+| 43 | Feature Flags | [43-feature-flags.md](frameworks/43-feature-flags.md) |
+| 44 | Circuit Breaker və Resilience | [44-circuit-breaker-resilience.md](frameworks/44-circuit-breaker-resilience.md) |
+| 45 | Background Processing (Deep Dive) | [45-background-processing-deep.md](frameworks/45-background-processing-deep.md) |
+| 46 | Spring WebFlux və Reactive Streams | [46-spring-webflux-reactive.md](frameworks/46-spring-webflux-reactive.md) |
+| 47 | Spring Data JPA Deep vs Eloquent Deep | [47-spring-data-jpa-deep.md](frameworks/47-spring-data-jpa-deep.md) |
+| 48 | Spring Data Redis və MongoDB | [48-spring-data-redis-and-mongo.md](frameworks/48-spring-data-redis-and-mongo.md) |
+| 49 | Spring Cloud Config Server | [49-spring-cloud-config-server.md](frameworks/49-spring-cloud-config-server.md) |
+| 50 | Spring Cloud Gateway | [50-spring-cloud-gateway.md](frameworks/50-spring-cloud-gateway.md) |
+| 51 | Service Discovery (Eureka/Consul/K8s) | [51-service-discovery-eureka.md](frameworks/51-service-discovery-eureka.md) |
+| 52 | OpenFeign və Declarative HTTP Clients | [52-openfeign-declarative-clients.md](frameworks/52-openfeign-declarative-clients.md) |
+| 53 | Spring Security OAuth2 Resource Server | [53-spring-security-oauth2-resource-server.md](frameworks/53-spring-security-oauth2-resource-server.md) |
+| 54 | Spring Authorization Server | [54-spring-authorization-server.md](frameworks/54-spring-authorization-server.md) |
+| 55 | Method Security və Authorization | [55-method-security-and-authorization.md](frameworks/55-method-security-and-authorization.md) |
+| 56 | Spring Boot AOT və GraalVM Native Image | [56-spring-boot-aot-native-image.md](frameworks/56-spring-boot-aot-native-image.md) |
+| 57 | HTTP Interface (@HttpExchange) və RestClient | [57-http-interface-and-restclient.md](frameworks/57-http-interface-and-restclient.md) |
+| 58 | Observation API və Micrometer | [58-observation-api-micrometer.md](frameworks/58-observation-api-micrometer.md) |
+| 59 | Spring Modulith | [59-spring-modulith.md](frameworks/59-spring-modulith.md) |
+| 60 | Spring Batch | [60-spring-batch.md](frameworks/60-spring-batch.md) |
+| 61 | Spring for Apache Kafka | [61-spring-kafka.md](frameworks/61-spring-kafka.md) |
+| 62 | Spring AI (LLM və RAG) | [62-spring-ai.md](frameworks/62-spring-ai.md) |
+| 63 | Spring for GraphQL | [63-spring-graphql.md](frameworks/63-spring-graphql.md) |
+| 64 | Testcontainers və Integration Testing | [64-testcontainers-integration-testing.md](frameworks/64-testcontainers-integration-testing.md) |
+| 65 | Spring Bean Lifecycle Deep (BeanPostProcessor, CGLIB/JDK proxy) | [65-spring-bean-lifecycle-deep.md](frameworks/65-spring-bean-lifecycle-deep.md) |
+| 66 | Spring Profiles və Environment Config | [66-spring-profiles-environment.md](frameworks/66-spring-profiles-environment.md) |
+| 67 | Spring Events Deep (Transactional, Async, Module) | [67-spring-events-deep.md](frameworks/67-spring-events-deep.md) |
+| 68 | Spring Retry və Resilience | [68-spring-retry-resilience.md](frameworks/68-spring-retry-resilience.md) |
+| 69 | Spring Cloud Stream (Kafka/RabbitMQ Abstraction) | [69-spring-cloud-stream.md](frameworks/69-spring-cloud-stream.md) |
+| 70 | Spring Boot Actuator Deep | [70-spring-boot-actuator-deep.md](frameworks/70-spring-boot-actuator-deep.md) |
+| 71 | Jakarta EE Migration (javax → jakarta) | [71-jakarta-ee-migration.md](frameworks/71-jakarta-ee-migration.md) |
+| 72 | Spring HATEOAS və Spring Data REST | [72-spring-hateoas-data-rest.md](frameworks/72-spring-hateoas-data-rest.md) |
+| 73 | Problem Details (RFC 7807/9457) | [73-problem-details-rfc7807.md](frameworks/73-problem-details-rfc7807.md) |
+| 74 | Spring WebSocket STOMP Deep | [74-spring-websocket-stomp-deep.md](frameworks/74-spring-websocket-stomp-deep.md) |
+| 75 | Spring Session və Distributed Sessions | [75-spring-session-and-distributed-sessions.md](frameworks/75-spring-session-and-distributed-sessions.md) |
+| 76 | Spring Transactions Deep (Propagation, Isolation, JTA) | [76-spring-transactions-deep.md](frameworks/76-spring-transactions-deep.md) |
+| 77 | Spring Shell və CLI Frameworks | [77-spring-shell-and-cli-frameworks.md](frameworks/77-spring-shell-and-cli-frameworks.md) |
+| 78 | Caching Strategies Deep (Caffeine, Multi-level, Stampede) | [78-caching-strategies-deep.md](frameworks/78-caching-strategies-deep.md) |
 
 ## Hər faylda nə var?
 
