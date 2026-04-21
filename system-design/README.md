@@ -116,6 +116,15 @@ Hər fayl ətraflı izahat, PHP/Laravel nümunələri və real-world misallar eh
 86. [Edge Computing](86-edge-computing.md) - Cloudflare Workers, Lambda@Edge, V8 isolates, D1/KV
 87. [Live Auction Design](87-live-auction-design.md) - eBay-like: bid concurrency, anti-sniping, closing
 
+### Advanced Systems Internals
+88. [Sharded Counters](88-sharded-counters.md) - Hot-row contention, sharded counters, HyperLogLog, Morris, Instagram/YouTube
+89. [Hot/Cold Storage Tiering](89-hot-cold-storage-tiering.md) - S3 lifecycle, Cassandra TWCS, ClickHouse TTL, Glacier restore
+90. [Elasticsearch Internals](90-elasticsearch-internals.md) - Lucene segments, translog, cluster state, ILM, CCR, rolling upgrade
+91. [Distributed Tracing Deep Dive](91-distributed-tracing-deep-dive.md) - OpenTelemetry, W3C Trace Context, sampling, Tempo/Jaeger
+92. [Anti-Entropy & Merkle Trees](92-anti-entropy-merkle-trees.md) - Hinted handoff, read repair, AAE, Cassandra nodetool repair
+93. [CDC Streaming Architectures](93-cdc-streaming-architectures.md) - Debezium, schema registry, DLQ, exactly-once, slot retention
+94. [Feature Flags & Progressive Delivery](94-feature-flags-progressive-delivery.md) - LaunchDarkly/Unleash, sticky bucketing, canary, OpenFeature
+
 ## Necə İstifadə Etməli?
 1. Hər mövzunu sıra ilə oxuyun
 2. PHP/Laravel nümunələrini praktik edin
