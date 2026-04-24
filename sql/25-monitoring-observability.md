@@ -1,5 +1,7 @@
 # Database Monitoring & Observability
 
+> **Seviyye:** Intermediate ⭐⭐
+
 ## Niye Monitoring Vacibdir?
 
 Production-da database problemi olduqda onu **tutur ve hell edecek** sistemin olmalidir. "Database yavasdir" deyil, "bu query 3 saniye cekir, cunki full table scan edir" bilmelisiniz.

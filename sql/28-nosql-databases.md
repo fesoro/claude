@@ -1,5 +1,7 @@
 # NoSQL Databases
 
+> **Seviyye:** Advanced ⭐⭐⭐
+
 ## NoSQL Nedir?
 
 "Not Only SQL" - relational model-den ferqli olaraq, flexible schema, horizontal scaling ve yuksek performance ucun dizayn olunmus database-lerdir.

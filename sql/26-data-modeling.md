@@ -1,5 +1,7 @@
 # Data Modeling & Schema Design
 
+> **Seviyye:** Intermediate ⭐⭐
+
 ## Data Modeling Nedir?
 
 Real-world melumatlarini database structure-a cevirmek prosesidir. Duzgun schema design - performansli, scalable, ve maintain edile bilen sistem demekdir.

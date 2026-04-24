@@ -1,5 +1,7 @@
 # Distributed Transactions & Saga Pattern
 
+> **Seviyye:** Advanced ⭐⭐⭐
+
 ## Problem: Microservice-lerde Transaction
 
 Monolith-de bir database var, `DB::transaction()` ile her seyi wrap edirik. Amma microservice-lerde **her servisin oz database-i** var. Bir transaction birden cox servisi ehate edende ne ederik?

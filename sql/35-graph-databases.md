@@ -1,5 +1,7 @@
 # Graph Databases
 
+> **Seviyye:** Advanced ⭐⭐⭐
+
 ## Graph Database Nedir?
 
 Data-ni **node-lar** (vertislar) ve **edge-ler** (elaqeler) kimi saxlayir. Relational model JOIN ile elaqe qurur; graph model elaqeni birinci sinif vatandas kimi saxlayir.

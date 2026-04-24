@@ -1,5 +1,7 @@
 # JOIN Types & Algorithms
 
+> **Seviyye:** Intermediate ⭐⭐
+
 ## JOIN Tipleri
 
 ### INNER JOIN

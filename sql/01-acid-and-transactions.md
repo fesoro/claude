@@ -1,5 +1,7 @@
 # ACID & Transactions
 
+> **Seviyye:** Beginner ⭐
+
 ## ACID nedir?
 
 ACID - database transaction-larin etibarliliqini temin eden 4 xususiyyetdir.

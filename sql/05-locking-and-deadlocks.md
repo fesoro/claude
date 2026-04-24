@@ -1,5 +1,7 @@
 # Locking & Deadlocks
 
+> **Seviyye:** Intermediate ⭐⭐
+
 ## Lock nedir?
 
 Lock - eyni anda bir nece transaction-in eyni data-ni deyisdirerken conflict yaratmasinin qarsisini alan mexanizmdir.

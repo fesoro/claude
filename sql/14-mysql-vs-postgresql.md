@@ -1,5 +1,7 @@
 # MySQL vs PostgreSQL
 
+> **Seviyye:** Beginner ⭐
+
 ## Umumi Muqayise
 
 | Xususiyyet | MySQL (InnoDB) | PostgreSQL |

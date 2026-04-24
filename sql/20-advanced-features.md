@@ -1,5 +1,7 @@
 # JSON, Full-Text Search & Advanced Features
 
+> **Seviyye:** Intermediate ⭐⭐
+
 ## JSON Columns
 
 ### MySQL JSON (8.0+)

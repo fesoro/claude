@@ -1,5 +1,7 @@
 # Query Optimization & EXPLAIN
 
+> **Seviyye:** Intermediate ⭐⭐
+
 ## EXPLAIN - Query Analizi
 
 EXPLAIN her query-nin nece icra olundugunu gosterir. Optimizasiya ucun **en vacib** aletdir.

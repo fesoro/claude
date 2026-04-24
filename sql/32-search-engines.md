@@ -1,5 +1,7 @@
 # Search Engines: Meilisearch, Algolia, Typesense, Sphinx
 
+> **Seviyye:** Advanced ⭐⭐⭐
+
 ## Search Engine Nedir?
 
 Full-text search ucun optimize olunmus xususi database. Inverted index ile isleyir - adi database-den qat-qat suretli text axtarisi verir.

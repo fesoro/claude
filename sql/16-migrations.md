@@ -1,5 +1,7 @@
 # Migrations & Schema Management
 
+> **Seviyye:** Beginner ⭐
+
 ## Migration nedir?
 
 Database schema deyisikliklerini version control eden sistemdir. Her deyisiklik ayri migration fayli ile izlenir.

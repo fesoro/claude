@@ -1,5 +1,7 @@
 # Isolation Levels
 
+> **Seviyye:** Intermediate ⭐⭐
+
 ## Niye lazimdir?
 
 Eyni anda bir nece transaction isleyende problemler yarana biler. Isolation level-ler bu problemlerin hansinin qarsisini almagi mueyyenlesdirir.

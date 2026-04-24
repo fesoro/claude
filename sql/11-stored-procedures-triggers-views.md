@@ -1,5 +1,7 @@
 # Stored Procedures, Triggers & Views
 
+> **Seviyye:** Intermediate ⭐⭐
+
 ## Stored Procedures
 
 Database server-de saxlanilan ve icra olunan SQL proqramlaridir.

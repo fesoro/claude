@@ -1,5 +1,7 @@
 # CAP Theorem & Consistency Models
 
+> **Seviyye:** Advanced ⭐⭐⭐
+
 ## CAP Theorem
 
 Distributed system-de **eyni anda** yalniz 3-den 2-sini garanti ede bilersen:

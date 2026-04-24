@@ -1,5 +1,7 @@
 # Elasticsearch
 
+> **Seviyye:** Advanced ⭐⭐⭐
+
 ## Elasticsearch Nedir?
 
 Distributed search ve analytics engine. Full-text search, log analysis, real-time analytics ucun istifade olunur. Apache Lucene uzerinde qurulub.

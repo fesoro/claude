@@ -1,5 +1,7 @@
 # Change Data Capture (CDC)
 
+> **Seviyye:** Advanced ⭐⭐⭐
+
 ## CDC Nedir?
 
 Change Data Capture - database-deki deyisiklikleri **real-time** olaraq tutur ve diger system-lere oturur. `INSERT`, `UPDATE`, `DELETE` emeliyyatlarini izleyir.

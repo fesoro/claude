@@ -1,5 +1,7 @@
 # Database Scaling Strategies
 
+> **Seviyye:** Advanced ⭐⭐⭐
+
 ## Scaling Nedir?
 
 Database-in artan yuku (trafik, data volume, query complexity) dasiya bilmesi. Iki esas yol var:

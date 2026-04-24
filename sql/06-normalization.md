@@ -1,5 +1,7 @@
 # Normalization & Denormalization
 
+> **Seviyye:** Beginner ⭐
+
 ## Normalization nedir?
 
 Data tekrarlanmasini (redundancy) azaltmaq ve data integrity-ni artirmaq ucun table-lari kiçik, munasib hisselere bolmek prosesidir.

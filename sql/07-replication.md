@@ -1,5 +1,7 @@
 # Replication
 
+> **Seviyye:** Advanced ⭐⭐⭐
+
 ## Replication nedir?
 
 Data-ni bir database server-den (master/primary) diger server-lere (slave/replica) kopyalamaq prosesidir.

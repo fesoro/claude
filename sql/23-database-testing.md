@@ -1,5 +1,7 @@
 # Database Testing
 
+> **Seviyye:** Intermediate ⭐⭐
+
 ## Niye Database Testing Vacibdir?
 
 - Migration-ler production-da ugursuz ola biler

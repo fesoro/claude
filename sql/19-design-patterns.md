@@ -1,5 +1,7 @@
 # Database Design Patterns
 
+> **Seviyye:** Intermediate ⭐⭐
+
 ## 1. Repository Pattern
 
 Database erisimini abstract edir. Business logic database texnologiyasindan asili olmur.

@@ -1,5 +1,7 @@
 # Cursor Operations & Streaming Large Datasets
 
+> **Seviyye:** Intermediate ⭐⭐
+
 ## Problem: Boyuk Data Setleri
 
 ```php

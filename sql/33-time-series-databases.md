@@ -1,5 +1,7 @@
 # Time-Series Databases
 
+> **Seviyye:** Advanced ⭐⭐⭐
+
 ## Time-Series Data Nedir?
 
 Zamana gore siralanmis data noquteleri. Her noqute **timestamp + value(s)** ibaretdir.

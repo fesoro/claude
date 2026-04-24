@@ -1,5 +1,7 @@
 # Performance Tuning
 
+> **Seviyye:** Intermediate ⭐⭐
+
 ## MySQL Performance Tuning
 
 ### InnoDB Buffer Pool

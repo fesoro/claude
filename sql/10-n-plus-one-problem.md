@@ -1,5 +1,7 @@
 # N+1 Problem
 
+> **Seviyye:** Beginner ⭐
+
 ## Problem nedir?
 
 1 query ile N neticeni alirsan, sonra her netice ucun ayri-ayri 1 query daha cagirirsan. Cemisi: **1 + N query**.

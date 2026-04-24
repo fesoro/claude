@@ -1,5 +1,7 @@
 # OLAP, Data Warehousing & Columnar Databases
 
+> **Seviyye:** Advanced ⭐⭐⭐
+
 ## OLTP vs OLAP
 
 Database-ler iki ferqli workload ucun dizayn olunur:

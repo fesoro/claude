@@ -1,5 +1,7 @@
 # Indexing (Indeksleme)
 
+> **Seviyye:** Intermediate ⭐⭐
+
 ## Index nedir?
 
 Index - database-de axtarisi suretlendiren data strukturudur. Kitabin arxasindaki index kimi - butun kitabi oxumaq yerine, sehife nomresine baxirsan.

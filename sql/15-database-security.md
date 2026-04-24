@@ -1,5 +1,7 @@
 # Database Security
 
+> **Seviyye:** Intermediate ⭐⭐
+
 ## SQL Injection
 
 En tehlikeli web tehlukesizlik problemi. Istifadecinin daxil etdiyi data SQL query-ye birbaşa daxil olur.

@@ -1,5 +1,7 @@
 # Connection Pooling
 
+> **Seviyye:** Intermediate ⭐⭐
+
 ## Problem
 
 Her database connection yaratmaq bahadir:

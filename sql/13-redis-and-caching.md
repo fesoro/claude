@@ -1,5 +1,7 @@
 # Redis & Caching Strategies
 
+> **Seviyye:** Intermediate ⭐⭐
+
 ## Redis nedir?
 
 In-memory key-value data store. Database, cache, message broker, ve queue kimi istifade olunur.

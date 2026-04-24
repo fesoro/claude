@@ -1,5 +1,7 @@
 # Temporal Data & Slowly Changing Dimensions
 
+> **Seviyye:** Intermediate ⭐⭐
+
 ## Temporal Data Nedir?
 
 Data-nin **zamana gore versiyalarini** saxlama. Yeni "indi nedir?" deyil, "nezaman ne idi?" sualina cavab vermek.

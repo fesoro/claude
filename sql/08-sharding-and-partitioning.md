@@ -1,5 +1,7 @@
 # Sharding & Partitioning
 
+> **Seviyye:** Advanced ⭐⭐⭐
+
 ## Partitioning (Tek server daxilinde)
 
 Boyuk table-i kicik hisselere (partition) bolmek. Data eyni server-dedir, amma fiziki olaraq ayri saxlanilir.
