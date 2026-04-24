@@ -1,7 +1,7 @@
 # 24 — RAG Evaluation və Reranker Qiymətləndirməsi
 
 > **Oxucu kütləsi:** Senior developerlər, ML engineer-lər
-> **Bu faylın 22-dən fərqi:** 22 — reranking və hybrid search mexanikası. Bu fayl — **RAG pipeline-ın EVAL**: RAGAS metrikləri (faithfulness, answer relevance, context precision/recall), retrieval metrikaları (MRR, NDCG, hit@k), reranker qiymətləndirməsi, synthetic eval generation, ablation study, Laravel ground-truth pinning.
+> **Bu faylın 06-dan fərqi:** 06 — reranking və hybrid search mexanikası. Bu fayl — **RAG pipeline-ın EVAL**: RAGAS metrikləri (faithfulness, answer relevance, context precision/recall), retrieval metrikaları (MRR, NDCG, hit@k), reranker qiymətləndirməsi, synthetic eval generation, ablation study, Laravel ground-truth pinning.
 
 ---
 

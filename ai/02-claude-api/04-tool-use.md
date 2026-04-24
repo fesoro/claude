@@ -30,7 +30,7 @@ Bu, aşağıdakıların əsas mexanizmidir:
 - **Agentik AI** — Claude çox mərhələli iş axınını idarə edir
 - **Real-time məlumat** — hava, fond qiymətləri, verilənlər bazası sorğuları
 - **Əməliyyatlar** — e-poçt göndər, qeyd yarat, verilənlər bazasını yenilə
-- **Strukturlu output** — tool-u schema tətbiqedicisi kimi istifadə et (bax fayl 09)
+- **Strukturlu output** — tool-u schema tətbiqedicisi kimi istifadə et (bax fayl 03)
 - **Orkestrləmə** — Claude bir neçə xidməti koordinasiya edir
 
 ```

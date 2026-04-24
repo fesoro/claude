@@ -1115,4 +1115,4 @@ TOPLU OPTİMİZASİYA:
 
 ---
 
-*Əvvəlki: [08 — Tool Use](./08-tool-use.md) | Geri: [İndeks](../README.md)*
+*Əvvəlki: [08 — Tool Use](./04-tool-use.md) | Geri: [İndeks](../README.md)*

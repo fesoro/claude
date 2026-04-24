@@ -1223,4 +1223,4 @@ class InvoiceExtractionPromptTest extends TestCase
 
 ---
 
-*Əvvəlki: [06 — Claude API Bələdçisi](./06-claude-api-guide.md) | Növbəti: [08 — Alət İstifadəsi](./08-tool-use.md)*
+*Əvvəlki: [06 — Claude API Bələdçisi](./01-claude-api-guide.md) | Növbəti: [08 — Alət İstifadəsi](./04-tool-use.md)*

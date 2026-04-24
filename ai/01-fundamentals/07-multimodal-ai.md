@@ -1264,4 +1264,4 @@ Həssas sənədlər üçün (tibbi, hüquqi, maliyyə):
 
 ---
 
-*Əvvəlki: [04 — Temperature və Parametrlər](./04-temperature-parameters.md) | Növbəti: [06 — Claude API Bələdçisi](../02-claude-api/06-claude-api-guide.md)*
+*Əvvəlki: [04 — Temperature və Parametrlər](./04-temperature-parameters.md) | Növbəti: [06 — Claude API Bələdçisi](../02-claude-api/01-claude-api-guide.md)*

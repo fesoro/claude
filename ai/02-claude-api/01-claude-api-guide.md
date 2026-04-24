@@ -981,4 +981,4 @@ Keyfiyyət metriklər:
 
 ---
 
-*Əvvəlki: [05 — Multimodal AI](../01-fundamentals/05-multimodal-ai.md) | Növbəti: [07 — Prompt Engineering](./07-prompt-engineering.md)*
+*Əvvəlki: [05 — Multimodal AI](../01-fundamentals/07-multimodal-ai.md) | Növbəti: [07 — Prompt Engineering](./02-prompt-engineering.md)*

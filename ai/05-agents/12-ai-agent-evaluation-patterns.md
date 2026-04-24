@@ -1,7 +1,7 @@
 # 30 — AI Agent Evaluation Pattern-ləri: Trajectory, End-State, Benchmark
 
 > **Oxucu kütləsi:** Senior developerlər, ML engineer-lər
-> **Bu faylın 28-dən fərqi:** 28 — agent eval ümumi giriş. Bu fayl — **konkret eval pattern-ləri**: reference-based vs LLM-as-judge vs human, trajectory match vs end-state correctness, SWE-bench / AgentBench / Terminal-Bench, Braintrust/Promptfoo dataset inteqrasiyası, CI pipeline, Laravel test setup.
+> **Bu faylın 11-dən fərqi:** 11 — agent eval ümumi giriş. Bu fayl — **konkret eval pattern-ləri**: reference-based vs LLM-as-judge vs human, trajectory match vs end-state correctness, SWE-bench / AgentBench / Terminal-Bench, Braintrust/Promptfoo dataset inteqrasiyası, CI pipeline, Laravel test setup.
 
 ---
 
@@ -186,7 +186,7 @@ Eval-in keyfiyyəti dataset-in keyfiyyəti ilə qaytarılır.
 
 ### Mənbələr
 
-1. **Production traces** — `51-llm-observability.md`-də göstərildiyi kimi, real trafiki promote edin.
+1. **Production traces** — `03-llm-observability.md`-də göstərildiyi kimi, real trafiki promote edin.
 2. **Red-team scenarios** — intentionally hard / adversarial case-lər.
 3. **Edge cases** — uzun input, boş input, multi-language, typo-lu.
 4. **Recent bugs** — hər production bug eval-ə əlavə olunmalıdır (regression test).

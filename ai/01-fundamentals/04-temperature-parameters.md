@@ -1000,4 +1000,4 @@ class TestAIParameters extends Command
 
 ---
 
-*Əvvəlki: [03 — Tokenlər və Kontekst Pəncərələri](./03-tokens-context-window.md) | Növbəti: [05 — Multimodal AI](./05-multimodal-ai.md)*
+*Əvvəlki: [03 — Tokenlər və Kontekst Pəncərələri](./03-tokens-context-window.md) | Növbəti: [05 — Multimodal AI](./07-multimodal-ai.md)*

@@ -1,7 +1,7 @@
 # 52 — Prompt Injection Müdafiəsi: Direkt, İndirekt və Tool-Use Exfiltration
 
 > **Oxucu kütləsi:** Senior developerlər, security engineer-lər
-> **Bu faylın 44-dən fərqi:** 44 — ümumi AI security (OWASP LLM, məlumat sızması). Bu fayl — **xüsusi olaraq prompt injection** üçün: hücum taxonomiyası, Dual-LLM pattern, tool allow-list, privilege separation, output filtering, real kod nümunələri.
+> **Bu faylın 09-dan fərqi:** 09 — ümumi AI security (OWASP LLM, məlumat sızması). Bu fayl — **xüsusi olaraq prompt injection** üçün: hücum taxonomiyası, Dual-LLM pattern, tool allow-list, privilege separation, output filtering, real kod nümunələri.
 
 ---
 
