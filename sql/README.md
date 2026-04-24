@@ -1,142 +1,186 @@
-# Database Knowledge for Senior Software Engineers
+# Database Knowledge for Senior Backend Developers
 
-Bu folder Senior Software Engineer olaraq bilməli olduğun bütün database mövzularını əhatə edir.
+Bu folder Senior Backend Developer (PHP / Laravel və s.) olaraq bilməli olduğun bütün database mövzularını əhatə edir. DBA / pure SQL developer mövzuları (OLAP tuning, gh-ost tooling, query planner hint internals, graph/geospatial niche) buradan çıxarılıb — yalnız backend dev-in sistem dizaynı və query yazarkən faydalanacağı mövzular saxlanılıb.
 
-**Toplam: 62 mövzu** — sadədən mürəkkəbə doğru sıralanmışdır.
+**Toplam: 78 mövzu** — sadədən mürəkkəbə doğru sıralanıb. Fayl nömrələri level-ə görə artır.
 
 ## Seviyyə göstəriciləri
 
-Hər fayl içində **`> **Seviyyə:** X ⭐`** etiketi vardır. Oxumağa başlamazdan əvvəl seviyyəni görə biləcəksən.
+Hər fayl içində **`> **Seviyye:** X ⭐`** etiketi var.
 
 | Göstərici | Kimə uyğundur |
 |-----------|--------------|
-| ⭐ **Beginner** | Database ilə yeni tanış olan, junior developer |
-| ⭐⭐ **Intermediate** | 1-3 illik təcrübə, işləyən mühəndis (mid-level) |
-| ⭐⭐⭐ **Advanced** | 3-5+ il, senior mühəndis |
-| ⭐⭐⭐⭐ **Expert** | Staff / principal səviyyə, DB internals ekspertliyi |
+| ⭐ **Beginner** | DB ilə yeni tanış olan / junior developer |
+| ⭐⭐ **Intermediate** | 1-3 illik təcrübə / mid-level developer |
+| ⭐⭐⭐ **Advanced** | 3-5+ il / senior backend developer |
+| ⭐⭐⭐⭐ **Expert** | Staff / principal səviyyə |
 
 ---
 
-## ⭐ Beginner — Əsaslar
+## ⭐ Beginner (01–25) — Query Language & Fundamental-lar
 
-DB-yə yeni başlayanlar üçün fundamental anlayışlar. Hər senior bunları möhkəm bilməlidir.
+### SQL Keyword-lər & Query Writing
 
-1. [ACID & Transactions](01-acid-and-transactions.md)
-2. [Normalization & Denormalization](06-normalization.md)
-3. [Migrations & Schema Management](16-migrations.md)
-4. [N+1 Problem](10-n-plus-one-problem.md)
-5. [MySQL vs PostgreSQL (müqayisə)](14-mysql-vs-postgresql.md)
+Backend dev-in gündə yazdığı `SELECT/INSERT/UPDATE/DELETE`, JOIN-lər, filter-lər, funksiyalar.
+
+1. [SELECT & Projection Basics](01-select-and-projections.md)
+2. [WHERE Clause & Filter Operators](02-where-and-filter-operators.md)
+3. [ORDER BY, LIMIT & OFFSET](03-order-by-limit-offset.md)
+4. [Aggregate Functions, GROUP BY & HAVING](04-aggregate-group-by-having.md)
+5. [JOIN Types & Practical Usage](05-join-types-usage.md)
+6. [Subqueries, EXISTS, ANY, ALL](06-subqueries-and-exists.md)
+7. [UNION, INTERSECT, EXCEPT](07-union-intersect-except.md)
+8. [CASE Expressions](08-case-expressions.md)
+9. [NULL Handling, COALESCE, NULLIF](09-null-handling-coalesce.md)
+
+### Data Types & Functions
+
+10. [Data Types Overview](10-data-types-overview.md)
+11. [Type Casting & CAST](11-type-casting-and-cast.md)
+12. [String Functions](12-string-functions.md)
+13. [Date/Time Functions & Intervals](13-date-time-functions.md)
+
+### DML & DDL
+
+14. [INSERT Statement](14-insert-statement.md)
+15. [UPDATE Statement](15-update-statement.md)
+16. [DELETE & TRUNCATE](16-delete-and-truncate.md)
+17. [Constraints (PK, FK, UNIQUE, CHECK, NOT NULL, DEFAULT)](17-constraints.md)
+18. [DDL: CREATE / ALTER / DROP TABLE](18-ddl-create-alter-drop-table.md)
+19. [Transaction Commands (BEGIN / COMMIT / ROLLBACK / SAVEPOINT)](19-transaction-commands.md)
+20. [Sequences & AUTO_INCREMENT](20-sequences-auto-increment.md)
+
+### Əsas Konseptlər
+
+21. [ACID & Transactions](21-acid-and-transactions.md)
+22. [Normalization & Denormalization](22-normalization.md)
+23. [Migrations & Schema Management](23-migrations.md)
+24. [N+1 Problem](24-n-plus-one-problem.md)
+25. [MySQL vs PostgreSQL (müqayisə)](25-mysql-vs-postgresql.md)
 
 ---
 
-## ⭐⭐ Intermediate — Gündəlik İş
+## ⭐⭐ Intermediate (26–57) — Gündəlik İş
 
 Mid-level developer-in hər gün istifadə etdiyi mövzular: indexing, query optimization, lock-lar, ORM patternləri.
 
-### SQL Core & Query Language
-6. [Window Functions & CTEs](36-window-functions-and-cte.md)
-7. [JOIN Types & Algorithms](29-join-algorithms.md)
-8. [Set Operations & Advanced GROUP BY (ROLLUP, CUBE, GROUPING SETS)](59-set-operations-advanced-group-by.md)
-9. [JSON, Full-Text Search & Advanced Features](20-advanced-features.md)
-10. [Stored Procedures, Triggers & Views](11-stored-procedures-triggers-views.md)
-11. [Character Encoding & Collation (utf8mb4, UTF8, collation pitfalls)](60-character-encoding-and-collation.md)
-12. [Hierarchical Data / Trees in SQL (Adjacency, Nested Set, Closure)](61-hierarchical-data-trees-in-sql.md)
-
 ### Indexing & Query Performance
-13. [Indexing & Index Algorithms (B-Tree, LSM-Tree)](03-indexing.md)
-14. [Query Optimization & EXPLAIN](04-query-optimization.md)
-15. [Performance Tuning](18-performance-tuning.md)
-16. [Pagination Patterns (Offset, Cursor, Keyset/Seek)](37-pagination-patterns.md)
-17. [Bulk Operations & UPSERT Patterns](38-bulk-operations-and-upsert.md)
-18. [Cursor Operations & Streaming Large Datasets](27-cursors-and-streaming.md)
+
+26. [CREATE INDEX Syntax Basics](26-create-index-syntax-basics.md)
+27. [Indexing & Index Algorithms (B-Tree, LSM-Tree)](27-indexing.md)
+28. [Query Optimization & EXPLAIN](28-query-optimization.md)
+29. [Performance Tuning](29-performance-tuning.md)
+
+### Advanced SQL Features
+
+30. [Window Functions & CTEs](30-window-functions-and-cte.md)
+31. [JOIN Algorithms (Nested Loop, Hash, Merge)](31-join-algorithms.md)
+32. [Set Operations & Advanced GROUP BY (ROLLUP, CUBE, GROUPING SETS)](32-set-operations-advanced-group-by.md)
+33. [JSON, Full-Text Search & Advanced Features](33-advanced-features.md)
+34. [Stored Procedures, Triggers & Views](34-stored-procedures-triggers-views.md)
+35. [Character Encoding & Collation (utf8mb4, pitfalls)](35-character-encoding-and-collation.md)
+36. [Hierarchical Data / Trees in SQL (Adjacency, Nested Set, Closure)](36-hierarchical-data-trees-in-sql.md)
+
+### Pagination & Bulk
+
+37. [Pagination Patterns (Offset, Cursor, Keyset/Seek)](37-pagination-patterns.md)
+38. [Bulk Operations & UPSERT Patterns](38-bulk-operations-and-upsert.md)
+39. [Cursor Operations & Streaming Large Datasets](39-cursors-and-streaming.md)
 
 ### Concurrency & Locking
-19. [Isolation Levels](02-isolation-levels.md)
-20. [Locking & Deadlocks](05-locking-and-deadlocks.md)
-21. [Optimistic Locking & Version Columns](39-optimistic-locking.md)
 
-### Data Management
-22. [Data Modeling & Schema Design](26-data-modeling.md)
-23. [Database Design Patterns](19-design-patterns.md)
-24. [ID Generation Strategies (UUID, ULID, Snowflake)](42-id-generation-strategies.md)
-25. [Foreign Keys Deep Dive](57-foreign-keys-deep.md)
-26. [Soft Deletes Patterns & Pitfalls](40-soft-deletes-patterns.md)
-27. [Temporal Data & Slowly Changing Dimensions](24-temporal-data.md)
-28. [Idempotency Keys & Dedupe Patterns](56-idempotency-keys.md)
+40. [Isolation Levels](40-isolation-levels.md)
+41. [Locking & Deadlocks](41-locking-and-deadlocks.md)
+42. [Optimistic Locking & Version Columns](42-optimistic-locking.md)
+
+### Data Modeling & Patterns
+
+43. [Data Modeling & Schema Design](43-data-modeling.md)
+44. [Database Design Patterns](44-design-patterns.md)
+45. [ID Generation Strategies (UUID, ULID, Snowflake)](45-id-generation-strategies.md)
+46. [Foreign Keys Deep Dive](46-foreign-keys-deep.md)
+47. [Soft Deletes Patterns & Pitfalls](47-soft-deletes-patterns.md)
+48. [Temporal Data & Slowly Changing Dimensions](48-temporal-data.md)
+49. [Idempotency Keys & Dedupe Patterns](49-idempotency-keys.md)
 
 ### Infrastructure & Operations
-29. [Connection Pooling (PgBouncer, ProxySQL)](09-connection-pooling.md)
-30. [Backup & Recovery](17-backup-and-recovery.md)
-31. [Database Monitoring & Observability](25-monitoring-observability.md)
-32. [Database Security](15-database-security.md)
-33. [Database Testing](23-database-testing.md)
+
+50. [Connection Pooling (PgBouncer, ProxySQL)](50-connection-pooling.md)
+51. [Backup & Recovery](51-backup-and-recovery.md)
+52. [Database Monitoring & Observability](52-monitoring-observability.md)
+53. [Database Security](53-database-security.md)
+54. [Database Testing](54-database-testing.md)
 
 ### Caching & ORM
-34. [Redis & Caching Strategies](13-redis-and-caching.md)
-35. [Materialized Views](44-materialized-views.md)
-36. [Eloquent / ORM Internals (Hydration, Chunking, Lazy)](43-eloquent-orm-internals.md)
+
+55. [Redis & Caching Strategies](55-redis-and-caching.md)
+56. [Materialized Views](56-materialized-views.md)
+57. [Eloquent / ORM Internals (Hydration, Chunking, Lazy)](57-eloquent-orm-internals.md)
 
 ---
 
-## ⭐⭐⭐ Advanced — Senior Səviyyə
+## ⭐⭐⭐ Advanced (58–76) — Senior Səviyyə
 
-Senior mühəndisin bilməli olduğu dərin mövzular: distributed systems, storage internals, NoSQL, specialized DBs.
+Senior backend developer-in sistem dizaynı və dərin mühəndislikdə istifadə etdiyi mövzular.
 
 ### Distributed Systems & Scaling
-37. [CAP Theorem & Consistency Models](12-cap-theorem.md)
-38. [Replication (Master-Slave, Master-Master, Logical)](07-replication.md)
-39. [Sharding & Partitioning](08-sharding-and-partitioning.md)
-40. [Database Scaling Strategies](30-database-scaling.md)
-41. [High Availability & Failover (Patroni, Orchestrator, Aurora)](49-high-availability-failover.md)
-42. [Distributed Transactions & Saga Pattern](21-distributed-transactions.md)
-43. [Multi-Tenancy Patterns](41-multi-tenancy-patterns.md)
-44. [Change Data Capture (CDC)](22-change-data-capture.md)
+
+58. [CAP Theorem & Consistency Models](58-cap-theorem.md)
+59. [Replication (Master-Slave, Master-Master, Logical)](59-replication.md)
+60. [Sharding & Partitioning](60-sharding-and-partitioning.md)
+61. [Database Scaling Strategies](61-database-scaling.md)
+62. [High Availability & Failover (Patroni, Aurora)](62-high-availability-failover.md)
+63. [Distributed Transactions & Saga Pattern](63-distributed-transactions.md)
+64. [Multi-Tenancy Patterns](64-multi-tenancy-patterns.md)
+65. [Change Data Capture (CDC)](65-change-data-capture.md)
 
 ### Internals & Deep Concepts
-45. [MVCC Deep Dive (Multi-Version Concurrency Control)](45-mvcc-deep-dive.md)
-46. [Storage Internals (WAL, Buffer Pool, Pages)](58-storage-internals-wal-buffer-pool.md)
-47. [VACUUM, Autovacuum & Bloat (PostgreSQL)](47-vacuum-and-bloat.md)
-48. [PostgreSQL Specific Features (LISTEN/NOTIFY, Advisory Locks, RLS, Arrays)](46-postgresql-specific-features.md)
-49. [Query Hints & Planner Control (MySQL hints, pg_hint_plan)](62-query-hints-and-planner-control.md)
-50. [Database Refactoring (Expand-Contract, Strangler)](50-database-refactoring.md)
-51. [Database Anti-patterns](55-database-anti-patterns.md)
 
-### NoSQL & Specialized Databases
-52. [NoSQL Databases (MongoDB, Cassandra, DynamoDB, Supabase)](28-nosql-databases.md)
-53. [Graph Databases (Neo4j)](35-graph-databases.md)
-54. [Time-Series Databases (TimescaleDB, InfluxDB)](33-time-series-databases.md)
-55. [OLAP, Data Warehousing & Columnar DBs (ClickHouse)](34-olap-data-warehousing.md)
-56. [Geospatial Databases (PostGIS, MySQL Spatial)](51-geospatial-postgis.md)
+66. [MVCC Deep Dive (Multi-Version Concurrency Control)](66-mvcc-deep-dive.md)
+67. [Storage Internals (WAL, Buffer Pool, Pages)](67-storage-internals-wal-buffer-pool.md)
+68. [VACUUM, Autovacuum & Bloat (PostgreSQL)](68-vacuum-and-bloat.md)
+69. [PostgreSQL Specific Features (LISTEN/NOTIFY, Advisory Locks, RLS, Arrays)](69-postgresql-specific-features.md)
+70. [Database Refactoring (Expand-Contract, Strangler)](70-database-refactoring.md)
+71. [Database Anti-patterns](71-database-anti-patterns.md)
 
-### Search & Cloud
-57. [Elasticsearch](31-elasticsearch.md)
-58. [Search Engines: Meilisearch, Algolia, Typesense, Sphinx](32-search-engines.md)
-59. [Cloud Databases (RDS, Aurora, Cloud SQL, PlanetScale, Neon, Supabase)](54-cloud-databases.md)
+### Specialized Databases
+
+72. [NoSQL Databases (MongoDB, Cassandra, DynamoDB, Supabase)](72-nosql-databases.md)
+73. [Time-Series Databases (TimescaleDB, InfluxDB)](73-time-series-databases.md)
+74. [Elasticsearch](74-elasticsearch.md)
+75. [Search Engines: Meilisearch, Algolia, Typesense, Sphinx](75-search-engines.md)
+76. [Cloud Databases (RDS, Aurora, Cloud SQL, PlanetScale, Neon, Supabase)](76-cloud-databases.md)
 
 ---
 
-## ⭐⭐⭐⭐ Expert — Staff/Principal Səviyyə
+## ⭐⭐⭐⭐ Expert (77–78) — Staff / Principal Səviyyə
 
-Dərin ixtisaslaşma tələb edən mövzular: zero-downtime operations, distributed SQL, vector/AI workloads.
-
-60. [Online Schema Changes (gh-ost, pt-osc, pg_repack, zero-downtime DDL)](48-online-schema-changes.md)
-61. [NewSQL & Distributed SQL (CockroachDB, Spanner, TiDB, YugabyteDB)](53-newsql-distributed-sql.md)
-62. [Vector Databases (pgvector, Pinecone, Weaviate, Qdrant, Milvus)](52-vector-databases.md)
+77. [NewSQL & Distributed SQL (CockroachDB, Spanner, TiDB, YugabyteDB)](77-newsql-distributed-sql.md)
+78. [Vector Databases (pgvector, Pinecone, Weaviate, Qdrant, Milvus)](78-vector-databases.md)
 
 ---
 
 ## Oxuma tövsiyələri
 
 ### Junior → Mid keçid (6-12 ay hədəfi)
-Beginner bölməsi + Intermediate-dən: Indexing, Query Optimization, Isolation Levels, Locking, N+1, Connection Pooling, Data Modeling, Backup.
+**Bütün Beginner (01-25)** + Intermediate-dən: Indexing, Query Optimization, Isolation Levels, Locking, N+1, Connection Pooling, Data Modeling, Backup.
 
 ### Mid → Senior keçid (1-3 il hədəfi)
-Bütün Intermediate + Advanced-dən: Replication, Sharding, CAP, MVCC, Distributed Transactions, HA/Failover, NoSQL, CDC.
+Bütün **Intermediate (26-57)** + Advanced-dən: Replication, Sharding, CAP, MVCC, Distributed Transactions, HA/Failover, NoSQL, CDC.
 
 ### Senior → Staff (çoxillik dərinləşmə)
-Bütün Advanced + Expert bölməsi + kənar materiallar (Designing Data-Intensive Applications, PostgreSQL Internals).
+Bütün **Advanced (58-76)** + **Expert (77-78)** + kənar materiallar (Designing Data-Intensive Applications, PostgreSQL Internals).
 
 ### Interview hazırlığı (1-2 ay)
-1. Beginner (tam) → Intermediate (tam)
-2. Advanced-dən: CAP, Replication, Sharding, MVCC, Distributed Transactions, Multi-Tenancy, Anti-patterns
-3. Hər bölmənin sonundakı **Interview sualları** bölməsini keç.
+1. **Beginner (tam)** → Query yazma, DML/DDL, constraints, transactions
+2. **Intermediate core**: Indexing, Optimization, Isolation, Locking, Pagination, UPSERT, Data Modeling, ORM, Caching
+3. **Advanced core**: CAP, Replication, Sharding, MVCC, Distributed Transactions, Multi-Tenancy, Anti-patterns, NoSQL
+4. Hər bölmənin sonundakı **Interview sualları** bölməsini keç
+
+---
+
+## 2026-04-24 Restructure qeydi
+
+- **Əlavə olundu (21 fayl):** Keyword-level query writing mövzuları — SELECT/WHERE/ORDER BY/JOIN/DML/DDL/data-types/functions/constraints/transactions/sequences/create-index syntax.
+- **Silindi (5 fayl):** DBA / SQL developer territory — OLAP data warehousing (data-eng), graph databases (niche), online schema changes tooling (gh-ost DBA ops), geospatial PostGIS (niche), query hints & planner control (DBA tuning).
+- **Yenidən sıralandı:** Bütün fayllar level sırasıyla 01-78 arası nömrələndi.
