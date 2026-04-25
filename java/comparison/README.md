@@ -2,7 +2,7 @@
 
 Bu folder Java və Spring Framework-ü **PHP/Laravel dünyası ilə müqayisə edərək** öyrənmək üçündür. Hər bir mövzu iki hissədən ibarətdir: Java/Spring tərəfi və onun PHP/Laravel ekvivalenti. Bu sənə artıq bildiyin Laravel bilikləri üzərindən Spring-ə keçid etməyə kömək edəcək.
 
-**Cəmi: 133 fayl** (45 dil səviyyəsi + 88 framework səviyyəsi) — sadədən mürəkkəbə doğru sıralanıb. Fayl nömrələri level-ə görə artır.
+**Cəmi: 139 fayl** (47 dil səviyyəsi + 92 framework səviyyəsi) — sadədən mürəkkəbə doğru sıralanıb. Fayl nömrələri level-ə görə artır.
 
 ## Seviyyə göstəriciləri
 
@@ -28,9 +28,9 @@ Hər fayl içində **`> **Seviyye:** X ⭐`** etiketi var.
 
 ---
 
-## Languages (Java vs PHP — Dil Səviyyəsi, 45 fayl)
+## Languages (Java vs PHP — Dil Səviyyəsi, 47 fayl)
 
-### ⭐ Beginner (01–14) — Java syntax və OOP əsasları
+### ⭐ Beginner (01–14, 46–47) — Java syntax və OOP əsasları
 
 Sıfırdan başlayanlar üçün dil fundamentalları.
 
@@ -50,6 +50,8 @@ Sıfırdan başlayanlar üçün dil fundamentalları.
 | 12 | Varislik və polimorfizm | [12-inheritance-and-polymorphism.md](languages/12-inheritance-and-polymorphism.md) |
 | 13 | `equals()`, `hashCode()` və bərabərlik | [13-equals-hashcode-and-equality.md](languages/13-equals-hashcode-and-equality.md) |
 | 14 | Enum-lar | [14-enums.md](languages/14-enums.md) |
+| 46 | Pass by value vs reference | [46-pass-by-value-reference.md](languages/46-pass-by-value-reference.md) |
+| 47 | Method overloading vs overriding | [47-method-overloading-vs-overriding.md](languages/47-method-overloading-vs-overriding.md) |
 
 ### ⭐⭐ Intermediate (15–30) — gündəlik iş mövzuları
 
@@ -103,7 +105,7 @@ Sealed types, pattern matching, reflection, concurrency, async.
 
 ---
 
-## Frameworks (Spring vs Laravel — Framework Səviyyəsi, 88 fayl)
+## Frameworks (Spring vs Laravel — Framework Səviyyəsi, 92 fayl)
 
 ### ⭐ Beginner (01–20) — Spring Boot-a giriş
 
@@ -221,6 +223,15 @@ Microservices, Spring Cloud, reactive, Kafka, Batch, GraphQL, AI, Modulith, AOT.
 | 87 | Spring Modulith | [87-spring-modulith.md](frameworks/87-spring-modulith.md) |
 | 88 | Spring Boot AOT və GraalVM Native Image | [88-spring-boot-aot-native-image.md](frameworks/88-spring-boot-aot-native-image.md) |
 
+### ⭐⭐ Intermediate (89–92) — Spring tələləri (PHP/Laravel devs üçün kritik)
+
+| # | Mövzu | Fayl |
+|---|-------|------|
+| 89 | @Transactional self-invocation gotcha | [89-transactional-self-invocation.md](frameworks/89-transactional-self-invocation.md) |
+| 90 | Lazy loading & N+1 query problemi | [90-lazy-loading-n-plus-one.md](frameworks/90-lazy-loading-n-plus-one.md) |
+| 91 | Circular dependencies & bean initialization | [91-circular-dependencies.md](frameworks/91-circular-dependencies.md) |
+| 92 | @Qualifier & @Primary — çox bean həlli | [92-qualifier-primary.md](frameworks/92-qualifier-primary.md) |
+
 ---
 
 ## Tövsiyə olunan oxuma yolu
@@ -230,7 +241,7 @@ Microservices, Spring Cloud, reactive, Kafka, Batch, GraphQL, AI, Modulith, AOT.
 1. **Languages ⭐ 01–14** (Java syntax, OOP əsasları) — 1–2 həftə
 2. **Frameworks ⭐ 01–20** (Spring Boot ilk addımlar, REST API, validation) — 1–2 həftə
 3. **Languages ⭐⭐ 15–30** (collections, streams, modern Java) — 2–3 həftə
-4. **Frameworks ⭐⭐ 21–48** (JPA, transactions, security, testing, queue) — 3–4 həftə
+4. **Frameworks ⭐⭐ 21–92** (JPA, transactions, security, testing, queue, Spring gotchas) — 3–4 həftə
 5. **Advanced/Expert** mövzularını işin tələb etdiyi ardıcıllıqla oxu.
 
 **Junior Java developer (Spring yenisi)?** → Frameworks 01–20 → 21–48 kifayətdir başlanğıc üçün.
