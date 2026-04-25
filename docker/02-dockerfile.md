@@ -1,5 +1,7 @@
 # Dockerfile
 
+> **Səviyyə (Level):** ⭐ Junior
+
 ## Nədir? (What is it?)
 
 Dockerfile — Docker image yaratmaq üçün instruksiyalar dəsti olan mətn faylıdır. Hər instruksiya image-də yeni bir layer yaradır. Docker `docker build` əmri ilə Dockerfile-ı oxuyur və addım-addım image qurur.

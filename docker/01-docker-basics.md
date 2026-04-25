@@ -1,5 +1,7 @@
 # Docker Əsasları
 
+> **Səviyyə (Level):** ⭐ Junior
+
 ## Nədir?
 
 Docker, tətbiqləri konteynerlərdə paketləmək, göndərmək və işlətmək üçün açıq mənbəli platformadır. Konteyner — tətbiqi bütün asılılıqları ilə birlikdə izolə edilmiş mühitdə işlədən yüngül, portativ vahiddir.
