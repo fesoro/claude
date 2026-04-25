@@ -30,8 +30,6 @@ Azərbaycanlılar üçün ən çox qarışıq düşən ingilis dili məsələlə
 | [to-vs-for.md](to-vs-for.md) | To vs For — ən çox qarışdırılan cüt |
 | [on-time-vs-in-time.md](on-time-vs-in-time.md) | Dəqiq saat vs gec qalmadı |
 | [at-the-end-vs-in-the-end.md](at-the-end-vs-in-the-end.md) | Fiziki son vs nəticədə |
-| [actually-currently-eventually-finally.md](actually-currently-eventually-finally.md) | False friends: actually/currently/eventually/finally |
-
 ---
 
 ## Modal Fellər
@@ -165,7 +163,6 @@ Azərbaycanlılar üçün ən çox qarışıq düşən ingilis dili məsələlə
 | [fun-vs-funny.md](fun-vs-funny.md) | Əyləncəli vs gülməli |
 | [famous-well-known-popular.md](famous-well-known-popular.md) | Tanınma sifətləri (notorious = NEGATİV!) |
 | [efficient-vs-effective.md](efficient-vs-effective.md) | Resurs vs nəticə |
-| [convenient-vs-comfortable.md](convenient-vs-comfortable.md) | Əlverişli vs rahat |
 | [important-significant-crucial-essential.md](important-significant-crucial-essential.md) | Əhəmiyyət sifətləri |
 | [happy-glad-pleased-cheerful.md](happy-glad-pleased-cheerful.md) | Xoşbəxtlik sifətləri |
 | [sad-unhappy-depressed.md](sad-unhappy-depressed.md) | Kədər sifətləri |
@@ -196,8 +193,6 @@ Azərbaycanlılar üçün ən çox qarışıq düşən ingilis dili məsələlə
 | [so-that-vs-in-order-to.md](so-that-vs-in-order-to.md) | Məqsəd bağlayıcıları |
 | [unless-vs-if-not.md](unless-vs-if-not.md) | Şərt bağlayıcıları (hipotetik tələ!) |
 | [when-vs-whenever.md](when-vs-whenever.md) | Zaman bağlayıcıları |
-| [hardly-barely-scarcely.md](hardly-barely-scarcely.md) | "Çətinliklə" zərfləri |
-| [almost-nearly-about.md](almost-nearly-about.md) | Təxmini zərflər |
 | [how-many-vs-how-much.md](how-many-vs-how-much.md) | Sayılan / sayılmayan |
 | [anybody-someone-nobody.md](anybody-someone-nobody.md) | Pronoun (-one / -body) |
 
