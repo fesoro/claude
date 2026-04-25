@@ -4,15 +4,15 @@ Bu repo-da **eyni biznes sistem** üç fərqli texnologiya stack-ində paralel r
 
 | Stack | Yer | Texnologiya | Fayl sayı |
 |-------|-----|-------------|-----------|
-| **Laravel** (orijinal) | [`app-laravel/`](./) | PHP 8.3 + Laravel 13 + Eloquent | ~400 |
-| **Spring Boot** | [`app-spring/`](../app-spring/) | Java 21 + Spring Boot 3.4 + JPA + Hibernate | 268 |
-| **Go** | [`app-go/`](../app-go/) | Go 1.23 + Gin + GORM | 124 |
+| **Laravel** (orijinal) | [`laravel/`](./) | PHP 8.3 + Laravel 13 + Eloquent | ~400 |
+| **Spring Boot** | [`spring/`](../spring/) | Java 21 + Spring Boot 3.4 + JPA + Hibernate | 268 |
+| **Go** | [`golang/`](../golang/) | Go 1.23 + Gin + GORM | 124 |
 
 ## Hər layihənin sənədi
 
-- **Laravel**: [`app-laravel/DOCUMENTATION.md`](./DOCUMENTATION.md)
-- **Spring**: [`app-spring/DOCUMENTATION.md`](../app-spring/DOCUMENTATION.md) — Laravel ↔ Spring müqayisəsi
-- **Go**: [`app-go/DOCUMENTATION.md`](../app-go/DOCUMENTATION.md) — Laravel ↔ Spring ↔ Go müqayisəsi
+- **Laravel**: [`laravel/DOCUMENTATION.md`](./DOCUMENTATION.md)
+- **Spring**: [`spring/DOCUMENTATION.md`](../spring/DOCUMENTATION.md) — Laravel ↔ Spring müqayisəsi
+- **Go**: [`golang/DOCUMENTATION.md`](../golang/DOCUMENTATION.md) — Laravel ↔ Spring ↔ Go müqayisəsi
 
 ## Endpoint nümunələri (3 stack-də eyni)
 
@@ -115,46 +115,46 @@ make down      # dayandır
 Bu 3 layihəni paralel oxumaq üçün tövsiyə:
 
 ### 1. Sadədən başla — Value Object
-- Laravel: `app-laravel/src/Product/Domain/ValueObjects/Money.php`
-- Spring: `app-spring/src/main/java/az/ecommerce/product/domain/valueobject/Money.java`
-- Go: `app-go/internal/product/domain/value_objects.go` (Money struct)
+- Laravel: `laravel/src/Product/Domain/ValueObjects/Money.php`
+- Spring: `spring/src/main/java/az/ecommerce/product/domain/valueobject/Money.java`
+- Go: `golang/internal/product/domain/value_objects.go` (Money struct)
 
 ### 2. Aggregate Root
-- Laravel: `app-laravel/src/Order/Domain/Entities/Order.php`
-- Spring: `app-spring/src/main/java/az/ecommerce/order/domain/Order.java`
-- Go: `app-go/internal/order/domain/order.go`
+- Laravel: `laravel/src/Order/Domain/Entities/Order.php`
+- Spring: `spring/src/main/java/az/ecommerce/order/domain/Order.java`
+- Go: `golang/internal/order/domain/order.go`
 
 ### 3. Command Handler (CQRS)
-- Laravel: `app-laravel/src/Order/Application/Commands/CreateOrder/`
-- Spring: `app-spring/src/main/java/az/ecommerce/order/application/command/createorder/`
-- Go: `app-go/internal/order/application/handlers.go` → `CreateOrderHandler`
+- Laravel: `laravel/src/Order/Application/Commands/CreateOrder/`
+- Spring: `spring/src/main/java/az/ecommerce/order/application/command/createorder/`
+- Go: `golang/internal/order/application/handlers.go` → `CreateOrderHandler`
 
 ### 4. Strategy Pattern (Payment)
-- Laravel: `app-laravel/src/Payment/Domain/Strategies/`
-- Spring: `app-spring/src/main/java/az/ecommerce/payment/domain/strategy/` + `payment/infrastructure/gateway/`
-- Go: `app-go/internal/payment/infrastructure/gateway/gateways.go`
+- Laravel: `laravel/src/Payment/Domain/Strategies/`
+- Spring: `spring/src/main/java/az/ecommerce/payment/domain/strategy/` + `payment/infrastructure/gateway/`
+- Go: `golang/internal/payment/infrastructure/gateway/gateways.go`
 
 ### 5. Saga Pattern
-- Laravel: `app-laravel/src/Order/Domain/Sagas/OrderSaga.php`
-- Spring: `app-spring/src/main/java/az/ecommerce/order/domain/saga/OrderSaga.java`
-- Go: `app-go/internal/order/infrastructure/saga/order_saga.go`
+- Laravel: `laravel/src/Order/Domain/Sagas/OrderSaga.php`
+- Spring: `spring/src/main/java/az/ecommerce/order/domain/saga/OrderSaga.java`
+- Go: `golang/internal/order/infrastructure/saga/order_saga.go`
 
 ### 6. Composition Root (DI)
-- Laravel: `app-laravel/app/Providers/DomainServiceProvider.php`
-- Spring: `app-spring/src/main/java/az/ecommerce/EcommerceApplication.java` + `@Configuration` class-lar
-- Go: `app-go/internal/server/server.go`
+- Laravel: `laravel/app/Providers/DomainServiceProvider.php`
+- Spring: `spring/src/main/java/az/ecommerce/EcommerceApplication.java` + `@Configuration` class-lar
+- Go: `golang/internal/server/server.go`
 
 ## İşə Salma (3 stack-də)
 
 ```bash
 # Laravel
-cd app-laravel && make up && make migrate && make seed
+cd laravel && make up && make migrate && make seed
 
 # Spring (Java 21 lazımdır lokal-da, yaxud tam Docker)
-cd app-spring && make up-all
+cd spring && make up-all
 
 # Go (heç nə lazım deyil — Docker hər şeyi qurur)
-cd app-go && make up-all
+cd golang && make up-all
 
 # Hər biri http://localhost:8080-da işləyir
 # Test: HTTP_EXAMPLES.md

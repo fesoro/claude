@@ -1,58 +1,52 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Ecommerce Laravel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**PHP 8.3 + Laravel 13** ilə yazılmış DDD e-commerce tətbiqi. Eyni biznes sistemin [Spring Boot](../spring/) və [Go](../golang/) versiyaları ilə müqayisəli öyrənmə üçündür.
 
-## Laravel Haqqında
-
-Laravel expressive, elegant sintaksisi olan web application framework-üdür. Biz inanırıq ki, development həqiqətən qane olmaq üçün zövqlü və yaradıcı təcrübə olmalıdır. Laravel çoxlu web layihədə istifadə olunan adi tapşırıqları asanlaşdıraraq development ağrısını aradan qaldırır:
-
-- [Sadə, sürətli routing engine](https://laravel.com/docs/routing).
-- [Güclü dependency injection container](https://laravel.com/docs/container).
-- [Session](https://laravel.com/docs/session) və [cache](https://laravel.com/docs/cache) storage üçün çoxlu backend.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database-dən asılı olmayan [schema migration-lar](https://laravel.com/docs/migrations).
-- [Güclü background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel əlçatandır, güclüdür və böyük, güclü application-lar üçün lazım olan alətləri təqdim edir.
-
-## Laravel Öyrənmək
-
-Laravel-in bütün modern web application framework-ləri arasında ən geniş və əhatəli [sənədləri](https://laravel.com/docs) və video tutorial kitabxanası var — bu da framework ilə başlamağı çox asanlaşdırır.
-
-Əlavə olaraq, [Laracasts](https://laracasts.com) Laravel, modern PHP, unit testing və JavaScript daxil olmaqla müxtəlif mövzularda minlərlə video tutorial ehtiva edir. Bizim əhatəli video kitabxanasına dalaraq bacarıqlarını artır.
-
-Həmçinin [Laravel Learn](https://laravel.com/learn) saytında kiçik dərslərə bax — burada sıfırdan Laravel application qurmağı öyrənərkən PHP əsasları da öyrədilir.
-
-## Agentic Development
-
-Laravel-in proqnozlaşdırıla bilən strukturu və konvensiyaları onu Claude Code, Cursor və GitHub Copilot kimi AI coding agent-ləri üçün ideal edir. AI workflow-unu gücləndirmək üçün [Laravel Boost](https://laravel.com/docs/ai) quraşdır:
+## Quick Start
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+make up       # docker servisləri qaldır
+make migrate  # DB migration
+make seed     # test data
 ```
 
-Boost agent-ə Laravel application qurmağa kömək edən 15+ tool və skill təqdim edir — best practice-lərə əməl edərək.
+Endpoint: `http://localhost:8080/api/health`
 
-## Töhfə vermək (Contributing)
+## Sənədləşdirmə
 
-Laravel framework-ünə töhfə verməyi düşündüyünüz üçün təşəkkür edirik! Töhfə təlimatı [Laravel sənədlərində](https://laravel.com/docs/contributions) yerləşir.
+- [DOCUMENTATION.md](DOCUMENTATION.md) — tam texniki sənəd (arxitektura, DDD, CQRS, pattern-lər)
+- [COMPARISON.md](COMPARISON.md) — 3 stack müqayisəsi (Laravel ↔ Spring ↔ Go)
+- [HTTP_EXAMPLES.md](HTTP_EXAMPLES.md) — bütün endpoint-lər curl nümunəsi ilə
 
-## Davranış Kodeksi (Code of Conduct)
+## Texnoloji Stack
 
-Laravel icmasının hər kəs üçün hoşgəldin olmasını təmin etmək üçün [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct) ilə tanış olub ona riayət edin.
+| Texnologiya | Versiya | Məqsəd |
+|-------------|---------|--------|
+| PHP | 8.3 | Proqramlaşdırma dili |
+| Laravel | 13 | Framework |
+| MySQL | 8.0 | Əsas verilənbazası |
+| Redis | Latest | Cache, session, queue, distributed lock |
+| RabbitMQ | 3-management | Message broker |
+| Nginx | Latest | Reverse proxy |
+| Docker + Compose | Latest | Konteynerləşdirmə |
+| Mailpit | Latest | Dev mühitdə email testi |
 
-## Təhlükəsizlik Zəiflikləri
+## Arxitektura
 
-Laravel daxilində təhlükəsizlik zəifliyi aşkar etsəniz, xahiş olunur [taylor@laravel.com](mailto:taylor@laravel.com) ünvanına Taylor Otwell-ə e-poçt göndərin. Bütün təhlükəsizlik zəiflikləri operativ həll olunacaq.
+5 Bounded Context — **User · Product · Order · Payment · Notification** + Shared Kernel
 
-## Lisenziya
+Hər context-də DDD layered struktur:
+```
+src/{Context}/
+├── Domain/        ← saf business logic, framework-dən asılı deyil
+├── Application/   ← CQRS handler-lər, DTO-lar
+└── Infrastructure/ ← Eloquent model, controller, gateway
+```
 
-Laravel framework [MIT lisenziyası](https://opensource.org/licenses/MIT) altında açıq mənbəli software-dir.
+## Test
+
+```bash
+make test                          # bütün testlər
+php artisan test --filter=OrderTest  # tək test
+php artisan test --coverage          # coverage
+```

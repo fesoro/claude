@@ -5,7 +5,7 @@ Bu layihə eyni DDD e-commerce tətbiqinin **Go (Gin + GORM)** versiyasıdır. M
 ## Layihə quruluşu
 
 ```
-app-go/
+golang/
 ├── cmd/
 │   ├── api/main.go          ← HTTP server entry (Spring main class əvəzi)
 │   └── cli/main.go          ← Artisan / Spring Shell əvəzi (cobra)
@@ -216,7 +216,7 @@ Bütün route-lar `/api/` prefix-i ilə:
 ## İşə salma
 
 ```bash
-cd /home/orkhan/Projects/claude/app-go
+cd app/golang
 
 # 1. Docker (tövsiyə olunur)
 docker compose up --build

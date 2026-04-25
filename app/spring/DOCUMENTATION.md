@@ -17,7 +17,7 @@ Bu layihə `/home/orkhan/Projects/claude/app/` qovluğundakı **Laravel 13 DDD e
 ## Layihə Quruluşu
 
 ```
-app-spring/
+spring/
 ├── pom.xml                             ← Laravel: composer.json
 ├── docker-compose.yml                  ← eyni 6 servis
 ├── Dockerfile                          ← JDK 21 multi-stage

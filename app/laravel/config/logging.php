@@ -1,5 +1,6 @@
 <?php
 
+use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -116,6 +117,32 @@ return [
             'driver' => 'errorlog',
             'level' => env('LOG_LEVEL', 'debug'),
             'replace_placeholders' => true,
+        ],
+
+        // JSON format — ELK stack (Elasticsearch + Logstash + Kibana) üçün
+        // StructuredLogger bu channel-i istifadə edir.
+        //
+        // Docker mühitində: stdout → Docker log driver → Filebeat → Elasticsearch
+        // Lokal mühitdə:    stdout-u birbaşa görürsən
+        //
+        // Hər log sətri bir JSON object-dir (NDJSON):
+        //   {"message":"order.created","context":{...},"level_name":"INFO","datetime":"..."}
+        //
+        // .env-də:
+        //   LOG_CHANNEL=structured          → bütün logları JSON et
+        //   LOG_STRUCTURED_STREAM=php://stdout → Docker/K8s üçün (standart)
+        //   LOG_STRUCTURED_STREAM=/var/log/app/app.json → fayla yaz (Filebeat üçün)
+        'structured' => [
+            'driver' => 'monolog',
+            'handler' => StreamHandler::class,
+            'handler_with' => [
+                'stream' => env('LOG_STRUCTURED_STREAM', 'php://stdout'),
+                'level' => env('LOG_LEVEL', 'debug'),
+            ],
+            'formatter' => JsonFormatter::class,
+            'formatter_with' => [
+                'appendNewline' => true,
+            ],
         ],
 
         'null' => [

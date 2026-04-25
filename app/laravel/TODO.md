@@ -14,7 +14,7 @@
 - [x] Read Model / Projection — CQRS oxuma üçün denormalized cədvəl
 - [x] API Versioning — /api/v1/orders
 - [x] Pagination — Product və Order siyahıları
-- [ ] Structured Logging — JSON format, ELK stack üçün
+- [x] Structured Logging — JSON format, ELK stack üçün
 - [x] Health Check endpoint — DB, RabbitMQ, Redis yoxlaması
 - [x] CORS config
 - [x] Scheduler — Outbox, CircuitBreaker cron
