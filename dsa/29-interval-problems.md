@@ -1,4 +1,4 @@
-# Interval Problems (Araliq Meseleler)
+# Interval Problems (Senior)
 
 ## Konsept (Concept)
 

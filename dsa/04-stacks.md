@@ -1,4 +1,4 @@
-# Stacks (Yiginlar)
+# Stacks (Junior)
 
 ## Konsept (Concept)
 

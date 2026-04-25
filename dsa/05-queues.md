@@ -1,4 +1,4 @@
-# Queues (Novbeler)
+# Queues (Junior)
 
 ## Konsept (Concept)
 

@@ -1,4 +1,4 @@
-# Matrix Problems (Matris Meseleleri)
+# Matrix Problems (Senior)
 
 ## Konsept (Concept)
 

@@ -1,95 +1,112 @@
-# Data Structures & Algorithms - Interview Hazirliqi
+# Data Structures & Algorithms
 
-Bu qovluq muessise mulaqqatlarina hazirliq ucun Data Structures ve Algorithms movzularini ehateli sekilde ehate edir.
+Bu qovluq müsahibə hazırlığı üçün DSA mövzularını Junior-dan Architect-ə qədər sistemli şəkildə əhatə edir.
 
-## Movzular (Topics)
+---
 
-### Esaslar (Fundamentals)
-| # | Movzu | Fayl |
+## Səviyyələr
+
+| Level | Nişan | Xarakteristika |
+|-------|-------|----------------|
+| Junior | ⭐ | Fundamental data structures, Big O |
+| Middle | ⭐⭐ | Klassik patterns, sort/search |
+| Senior | ⭐⭐⭐ | Trees, Graphs, DP, axtarış alqoritmləri |
+| Lead | ⭐⭐⭐⭐ | Advanced topics, interview mastery |
+
+---
+
+## Mövzular
+
+### ⭐ Junior
+
+| # | Mövzu | Fayl |
 |---|-------|------|
 | 01 | Big O Notation | [01-big-o-notation.md](01-big-o-notation.md) |
-| 16 | Recursion | [16-recursion.md](16-recursion.md) |
-| 24 | Bit Manipulation | [24-bit-manipulation.md](24-bit-manipulation.md) |
-| 33 | Math Problems | [33-math-problems.md](33-math-problems.md) |
-| 37 | Kadane's Algorithm | [37-kadanes-algorithm.md](37-kadanes-algorithm.md) |
-
-### Data Structures
-| # | Movzu | Fayl |
-|---|-------|------|
 | 02 | Arrays | [02-arrays.md](02-arrays.md) |
 | 03 | Linked Lists | [03-linked-lists.md](03-linked-lists.md) |
 | 04 | Stacks | [04-stacks.md](04-stacks.md) |
 | 05 | Queues | [05-queues.md](05-queues.md) |
 | 06 | Hash Tables | [06-hash-tables.md](06-hash-tables.md) |
-| 07 | Trees - Basics | [07-trees-basics.md](07-trees-basics.md) |
-| 08 | Trees - Advanced | [08-trees-advanced.md](08-trees-advanced.md) |
-| 09 | Heaps | [09-heaps.md](09-heaps.md) |
-| 27 | Union-Find | [27-union-find.md](27-union-find.md) |
-| 38 | Segment Tree - Advanced | [38-segment-tree-advanced.md](38-segment-tree-advanced.md) |
-| 44 | Skip List | [44-skip-list.md](44-skip-list.md) |
 
-### Graphs
-| # | Movzu | Fayl |
-|---|-------|------|
-| 10 | Graphs - Basics | [10-graphs-basics.md](10-graphs-basics.md) |
-| 11 | Graphs - Advanced | [11-graphs-advanced.md](11-graphs-advanced.md) |
-| 12 | Graphs - MST | [12-graphs-mst.md](12-graphs-mst.md) |
-| 28 | Topological Sort | [28-topological-sort.md](28-topological-sort.md) |
-| 42 | Network Flow | [42-network-flow.md](42-network-flow.md) |
+### ⭐⭐ Middle
 
-### Sorting & Searching
-| # | Movzu | Fayl |
+| # | Mövzu | Fayl |
 |---|-------|------|
-| 13 | Sorting - Basic | [13-sorting-basic.md](13-sorting-basic.md) |
-| 14 | Sorting - Advanced | [14-sorting-advanced.md](14-sorting-advanced.md) |
-| 15 | Searching | [15-searching.md](15-searching.md) |
+| 07 | Recursion | [07-recursion.md](07-recursion.md) |
+| 08 | Two Pointers | [08-two-pointers.md](08-two-pointers.md) |
+| 09 | Sliding Window | [09-sliding-window.md](09-sliding-window.md) |
+| 10 | Prefix Sum | [10-prefix-sum.md](10-prefix-sum.md) |
+| 11 | Binary Search Patterns | [11-binary-search-patterns.md](11-binary-search-patterns.md) |
+| 12 | Sorting - Basic | [12-sorting-basic.md](12-sorting-basic.md) |
+| 13 | Sorting - Advanced | [13-sorting-advanced.md](13-sorting-advanced.md) |
+| 14 | Searching | [14-searching.md](14-searching.md) |
+| 15 | String Algorithms | [15-string-algorithms.md](15-string-algorithms.md) |
 
-### Algoritm Numuleri (Algorithm Patterns)
-| # | Movzu | Fayl |
-|---|-------|------|
-| 17 | Dynamic Programming | [17-dynamic-programming.md](17-dynamic-programming.md) |
-| 18 | DP Classic Problems | [18-dp-classic-problems.md](18-dp-classic-problems.md) |
-| 19 | Greedy Algorithms | [19-greedy-algorithms.md](19-greedy-algorithms.md) |
-| 20 | Backtracking | [20-backtracking.md](20-backtracking.md) |
-| 21 | Sliding Window | [21-sliding-window.md](21-sliding-window.md) |
-| 22 | Two Pointers | [22-two-pointers.md](22-two-pointers.md) |
-| 23 | Binary Search Patterns | [23-binary-search-patterns.md](23-binary-search-patterns.md) |
-| 26 | Divide and Conquer | [26-divide-and-conquer.md](26-divide-and-conquer.md) |
-| 36 | LeetCode Patterns | [36-leetcode-patterns.md](36-leetcode-patterns.md) |
-| 39 | Advanced DP | [39-advanced-dp.md](39-advanced-dp.md) |
-| 40 | Meet in the Middle | [40-meet-in-the-middle.md](40-meet-in-the-middle.md) |
+### ⭐⭐⭐ Senior
 
-### String & Matrix
-| # | Movzu | Fayl |
+| # | Mövzu | Fayl |
 |---|-------|------|
-| 25 | String Algorithms | [25-string-algorithms.md](25-string-algorithms.md) |
+| 16 | Trees - Basics | [16-trees-basics.md](16-trees-basics.md) |
+| 17 | Trees - Advanced | [17-trees-advanced.md](17-trees-advanced.md) |
+| 18 | Heaps | [18-heaps.md](18-heaps.md) |
+| 19 | Trie | [19-trie.md](19-trie.md) |
+| 20 | Divide and Conquer | [20-divide-and-conquer.md](20-divide-and-conquer.md) |
+| 21 | Greedy Algorithms | [21-greedy-algorithms.md](21-greedy-algorithms.md) |
+| 22 | Backtracking | [22-backtracking.md](22-backtracking.md) |
+| 23 | Dynamic Programming | [23-dynamic-programming.md](23-dynamic-programming.md) |
+| 24 | DP Classic Problems | [24-dp-classic-problems.md](24-dp-classic-problems.md) |
+| 25 | Graphs - Basics | [25-graphs-basics.md](25-graphs-basics.md) |
+| 26 | Graphs - Advanced | [26-graphs-advanced.md](26-graphs-advanced.md) |
+| 27 | Topological Sort | [27-topological-sort.md](27-topological-sort.md) |
+| 28 | Union-Find | [28-union-find.md](28-union-find.md) |
 | 29 | Interval Problems | [29-interval-problems.md](29-interval-problems.md) |
 | 30 | Matrix Problems | [30-matrix-problems.md](30-matrix-problems.md) |
-| 41 | Advanced String Algorithms | [41-advanced-string-algorithms.md](41-advanced-string-algorithms.md) |
-| 43 | Line Sweep & Geometry | [43-line-sweep-geometry.md](43-line-sweep-geometry.md) |
-
-### Xususi Movzular (Special Topics)
-| # | Movzu | Fayl |
-|---|-------|------|
 | 31 | Monotonic Stack/Queue | [31-monotonic-stack-queue.md](31-monotonic-stack-queue.md) |
-| 32 | Prefix Sum | [32-prefix-sum.md](32-prefix-sum.md) |
-| 34 | Design Problems | [34-design-problems.md](34-design-problems.md) |
-| 35 | Complexity Cheatsheet | [35-complexity-cheatsheet.md](35-complexity-cheatsheet.md) |
-| 45 | Interview Strategy (UMPIRE) | [45-interview-strategy.md](45-interview-strategy.md) |
+| 32 | Kadane's Algorithm | [32-kadanes-algorithm.md](32-kadanes-algorithm.md) |
 
-## Oxuma Plani (Study Plan)
+### ⭐⭐⭐⭐ Lead
 
-### Hefte 1-2: Esaslar
-- Big O, Arrays, Linked Lists, Stacks, Queues, Hash Tables
+| # | Mövzu | Fayl |
+|---|-------|------|
+| 33 | Bit Manipulation | [33-bit-manipulation.md](33-bit-manipulation.md) |
+| 34 | Math Problems | [34-math-problems.md](34-math-problems.md) |
+| 35 | Design Problems | [35-design-problems.md](35-design-problems.md) |
+| 36 | Graphs - MST | [36-graphs-mst.md](36-graphs-mst.md) |
+| 37 | Advanced Dynamic Programming | [37-advanced-dp.md](37-advanced-dp.md) |
+| 38 | Advanced String Algorithms | [38-advanced-string-algorithms.md](38-advanced-string-algorithms.md) |
+| 39 | Segment Tree - Advanced | [39-segment-tree-advanced.md](39-segment-tree-advanced.md) |
+| 40 | Complexity Cheatsheet | [40-complexity-cheatsheet.md](40-complexity-cheatsheet.md) |
+| 41 | LeetCode Patterns | [41-leetcode-patterns.md](41-leetcode-patterns.md) |
+| 42 | Interview Strategy | [42-interview-strategy.md](42-interview-strategy.md) |
 
-### Hefte 3-4: Agaclar ve Qraflar
-- Trees (basic + advanced), Heaps, Graphs (basic + advanced + MST)
+---
 
-### Hefte 5-6: Sorting, Searching, Recursion
-- Basic/Advanced sorting, Binary search, Recursion, Divide & Conquer
+## Oxuma Planları
 
-### Hefte 7-8: Algoritm Patterns
-- Dynamic Programming, Greedy, Backtracking, Sliding Window, Two Pointers
+### Interview Hazırlığı (8 həftə)
 
-### Hefte 9-10: Xususi Movzular + Tekmillesdirme
-- String algorithms, Intervals, Matrix, Design problems, Review
+**Həftə 1-2: Foundations**
+→ 01–06 (Big O, Arrays, Linked Lists, Stacks, Queues, Hash Tables)
+
+**Həftə 3: Patterns**
+→ 07–11 (Recursion, Two Pointers, Sliding Window, Prefix Sum, Binary Search)
+
+**Həftə 4: Sort & Search**
+→ 12–15 (Sorting, Searching, String Algorithms)
+
+**Həftə 5: Trees & Graphs**
+→ 16–19, 25–28 (Trees, Heaps, Trie, Graphs, Topological Sort, Union-Find)
+
+**Həftə 6: Algorithms**
+→ 20–24 (Divide & Conquer, Greedy, Backtracking, DP)
+
+**Həftə 7: Special Topics**
+→ 29–32 (Intervals, Matrix, Monotonic Stack, Kadane)
+
+**Həftə 8: Advanced + Review**
+→ 33–42 (Bit Manipulation, Design, MST, Advanced DP, LeetCode Patterns, Interview Strategy)
+
+### Tez Təkrar (2 həftə)
+
+→ 40 (Complexity Cheatsheet) → 41 (LeetCode Patterns) → 42 (Interview Strategy)  
+→ Sonra zəif hissələri hədəfləyin

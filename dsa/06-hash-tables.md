@@ -1,4 +1,4 @@
-# Hash Tables (Hash Cedvelleri)
+# Hash Tables (Junior)
 
 ## Konsept (Concept)
 

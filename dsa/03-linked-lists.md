@@ -1,4 +1,4 @@
-# Linked Lists (Elaqeli Siyahilar)
+# Linked Lists (Junior)
 
 ## Konsept (Concept)
 

@@ -1,4 +1,4 @@
-# Monotonic Stack/Queue (Monoton Yığın/Növbə)
+# Monotonic Stack/Queue (Senior)
 
 ## Konsept (Concept)
 

@@ -1,4 +1,4 @@
-# Arrays (Massivler)
+# Arrays (Junior)
 
 ## Konsept (Concept)
 

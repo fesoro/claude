@@ -1,4 +1,4 @@
-# Big O Notation
+# Big O Notation (Junior)
 
 ## Konsept (Concept)
 
