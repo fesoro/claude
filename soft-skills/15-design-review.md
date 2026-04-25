@@ -1,4 +1,4 @@
-# Design Review
+# Design Review (Senior)
 
 ## Niyə vacibdir? (Why it matters)
 Design review (bəzən RFC review və ya technical review adlanır) bahalı səhvlərin qarşısının alındığı yerdir. Bir saatlıq design review həftələrlə implementasiyanı xilas edə bilər. Senior+ mühəndislər üçün əla design review apara bilmək — və yaxşı review dəvət edən sənəd yaza bilmək — ən yüksək effekt verən bacarıqlardan biridir.

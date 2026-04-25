@@ -1,4 +1,4 @@
-# Tech Lead Role
+# Tech Lead Role (Lead)
 
 ## Niyə vacibdir? (Why it matters)
 Tech lead — sənin dəyərinin artıq kod sətirləri ilə yox, komanda nəticəsi ilə ölçüldüyü ilk roldur. Yaxşı tech lead 5 mühəndisi 7 mühəndis kimi işlədir. Pis tech lead isə 5 mühəndisi 3 mühəndis kimi işlədir. Rol kritikdir, çünki əksər şirkətlər güclü IC-ləri təlim vermədən bu rola keçirir və bu keçid çətindir.

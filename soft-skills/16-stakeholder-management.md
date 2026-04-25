@@ -1,4 +1,4 @@
-# Stakeholder Management
+# Stakeholder Management (Senior)
 
 ## Niyə vacibdir? (Why it matters)
 Stakeholder — uğuru sənin işindən asılı olan və ya sənin işinə təsir edən hər kəsdir — PM, dizayner, rəhbərlik, müştərilər, digər eng komandaları. Stakeholderləri yaxşı idarə edən senior mühəndislər komandasını xaosdan qoruyur: scope creep, qeyri-real deadline-lar, bir-birinə zidd prioritetlər. Stakeholderləri idarə etməyən senior mühəndislər reaktiv olur, həddən artıq öhdəlik götürür və tükənir.

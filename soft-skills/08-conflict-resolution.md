@@ -1,4 +1,4 @@
-# Conflict Resolution
+# Conflict Resolution (Middle)
 
 ## Niyə vacibdir? (Why it matters)
 Ağıllı və qayğıkeş mühəndislərin olduğu hər komandada konflikt qaçılmazdır. Sual "konfliktdən necə qaçmaq olar" deyil — "komandanın daha güclü çıxması üçün konflikti necə keçmək olar" sualıdır. Konfliktdən qaçan seniorlar məsələlərin böyüyüb partlamasına icazə verir. Hər fikir ayrılığını yuxarıya qaldıran seniorlar münasibətləri yandırır. Konflikti adlandıran, faktiki qalan və irəliyə yol tapan senior isə təşkilat boyu etibar qazanır.

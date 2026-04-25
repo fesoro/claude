@@ -1,4 +1,4 @@
-# Cross-Team Communication
+# Cross-Team Communication (Senior)
 
 ## Niyə vacibdir? (Why it matters)
 Senior işin çoxu cross-team-dir. Bir feature-in çıxması üçün product, design, data, DevOps və digər iki mühəndislik komandası lazımdır. Bu sərhədlər arasında ünsiyyət qura bilən mühəndis yalnız öz komandasında danışan mühəndisdən 10 dəfə daha faydalı olur. Şirkətlər senior+ səviyyədə insan tutanda buna qismən komandalar arası koordinasiya vergisini azaltmaq üçün edir.

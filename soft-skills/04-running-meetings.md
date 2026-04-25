@@ -1,4 +1,4 @@
-# Running Meetings
+# Running Meetings (Middle)
 
 ## Niyə vacibdir? (Why it matters)
 Pis iclaslar komandanın təqvimində ən bahalı şeydir. 8 mühəndisin agenda-sız 1 saatlıq iclası şirkətə bir günlük mühəndislik dəyərindədir. Sıx iclas aparan senior mühəndis bütün komandaya həftədə saatlar qazandırır. Səliqəsiz iclas aparan senior mühəndis məhsuldarlığı aktiv şəkildə dağıdır — hətta iclas "doğru mövzu haqqında" olsa belə.

@@ -1,4 +1,4 @@
-# Resigning
+# Resigning Professionally (Senior)
 
 ## Niyə vacibdir? (Why it matters)
 İşdən necə ayrılmağın işə necə girdiyindən daha vacibdir. Keçmiş menecerlər referenslərə çevrilir. Keçmiş komanda yoldaşları gələcək həmkarlara çevrilir — texnologiyada eyni insanlar onilliklər boyu şirkətlər arasında dövr edir. Peşəkar istefa növbəti 10 il üçün sənin reputasiyanı qurur. Səliqəsiz və ya emosional istefa isə sənin heç vaxt görmədiyin sakit yollarla səni izləyə bilər.

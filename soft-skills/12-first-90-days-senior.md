@@ -1,4 +1,4 @@
-# First 90 Days as a Senior Engineer
+# First 90 Days as a Senior Engineer (Senior)
 
 ## Niyə vacibdir? (Why it matters)
 Sənin ilk 90 günün növbəti 2+ il üçün sənin barəndə olan narrativi müəyyən edir. Gəlib dinləyən, konteksti öyrənən və etibar qazanan mühəndis "daha çox istədiyimiz senior" olur. Gəlib dərhal kodu tənqid edən və hər şeyi dəyişməyə çalışan mühəndis isə "dinləməyən senior" olur. Hər ikisi ağıllıdır. Hər ikisi eyni kodu yazır. Fərq ilk 90 gündədir.

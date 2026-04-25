@@ -1,4 +1,4 @@
-# Mentoring Juniors
+# Mentoring Juniors (Senior)
 
 ## Niyə vacibdir? (Why it matters)
 Mentorluq senior mühəndis üçün ən yüksək effekt verən fəaliyyətlərdən biridir. Yaxşı mentorluq etdiyin bir junior 6 ay ərzində 10 dəfə daha məhsuldar olur, sənin sərf etdiyin vaxt isə azdır. Senior müsahibələri çox vaxt mentorluq barədə sual verir, çünki şirkətlər bilir ki, güclü seniorlar yalnız özlərini yox, bütün komandanı artırır.

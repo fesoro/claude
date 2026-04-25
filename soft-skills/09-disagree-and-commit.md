@@ -1,4 +1,4 @@
-# Disagree and Commit
+# Disagree and Commit (Middle)
 
 ## Niyə vacibdir? (Why it matters)
 "Disagree and commit" — Amazon-un liderlik prinsipidir və senior mühəndislik mədəniyyətində geniş istifadə olunur. Mənası belədir: qərar verilərkən tam şəkildə danış. Qərar verildikdən sonra isə tam şəkildə commit et — hətta razı olmasan belə. Bu prinsip mühəndislikdəki ən çətin gərginliklərdən birini həll edir: arqumenti uduzduğunda komandanı bloklamadan necə güclü fikrə sahib ola bilərsən?

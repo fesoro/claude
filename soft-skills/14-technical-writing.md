@@ -1,4 +1,4 @@
-# Technical Writing
+# Technical Writing (Senior)
 
 ## Niyə vacibdir? (Why it matters)
 Yazı senior mühəndislər üçün scale-etmə alətidir. Sən hər iclasda, hər kanalda, hər komandada ola bilməzsən — amma sənin yazın ola bilər. Yaxşı ADR 5 il ərzində 50 mühəndis tərəfindən oxunur. Yaxşı yazılmış post-mortem eyni outage-ın üç dəfə təkrarının qarşısını alır. Yaxşı yazan mühəndis yalnız yaxşı danışan mühəndisdən daha çox təsir göndərir.

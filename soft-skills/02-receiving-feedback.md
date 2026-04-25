@@ -1,4 +1,4 @@
-# Receiving Feedback
+# Receiving Feedback (Junior)
 
 ## Niyə vacibdir? (Why it matters)
 Egosuz feedback qəbul etmək bacarığı seniorluğun ən böyük siqnallarından biridir. Junior mühəndislər çox vaxt özlərini müdafiə edir; senior mühəndislər dinləyir, sual verir və hərəkətə keçir. Müsahibəçilər xüsusi olaraq bunu yoxlayır — onlar bilir ki, feedback qəbul edə bilməyən mühəndis böyüyə bilmir və daha çox məsuliyyətə etibar edilə bilmir.

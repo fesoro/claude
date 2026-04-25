@@ -1,4 +1,4 @@
-# Giving Feedback
+# Giving Feedback (Middle)
 
 ## Niyə vacibdir? (Why it matters)
 Feedback senior mühəndisin verə biləcəyi ən vacib şeydir. Kod müvəqqətidir; feedback karyeraları formalaşdırır. Həftəlik yaxşı feedback alan mühəndis illik review-da eşidəndən 3 dəfə sürətli böyüyür. Əksər insanlar feedback verməyə qorxur, ona görə də bunu yaxşı edənlər dərhal seçilir.

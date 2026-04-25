@@ -1,4 +1,4 @@
-# Async Communication
+# Async Communication (Junior)
 
 ## Niyə vacibdir? (Why it matters)
 Uzaqdan və ya paylanmış mühəndis üçün async ünsiyyət əsas bacarıqdır. Sən iclasdakı səsindən daha çox Slack mesajların, PR açıqlamaların və sənədlərinlə qiymətləndirilirsən. Aydın yazan senior mühəndis istənilən timezone-da istənilən komanda ilə işləyə bilər. Yaza bilməyən senior isə bottleneck olur, çünki hər sual canlı iclas tələb edir.

@@ -1,4 +1,4 @@
-# One-on-Ones
+# One-on-Ones (Middle)
 
 ## Niyə vacibdir? (Why it matters)
 1:1-lər mühəndisin təqvimindəki ən yüksək effekt verən iclasdır. Menecerinlə 1:1 — feedback aldığın, scope müzakirə etdiyin və karyeranı yönləndirdiyin yerdir. Öz report-larınla (tech lead kimi varsa) bu etibar qurduğun, blokları üzə çıxartdığın və insanları inkişaf etdirdiyin yerdir. 1:1-ləri "sadəcə status iclası" kimi qəbul edən senior mühəndislər böyük dəyəri masada qoyub gedirlər.

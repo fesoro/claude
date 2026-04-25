@@ -1,4 +1,4 @@
-# Estimation
+# Estimation (Middle)
 
 ## Niyə vacibdir? (Why it matters)
 Estimation senior mühəndislikdəki ən çətin və ən görünən bacarıqlardan biridir. Estimatları davamlı qaçırsan, PM və rəhbərlik qarşısında etibarını itirirsən — kodun nə qədər yaxşı olmasından asılı olmayaraq. Çox şişirdilmiş estimatlar biznesi yavaşladır. Sıx estimatlar komandanı yandırır. Bunu davamlı şəkildə idarə edən senior mühəndis daha böyük layihələrə etibar qazanır.

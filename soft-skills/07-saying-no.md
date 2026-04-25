@@ -1,4 +1,4 @@
-# Saying No
+# Saying No (Middle)
 
 ## Niyə vacibdir? (Why it matters)
 "Yes" əksər mühəndislər üçün default reflekdir. Anında faydalı və təhlükəsiz hiss olunur. Amma hər şeyə "yes" demək məhz seniorların tükənib, həddən artıq öhdəlik götürüb, etibarsız olmasının səbəbidir. "No, and here's the trade-off" deyə bilən senior mühəndisə daha çox etibar olunur, çünki onun "yes"-i həqiqətən nə isə deməkdir.

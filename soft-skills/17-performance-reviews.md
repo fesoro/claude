@@ -1,4 +1,4 @@
-# Performance Reviews
+# Performance Reviews (Senior)
 
 ## Niyə vacibdir? (Why it matters)
 Performance review ilin ən böyük karyera hadisəsidir. Promotion-lar, maaş və sənin növbəti rolun buna bağlıdır. Zəif self-review yazan mühəndis etdiyi iddianı qədər — yəni çox az — qazanır. Kəskin, sübuta əsaslanan self-review yazan mühəndis isə çox vaxt iddiasını qazanır. Əlbəttə, əsl iş vacibdir, amma paketləmə əksər mühəndislərin qəbul etmək istədiyindən daha vacibdir.

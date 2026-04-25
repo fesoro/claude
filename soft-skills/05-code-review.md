@@ -1,4 +1,4 @@
-# Code Review
+# Code Review (Middle)
 
 ## Niyə vacibdir? (Why it matters)
 Code review senior mühəndislərin öz zövqünü göstərdiyi, juniorları öyrətdiyi və kod bazasını qoruduğu əsas yerdir. Yaxşı review prodakşna çıxmadan əvvəl buglari tutur, komanda içində biliyi yayır və insanların kodu pushlamaqdan qorxmadığı mədəniyyət qurur. Pis review mədəniyyəti qorxu yaradır, deliveri yavaşladır və juniorlara öz işlərini gizlətdirir.

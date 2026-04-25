@@ -1,4 +1,4 @@
-# Influence Without Authority
+# Influence Without Authority (Lead)
 
 ## Niyə vacibdir? (Why it matters)
 Senior və staff mühəndislərin nadir hallarda tabeliyində insanlar olur. Buna baxmayaraq onlar təşkilat üzrə dəyişikliyə liderlik etməlidirlər — standartlar, arxitektura, işə qəbul, proseslər. Bu "authority olmadan təsir etmək"-dir: əmr verməklə yox, inandırma, sübut və etibar vasitəsilə işləri həyata keçirmək. Şirkətlər staff/principal namizədlərini getdikcə daha çox məhz bu bacarığa görə qiymətləndirir, çünki bu rolun ən çətin hissəsidir.
