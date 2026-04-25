@@ -1,4 +1,4 @@
-# Post-mortem Template
+# Post-mortem Template (Lead)
 
 ## Məqsəd
 İncident-in yazılı qeydidir, həlldən sonra yayılır. Nə baş verdiyini, niyə, nə öyrəndiyimizi və nəyi dəyişəcəyimizi qeyd edir. Blameless. Konkret. Sahibli.

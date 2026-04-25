@@ -1,4 +1,4 @@
-# Redis SPOF (Single Point of Failure)
+# Redis SPOF (Senior)
 
 ## Problem (nəyə baxırsan)
 Redis aşağıdır və ya əlçatmazdır. Bütün tətbiqin donur və ya xəta verir. Niyə? Çünki Redis səssizcə çoxlu məsuliyyəti yığmışdı: cache, session store, queue broker, lock manager, rate limiter. Düşəndə hamısını özü ilə aparır — əgər bunun üçün arxitektura qurmamışdınsa, tam outage olur.

@@ -1,4 +1,4 @@
-# DB Connection Exhaustion
+# DB Connection Exhaustion (Middle)
 
 ## Problem (nəyə baxırsan)
 Verilənlər bazası yeni connection-ları qəbul etmir. Tətbiq xətaları:

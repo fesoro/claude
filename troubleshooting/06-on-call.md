@@ -1,4 +1,4 @@
-# On-Call
+# On-Call (Middle)
 
 ## Problem (nəyə baxırsan)
 On-call rotation mühəndislik reliability-sinin real olduğu yerdir. Yaxşı edildikdə, mühəndislik mədəniyyətinin məhsuldar hissəsidir. Pis edildikdə burnout, alert fatique və heç kim cavab vermədiyi üçün uzanan incident-lərdir. Bu playbook shift handoff-ları, alert fatique, kompensasiya, alətlər və eskalasiyanı əhatə edir.

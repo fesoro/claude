@@ -1,4 +1,4 @@
-# Config Change Disaster
+# Config Change Disaster (Senior)
 
 ## Problem (nəyə baxırsan)
 Kimsə production-da environment variable və ya config dəyərini dəyişdi. Dəyişiklik zərərsiz görünürdü. 5 dəqiqə sonra sayt yanır. Config dəyişiklikləri real incident-lərin təəccüblü dərəcədə böyük hissəsinə səbəb olur — çox vaxt kod dəyişikliklərindən də çox.

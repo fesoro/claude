@@ -1,4 +1,4 @@
-# Is It My Service?
+# Is It My Service? (Junior)
 
 ## Problem (nə görürsən)
 Alert sənin servisində işə düşdü. Amma error rate spike-nın səbəbi upstream və ya downstream olan nə isə ola bilər. Bütün komandanı oyatmadan əvvəl bir suala cavab verməlisən: bu həqiqətən mənim servisimdir, yoxsa mən başqasının outage-nin qurbanıyam?

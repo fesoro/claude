@@ -1,4 +1,4 @@
-# OPcache Disaster
+# OPcache Disaster (Middle)
 
 ## Problem (nə görürsən)
 OPcache yanlış getdi. Ya deploy-dan sonra köhnə kod verir, ya reset olundu və recompile edərkən CPU spike verdi, ya da `validate_timestamps=0` o mənaya gəldi ki, yeni kodun heç vaxt effekt etmədi. OPcache PHP performansı üçün vacibdir amma deploy fəlakətlərinin tez-tez səbəbidir.

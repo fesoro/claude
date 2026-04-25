@@ -1,4 +1,4 @@
-# PHP Memory Leak
+# PHP Memory Leak (Middle)
 
 ## Problem (nə görürsən)
 Uzun müddət işləyən PHP prosesləri saatlar və ya günlər ərzində yaddaşı yeyir. Nəticədə OS OOM-kill edir və ya `Allowed memory size ... exhausted` xətası alırsan. Tipik olaraq görürsən:

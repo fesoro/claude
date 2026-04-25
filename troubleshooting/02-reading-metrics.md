@@ -1,4 +1,4 @@
-# Reading Metrics
+# Reading Metrics (Junior)
 
 ## Problem (nə görürsən)
 Grafana və ya Datadog dashboard. Bir neçə panel. Xətlər yuxarı və ya aşağı gedir. Sən bu panelləri tez və doğru oxumalısan ki, servisinə nə baş verdiyini başa düşəsən. Qrafiki səhv oxumaq incident-də dəqiqələri itirir və komandanı yanlış istiqamətə yönəldir.

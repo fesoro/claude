@@ -1,4 +1,4 @@
-# Alert Quality
+# Alert Quality (Junior)
 
 ## Məqsəd
 Alert-lər bahadır. Hər page diqqəti kəsir, kimisə oyadır, diqqətə xərclənir. Səs-küylü alert-lər susdurulur və sonra real incident-ləri qaçırır. Yaxşı alert keyfiyyəti davamlı on-call-ın təməlidir. Bu playbook alert dizayn prinsiplərini, review cadence-ini və ümumi tələləri əhatə edir.

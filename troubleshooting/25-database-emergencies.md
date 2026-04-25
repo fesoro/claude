@@ -1,4 +1,4 @@
-# Database Emergencies
+# Database Emergencies (Senior)
 
 ## Problem (nəyə baxırsan)
 Verilənlər bazası hər production stack-in ən qorxulu hissəsidir. Problem olduqda çox vaxt sadəcə "restart edib təkrar cəhd et" deyə bilmirsən — data risk altındadır. Bu playbook replikasiya lag, lock contention, uzun işləyən query-lər və replica promotion-u əhatə edir.

@@ -1,4 +1,4 @@
-# Queue Backlog
+# Queue Backlog (Middle)
 
 ## Problem (nə görürsən)
 Laravel queue-nda minlərlə pending job var və boşalmır. İstifadəçilər fərq edir: email gec gəlir, bildirişlər itir, webhook deliveries gecikir. Horizon dashboard qırmızıdır. Redis memory qalxır, çünki job-lar yığılır.

@@ -1,4 +1,4 @@
-# Binary Search Debugging
+# Binary Search Debugging (Senior)
 
 ## Problem (nə görürsən)
 Bug var. Harada olduğunu bilmirsən. Çox namizəd var: çox commit, çox müştəri, çox zaman pəncərəsi, çox feature flag. Hər birini bir-bir oxumaq O(n)-dir. Binary search səni O(log n)-də oraya çatdırır. Bu ən az qiymətləndirilən debug texnikalarından biridir.

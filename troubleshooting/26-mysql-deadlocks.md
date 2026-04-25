@@ -1,4 +1,4 @@
-# MySQL Deadlocks
+# MySQL Deadlocks (Senior)
 
 ## Problem (nəyə baxırsan)
 Tətbiq log-ları `Deadlock found when trying to get lock; try restarting transaction` (SQLSTATE 40001, error 1213) göstərir. Bəzi transaction-lar təsadüfi uğursuz olur. InnoDB iki transaction-ın bir-birini bloklamasını aşkar etdi və həll etmək üçün birini kill etdi.

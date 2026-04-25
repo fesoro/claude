@@ -1,4 +1,4 @@
-# Action Items
+# Action Items (Lead)
 
 ## Məqsəd
 Post-mortem-lər yalnız action item-lər həqiqətən edilirsə dəyərlidir. Hər post-mortem bir siyahı ilə bitir; əksər siyahılar 2 həftə ərzində unudulur. Yaxşı action item-lərin intizamı — SMART, izlənən, izləmə ilə — təşkilatın öyrənməsini və ya təkrarlamasını müəyyən edir.

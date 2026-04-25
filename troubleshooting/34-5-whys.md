@@ -1,4 +1,4 @@
-# 5 Whys
+# 5 Whys (Lead)
 
 ## Məqsəd
 Əsas səbəbin analizi texnikası. 1930-cu illərdə Toyota-da Sakichi Toyoda tərəfindən inkişaf etdirilib, indi lean manufacturing-də standartdır və software engineering-də geniş qəbul edilib. Səth simptomlarından struktur səbəblərə keçmək üçün "niyə" sualını təkrarən ver.

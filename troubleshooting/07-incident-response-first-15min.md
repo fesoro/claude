@@ -1,4 +1,4 @@
-# Incident Response: First 15 Minutes
+# Incident Response: First 15 Minutes (Middle)
 
 ## Problem (nə görürsən)
 Page işə düşdü. PagerDuty/Opsgenie səni oyatdı. Dashboard qırmızıdır. Slack "sayt işləmir?" mesajları ilə dolur. Səhnədə ilk insan sənsən. Növbəti 15 dəqiqə bunun qısa hekayə, yoxsa uzun hekayə olacağını müəyyən edir.

@@ -1,4 +1,4 @@
-# Log Analysis Patterns
+# Log Analysis Patterns (Middle)
 
 ## Problem (nə görürsən)
 Nə isə sınıb. Log-lar sənin əsas dəlilindir. Amma scale-də log-lar düşmən mətn divarına bənzəyir: saatda 5GB, qarışıq formatlar, təkrarlanan sətirlər, stack trace-lər araya qarışıb. Hər sual üçün bütün ELK stack-i dartmadan tez gəzməyin işləyən alət toplusu lazımdır.

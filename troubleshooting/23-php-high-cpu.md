@@ -1,4 +1,4 @@
-# PHP High CPU
+# PHP High CPU (Senior)
 
 ## Problem (nə görürsən)
 PHP prosesləri tam yüklənib. Load average qalxır. Latency qalxır. Request-lər növbələnir. Ya PHP-FPM worker-larının hamısı məşğuldur, ya da queue worker bir şey üzərində hot-spin edir.

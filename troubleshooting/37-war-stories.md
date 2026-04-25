@@ -1,4 +1,4 @@
-# War Stories: Famous Industry Incidents
+# War Stories: Famous Industry Incidents (Architect)
 
 ## Məqsəd
 Texnologiyada ən böyük, ən publik outage-lərdən öyrənmək. Aşağıdakı hər incident yaxşı sənədləşdirilib; hər biri davamlı bir şey öyrədir. PHP/Laravel dev-ləri birbaşa tətbiq olunan dərslər çıxara bilərlər.

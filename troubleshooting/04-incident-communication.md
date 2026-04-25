@@ -1,4 +1,4 @@
-# Incident Communication
+# Incident Communication (Junior)
 
 ## Problem (nə görürsən)
 Sayt yanır. Mühəndislər başı aşağı debug edir. Bu arada: support müştərilərə nə isə demək istəyir, CEO tweet görüb, status səhifəsi 40 dəqiqədir yenilənməyib. Kommunikasiya uğursuz olursa, incident qavrayışda reallıqdan daha uzun sürür və bug düzəldiləndən sonra belə etibar aşınır.

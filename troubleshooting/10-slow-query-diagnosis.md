@@ -1,4 +1,4 @@
-# Slow Query Diagnosis
+# Slow Query Diagnosis (Middle)
 
 ## Problem (nə görürsən)
 Database yavaşdır. Və ya konkret bir query yavaşdır. Hər halda, hansı query-nin, niyə və necə düzəltməyin tapmalısan. MySQL slow log, `EXPLAIN`, query digest və Laravel-spesifik alətlər sənin dostlarındır.

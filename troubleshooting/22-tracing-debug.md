@@ -1,4 +1,4 @@
-# Tracing Debug
+# Tracing Debug (Senior)
 
 ## Problem (nə görürsən)
 Bir request yavaş və ya fail olur. Log-lar sənə hər servisdə nə baş verdiyini deyir, amma səbəb zəncirini asanca göstərmir. Metriklər aqreqat davranışı göstərir, amma ayrı-ayrı request-ləri yox. Sənə distributed tracing lazımdır: bir request-in bir çox servis boyunca axışının görünüşü, zamanın harada getdiyini dəqiq göstərir.

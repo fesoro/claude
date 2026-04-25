@@ -1,4 +1,4 @@
-# Incident Commander (IC)
+# Incident Commander (Lead)
 
 ## Problem (nə görürsən)
 Incident açılır. Bir neçə mühəndis qoşulur. Kimsə otağı idarə etməlidir, yoxsa xaos olur: paralel debug, təkrarlanan iş, rollback-ı kim qərar verir, status səhifəsini kim yeniləyir — bilinmir. O adam Incident Commander-dir.

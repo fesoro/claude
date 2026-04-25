@@ -1,4 +1,4 @@
-# Migration Gone Wrong
+# Migration Gone Wrong (Senior)
 
 ## Problem (nəyə baxırsan)
 Kimsə production-da database migration işlətdi. İndi nəsə qırılıb — ya migration hələ də işləyir və kritik cədvəli lock edir, ya bitib amma səssizcə app-i qırıb, ya da qismən tətbiq olunub və schema uyğunsuzdur.

@@ -1,4 +1,4 @@
-# PHP-FPM Emergency
+# PHP-FPM Emergency (Middle)
 
 ## Problem (nə görürsən)
 PHP-FPM pool tükənib. Nginx istifadəçilərə 502/504 qaytarır. Hər worker məşğuldur və yeni request-lər növbələnir və ya rədd olunur. FPM log-ları "reached pm.max_children" xəbərdarlığını göstərir. Latency sadə endpoint-lər üçün belə göyə qalxır.

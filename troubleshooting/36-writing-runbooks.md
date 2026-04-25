@@ -1,4 +1,4 @@
-# Writing Runbooks
+# Writing Runbooks (Architect)
 
 ## Məqsəd
 Runbook — bilinən ssenari üçün əvvəlcədən yazılmış cavabdır. Yaxşı runbook-lar saat 3 panikasını 10 dəqiqəlik prosedura çevirir. Pis runbook-lar köhnədir və ya yoxdur, on-call-ı sıfırdan cavab icad etməyə məcbur edir.

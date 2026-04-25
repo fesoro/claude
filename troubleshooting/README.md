@@ -2,58 +2,116 @@
 
 Senior-lər junior-lardan ən çox prod incident-lərdə fərqlənir. Bu folder:
 
-- **Incident anında** nə etməli (panic yoxdur, adım-adım)
+- **Incident anında** nə etməli (panic yoxdur, addım-addım)
 - **Tez-tez rast gələn fail pattern-ləri** və onların həlli
 - **PHP/Laravel-ə spesifik** production debug texnikaları
 - **Post-mortem və post-incident** proses
 
-## Fayllar
+---
 
-### Incident anında
-1. [Incident response — ilk 15 dəqiqə](incident-response-first-15min.md) — Səhifəyə gələndə nə etməli
-2. [Severity səviyyələri (SEV1–SEV4)](severity-levels.md) — Nə zaman CEO-nu oyatmalı
-3. [Incident elan etmək](declaring-incident.md) — Kimə xəbər, necə kommunikasiya
-4. [Incident zamanı kommunikasiya](incident-communication.md) — Müştəri, rəhbərlik, komanda update-ləri
-5. [Incident commander rolu](incident-commander.md) — Koordinatorluq rolu
+## Junior ⭐
 
-### Diaqnoz
-6. [Is it my service? — Triage axını](is-it-my-service.md) — "Mənimdir, yoxsa upstream-də?" təyin etmək
-7. [Log analizi pattern-ləri](log-analysis-patterns.md) — grep, jq, strukturlaşmış log-lar
-8. [Metric oxumaq (Grafana/Prometheus)](reading-metrics.md) — RED, USE, Four Golden Signals
-9. [Distributed tracing debug](tracing-debug.md) — Hansı servis günahkar?
-10. [Binary search debug](binary-search-debugging.md) — Hansı commit, hansı deploy, hansı feature flag?
+Hər developer bilməlidir.
 
-### PHP/Laravel production
-11. [PHP memory leak diaqnozu](php-memory-leak.md) — Uzun işləyən worker-lər, daemon
-12. [PHP yüksək CPU](php-high-cpu.md) — XHProf, Blackfire production-da
-13. [Gecə saat 3-də slow query](slow-query-diagnosis.md) — EXPLAIN, pt-query-digest, index-siz query
-14. [Queue ilişib / backlog](queue-backlog.md) — Horizon, Supervisor, ilişmiş worker-lər
-15. [Cache stampede / thundering herd](cache-stampede.md) — Lock, probabilistic early expiration
-16. [OPcache fəlakəti](opcache-disaster.md) — Restart, file-based, preloading tələləri
-17. [PHP-FPM pool təcili tuning](php-fpm-emergency.md) — pm.max_children, timeout
-18. [Database connection tükəndi](db-connection-exhaustion.md) — PgBouncer, connection pooling həlləri
+| # | Fayl | Mövzu |
+|---|------|-------|
+| 01 | [01-severity-levels.md](01-severity-levels.md) | Severity Levels (SEV1–SEV4) — nə zaman kim oyandırılır |
+| 02 | [02-reading-metrics.md](02-reading-metrics.md) | Metric Oxumaq — RED, USE, Four Golden Signals |
+| 03 | [03-is-it-my-service.md](03-is-it-my-service.md) | Is It My Service? — triage axını |
+| 04 | [04-incident-communication.md](04-incident-communication.md) | Incident Communication — müştəri, komanda update-ləri |
+| 05 | [05-alert-quality.md](05-alert-quality.md) | Alert Quality — simptom vs səbəb, action-lı alert |
 
-### Database
-19. [Database təcili halları](database-emergencies.md) — Read replica lag, lock contention, replication qırılması
-20. [Miqrasiya səhv getdi](migration-gone-wrong.md) — Lock-lar, uzun ALTER, rollback
-21. [Redis SPOF kimi](redis-spof.md) — Redis düşdü, failover, data itkisi
-22. [MySQL deadlock fırtınası](mysql-deadlocks.md) — Diaqnoz et, azalt, retry
+---
 
-### Deploy və rollback
-23. [Pis deploy rollback](rollback-strategies.md) — Blue-green, canary, feature flag kill
-24. [Migration rollback](migration-rollback.md) — Forward-only fəlsəfəsi vs real həyat
-25. [Config dəyişikliyi fəlakəti](config-change-disaster.md) — Env var dəyişikliyi prod-u yıxdı
+## Middle ⭐⭐
 
-### Post-incident
-26. [Post-mortem template](post-mortem-template.md) — Günahsız (blameless) struktur
-27. [5 Whys texnikası](5-whys.md) — Kök səbəb analizi
-28. [Action item-lərin davamı](action-items.md) — Gecə saat 3-də verilən sözlər
-29. [Ümumi war stories](war-stories.md) — Sənayedəki real incident-lər və dərslər
+Prod-da işləyən developer-lər üçün.
 
-### On-call
-30. [On-call ən yaxşı təcrübələr](on-call.md) — Shift handoff, runbook, alert fatigue
-31. [Yaxşı runbook yazmaq](writing-runbooks.md) — Gecə 3-ə uyğun struktur
-32. [Alert keyfiyyəti](alert-quality.md) — Səs-küylü, action-lı, simptom vs səbəb
+| # | Fayl | Mövzu |
+|---|------|-------|
+| 06 | [06-on-call.md](06-on-call.md) | On-Call — shift handoff, runbook, alert fatigue |
+| 07 | [07-incident-response-first-15min.md](07-incident-response-first-15min.md) | Incident Response: İlk 15 Dəqiqə — səhifə gələndə nə etməli |
+| 08 | [08-declaring-incident.md](08-declaring-incident.md) | Incident Elan Etmək — kimə xəbər, kommunikasiya |
+| 09 | [09-log-analysis-patterns.md](09-log-analysis-patterns.md) | Log Analysis Patterns — grep, jq, strukturlaşmış log-lar |
+| 10 | [10-slow-query-diagnosis.md](10-slow-query-diagnosis.md) | Slow Query Diagnosis — EXPLAIN, pt-query-digest |
+| 11 | [11-ssl-certificate-issues.md](11-ssl-certificate-issues.md) | SSL Certificate Issues — expire, renewal, Let's Encrypt |
+| 12 | [12-disk-space-full.md](12-disk-space-full.md) | Disk Space Full — log accumulation, inode tükənməsi |
+| 13 | [13-php-memory-leak.md](13-php-memory-leak.md) | PHP Memory Leak — uzun işləyən worker-lər, daemon |
+| 14 | [14-queue-backlog.md](14-queue-backlog.md) | Queue Backlog — Horizon, Supervisor, ilişmiş worker-lər |
+| 15 | [15-opcache-disaster.md](15-opcache-disaster.md) | OPcache Disaster — köhnə kod, deploy reset, preload tələləri |
+| 16 | [16-php-fpm-emergency.md](16-php-fpm-emergency.md) | PHP-FPM Emergency — pm.max_children, timeout tuning |
+| 17 | [17-db-connection-exhaustion.md](17-db-connection-exhaustion.md) | DB Connection Exhaustion — PgBouncer, pooling həlləri |
+| 18 | [18-rollback-strategies.md](18-rollback-strategies.md) | Rollback Strategies — blue-green, canary, feature flag kill |
+
+---
+
+## Senior ⭐⭐⭐
+
+Mürəkkəb diaqnoz və sistem-level düşüncə.
+
+| # | Fayl | Mövzu |
+|---|------|-------|
+| 19 | [19-migration-gone-wrong.md](19-migration-gone-wrong.md) | Migration Gone Wrong — lock contention, uzun ALTER, rollback |
+| 20 | [20-config-change-disaster.md](20-config-change-disaster.md) | Config Change Disaster — env var dəyişikliyi prod-u yıxdı |
+| 21 | [21-binary-search-debugging.md](21-binary-search-debugging.md) | Binary Search Debugging — hansı commit, deploy, feature flag? |
+| 22 | [22-tracing-debug.md](22-tracing-debug.md) | Distributed Tracing Debug — hansı servis günahkar? |
+| 23 | [23-php-high-cpu.md](23-php-high-cpu.md) | PHP High CPU — XHProf, Blackfire production-da |
+| 24 | [24-cache-stampede.md](24-cache-stampede.md) | Cache Stampede — lock, probabilistic early expiration |
+| 25 | [25-database-emergencies.md](25-database-emergencies.md) | Database Emergencies — replica lag, lock contention, replication |
+| 26 | [26-mysql-deadlocks.md](26-mysql-deadlocks.md) | MySQL Deadlocks — diaqnoz, azaltma, retry |
+| 27 | [27-redis-spof.md](27-redis-spof.md) | Redis SPOF — Redis düşdü, failover, data itkisi |
+| 28 | [28-migration-rollback.md](28-migration-rollback.md) | Migration Rollback — forward-only fəlsəfəsi vs real həyat |
+| 29 | [29-third-party-service-failure.md](29-third-party-service-failure.md) | Third-Party Service Failure — Stripe/S3/email provider düşdü |
+| 30 | [30-oom-kills.md](30-oom-kills.md) | OOM Kills — Linux OOM killer, container limits, memory leak |
+| 31 | [31-network-timeout-storms.md](31-network-timeout-storms.md) | Network Timeout Storms — kaskad timeout, circuit breaker |
+
+---
+
+## Lead ⭐⭐⭐⭐
+
+Incident idarəetməsi, proses, komandalararası koordinasiya.
+
+| # | Fayl | Mövzu |
+|---|------|-------|
+| 32 | [32-incident-commander.md](32-incident-commander.md) | Incident Commander — koordinator rolu, qərar vermə |
+| 33 | [33-post-mortem-template.md](33-post-mortem-template.md) | Post-mortem Template — blameless struktur |
+| 34 | [34-5-whys.md](34-5-whys.md) | 5 Whys — kök səbəb analizi texnikası |
+| 35 | [35-action-items.md](35-action-items.md) | Action Items — gecə saat 3-də verilən sözlər |
+
+---
+
+## Architect ⭐⭐⭐⭐⭐
+
+Sistemi incident-dən öncə düzgün qurmaq.
+
+| # | Fayl | Mövzu |
+|---|------|-------|
+| 36 | [36-writing-runbooks.md](36-writing-runbooks.md) | Writing Runbooks — gecə 3-ə uyğun runbook strukturu |
+| 37 | [37-war-stories.md](37-war-stories.md) | War Stories — sənayedəki real incident-lər və dərslər |
+
+---
+
+## Reading Paths
+
+### Yeni başlayan üçün (Junior → solid Middle)
+01 → 02 → 03 → 04 → 07 → 09 → 10 → 13 → 14 → 18
+
+### On-call keşik üçün hazırlıq
+01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 18 → 33 → 34
+
+### PHP/Laravel prod incident-ləri
+10 → 11 → 12 → 13 → 14 → 15 → 16 → 17 → 23 → 27
+
+### Database emergency triage
+10 → 17 → 19 → 25 → 26 → 27 → 28
+
+### Sistemli düşünmə (Senior yolu)
+21 → 22 → 24 → 29 → 30 → 31 → 32 → 33 → 34 → 36
+
+### Müsahibə hazırlığı
+02 → 07 → 21 → 33 → 34 → 37
+
+---
 
 ## Əsas düşüncə tərzi
 

@@ -1,4 +1,4 @@
-# Migration Rollback
+# Migration Rollback (Senior)
 
 ## Problem (nəyə baxırsan)
 Schema migration deploy etdin, nəsə qırıldı və instinkt deyir "migration-ı rollback et". Bu adətən SƏHV instinktdir. Production-da migration rollback təhlükəlidir — data məhv edə bilər, səni yarım-vəziyyətdə qoya bilər, və ya vəziyyəti orijinal problemdən də pisləşdirə bilər.

@@ -1,4 +1,4 @@
-# Declaring an Incident
+# Declaring an Incident (Middle)
 
 ## Problem (nə görürsən)
 Nə isə sınıb. Qərar verməlisən: bunu sakitcə düzəltmi, yoxsa kanal, IC, status səhifəsi və comms ilə formal incident elan etməli? Bu qərar vacibdir çünki elan etmək əlavə iş deməkdir, amma elan etməmək o deməkdir ki, qeyd yoxdur, koordinasiya yoxdur, post-mortem yoxdur.

@@ -1,4 +1,4 @@
-# Cache Stampede
+# Cache Stampede (Senior)
 
 ## Problem (nə görürsən)
 Populyar cache dəyəri vaxtı keçir. Növbəti request miss görür və database-ə gedir. Cache-i doldurmazdan əvvəl, 100 digər request də miss verir. İndi 100 eyni DB query eyni vaxtda işləyir. Database əzilir. Response time-lar yuxarı qalxır. Daha çox istifadəçi retry edir, bu da vəziyyəti pisləşdirir. Bu cache stampede-dir (həmçinin "thundering herd" və ya "dogpile" adlanır).

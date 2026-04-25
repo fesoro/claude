@@ -1,4 +1,4 @@
-# Rollback Strategies
+# Rollback Strategies (Middle)
 
 ## Problem (nəyə baxırsan)
 Pis bir şey deploy etdin. İstifadəçilər təsirlənib. Tez geri qaytarmalısan. Sual "rollback etməliyik?" deyil — sual "hansı rollback mexanizmi ən sürətli VƏ təhlükəsizdir?"-dir. Bəzi mexanizmlər saniyələrlədir; digərləri orijinal bug-dan daha çox ziyan verir.

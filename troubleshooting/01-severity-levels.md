@@ -1,4 +1,4 @@
-# Severity Levels
+# Severity Levels (Junior)
 
 ## Problem (nə görürsən)
 Alert işə düşdü. Onu ilk 60 saniyədə təsnif etməlisən ki, doğru insanlar oyansın və doğru kommunikasiya kanalları işə düşsün. SEV-i səhv təsnif etmək istənilən istiqamətdə bahadır — çox aşağı desən sayt yanır, insanlar yatır; çox yüksək desən kiçik kosmetik bug üçün CTO-nu oyadırsan.
