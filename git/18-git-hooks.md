@@ -1,8 +1,12 @@
-# Git Hooks
+# Git Hooks (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Git hooks, Git-in müəyyən hadisələr (events) zamanı avtomatik işlədilən script-lərdir. Commit etmək, push etmək, merge etmək kimi əməliyyatlardan əvvəl və ya sonra custom script-lər icra edə bilərsiniz. Hooks `.git/hooks/` qovluğunda saxlanır.
+
+## Niyə Vacibdir
+
+Lint, test, security scan-ları CI-dan əvvəl local-da tutmaq "shift left" prinsipinin əsasıdır — problemi yerindəcə tapıb düzəltmək CI pipeline gözləməkdən sürətlidir. Laravel Pint, PHPStan, PHP-CS-Fixer-i commit-dən avtomatik işlətmək kod keyfiyyətini artırır. `--no-verify` ilə atlanıla bilsə də, hooks komanda üçün first line of defense rolunu oynayır və CI-da eyni yoxlamaların dublikatı kimi çalışaraq developer feedback loop-unu qısaldır.
 
 ```
 Git Hook İcra Nöqtələri:
@@ -148,7 +152,7 @@ echo "All checks passed. Pushing..."
 exit 0
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Nümunə 1: Husky + lint-staged (Node.js/Laravel Mix)
 
@@ -434,7 +438,7 @@ project/
 └── grumphp.yml          ← GrumPHP istifadə edərsə
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Tam PHP Pre-Commit Setup
 
@@ -542,6 +546,57 @@ exit 0
     }
 }
 ```
+
+## Praktik Tapşırıqlar
+
+1. **Pre-commit hook: Laravel Pint**
+   ```bash
+   # .git/hooks/pre-commit
+   #!/bin/bash
+   ./vendor/bin/pint --test
+   if [ $? -ne 0 ]; then
+       echo "Pint xətaları var. Əvvəl düzəlt."
+       exit 1
+   fi
+   ```
+   ```bash
+   chmod +x .git/hooks/pre-commit
+   ```
+
+2. **commit-msg hook: Conventional Commits**
+   ```bash
+   # .git/hooks/commit-msg
+   #!/bin/bash
+   MSG=$(cat "$1")
+   PATTERN="^(feat|fix|docs|chore|refactor|test|style)(\(.+\))?: .+"
+   if ! echo "$MSG" | grep -qE "$PATTERN"; then
+       echo "Commit mesajı formatı yanlışdır!"
+       echo "Nümunə: feat(auth): add JWT refresh token"
+       exit 1
+   fi
+   ```
+
+3. **Husky + lint-staged (Node.js proyektdə)**
+   ```bash
+   npm install --save-dev husky lint-staged
+   npx husky init
+   # .husky/pre-commit:
+   npx lint-staged
+   ```
+   ```json
+   // package.json
+   "lint-staged": {
+     "*.php": ["./vendor/bin/pint", "git add"]
+   }
+   ```
+
+4. **Hook-ları komanda ilə paylaş**
+   ```bash
+   mkdir .githooks
+   # hook-ları ora köçür
+   git config core.hooksPath .githooks
+   # .githooks/ repo-ya commit et
+   ```
 
 ## Interview Sualları
 
@@ -677,3 +732,8 @@ CI/CD (server, tam):
   - PHPUnit (bütün testlər)
   - Security audit
 ```
+
+## Əlaqəli Mövzular
+
+- [12-git-config.md](12-git-config.md) — hooksPath konfiqurasiyası
+- [26-conventional-commits-semantic-release.md](26-conventional-commits-semantic-release.md) — commit format standartı

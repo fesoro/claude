@@ -1,8 +1,12 @@
-# Git Performance və Böyük Repozitoriyalar
+# Git Performance in Large Repos (Lead)
 
-## Nədir? (What is it?)
+## İcmal
 
 Böyük repozitoriyalar (Google, Microsoft, Facebook kimi nəhəng kod bazaları) Git-in default konfiqurasiyası ilə işləmir – `git clone` saatlarla davam edə, `git status` dəqiqələrlə ləngiyə bilər.
+
+## Niyə Vacibdir
+
+Neçə il inkişaf etmiş monorepo-da `git clone` dəqiqələr alır, CI agent-ləri hər build-də gigabaytları endirir. Partial clone, sparse checkout, fsmonitor bu problemləri aradan qaldırır; CI/CD xərclərini əhəmiyyətli dərəcədə azaldır.
 
 **Böyük repo problemi:**
 - **Linux kernel:** ~3 milyon kommit, 5 GB tarix.
@@ -96,7 +100,7 @@ git rev-list --objects --all \
 
 ---
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Nümunə 1: CI-də sürətli klon
 
@@ -379,7 +383,7 @@ Google-un kod bazası 80+ TB, Git istifadə etmir:
 
 ---
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Tipik senariy: 5 GB-lıq Laravel enterprise app
 
@@ -466,6 +470,40 @@ git commit -m "chore: move uploads to LFS"
 Bu əsas qayda – çox layihədə görülən səhv vendor-i commit edib repozitoriyanı 5x böyütməkdir.
 
 ---
+
+## Praktik Tapşırıqlar
+
+1. **Partial clone (blob-suz)**
+   ```bash
+   # Tarixçə var, amma file content-ləri lazım olanda endirilir
+   git clone --filter=blob:none git@github.com:company/large-repo.git
+   # Vs normal clone ölçü fərqini müqayisə et:
+   du -sh .git
+   ```
+
+2. **Sparse checkout tətbiq et**
+   ```bash
+   git sparse-checkout init --cone
+   git sparse-checkout set app/ config/ routes/
+   git sparse-checkout list
+   # Yalnız lazımlı qovluqlar working dir-ə çıxarılır
+   ```
+
+3. **fsmonitor aktiv et (macOS/Windows)**
+   ```bash
+   git config core.fsmonitor true
+   git config core.untrackedcache true
+   # git status sürəti ölçmək:
+   time git status
+   ```
+
+4. **Shallow clone (CI üçün)**
+   ```bash
+   git clone --depth=1 git@github.com:company/app.git
+   # CI-da çox istifadə olunur — tam tarixçə lazım deyil
+   # Əgər full tarixçə lazım gəlsə:
+   git fetch --unshallow
+   ```
 
 ## Interview Sualları (Q&A)
 
@@ -618,3 +656,9 @@ Google **Piper** istifadə edir – centralized, cloud-based, yalnız lazımi fa
 14. **`git config protocol.version 2`** (Git 2.18+): Yeni protokol daha səmərəlidir.
 
 15. **Ayrı alət seçin lazım olsa**: 100 GB+ olduqda DVC, Perforce, və ya cloud-based VCS düşünün.
+
+## Əlaqəli Mövzular
+
+- [25-git-lfs.md](25-git-lfs.md) — binary fayllar üçün
+- [31-git-maintenance.md](31-git-maintenance.md) — repo yığcamlığı
+- [23-git-advanced-commands.md](23-git-advanced-commands.md) — sparse checkout detalları

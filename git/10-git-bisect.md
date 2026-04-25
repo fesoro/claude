@@ -1,6 +1,6 @@
-# Git Bisect
+# Git Bisect (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Git bisect, **binary search** (ikili axtarış) alqoritmi istifadə edərək bug-ı təqdim edən commit-i tapmağa kömək edən əmrdir. Yüzlərlə commit arasından problemi yaradan dəqiq commit-i tapması üçün yalnız `log2(n)` addım lazımdır.
 
@@ -40,6 +40,10 @@ Addım 3: Daraldılmış aralıq
 
 Nəticə: 15 commit-dən 3 addımda tapdıq!
 ```
+
+## Niyə Vacibdir
+
+Performance regressiya və ya gizli bug-ı yüzlərlə commit arasından manual axtarmaq saatlar ala bilər. `git bisect` binary search ilə bunu dəqiqələrə endirir; automated bisect isə insan müdaxiləsini tamamilə aradan qaldırır. Laravel layihələrindəki N+1 query, yavaş migration, view compile xətaları kimi problemlərin hansı commit-dən başladığını müəyyən etmək üçün ən effektiv üsuldur.
 
 ## Əsas Əmrlər (Key Commands)
 
@@ -117,7 +121,7 @@ git bisect slow   # Bu commit-də yavaşdır
 git bisect fast   # Bu commit-də sürətlidir
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Nümunə 1: Manual Bisect ilə Bug Tapmaq
 
@@ -325,7 +329,7 @@ Nəticə: good → Commit 10 ilk bad commit-dir!
    └─────────────────┘
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Ssenari 1: Broken Migration Tapmaq
 
@@ -424,6 +428,40 @@ chmod +x /tmp/test-api.sh
 git bisect start HEAD v1.0
 git bisect run /tmp/test-api.sh
 ```
+
+## Praktik Tapşırıqlar
+
+1. **Manual bisect**
+   ```bash
+   git bisect start
+   git bisect bad HEAD              # indi xarabdır
+   git bisect good v1.0.0           # bu versiyada yaxşı idi
+   # git hər dəfə ortada bir commit göstərir
+   # test et, sonra:
+   git bisect good   # ya da:
+   git bisect bad
+   # nəticədə problematik commit göstərilir
+   git bisect reset  # bitir
+   ```
+
+2. **Automated bisect script yaz**
+   ```bash
+   # test.sh:
+   #!/bin/bash
+   php artisan test --filter=UserTest
+   # exit 0 = good, exit 1 = bad
+
+   git bisect start
+   git bisect bad HEAD
+   git bisect good v2.0.0
+   git bisect run bash test.sh
+   ```
+
+3. **Bisect log-u saxla**
+   ```bash
+   git bisect log > bisect-log.txt  # audit trail
+   git bisect replay bisect-log.txt # replay
+   ```
 
 ## Interview Sualları
 
@@ -543,3 +581,8 @@ git bisect good abc1234  # Keçən həftə işləyirdi
 
 # Bu, regression-ın təkrarlanmasının qarşısını alır
 ```
+
+## Əlaqəli Mövzular
+
+- [21-git-log-advanced.md](21-git-log-advanced.md) — log ilə commit tarixçəsini araşdırmaq
+- [16-git-troubleshooting.md](16-git-troubleshooting.md) — bug axtarma strategiyaları

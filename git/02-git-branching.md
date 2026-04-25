@@ -1,10 +1,14 @@
-# Git Branching
+# Git Branching (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Git-də branch, commit tarixçəsindəki bir xəttə işarə edən yüngül pointer-dir. Branch yaratmaq sadəcə 41 baytlıq fayl yaratmaqdır (SHA-1 hash + newline). Bu, Git-in ən güclü xüsusiyyətlərindən biridir və digər VCS-lərdən fərqli olaraq millisaniyələr çəkir.
 
 Branch, əslində müəyyən bir commit-ə işarə edən hərəkətli pointer-dir. Hər yeni commit ilə branch pointer irəli hərəkət edir.
+
+## Niyə Vacibdir
+
+Komandada hər developer ayrı branch-da işləyir; branch olmadan eyni faylda paralel dəyişikliklər idarə olunmaz. Feature, bugfix, hotfix branch-ları CI/CD pipeline-da fərqli deploy davranışlarını tetikləyir.
 
 ## Əsas Əmrlər (Key Commands)
 
@@ -103,7 +107,7 @@ git push origin :old-name
 git push origin -u new-name
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### HEAD Nədir?
 
@@ -247,7 +251,7 @@ git branch -vv
   │       └── v1.0          -> m1n2o3p
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Laravel Layihəsində Branch Strategiyası
 
@@ -293,6 +297,39 @@ git commit -m "feat: add order management module"
 php artisan migrate:fresh --seed  # Development-də
 ```
 
+## Praktik Tapşırıqlar
+
+1. **Feature branch workflow**
+   ```bash
+   git checkout -b feature/user-authentication
+   # dəyişikliklər et
+   git add .
+   git commit -m "feat: add login controller"
+   git checkout main
+   git merge feature/user-authentication
+   git branch -d feature/user-authentication
+   ```
+
+2. **Detached HEAD vəziyyəti test et**
+   ```bash
+   git log --oneline  # köhnə commit SHA-sını gör
+   git checkout <sha>  # detached HEAD
+   git checkout main    # geri qayıt
+   ```
+
+3. **Branch-ları siyahıla**
+   ```bash
+   git branch          # local
+   git branch -r       # remote
+   git branch -a       # hamısı
+   git branch -v       # son commit ilə
+   ```
+
+4. **Branch adlandırma praktikası**
+   - `feature/TICKET-123-user-login` formatında 3 branch yarat
+   - `bugfix/null-pointer-orders` formatında 1 branch yarat
+   - Hamısını siyahıla, sonra sil
+
 ## Interview Sualları
 
 ### S1: Git branch nədir, texniki olaraq necə işləyir?
@@ -323,3 +360,9 @@ php artisan migrate:fresh --seed  # Development-də
 6. **Detached HEAD-dən xəbərdar olun**: Commit etməzdən əvvəl branch-da olduğunuzu yoxlayın
 7. **Protected branches quraşdırın**: GitHub/GitLab-da main branch-a birbaşa push-u bloklayın
 8. **Remote branch-ları `git fetch --prune` ilə təmizləyin**: Silinmiş remote branch-ların lokal referanslarını silin
+
+## Əlaqəli Mövzular
+
+- [01-git-basics.md](01-git-basics.md) — commit əsasları
+- [05-git-merging.md](05-git-merging.md) — branch-ları birləşdirmək
+- [06-git-rebasing.md](06-git-rebasing.md) — branch-ı rebase etmək

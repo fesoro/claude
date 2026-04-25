@@ -1,8 +1,12 @@
-# Git Internals
+# Git Internals (Architect)
 
-## Nədir? (What is it?)
+## İcmal
 
 Git daxilən **content-addressable filesystem** (məzmuna görə ünvanlanan fayl sistemi) kimi işləyir. Bu, Git-in fayllar haqqında məlumatları hash dəyərləri (SHA-1 və ya SHA-256) əsasında saxladığı deməkdir. Git-in daxili strukturunu anlamaq, mürəkkəb problemləri həll etməyə və Git-in necə işlədiyini dərindən başa düşməyə kömək edir.
+
+## Niyə Vacibdir
+
+Git-in içini bilmək custom tool yazmağa (git hooks, CI scripts), performance issue-larını anlamağa, corrupted repo-ları bərpa etməyə imkan verir. "Git niyə bu qədər sürətlidir?" sualına cavab vermək Architect-level anlayış tələb edir.
 
 ```
 Git-in iki səviyyəsi:
@@ -65,7 +69,7 @@ git verify-pack -v .git/objects/pack/pack-*.idx
 git show-ref                         # Bütün ref-ləri göstər
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### 1. Blob Obyekti Yaratmaq
 
@@ -308,7 +312,7 @@ B1,B2  B1,B2  B1    (tree-lər blob-ları göstərir)
 Qeyd: Dəyişməyən blob-lar təkrar saxlanılmır!
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### 1. Laravel Obyektlərini Araşdırmaq
 
@@ -426,6 +430,54 @@ done
 EOF
 chmod +x .git/hooks/pre-commit
 ```
+
+## Praktik Tapşırıqlar
+
+1. **Git object-lərini araşdır**
+   ```bash
+   # Son commit-i tap
+   git log --oneline -1  # SHA: abc1234
+
+   # Object tipini yoxla
+   git cat-file -t abc1234   # "commit"
+   git cat-file -p abc1234   # commit məzmunu
+
+   # Tree-yə bax
+   git cat-file -p HEAD^{tree}
+
+   # Blob-u oxu
+   git cat-file -p <blob-sha>  # fayl məzmunu
+   ```
+
+2. **Object SHA-1 hesabla**
+   ```bash
+   echo "hello world" | git hash-object --stdin
+   # git yalnız content-ə əsasən hash hesablayır
+
+   # Real fayl:
+   git hash-object app/Models/User.php
+   ```
+
+3. **Packfile yaratma prosesini izlə**
+   ```bash
+   # Loose object-ləri say
+   git count-objects -v
+
+   # Pack et
+   git gc
+
+   # Packfile-a bax
+   ls .git/objects/pack/
+   git verify-pack -v .git/objects/pack/*.idx | head -20
+   ```
+
+4. **Ref-ləri araşdır**
+   ```bash
+   cat .git/HEAD                  # current branch
+   cat .git/refs/heads/main       # SHA
+   ls .git/refs/
+   git show-ref                   # bütün ref-lər
+   ```
 
 ## Interview Sualları
 
@@ -561,3 +613,9 @@ git pack-refs --all
 # .git/packed-refs faylında toplanır
 # git status və git branch daha sürətli olur
 ```
+
+## Əlaqəli Mövzular
+
+- [21-git-log-advanced.md](21-git-log-advanced.md) — log ilə object araşdırma
+- [23-git-advanced-commands.md](23-git-advanced-commands.md) — plumbing command-lar
+- [31-git-maintenance.md](31-git-maintenance.md) — pack file idarəetməsi

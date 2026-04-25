@@ -1,6 +1,6 @@
-# Conventional Commits və Semantic Release
+# Conventional Commits & Semantic Release (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Conventional Commits** – kommit mesajları üçün strukturlu spesifikasiyadır. Məqsəd: commit mesajlarını maşın tərəfindən oxuna bilən formada yazmaq və bununla avtomatlaşdırma imkanları yaratmaq.
 
@@ -19,6 +19,10 @@
 5. GitHub Release yaradır.
 
 ---
+
+## Niyə Vacibdir
+
+CI/CD-nin avtomatik version bump etməsi, CHANGELOG yaratması, npm/Composer paket publish etməsi — hamısı commit mesaj formatına əsaslanır. Human error-u azaldır, release prosesini standartlaşdırır; komanda üçün commit tarixçəsi machine-readable olur.
 
 ## Conventional Commits Spesifikasiyası
 
@@ -113,7 +117,7 @@ npx semantic-release
 
 ---
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Nümunə 1: Düzgün Conventional Commit mesajları
 
@@ -377,7 +381,7 @@ git push
 
 ---
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Husky Node layihəsi olmayan Laravel üçün
 
@@ -481,6 +485,53 @@ BREAKING CHANGE: 'name' renamed to 'title', 'desc' renamed to 'description'"
 ```
 
 ---
+
+## Praktik Tapşırıqlar
+
+1. **commitlint qur**
+   ```bash
+   npm install --save-dev @commitlint/cli @commitlint/config-conventional
+   echo "module.exports = {extends: ['@commitlint/config-conventional']}" > commitlint.config.js
+   # Husky ilə qoş:
+   echo "npx commitlint --edit" > .husky/commit-msg
+   ```
+
+2. **semantic-release konfiqurasiya et**
+   ```bash
+   npm install --save-dev semantic-release \
+     @semantic-release/changelog \
+     @semantic-release/git
+   ```
+   ```json
+   // .releaserc.json
+   {
+     "branches": ["main"],
+     "plugins": [
+       "@semantic-release/commit-analyzer",
+       "@semantic-release/release-notes-generator",
+       "@semantic-release/changelog",
+       ["@semantic-release/git", {"assets": ["CHANGELOG.md"]}]
+     ]
+   }
+   ```
+
+3. **Avtomatik tag + CHANGELOG test**
+   ```bash
+   # feat: commit et → minor version bump
+   git commit -m "feat: add invoice export"
+   # fix: commit et → patch version bump
+   git commit -m "fix: null pointer in payment"
+   # BREAKING CHANGE → major version bump
+   git commit -m "feat!: new API v2"
+   ```
+
+4. **PHP/Composer üçün**
+   ```bash
+   # composer.json-da version sahəsi yox — tag-dan oxunur
+   # Packagist avtomatik tag-ı götürür
+   git tag v1.2.0
+   git push origin v1.2.0
+   ```
 
 ## Interview Sualları (Q&A)
 
@@ -621,3 +672,9 @@ git push origin v1.0.0
 13. **Changelog-da user-facing dil**: `feat: implement caching layer` deyil, `feat: faster response times via caching`.
 
 14. **Prerelease branch-ləri istifadə edin**: `beta`, `alpha` branch-lərdə test üçün avtomatik prerelease versiya yaradın: `v2.0.0-beta.1`.
+
+## Əlaqəli Mövzular
+
+- [11-git-tags.md](11-git-tags.md) — version tag-lar
+- [18-git-hooks.md](18-git-hooks.md) — commit-msg hook
+- [22-git-workflow-team.md](22-git-workflow-team.md) — komanda standartları

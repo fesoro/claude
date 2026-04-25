@@ -1,6 +1,6 @@
-# Dependabot və Renovate
+# Dependabot & Renovate (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Dependabot** və **Renovate** – layihənin asılılıqlarını (dependencies) avtomatik yeniləyən botlardır. Yeni versiya buraxılan kimi avtomatik olaraq pull request açırlar.
 
@@ -12,6 +12,10 @@
 3. Release notes və changelog-u PR-ə əlavə edir.
 4. CVE varsa security patch PR-i dərhal açır.
 5. CI yaşıldırsa auto-merge edə bilər.
+
+## Niyə Vacibdir
+
+`composer.json` dependency-lərini manuel yeniləmək vaxt aparan və gözardı edilən bir iş olur. Security vulnerability-lər köhnəlmiş package-lardan gəlir; Dependabot/Renovate PRları avtomatik açır — developer yalnız review edir.
 
 ### Dependabot vs Renovate müqayisəsi
 
@@ -112,7 +116,7 @@ updates:
 
 ---
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Nümunə 1: Dependabot PR-i necə görünür
 
@@ -355,7 +359,7 @@ Renovate:
 
 ---
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Tipik Laravel Dependabot config
 
@@ -519,6 +523,61 @@ CI-də:
 ```
 
 ---
+
+## Praktik Tapşırıqlar
+
+1. **Dependabot qur**
+   ```yaml
+   # .github/dependabot.yml
+   version: 2
+   updates:
+     - package-ecosystem: "composer"
+       directory: "/"
+       schedule:
+         interval: "weekly"
+       reviewers:
+         - "team-backend"
+       ignore:
+         - dependency-name: "laravel/framework"
+           update-types: ["version-update:semver-major"]
+   ```
+
+2. **Renovate JSON konfiqurasiya**
+   ```json
+   // renovate.json
+   {
+     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+     "extends": ["config:base"],
+     "packageRules": [
+       {
+         "matchPackagePatterns": ["*"],
+         "matchUpdateTypes": ["patch"],
+         "automerge": true
+       }
+     ],
+     "schedule": ["every weekend"]
+   }
+   ```
+
+3. **Auto-merge patch PR-ları**
+   ```yaml
+   # .github/workflows/auto-merge.yml
+   on: pull_request
+   jobs:
+     auto-merge:
+       if: github.actor == 'dependabot[bot]'
+       runs-on: ubuntu-latest
+       steps:
+         - uses: fastify/github-action-merge-dependabot@v3
+           with:
+             target: minor
+   ```
+
+4. **Security audit**
+   ```bash
+   composer audit  # bilinen CVE-ları yoxla
+   npm audit       # JS dependency-lər üçün
+   ```
 
 ## Interview Sualları (Q&A)
 
@@ -696,3 +755,8 @@ Renovate:
 14. **Production və dev deps ayırın**: Dev deps daha aqressiv yenilənə bilər, production konservativ olmalıdır.
 
 15. **Bot-a access vermə səviyyəsini ölçün**: Write access lazımdır, amma admin yox. Branch protection ilə məhdudlaşdırın.
+
+## Əlaqəli Mövzular
+
+- [26-conventional-commits-semantic-release.md](26-conventional-commits-semantic-release.md) — commit standartı
+- [29-codeowners-branch-protection.md](29-codeowners-branch-protection.md) — PR review qaydaları

@@ -1,6 +1,6 @@
-# CODEOWNERS və Branch Protection Rules
+# CODEOWNERS & Branch Protection (Lead)
 
-## Nədir? (What is it?)
+## İcmal
 
 **CODEOWNERS** — repository-də hansı faylların/qovluqların hansı şəxs və ya
 komanda tərəfindən idarə olunduğunu təyin edən xüsusi fayldır. Pull request
@@ -13,6 +13,10 @@ review, status check, force push qadağası, signed commits və s.
 
 Birlikdə bu iki mexanizm **təhlükəsiz və keyfiyyətli code review** prosesinin
 əsasını təşkil edir.
+
+## Niyə Vacibdir
+
+Main branch-a birbaşa push-u bloklamaq, critical fayllara (security, payment, config) mandatory review tətbiq etmək — governance olmadan istənilən developer istənilən kodu deploy edə bilər. CODEOWNERS + branch protection bu riskləri azaldır.
 
 ### Niyə lazımdır?
 
@@ -419,7 +423,7 @@ jobs:
 
 ---
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### 1. Laravel layihəsi üçün tam CODEOWNERS
 
@@ -642,6 +646,57 @@ class CheckCodeowners extends Command
 ```
 
 ---
+
+## Praktik Tapşırıqlar
+
+1. **CODEOWNERS faylı yaz**
+   ```
+   # .github/CODEOWNERS
+
+   # Bütün fayllar üçün default
+   *                          @team-backend
+
+   # Payment kritik — yalnız senior review
+   app/Services/Payment*      @senior-dev-1 @senior-dev-2
+
+   # Infrastructure
+   docker/                    @devops-team
+   .github/workflows/         @devops-team
+
+   # Security
+   config/auth.php            @security-team
+   ```
+
+2. **Branch protection qaydaları (GitHub)**
+   - Settings → Branches → Add rule → `main`
+   - ✅ Require pull request reviews (2 reviewer)
+   - ✅ Dismiss stale reviews
+   - ✅ Require review from Code Owners
+   - ✅ Require status checks: `test`, `phpstan`
+   - ✅ Require branches to be up to date
+   - ✅ Include administrators
+
+3. **Status check tələb et**
+   ```yaml
+   # .github/workflows/required.yml
+   name: Required Checks
+   on: [pull_request]
+   jobs:
+     test:
+       runs-on: ubuntu-latest
+       steps:
+         - run: php artisan test --coverage --min=80
+     phpstan:
+       runs-on: ubuntu-latest
+       steps:
+         - run: vendor/bin/phpstan analyse --level=8
+   ```
+
+4. **CODEOWNERS-i test et**
+   ```bash
+   # PR aç, CODEOWNERS-dəki fayl dəyişdir
+   # Avtomatik reviewer-lar əlavə olunmalıdır
+   ```
 
 ## Interview Sualları (Q&A)
 
@@ -928,3 +983,9 @@ code review prosesi.
 PHP/Laravel layihəsində hər domain qovluğu, migration, config və security-həssas
 kod üçün spesifik CODEOWNERS qayda qoy. Branch protection ilə main-i tam qoru:
 2 approval, signed commits, linear history, enforce admins.
+
+## Əlaqəli Mövzular
+
+- [15-pull-request-best-practices.md](15-pull-request-best-practices.md) — PR prosesi
+- [22-git-workflow-team.md](22-git-workflow-team.md) — komanda standartları
+- [24-signed-commits.md](24-signed-commits.md) — commit imzalanması

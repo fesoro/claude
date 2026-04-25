@@ -1,10 +1,14 @@
-# Git Rebasing
+# Git Rebasing (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Rebase, bir branch-ın commit-lərini başqa bir branch-ın üstünə "köçürən" əməliyyatdır. Texniki olaraq, rebase commit-ləri yenidən yaradır (yeni SHA hash-ləri ilə) və onları hədəf branch-ın sonuna qoyur. Nəticədə xətti (linear) tarixçə yaranır.
 
 Merge iki branch-ı birləşdirir və merge commit yaradır, rebase isə branch-ın başlanğıc nöqtəsini dəyişir.
+
+## Niyə Vacibdir
+
+Clean, linear commit history interview-larda və code review-larda peşəkarlıq göstəricisidir. `git rebase -i` ilə WIP commit-ləri squash etmək PR-ı review üçün daha oxunaqlı edir; CI/CD-də merge conflict-ləri azaldır.
 
 ## Əsas Əmrlər (Key Commands)
 
@@ -32,7 +36,7 @@ git rebase --skip
 git rebase --onto main feature-a feature-b
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Sadə Rebase
 
@@ -230,7 +234,7 @@ git rebase --continue
   ✓ Public/shared branch-larda
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### PR Hazırlığı üçün Rebase
 
@@ -292,6 +296,38 @@ reword m1n2o3p add order routes
 # "feat(order): add API routes for order endpoints"
 ```
 
+## Praktik Tapşırıqlar
+
+1. **Feature branch-ı main-ə rebase et**
+   ```bash
+   git checkout feature/payment
+   git rebase main
+   # conflict varsa həll et, sonra:
+   git rebase --continue
+   ```
+
+2. **Interactive rebase ilə commit-ləri təmizlə**
+   ```bash
+   git rebase -i HEAD~4
+   # Açılan editorda:
+   # pick → squash (s) — əvvəlkiyə birləş
+   # pick → reword (r) — mesajı dəyiş
+   # pick → drop (d) — sil
+   ```
+
+3. **--autosquash workflow**
+   ```bash
+   git commit -m "fixup! feat: add payment"  # avtomatik fixup markerı
+   git rebase -i --autosquash main
+   ```
+
+4. **Rebase golden rule testi**
+   ```bash
+   # YANLIŞ: push olunmuş branch-ı rebase et
+   git push --force-with-lease origin feature/shared  # fərqi anla
+   # Niyə shared branch-da rebase tehlikelidir?
+   ```
+
 ## Interview Sualları
 
 ### S1: Rebase ilə merge arasında fərq nədir?
@@ -322,3 +358,9 @@ reword m1n2o3p add order routes
 6. **Uzun branch-ları rebase etməkdən çəkinin**: Çox commit varsa, çox konflikt ola bilər
 7. **Hər rebase əvvəlcə backup branch yaradın**: `git branch backup-feature` sonra rebase edin
 8. **Commit-ləri məntiqi olaraq qruplaşdırın**: İnteractive rebase ilə əlaqəli dəyişiklikləri birləşdirin
+
+## Əlaqəli Mövzular
+
+- [05-git-merging.md](05-git-merging.md) — merge vs rebase seçimi
+- [08-git-reset-revert.md](08-git-reset-revert.md) — rebase-dən sonra geri dönmək
+- [23-git-advanced-commands.md](23-git-advanced-commands.md) — filter-repo, rerere kimi advanced əməliyyatlar

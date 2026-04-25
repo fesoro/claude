@@ -1,10 +1,14 @@
-# Git Maintenance (Git Repository Təmizliyi və Optimallaşdırma)
+# Git Maintenance (Lead)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Git Maintenance** — Git repository-nin sağlam, sürətli və kompakt qalması üçün
 icra olunan əməliyyatlar toplusudur. Zaman keçdikcə repository-də aşağıdakı
 problemlər yığılır:
+
+## Niyə Vacibdir
+
+Repository zamanla pack file-larla şişir, dangling object-lər yığılır, commit-graph köhnəlir. `git gc` və `git maintenance` bu problemləri aradan qaldırır; CI agent-ləri və developer maşınlarında git əməliyyatlarını sürətləndirir.
 
 - **Loose objects** — hər commit/blob ayrı fayl kimi `.git/objects/` altında saxlanılır
 - **Unreachable objects** — heç bir ref-ə bağlı olmayan "asılı" obyektlər (deleted branches, reset-dən qalan commit-lər)
@@ -375,7 +379,7 @@ Commit-graph VAR:
 
 ---
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### 1. CI/CD pipeline-da periodic maintenance
 
@@ -510,6 +514,37 @@ git maintenance run --task=incremental-repack --task=commit-graph
 ```
 
 ---
+
+## Praktik Tapşırıqlar
+
+1. **Əl ilə GC çalışdır, ölçü müqayisə et**
+   ```bash
+   du -sh .git  # əvvəl
+   git gc --aggressive --prune=now
+   du -sh .git  # sonra
+   git count-objects -vH
+   ```
+
+2. **Avtomatik maintenance cron qur**
+   ```bash
+   git maintenance start
+   # Cron-u yoxla:
+   git maintenance run --task=gc
+   git maintenance run --task=commit-graph
+   git maintenance run --task=prefetch
+   ```
+
+3. **reflog expire et**
+   ```bash
+   git reflog expire --expire=30.days --all
+   git gc --prune=30.days
+   ```
+
+4. **Repo sağlamlığını yoxla**
+   ```bash
+   git fsck --unreachable
+   git fsck --lost-found  # dangling object-lər .git/lost-found/-a
+   ```
 
 ## Interview Sualları (Q&A)
 
@@ -762,3 +797,8 @@ monorepo-larda kritikdir:
 - `git repack --geometric=2` — incremental optimallaşdırma
 
 Automate et, monitor et, və team-i məlumatlandır.
+
+## Əlaqəli Mövzular
+
+- [30-git-performance-large-repos.md](30-git-performance-large-repos.md) — performans optimizasiyası
+- [32-git-internals.md](32-git-internals.md) — daxili struktur

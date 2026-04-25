@@ -1,8 +1,12 @@
-# Trunk-Based Development
+# Trunk-Based Development (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Trunk-Based Development (TBD), bütün developer-lərin bir əsas branch-ə (trunk/main) tez-tez inteqrasiya etdiyi branching strategiyasıdır. Branch-lər çox qısa ömürlü olur (bir neçə saat, maksimum 1-2 gün) və feature flag-lar vasitəsilə yarımçıq xüsusiyyətlər gizlədilir.
+
+## Niyə Vacibdir
+
+Netflix, Google kimi şirkətlər trunk-based development-i istifadə edir; CI/CD-nin tam potensialını açmaq üçün vacibdir. Long-lived branch-lardan qaçınaraq integration hell-i aradan qaldırır, günlük deploy-u mümkün edir. Laravel layihələrində feature flag-lar (Laravel Pennant) ilə birlikdə tətbiq olunduqda, yarımçıq feature-lar production-da gizlədilərək komanda daim deployable vəziyyətdə qala bilir.
 
 ```
 Trunk-Based Development:
@@ -99,7 +103,7 @@ git rebase --continue
 git push origin feature/quick-fix --force-with-lease
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Nümunə 1: Feature Flag ilə Yarımçıq Feature Deploy
 
@@ -353,7 +357,7 @@ Developer push edir
 └──────────────┘
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Laravel Pennant ilə Feature Flags
 
@@ -469,6 +473,45 @@ GitHub Settings → Branches → main:
   ✗ Allow force pushes (disabled!)
   ✗ Allow deletions (disabled!)
 ```
+
+## Praktik Tapşırıqlar
+
+1. **Feature flag ilə gizli feature**
+   ```php
+   // config/features.php
+   'new_checkout' => env('FEATURE_NEW_CHECKOUT', false),
+   
+   // Controller-də
+   if (config('features.new_checkout')) {
+       return $this->newCheckout();
+   }
+   return $this->legacyCheckout();
+   ```
+
+2. **Short-lived branch disiplini**
+   ```bash
+   git checkout -b feature/add-logging
+   # Maksimum 1-2 günlük iş
+   git push origin feature/add-logging
+   # PR aç, review et, merge et
+   # Branch ömrü: 24-48 saat
+   ```
+
+3. **CI qapılarını qur**
+   ```yaml
+   # .github/workflows/ci.yml
+   on: [push, pull_request]
+   jobs:
+     test:
+       runs-on: ubuntu-latest
+       steps:
+         - run: php artisan test
+         - run: vendor/bin/phpstan analyse
+   ```
+
+4. **Müqayisəli analiz**
+   - Komandanın mövcud branching strategy-ni al
+   - GitFlow vs TBD: release cadence, team size, CI maturity nöqtələrindən müqayisə et
 
 ## Interview Sualları
 
@@ -619,3 +662,9 @@ Sürətli review üçün:
   - Reviewer rotation sistemi qurun
   - Avtomatik reviewer assign edin
 ```
+
+## Əlaqəli Mövzular
+
+- [13-gitflow.md](13-gitflow.md) — alternativ branching model
+- [14-github-flow.md](14-github-flow.md) — orta yol strategy
+- [18-git-hooks.md](18-git-hooks.md) — local CI gate-lər

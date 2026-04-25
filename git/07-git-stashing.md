@@ -1,10 +1,14 @@
-# Git Stashing
+# Git Stashing (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 `git stash` dəyişikliklərinizi müvəqqəti olaraq saxlayır (stash edir) ki, branch dəyişdirə biləsiniz və ya başqa iş görə biləsiniz. Stash, working directory və staging area dəyişikliklərini stack strukturunda saxlayır. Daha sonra bu dəyişiklikləri istənilən branch-da bərpa edə bilərsiniz.
 
 Stash, "yarımçıq işi rəfə qoymaq" kimidir - commit etmək istəmirsiniz amma itirmək də istəmirsiniz.
+
+## Niyə Vacibdir
+
+Hotfix gəldikdə yarımçıq feature işini commit etmədən saxlamaq lazım gəlir. Stash olmadan ya commit etmək məcburiyyətindəsən (WIP commit-i), ya da dəyişiklikləri itirmək riskini götürürsən.
 
 ## Əsas Əmrlər (Key Commands)
 
@@ -83,7 +87,7 @@ git stash branch feature/payment-v2 stash@{0}
 # 3. Stash-ı silir (pop kimi)
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Ssenari 1: Təcili Hotfix
 
@@ -203,7 +207,7 @@ git stash show -p stash@{0} | git apply
   Stash qalır!                        Stash silinir!
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Config Dəyişiklikləri ilə İşləmə
 
@@ -261,6 +265,40 @@ git stash pop
 composer install  # stash-dakı dependencies-i qur
 ```
 
+## Praktik Tapşırıqlar
+
+1. **Hotfix ssenarisi**
+   ```bash
+   # Feature üzərindəsən, hotfix gəldi
+   git stash push -m "WIP: user profile page"
+   git checkout -b hotfix/login-bug
+   # düzəlt, commit et, merge et
+   git checkout feature/profile
+   git stash pop
+   ```
+
+2. **Partial stash (--patch)**
+   ```bash
+   git stash push --patch
+   # hər hunk üçün soruşur: y/n/s/q
+   # Yalnız müəyyən dəyişiklikləri stash et
+   ```
+
+3. **Stash siyahısını idarə et**
+   ```bash
+   git stash list
+   git stash show stash@{1}         # nə var
+   git stash show -p stash@{1}      # diff ilə
+   git stash drop stash@{0}         # sil
+   git stash clear                  # hamısını sil
+   ```
+
+4. **Stash-dan yeni branch**
+   ```bash
+   git stash branch feature/from-stash stash@{0}
+   # Stash yaradıldığı andan yeni branch açır
+   ```
+
 ## Interview Sualları
 
 ### S1: `git stash` nə edir?
@@ -291,3 +329,8 @@ composer install  # stash-dakı dependencies-i qur
 6. **Stash branch istifadə edin**: Stash uzun müddət qalacaqsa, branch-a çevirin
 7. **Stash-ı commit alternativi kimi istifadə etməyin**: WIP commit etmək çox vaxt daha yaxşıdır
 8. **`git stash clear` ilə ehtiyatlı olun**: Bütün stash-ları birdən silir, geri qaytarmaq olmaz
+
+## Əlaqəli Mövzular
+
+- [05-git-merging.md](05-git-merging.md) — branch-lar arası keçid
+- [08-git-reset-revert.md](08-git-reset-revert.md) — dəyişiklikləri geri almağın digər yolları

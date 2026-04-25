@@ -1,6 +1,6 @@
-# Monorepo vs Polyrepo
+# Monorepo vs Polyrepo (Lead)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Monorepo** - bütün layihələr (frontend, backend, mobile, kitabxanalar) tək bir repozitoriyada saxlanılır.
 **Polyrepo** (multi-repo) - hər layihə/servis öz ayrı repozitoriyasında saxlanılır.
@@ -35,6 +35,10 @@ MONOREPO                          POLYREPO
 │ • Spotify      - "Squad" başına repo                    │
 └─────────────────────────────────────────────────────────┘
 ```
+
+## Niyə Vacibdir
+
+Şirkətin repo strukturu qərarı onboarding sürətini, CI/CD pipeline mürəkkəbliyini, dependency management-i kökündən dəyişir. Lead developer bu qərarı verir; yanlış seçim texniki borcun ən böyük mənbəyinə çevrilə bilər.
 
 ## Əsas Əmrlər (Key Commands)
 
@@ -95,7 +99,7 @@ gita ll                       # Bütün repo-ların statusu
 gita pull
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### 1. Monorepo Strukturu (Nx + Laravel + Vue)
 
@@ -370,7 +374,7 @@ MONOREPO:                     POLYREPO:
    anında yenilənir              uyğunsuzluq riski
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### 1. Laravel + Vue Monorepo (Turborepo)
 
@@ -512,6 +516,51 @@ jobs:
 # auth-service repo-sunda:
 # composer update mycompany/shared-php-lib
 ```
+
+## Praktik Tapşırıqlar
+
+1. **Monorepo-da shared library**
+   ```
+   company-mono/
+   ├── packages/
+   │   └── shared-auth/        ← paylaşılan kod
+   ├── services/
+   │   ├── api-gateway/
+   │   └── payment-service/
+   └── composer.json           ← path repositories
+   ```
+   ```json
+   // composer.json (api-gateway)
+   "repositories": [
+     {"type": "path", "url": "../../packages/shared-auth"}
+   ]
+   ```
+
+2. **CI-da path-based trigger**
+   ```yaml
+   # .github/workflows/payment.yml
+   on:
+     push:
+       paths:
+         - 'services/payment-service/**'
+         - 'packages/shared-auth/**'
+   ```
+
+3. **Polyrepo-da cross-repo dependency matrix**
+   ```
+   services:
+     api-gateway:    shared-auth@^1.2
+     payment:        shared-auth@^1.2, stripe-sdk@^3.0
+   packages:
+     shared-auth:    laravel/framework@^11.0
+   ```
+   - Version matrix-i idarə etmək üçün spreadsheet aç
+
+4. **Qərar framework-u tətbiq et**
+   - Team ölçüsü?
+   - Service-lər nə qədər bir-birinə bağlıdır?
+   - CI/CD infrastructure-u nə qədər güclüdür?
+   - Cavablara əsasən monorepo vs polyrepo seç
 
 ## Interview Sualları
 
@@ -697,3 +746,9 @@ monorepo/
     ├── architecture.md
     └── deployment.md
 ```
+
+## Əlaqəli Mövzular
+
+- [19-git-submodules.md](19-git-submodules.md) — polyrepo-da paylaşma
+- [30-git-performance-large-repos.md](30-git-performance-large-repos.md) — monorepo performansı
+- [22-git-workflow-team.md](22-git-workflow-team.md) — komanda workflow-u

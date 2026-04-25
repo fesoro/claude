@@ -1,8 +1,12 @@
-# Git Submodules
+# Git Submodules (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Git submodule, bir Git repository-ni başqa bir Git repository-nin daxilində saxlamaq mexanizmidir. Ana repo (parent) alt repo-nun (submodule) müəyyən bir commit-inə referans saxlayır. Bu, paylaşılan kitabxanaları, SDK-ları, və ya ümumi komponentləri bir neçə layihədə istifadə etmək üçün faydalıdır.
+
+## Niyə Vacibdir
+
+Paylaşılan library-ları, infrastructure kodu, ya da internal package-ları bir neçə repo-da eyni versiyada saxlamaq üçün submodule istifadə olunur. Alternativlər (subtree, package registry) trade-off-larla gəlir; seçim layihənin ölçüsünə görə dəyişir. Laravel layihələrində Composer private package daha yaxşı həll olsa da, submodule-lar bəzən build scripts, frontend theme-lar və ya infrastructure repo-larının paylaşılmasında tətbiq olunur.
 
 ```
 Submodule Strukturu:
@@ -132,7 +136,7 @@ git diff --submodule
 git submodule summary
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Nümunə 1: Paylaşılan Laravel Package
 
@@ -304,7 +308,7 @@ git clone --recurse-submodules url
 └──────────────┴────────────────────────────────────┘
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Paylaşılan Laravel Package (Submodule)
 
@@ -382,6 +386,39 @@ git subtree pull --prefix=packages/payment-sdk \
 git subtree push --prefix=packages/payment-sdk \
     https://github.com/company/payment-sdk.git main
 ```
+
+## Praktik Tapşırıqlar
+
+1. **Submodule əlavə et**
+   ```bash
+   git submodule add git@github.com:company/shared-config.git config/shared
+   git commit -m "chore: add shared-config submodule"
+   git push
+   ```
+
+2. **Submodule-lu repo-nu clone et**
+   ```bash
+   git clone --recurse-submodules git@github.com:company/main-app.git
+   # ya da mövcud repo-da:
+   git submodule update --init --recursive
+   ```
+
+3. **Submodule-u yenilə**
+   ```bash
+   cd config/shared
+   git pull origin main
+   cd ../..
+   git add config/shared
+   git commit -m "chore: update shared-config to latest"
+   ```
+
+4. **Submodule-u sil (alternativi inline et)**
+   ```bash
+   git submodule deinit config/shared
+   git rm config/shared
+   rm -rf .git/modules/config/shared
+   git commit -m "chore: inline shared-config"
+   ```
 
 ## Interview Sualları
 
@@ -517,3 +554,8 @@ git submodule update --init --recursive
 # Checkout-dan sonra submodule-ları avtomatik yenilə
 git submodule update --init --recursive
 ```
+
+## Əlaqəli Mövzular
+
+- [20-git-worktrees.md](20-git-worktrees.md) — paralel iş mühiti
+- [28-monorepo-vs-polyrepo.md](28-monorepo-vs-polyrepo.md) — repo strukturu qərarları

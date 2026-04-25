@@ -1,8 +1,12 @@
-# Git Log Advanced
+# Git Log Advanced (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Git log, commit tarixçəsini göstərən güclü əmrdir. Sadə `git log`-dan əlavə, formatlaşdırma, filtrasiya, vizualizasiya və analiz üçün çoxlu seçimlər mövcuddur. `git blame`, `git shortlog` və `git reflog` da tarixçə araşdırma alətləridir.
+
+## Niyə Vacibdir
+
+Code review zamanı dəyişiklik tarixçəsini anlamaq, performance regressiyanın hansı commit-də başladığını tapmaq, hansı developerin hansı kodu yazdığını izləmək — bunlar senior developer-in gündəlik ehtiyaclarıdır. `reflog` isə həlak edici əməliyyatlardan sonra son xilas yoludur. Laravel layihələrində migration tarixçəsi, controller evolution-u, service-lərin refactor edilmə zəncirini izləmək üçün `git log` bilavasitə debug alətinə çevrilir.
 
 ```
 git log çıxışı (default):
@@ -223,7 +227,7 @@ git checkout ghi9012
 git cherry-pick ghi9012
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Nümunə 1: Release Notes Yaratmaq
 
@@ -339,7 +343,7 @@ HEAD@{5}: commit: another important work  ← Silinmiş amma reflog-da!
 Bərpa: git cherry-pick HEAD@{4}
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Faydalı Git Alias-lar
 
@@ -409,6 +413,37 @@ git log --oneline -10 -p -- app/Services/PaymentService.php
 # Bu sətiri kim dəyişdirib?
 git blame -L 45,50 app/Services/PaymentService.php
 ```
+
+## Praktik Tapşırıqlar
+
+1. **Custom log format alias**
+   ```bash
+   git config --global alias.lg \
+     "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+   git lg
+   ```
+
+2. **Fayl tarixçəsi araşdır**
+   ```bash
+   git log --follow -p app/Models/User.php  # rename-ləri izlə
+   git log --author="Orkhan" --since="2 weeks ago" --oneline
+   git log --grep="fix" --oneline  # mesajda axtarış
+   git log -S "getUserById" --oneline  # kod dəyişikliyinə görə axtar
+   ```
+
+3. **git blame ilə cavabdeh tap**
+   ```bash
+   git blame app/Services/PaymentService.php
+   git blame -L 50,70 app/Services/PaymentService.php  # line range
+   git log --pretty=short -u -L 50,70:app/Services/PaymentService.php
+   ```
+
+4. **reflog ilə bərpa**
+   ```bash
+   git reflog  # bütün hərəkətlər
+   git reflog show HEAD@{2}
+   git reset --hard HEAD@{3}  # 3 əməliyyat əvvəlki vəziyyət
+   ```
 
 ## Interview Sualları
 
@@ -508,3 +543,9 @@ feat: add payment processing
 fix: correct timeout issue
 chore: update dependencies
 ```
+
+## Əlaqəli Mövzular
+
+- [08-git-reset-revert.md](08-git-reset-revert.md) — reflog ilə bərpa
+- [10-git-bisect.md](10-git-bisect.md) — log ilə bug axtarma
+- [32-git-internals.md](32-git-internals.md) — git object model

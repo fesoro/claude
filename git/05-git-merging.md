@@ -1,8 +1,12 @@
-# Git Merging
+# Git Merging (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Merge, iki branch-ın tarixçəsini birləşdirmək prosesidir. Git iki branch-dakı dəyişiklikləri müqayisə edir və onları bir commit-də birləşdirir. Merge iki əsas formada baş verir: fast-forward və 3-way merge.
+
+## Niyə Vacibdir
+
+Feature branch-ların main-ə birləşdirilməsi gündəlik workflow-un əsasıdır. Conflict resolution bacarığı olmadan komanda işi yavaşıyır; yanlış merge strategy seçimi commit tarixçəsini qarışdırır.
 
 ## Əsas Əmrlər (Key Commands)
 
@@ -30,7 +34,7 @@ git merge --squash feature/user-auth
 git commit -m "Add user authentication feature"
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Fast-Forward Merge
 
@@ -261,7 +265,7 @@ git merge feature1 feature2 feature3
   Merge tamamlandı ✓
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Migration Konfliktləri
 
@@ -333,6 +337,41 @@ git tag -a v1.2.0 -m "Release 1.2.0"
 git push origin main --tags
 ```
 
+## Praktik Tapşırıqlar
+
+1. **Conflict yarat və həll et**
+   ```bash
+   # main-də UserController dəyiş
+   git checkout -b feature/refactor-user
+   # eyni faylda fərqli dəyişiklik et
+   git checkout main
+   git merge feature/refactor-user
+   # konflikti manuall həll et
+   git add .
+   git commit
+   ```
+
+2. **Fast-forward vs 3-way müqayisə**
+   ```bash
+   git merge feature/fast   # FF mümkünsə FF edir
+   git merge --no-ff feature/explicit  # həmişə merge commit yarad
+   git log --graph --oneline  # fərqi gör
+   ```
+
+3. **Squash merge**
+   ```bash
+   git merge --squash feature/messy-branch
+   git commit -m "feat: user profile refactor"
+   # feature branch-ın bütün commit-ləri 1-ə sıxışdı
+   ```
+
+4. **Merge abort**
+   ```bash
+   git merge feature/problem
+   # konflikti görüb geri çəkilmək istəyirsən
+   git merge --abort
+   ```
+
 ## Interview Sualları
 
 ### S1: Fast-forward merge ilə 3-way merge arasında fərq nədir?
@@ -363,3 +402,9 @@ git push origin main --tags
 6. **Konflikt həlli zamanı testlər işlədin**: Merge sonrası kodun düzgün işlədiyinə əmin olun
 7. **`git mergetool` istifadə edin**: VS Code, IntelliJ kimi IDE-lərin merge tool-u konfliktləri həll etməyi asanlaşdırır
 8. **Squash merge-i uyğun yerdə istifadə edin**: Çox kiçik, WIP commit-ləri olan branch-lar üçün squash daha təmiz tarixçə verir
+
+## Əlaqəli Mövzular
+
+- [02-git-branching.md](02-git-branching.md) — branch-lar
+- [06-git-rebasing.md](06-git-rebasing.md) — merge-ə alternativ
+- [16-git-troubleshooting.md](16-git-troubleshooting.md) — merge problemlərini həll etmək

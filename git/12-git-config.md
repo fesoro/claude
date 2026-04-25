@@ -1,6 +1,6 @@
-# Git Config
+# Git Config (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Git config, Git-in davranışını idarə edən konfiqurasiya sistemidir. Üç səviyyəsi var: system (bütün istifadəçilər), global (cari istifadəçi), local (cari repo). Daha spesifik səviyyə daha ümumi səviyyəni override edir.
 
@@ -20,6 +20,10 @@ Konfiqurasiya Səviyyələri (prioritet sırası):
 
 Local > Global > System (override sırası)
 ```
+
+## Niyə Vacibdir
+
+Komanda üzvləri arasında standart editor, diff tool, EOL, merge strategy konfiqurasiyası olmadan hər developer fərqli davranışla işləyir. Alias-lar gündəlik produktivliyi artırır; global settings yeni maşına keçiddə vaxt qənaət edir. İş və şəxsi layihələr üçün ayrı identity saxlamaq isə professional mühitdə mütləq tələbdir.
 
 ## Əsas Əmrlər (Key Commands)
 
@@ -95,7 +99,7 @@ git config --global diff.tool vscode
 git config --global difftool.vscode.cmd 'code --wait --diff $LOCAL $REMOTE'
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Nümunə 1: Tam .gitconfig Nümunəsi
 
@@ -330,7 +334,7 @@ Windows:
 │   └── oss/.git/   ────────────>     (personal@email.com)
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Laravel Layihə Config (.git/config)
 
@@ -413,6 +417,41 @@ git config --local user.email "name@company.com"
     line-numbers = true
     syntax-theme = Dracula
 ```
+
+## Praktik Tapşırıqlar
+
+1. **Əsas konfiqurasiya**
+   ```bash
+   git config --global user.name "Orkhan"
+   git config --global user.email "dev@company.com"
+   git config --global core.editor "code --wait"
+   git config --global pull.rebase true
+   git config --global init.defaultBranch main
+   ```
+
+2. **Faydalı alias-lar qur**
+   ```bash
+   git config --global alias.st "status -s"
+   git config --global alias.co "checkout"
+   git config --global alias.lg "log --oneline --graph --all"
+   git config --global alias.undo "reset --soft HEAD~1"
+   git config --global alias.amend "commit --amend --no-edit"
+   ```
+
+3. **Local repo üçün ayrı identity**
+   ```bash
+   cd ~/work/client-project
+   git config user.email "me@client.com"
+   git config user.name "Orkhan (Client)"
+   git config --list --local  # yoxla
+   ```
+
+4. **Diff tool qur**
+   ```bash
+   git config --global diff.tool vscode
+   git config --global difftool.vscode.cmd 'code --wait --diff $LOCAL $REMOTE'
+   git difftool HEAD~1 HEAD
+   ```
 
 ## Interview Sualları
 
@@ -522,3 +561,9 @@ cp ~/.gitconfig ~/dotfiles/gitconfig
 # Symlink:
 ln -sf ~/dotfiles/gitconfig ~/.gitconfig
 ```
+
+## Əlaqəli Mövzular
+
+- [04-gitignore.md](04-gitignore.md) — global gitignore konfiqurasiyası
+- [18-git-hooks.md](18-git-hooks.md) — hook-ları konfiqurasiya etmək
+- [24-signed-commits.md](24-signed-commits.md) — GPG signing konfiqurasiyası

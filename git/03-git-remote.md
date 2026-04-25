@@ -1,8 +1,12 @@
-# Git Remote
+# Git Remote (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Remote repository, layihənizin şəbəkədə (GitHub, GitLab, Bitbucket) və ya başqa serverdə saxlanılan kopyasıdır. Git distributed olduğu üçün hər developer-in öz lokal repo kopyası var və remote ilə sinxronizasiya edir. Remote-lar komanda üzvlərinin eyni kod bazası üzərində işləməsini mümkün edir.
+
+## Niyə Vacibdir
+
+GitHub/GitLab üzərindən komanda əməkdaşlığı remote-suz mümkün deyil. CI/CD pipeline-lar `push` event-ına trigger olunur; `fetch`/`pull` olmadan lokalda köhnəlmiş kod işlənir.
 
 ## Əsas Əmrlər (Key Commands)
 
@@ -168,7 +172,7 @@ git branch -r
 git checkout --track origin/feature/payment
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Fork Workflow
 
@@ -308,7 +312,7 @@ git push --force-with-lease origin feature/auth
   └──────────────────────────────────────────┘
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Laravel Layihəsini İlk Dəfə Push Etmək
 
@@ -377,6 +381,36 @@ php artisan route:cache
 php artisan view:cache
 ```
 
+## Praktik Tapşırıqlar
+
+1. **GitHub-a yeni repo qoş**
+   ```bash
+   git remote add origin git@github.com:username/laravel-blog.git
+   git push -u origin main
+   git remote -v  # yoxla
+   ```
+
+2. **Upstream fork workflow**
+   ```bash
+   # Başqasının repo-sunu fork et
+   git remote add upstream git@github.com:original/repo.git
+   git fetch upstream
+   git merge upstream/main
+   ```
+
+3. **Tracking branch-ları anla**
+   ```bash
+   git branch -vv       # tracking info
+   git fetch --all      # hamı üçün fetch
+   git pull --rebase    # rebase ilə pull
+   ```
+
+4. **Remote branch-ı sil**
+   ```bash
+   git push origin --delete feature/old-feature
+   git remote prune origin  # local reference-ları təmizlə
+   ```
+
 ## Interview Sualları
 
 ### S1: `git fetch` ilə `git pull` arasında fərq nədir?
@@ -407,3 +441,9 @@ php artisan view:cache
 6. **Push etməzdən əvvəl pull edin**: Konfliktləri lokal həll edin
 7. **Tracking branch-ları düzgün qurun**: `git push -u` ilə ilk push-da set edin
 8. **Credentials saxlamayın**: Git credential helper və ya SSH key istifadə edin
+
+## Əlaqəli Mövzular
+
+- [01-git-basics.md](01-git-basics.md) — git əsasları
+- [02-git-branching.md](02-git-branching.md) — local branch-lar
+- [15-pull-request-best-practices.md](15-pull-request-best-practices.md) — remote üzərindən PR göndərmək

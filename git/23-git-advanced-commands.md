@@ -1,8 +1,12 @@
-# Git Advanced Commands
+# Git Advanced Commands (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Git-in gündəlik istifadədən kənar, amma xüsusi vəziyyətlərdə çox güclü olan əmrləri var. Bu əmrlər repo tarixini yenidən yazmaq, böyük data idarə etmək, konflikt həlli-ni avtomatlaşdırmaq və performance optimize etmək üçün istifadə olunur.
+
+## Niyə Vacibdir
+
+`git filter-repo` ilə tarixi yenidən yazmaq (credential leak), `rerere` ilə konfliktləri avtomatlaşdırmaq, `sparse checkout` ilə monorepo-da yalnız lazımlı hissəni almaq — bunlar production emergency-lərda lazım olan advanced bacarıqlardır. Laravel layihəsindən `.env` fayl tarixdən silinmədikcə credentials güvəndə deyil; `filter-repo` bunu düzgün həll edir.
 
 ```
 Advanced Əmrlər Kateqoriyaları:
@@ -235,7 +239,7 @@ cd repo
 git sparse-checkout set apps/api
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### 1. Həssas Məlumatları Sil (filter-repo)
 
@@ -517,7 +521,7 @@ git fetch bundle → mövcud repo yenilə
     AVTOMATIK həll!
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### 1. Laravel .env və Secrets Təmizləmə
 
@@ -660,6 +664,45 @@ git rebase --continue
 git rebase main
 # rerere avtomatik composer.lock həll edir
 ```
+
+## Praktik Tapşırıqlar
+
+1. **filter-repo ilə sensitive data sil**
+   ```bash
+   pip install git-filter-repo
+   
+   # Spesifik faylı tarixçədən tamamilə sil
+   git filter-repo --path secrets.txt --invert-paths
+   
+   # String-i dəyişdir
+   git filter-repo --replace-text <(echo "old-password==>REDACTED")
+   ```
+
+2. **rerere aktiv et**
+   ```bash
+   git config --global rerere.enabled true
+   
+   # Konflikti həll et → rerere yadda saxladı
+   # Növbəti dəfə eyni konflikti avtomatik həll edir
+   git rerere diff   # yadda saxlanmış həlləri gör
+   ```
+
+3. **Sparse checkout (monorepo)**
+   ```bash
+   git clone --filter=blob:none --no-checkout git@github.com:company/monorepo.git
+   cd monorepo
+   git sparse-checkout init --cone
+   git sparse-checkout set services/payment-api
+   git checkout main
+   # Yalnız services/payment-api/ endirildi
+   ```
+
+4. **git bundle (offline transfer)**
+   ```bash
+   git bundle create repo.bundle --all
+   # USB ilə köçür
+   git clone repo.bundle recovered-repo
+   ```
 
 ## Interview Sualları
 
@@ -860,3 +903,9 @@ sudo apt install git-filter-repo              # Debian/Ubuntu
 brew install git-filter-repo                  # macOS
 # Script olaraq: https://github.com/newren/git-filter-repo
 ```
+
+## Əlaqəli Mövzular
+
+- [06-git-rebasing.md](06-git-rebasing.md) — tarixçəni yenidən yazmaq
+- [20-git-worktrees.md](20-git-worktrees.md) — sparse checkout ilə birlikdə
+- [30-git-performance-large-repos.md](30-git-performance-large-repos.md) — large repo optimizasiyası

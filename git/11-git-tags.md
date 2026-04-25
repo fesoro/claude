@@ -1,6 +1,6 @@
-# Git Tags
+# Git Tags (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Git tag-lar, commit tarixçəsindəki müəyyən nöqtələri qeyd etmək üçün istifadə olunan referanslardır. Əsasən software release-ləri (v1.0.0, v2.1.3) işarələmək üçün istifadə olunur. Tag-lar branch-lərdən fərqli olaraq hərəkət etmir, həmişə eyni commit-ə işarə edir.
 
@@ -31,6 +31,10 @@ Annotated Tag:
   GPG imzası (optional)
   git tag -a v1.0.0 -m "Release 1.0.0"
 ```
+
+## Niyə Vacibdir
+
+Release management üçün tag-lar vacibdir: `v1.2.3` tag-ı CI/CD-yə production deploy-u tetikləyir, `git describe` ilə build-ə version nömrəsi əlavə olunur, Laravel package-ları Composer-a Packagist üzərindən tag-la publish olunur. Semantic versioning ilə tag-lar olmadan deployment pipeline avtomatlaşdırılması və changelog generasiyası mümkün olmaz.
 
 ## Əsas Əmrlər (Key Commands)
 
@@ -112,7 +116,7 @@ git checkout v1.0.0
 git checkout -b hotfix/v1.0.1 v1.0.0
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Nümunə 1: Semantic Versioning ilə Release
 
@@ -271,7 +275,7 @@ Developer                    CI/CD                  Production
    │                          │    release notes)      │
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Laravel Version Management
 
@@ -393,6 +397,37 @@ git push origin v1.2.0
 # Packagist avtomatik yeni versiyanı detect edir
 # composer require company/payment-sdk:^1.2
 ```
+
+## Praktik Tapşırıqlar
+
+1. **Annotated tag yarat və push et**
+   ```bash
+   git tag -a v1.0.0 -m "Release 1.0.0: user authentication"
+   git push origin v1.0.0
+   git push origin --tags  # bütün tag-ları push et
+   ```
+
+2. **Tag-dan branch yarat**
+   ```bash
+   git checkout -b hotfix/v1.0.1 v1.0.0
+   # v1.0.0 state-indən yeni branch
+   ```
+
+3. **Semantic versioning tətbiq et**
+   ```bash
+   # Patch: bug fix
+   git tag -a v1.0.1 -m "fix: null pointer in OrderController"
+   # Minor: yeni feature
+   git tag -a v1.1.0 -m "feat: add payment gateway"
+   # Major: breaking change
+   git tag -a v2.0.0 -m "feat!: new API structure"
+   ```
+
+4. **Tag-ı sil**
+   ```bash
+   git tag -d v1.0.0-beta        # local sil
+   git push origin :v1.0.0-beta  # remote-dan sil
+   ```
 
 ## Interview Sualları
 
@@ -544,3 +579,8 @@ Yanlış tag varsa:
   2. Release notes-da qeyd edin
   3. Köhnə tag-ı yalnız heç kim istifadə etmirsə silin
 ```
+
+## Əlaqəli Mövzular
+
+- [12-git-config.md](12-git-config.md) — git konfiqurasiyası
+- [26-conventional-commits-semantic-release.md](26-conventional-commits-semantic-release.md) — tag-ları avtomatik yaratmaq

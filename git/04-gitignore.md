@@ -1,8 +1,12 @@
-# .gitignore
+# .gitignore (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
 `.gitignore` faylı, Git-ə hansı faylları və qovluqları izləməməsini (track etməməsini) bildirir. Build artefaktları, dependency-lər, əməliyyat sistemi faylları, IDE konfiqurasiyaları və həssas məlumatlar (API key-lər, parollar) kimi fayllar `.gitignore`-a əlavə edilir.
+
+## Niyə Vacibdir
+
+`.env` faylındakı database credentials, `vendor/` qovluğu, `storage/` log-ları — bunlar repo-ya düşərsə həm security riski yaranır həm repo şişir. Laravel-in default `.gitignore`-u başlanğıc nöqtəsidir amma hər layihə əlavə qaydalara ehtiyac duyur.
 
 ```
 .gitignore olmadan:
@@ -158,7 +162,7 @@ git clean -fdX   # Yalnız ignored faylları sil
 git clean -fdx   # Ignored + untracked faylları sil (DİQQƏT!)
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Nümunə 1: Laravel .gitignore (Tam)
 
@@ -399,7 +403,7 @@ Nümunələr:
   IGNORE: vendor/, node_modules/, .env, .idea/, .DS_Store, *.log
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Laravel Default .gitignore Faylları
 
@@ -508,6 +512,33 @@ docker/volumes/redis/*
 # Docker override
 docker-compose.override.yml
 ```
+
+## Praktik Tapşırıqlar
+
+1. **Cached faylı tracking-dən çıxar**
+   ```bash
+   # .env artıq commit edilib — tracking-dən çıxar
+   git rm --cached .env
+   echo ".env" >> .gitignore
+   git commit -m "chore: remove .env from tracking"
+   ```
+
+2. **Global gitignore qur**
+   ```bash
+   git config --global core.excludesfile ~/.gitignore_global
+   echo ".DS_Store" >> ~/.gitignore_global
+   echo "*.swp" >> ~/.gitignore_global
+   echo ".idea/" >> ~/.gitignore_global
+   ```
+
+3. **Pattern-ləri test et**
+   ```bash
+   git check-ignore -v path/to/file   # niyə ignore olunduğunu göstər
+   git status --ignored               # bütün ignored faylları gör
+   ```
+
+4. **Laravel spesifik .gitignore yaz**
+   - `/vendor/`, `/.env`, `/storage/*.key`, `/public/hot`, `/public/storage`, `node_modules/` — hamısını əlavə et
 
 ## Interview Sualları
 
@@ -642,3 +673,8 @@ Laravel: github.com/github/gitignore/blob/main/Laravel.gitignore
 PHP:     github.com/github/gitignore/blob/main/PHP.gitignore
 Node:    github.com/github/gitignore/blob/main/Node.gitignore
 ```
+
+## Əlaqəli Mövzular
+
+- [01-git-basics.md](01-git-basics.md) — staging və commit əsasları
+- [12-git-config.md](12-git-config.md) — global git konfiqurasiyası

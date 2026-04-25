@@ -1,8 +1,12 @@
-# Team Git Workflow
+# Team Git Workflow (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Team Git Workflow** - komandada Git-in effektiv istifadəsi üçün razılaşdırılmış konvensiyalar, qaydalar və proseslər toplusudur. Branch adlandırma, commit mesajları, PR prosesi, code review kultürü və protected branches bu workflow-un əsas komponentləridir.
+
+## Niyə Vacibdir
+
+Naming convention, branch protection, review process — bunlar olmadan komandada hər kəs fərqli yanaşma ilə işləyir, onboarding uzanır, conflict-lər artır. Aydın komanda standartları developer experience-ı artırır və texniki borcu azaldır. Laravel layihələrində PR template-lər, CODEOWNERS faylı və commitlint ilə insan xətaları minimuma endirilir, onboarding isə sürətlənir.
 
 ```
 Team Workflow Pyramidası:
@@ -100,7 +104,7 @@ gh pr review 42 --comment -b "Nice work!"
 gh pr view 42 --json mergeable
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### 1. Branch Naming Convention
 
@@ -524,7 +528,7 @@ BREAKING CHANGE: User table has new google_id column
 └────────────────────────────────────────────┘
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### 1. Laravel Team Workflow
 
@@ -686,6 +690,44 @@ git push
 # - Nə öyrəndik?
 # - Necə qarşısını alacağıq?
 ```
+
+## Praktik Tapşırıqlar
+
+1. **Branch naming convention sənədi yaz**
+   ```
+   feature/<ticket-id>-short-description
+   bugfix/<ticket-id>-short-description
+   hotfix/<version>-short-description
+   release/<version>
+   chore/<description>
+   
+   Nümunələr:
+   feature/PROJ-123-user-oauth
+   bugfix/PROJ-456-null-payment
+   hotfix/v2.1.1-login-crash
+   ```
+
+2. **Conventional commits pre-commit hook**
+   ```bash
+   # .githooks/commit-msg
+   TYPES="feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert"
+   if ! head -1 "$1" | grep -qE "^($TYPES)(\(.+\))?: .{1,72}"; then
+       echo "Invalid commit format"
+       exit 1
+   fi
+   ```
+
+3. **Code review checklist yaz**
+   - Business logic düzgündürmü?
+   - Test yazılıbmı?
+   - Security issue varmı?
+   - Performance: N+1 query, memory leak?
+   - Laravel best practices: service layer, validation, resource?
+
+4. **Onboarding dokümenti yaz**
+   - Branch al, commit et, PR aç — step-by-step
+   - Required tools: PHP Pint, PHPStan
+   - Git hooks qurulumu: `.githooks/`
 
 ## Interview Sualları
 
@@ -876,3 +918,9 @@ git tag v2.0.0        # breaking change
 - Architecture docs
 - Migration guide
 ```
+
+## Əlaqəli Mövzular
+
+- [13-gitflow.md](13-gitflow.md) — komanda branching model-i
+- [15-pull-request-best-practices.md](15-pull-request-best-practices.md) — PR standartları
+- [26-conventional-commits-semantic-release.md](26-conventional-commits-semantic-release.md) — commit message standartı

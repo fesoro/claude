@@ -1,6 +1,6 @@
-# Git Reset, Revert, and Recovery
+# Git Reset & Revert (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Git-də dəyişiklikləri geri almaq üçün bir neçə alət var: `reset`, `revert`, `restore`, və `checkout`. Hər birinin fərqli istifadə sahəsi var. Bunları düzgün başa düşmək vacibdir çünki yanlış istifadə iş itkisinə səbəb ola bilər.
 
@@ -8,6 +8,10 @@ Git-də dəyişiklikləri geri almaq üçün bir neçə alət var: `reset`, `rev
 - **Revert**: Əks commit yaradır (tarixçəni qoruyur)
 - **Restore**: Faylları bərpa edir
 - **Reflog**: İtirilmiş commit-ləri tapmaq üçün
+
+## Niyə Vacibdir
+
+Səhv commit edilmiş credential, yanlış merge, production-a gedən breaking change — bunları düzəltmək üçün reset/revert bilmək kritikdir. `reflog` isə "itmiş" hər şeyi bərpa etmə imkanı verir.
 
 ## Əsas Əmrlər (Key Commands)
 
@@ -153,7 +157,7 @@ git reflog show feature/auth
 git reset --hard d4e5f6g  # commit hash-ı reflog-dan götürün
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Ssenari 1: Son Commit-i Düzəltmək
 
@@ -285,7 +289,7 @@ git merge feature/broken
   Default olaraq 90 gün saxlanılır.
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Migration Geri Almaq
 
@@ -338,6 +342,37 @@ git add .gitignore
 git commit -m "Remove vendor from tracking, update .gitignore"
 ```
 
+## Praktik Tapşırıqlar
+
+1. **Üç reset növünü test et**
+   ```bash
+   # 3 commit et
+   git reset --soft HEAD~1    # commit geri alındı, stage qaldı
+   git reset --mixed HEAD~1   # commit + stage geri alındı, working dir qaldı
+   git reset --hard HEAD~1    # hər şey geri alındı (DİQQƏT!)
+   ```
+
+2. **Shared branch-da revert**
+   ```bash
+   git log --oneline
+   git revert <commit-sha>   # yeni "undo commit" yaradır
+   # push olunmuş branch-da bu yolu seç, reset yox
+   ```
+
+3. **reflog ilə bərpa**
+   ```bash
+   git reset --hard HEAD~3   # "həll edəcəm" deyib etdin
+   git reflog                # köhnə SHA-lar görünür
+   git reset --hard <sha>    # geri gəl
+   ```
+
+4. **Yanlış stage-i geri al**
+   ```bash
+   git add .env              # səhvən stage etdin
+   git restore --staged .env # unstage et (silmir)
+   git restore .env          # working dir-ı sıfırla (DİQQƏT: dəyişikliklər gedir!)
+   ```
+
 ## Interview Sualları
 
 ### S1: `git reset --soft`, `--mixed`, `--hard` arasında fərq nədir?
@@ -368,3 +403,9 @@ git commit -m "Remove vendor from tracking, update .gitignore"
 6. **Əvvəlcə backup branch yaradın**: `git branch backup` sonra reset edin
 7. **`git diff` ilə əvvəlcə yoxlayın**: Reset/revert etməzdən əvvəl nəyi itirəcəyinizi bilin
 8. **Commit mesajlarında revert səbəbini yazın**: Niyə revert etdiyinizi qeyd edin
+
+## Əlaqəli Mövzular
+
+- [07-git-stashing.md](07-git-stashing.md) — dəyişiklikləri müvəqqəti saxlamaq
+- [06-git-rebasing.md](06-git-rebasing.md) — tarixçəni yenidən yazmaq
+- [21-git-log-advanced.md](21-git-log-advanced.md) — reflog və log ilə tarixi araşdırmaq

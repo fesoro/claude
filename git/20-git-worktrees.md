@@ -1,8 +1,12 @@
-# Git Worktrees
+# Git Worktrees (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Git worktree, eyni repository-dən birdən çox working directory yaratmaq imkanı verir. Hər worktree fərqli branch-ə checkout oluna bilər, beləcə `git stash` və ya branch dəyişdirmə ehtiyacı olmadan eyni vaxtda bir neçə branch üzərində işləyə bilərsiniz.
+
+## Niyə Vacibdir
+
+Eyni anda feature branch-da işləyərkən hotfix gəlir — stash etmədən, branch dəyişmədən paralel worktree-dən işləmək mümkündür. Böyük Laravel layihələrində checkout əvəzinə worktree context-switching overhead-ini sıfıra endirir. Build cache, vendor qovluğu və `.env` faylları worktree-lər arasında ayrılır — bu da hər mühitin izolasiyasını təmin edir.
 
 ```
 Normal workflow (1 working directory):
@@ -102,7 +106,7 @@ git log --oneline -5
 # Hər biri müstəqildir, eyni vaxtda fərqli branch-lər
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Nümunə 1: Hotfix Edərkən Feature İşini Dayandırmamaq
 
@@ -243,7 +247,7 @@ Git Repository Database (.git):
          └──→ Feature işinə davam et (heç nə dəyişməyib)
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Laravel Worktree Setup
 
@@ -337,6 +341,40 @@ done
 git worktree prune
 echo "Done!"
 ```
+
+## Praktik Tapşırıqlar
+
+1. **Paralel worktree yarat**
+   ```bash
+   # Feature üzərindəsən
+   git worktree add ../hotfix-tree hotfix/payment-null
+   # Ayrı qovluqda işlə
+   cd ../hotfix-tree
+   # düzəlt, commit et
+   cd ../main-project
+   git worktree remove ../hotfix-tree
+   ```
+
+2. **Worktree siyahısı**
+   ```bash
+   git worktree list
+   # /home/user/project  abc1234 [main]
+   # /home/user/hotfix   def5678 [hotfix/fix]
+   ```
+
+3. **Bare repo ilə worktree qur**
+   ```bash
+   git clone --bare git@github.com:company/app.git app.git
+   cd app.git
+   git worktree add ../main main
+   git worktree add ../feature feature/new-api
+   ```
+
+4. **Worktree-ni təmizlə**
+   ```bash
+   git worktree remove ../hotfix-tree
+   git worktree prune  # silindikdən sonra references təmizlə
+   ```
 
 ## Interview Sualları
 
@@ -444,3 +482,8 @@ Worktree-lər repo xaricindədir (eyni səviyyədə qonşu qovluq).
 .gitignore-a əlavə etmək lazım deyil.
 Worktree qovluğunun daxilində .gitignore əsas repo ilə eynidir.
 ```
+
+## Əlaqəli Mövzular
+
+- [19-git-submodules.md](19-git-submodules.md) — mürəkkəb repo strukturları
+- [23-git-advanced-commands.md](23-git-advanced-commands.md) — sparse checkout ilə birlikdə

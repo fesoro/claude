@@ -1,8 +1,12 @@
-# Git Basics
+# Git Basics (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Git, Linus Torvalds tərəfindən 2005-ci ildə yaradılmış **distributed version control system** (paylanmış versiya nəzarət sistemi) dir. Git kodun tarixçəsini izləyir, komanda üzvlərinin eyni vaxtda işləməsinə imkan verir və hər dəyişikliyi geri qaytarmağa şərait yaradır.
+
+## Niyə Vacibdir
+
+Laravel layihəsinə qoşulan hər developer ilk gün `git clone`, `commit`, `log` işlədir. CI/CD pipeline-ları (GitHub Actions, GitLab CI) tamamilə git workflow-a əsaslanır; git-i bilməmək team productivity-ni aşağı salır.
 
 ### Centralized vs Distributed VCS
 
@@ -229,7 +233,7 @@ git log -p
 git log --stat
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Ssenari 1: Yeni Laravel Layihəsini Git ilə Başlatmaq
 
@@ -346,7 +350,7 @@ git restore app/Models/User.php
      └──────────┘      └──────────┘    └──────────┘
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Tipik Laravel Workflow
 
@@ -394,6 +398,35 @@ storage/logs/*.log   # Log faylları
 .phpunit.result.cache
 ```
 
+## Praktik Tapşırıqlar
+
+1. **Yeni Laravel layihəsi üçün repo hazırla**
+   ```bash
+   laravel new blog
+   cd blog
+   git init
+   git add .
+   git commit -m "feat: initial Laravel setup"
+   git log --oneline
+   ```
+
+2. **Selective staging məşqi**
+   - `app/Models/User.php` faylında dəyişiklik et
+   - `app/Http/Controllers/HomeController.php` faylında dəyişiklik et
+   - Yalnız User.php-ni stage et, commit et, sonra Controller-i ayrı commit et
+
+3. **git status çıxışını oxu**
+   - `??` (untracked), `M` (modified), `A` (added) — hər birini praktikada gör
+
+4. **Commit mesajı qaydası**
+   - `feat:`, `fix:`, `docs:` prefixlərini işlət (Conventional Commits preview)
+
+5. **Son commit-i düzəlt**
+   ```bash
+   git commit --amend -m "feat: correct commit message"
+   # DİQQƏT: yalnız push olunmamış commit-lərdə
+   ```
+
 ## Interview Sualları
 
 ### S1: Git nədir və SVN-dən nə ilə fərqlənir?
@@ -427,3 +460,9 @@ storage/logs/*.log   # Log faylları
 6. **Branch-lardan istifadə edin**: `main`-də birbaşa işləməyin
 7. **Mütəmadi commit edin**: Gün sonunda uncommitted iş qalmasın
 8. **`git log` ilə tarixçəni yoxlayın**: Push etməzdən əvvəl commit-lərin düzgün olduğuna əmin olun
+
+## Əlaqəli Mövzular
+
+- [02-git-branching.md](02-git-branching.md) — commit-lər branch-larda necə qruplaşır
+- [03-git-remote.md](03-git-remote.md) — commit-ləri remote-a göndərmək
+- [04-gitignore.md](04-gitignore.md) — hansı faylları commit etməmək

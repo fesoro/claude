@@ -1,6 +1,6 @@
-# Git Troubleshooting
+# Git Troubleshooting (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Git troubleshooting Git ilə işləyərkən qarşılaşılan tipik problemlərin həlli və təcili halda qurtarma üsullarıdır. Ən vacib prinsip: **Git almost never loses data**. Əksər hallarda `reflog` və ya `fsck` ilə datanı qurtarmaq mümkündür.
 
@@ -27,6 +27,10 @@ Git Problem Kateqoriyaları:
 │ git branch backup-branch                      │
 └────────────────────────────────────────────────┘
 ```
+
+## Niyə Vacibdir
+
+Corrupted repo, yanlışlıqla silindilmiş commit, force push disaster, detached HEAD — bunları recovery etmək bilmək senior developer-in distinguishing bacarıqlarından biridir. `reflog` demək olar ki, hər şeyi bərpa edir. Production-da Laravel layihəsinin Git tarixçəsini itirmək team üçün saatlıq iş itkisi deməkdir — bu biliklər o anlar üçün həyat xilastedicidir.
 
 ## Əsas Əmrlər (Key Commands)
 
@@ -60,7 +64,7 @@ git prune                          # Unreachable obyektləri sil
 git repack -a -d                   # Packfile yenidən yarat
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Problem 1: Yanlış Commit Mesajı
 
@@ -452,7 +456,7 @@ git add User.php
 git commit
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### 1. Laravel .env Təsadüfən Commit Olundu
 
@@ -598,6 +602,46 @@ php artisan optimize:clear
     submodules: recursive
     fetch-depth: 0
 ```
+
+## Praktik Tapşırıqlar
+
+1. **Force push bərpası**
+   ```bash
+   # Kollegan force push etdi, sənin commit-lər "itdi"
+   git reflog show origin/main
+   git checkout -b backup-branch <sha>
+   # commit-ləri geri qazandın
+   ```
+
+2. **Yanlış branch-a commit**
+   ```bash
+   # main-ə direkt commit etdin (branch protection yoxdur)
+   git log --oneline  # SHA-nı tap
+   git checkout feature/correct-branch
+   git cherry-pick <sha>
+   git checkout main
+   git reset --hard HEAD~1
+   ```
+
+3. **Detached HEAD fix**
+   ```bash
+   git checkout <sha>  # detached HEAD
+   git checkout -b recovery-branch  # yeni branch yarad
+   git checkout main
+   git merge recovery-branch
+   ```
+
+4. **Merge conflict abort və yenidən cəhd**
+   ```bash
+   git merge feature/complex
+   # conflict çoxdur, hazır deyilsən
+   git merge --abort
+   # daha az conflict üçün əvvəlcə rebase:
+   git checkout feature/complex
+   git rebase main
+   git checkout main
+   git merge feature/complex
+   ```
 
 ## Interview Sualları
 
@@ -794,3 +838,8 @@ Reflog recovery: `git reset --hard HEAD@{2}`
 2. Team training on --force-with-lease
 3. Alias `git push --force` to warn first
 ```
+
+## Əlaqəli Mövzular
+
+- [08-git-reset-revert.md](08-git-reset-revert.md) — reset, revert, reflog
+- [21-git-log-advanced.md](21-git-log-advanced.md) — log ilə tarixçə araşdırması

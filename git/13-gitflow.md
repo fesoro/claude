@@ -1,6 +1,6 @@
-# GitFlow Branching Model
+# GitFlow Branching Model (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 GitFlow, Vincent Driessen tərəfindən 2010-cu ildə təqdim edilmiş branch idarəetmə modelidir. Müəyyən branch-lərin müəyyən məqsədlər üçün istifadəsini təyin edir. Xüsusilə planlı release dövrləri olan layihələr üçün uyğundur.
 
@@ -31,6 +31,10 @@ GitFlow Branch Strukturu:
 │ hotfix/*     │ Production bug fix (main-dən açılır)     │
 └──────────────┴──────────────────────────────────────────┘
 ```
+
+## Niyə Vacibdir
+
+Böyük komandalar üçün release management strukturu verir: parallel feature development, həftəlik release cycle, hotfix prosesi — hamısı ayrı branch-larda idarə olunur. Laravel SaaS layihələrindən istifadə olunan ən yayılmış branching strategy-dən biridir. Enterprise müştəriləri olan, versioned release-lər çıxaran layihələrdə GitFlow olmadan branch kaosunun qarşısını almaq çox çətin olur.
 
 ## Əsas Əmrlər (Key Commands)
 
@@ -109,7 +113,7 @@ git merge --no-ff hotfix/2.1.1
 git branch -d hotfix/2.1.1
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Nümunə 1: Tam Feature Lifecycle
 
@@ -254,7 +258,7 @@ Hotfix Branch:
            └── Kiçik develop fix ──→ develop-ə birbaşa commit
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Laravel Layihəsi üçün GitFlow Setup
 
@@ -369,6 +373,42 @@ jobs:
       - name: Deploy to production
         run: echo "Deploy to production server"
 ```
+
+## Praktik Tapşırıqlar
+
+1. **git-flow tool ilə başla**
+   ```bash
+   # Qurulum (macOS):
+   brew install git-flow
+
+   cd laravel-project
+   git flow init  # default cavablar kabuldur
+   git branch     # main + develop görünür
+   ```
+
+2. **Feature branch tam cycle**
+   ```bash
+   git flow feature start user-authentication
+   # kod yaz, commit et
+   git flow feature finish user-authentication
+   # develop-a merge edildi, branch silindi
+   ```
+
+3. **Release prosesi**
+   ```bash
+   git flow release start 1.2.0
+   # version bump, son düzəlişlər
+   git flow release finish 1.2.0
+   # main-ə merge + tag, develop-a back-merge
+   ```
+
+4. **Hotfix**
+   ```bash
+   git flow hotfix start fix-payment-null
+   # düzəlt
+   git flow hotfix finish fix-payment-null
+   # həm main-ə həm develop-a merge
+   ```
 
 ## Interview Sualları
 
@@ -491,3 +531,9 @@ Açıq mənbə          → GitFlow (versioned releases)
 Mobil tətbiq         → GitFlow (app store releases)
 Microservice         → Trunk-Based Development
 ```
+
+## Əlaqəli Mövzular
+
+- [14-github-flow.md](14-github-flow.md) — daha sadə alternativ
+- [17-trunk-based-development.md](17-trunk-based-development.md) — CI/CD ilə uyğun yanaşma
+- [11-git-tags.md](11-git-tags.md) — release tag-ları

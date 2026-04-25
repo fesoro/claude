@@ -1,8 +1,12 @@
-# Signed Commits (GPG və SSH Signing)
+# Signed Commits (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Signed commit** – kommitin həqiqətən də iddia edilən müəllif tərəfindən edildiyini kriptoqrafik olaraq təsdiqləyən imzalı kommitdir. Git default olaraq `user.name` və `user.email` dəyərlərini yoxlamır; istənilən şəxs başqa birinin adı ilə kommit edə bilər. Signed commit bu problemi həll edir.
+
+## Niyə Vacibdir
+
+Open source contribution-da və enterprise layihələrdə commit imzalanması "verified" badge-ini verir, supply chain attack-lardan qoruyur. GitHub-da impersonation (başqasının adından commit) commit signing olmadan mümkündür; imza bunu aradan qaldırır. SOC2, ISO 27001 kimi compliance tələblərini olan PHP/Laravel layihələrində signed commit artıq standart tələbə çevrilib.
 
 **Niyə vacibdir?**
 - **Authenticity (Həqiqilik):** Kommiti yalnız gizli açara sahib şəxs imzalaya bilər.
@@ -81,7 +85,7 @@ git verify-tag v1.0.0
 
 ---
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Nümunə 1: GPG açarının yaradılması (addım-addım)
 
@@ -240,7 +244,7 @@ Signed commit:
 
 ---
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Team policy: bütün kommitlər imzalanmalıdır
 
@@ -324,6 +328,40 @@ done
 ```
 
 ---
+
+## Praktik Tapşırıqlar
+
+1. **GPG key yarat**
+   ```bash
+   gpg --full-generate-key
+   # RSA, 4096 bit seç
+   gpg --list-secret-keys --keyid-format LONG
+   # sec rsa4096/ABCDEF1234567890
+   ```
+
+2. **Git-ə GPG key qoş**
+   ```bash
+   gpg --armor --export ABCDEF1234567890
+   # GitHub → Settings → SSH and GPG keys → New GPG key
+   
+   git config --global user.signingkey ABCDEF1234567890
+   git config --global commit.gpgsign true
+   ```
+
+3. **İmzalanmış commit yoxla**
+   ```bash
+   git log --show-signature -1
+   # "Good signature from..." görünməlidir
+   git verify-commit HEAD
+   ```
+
+4. **SSH signing (daha sadə alternativ)**
+   ```bash
+   git config --global gpg.format ssh
+   git config --global user.signingkey ~/.ssh/id_ed25519.pub
+   git config --global commit.gpgsign true
+   git commit -m "feat: signed with SSH"
+   ```
 
 ## Interview Sualları (Q&A)
 
@@ -442,3 +480,8 @@ Master key yalnız yeni subkey imzalamaq üçün istifadə olunur və offline sa
 11. **SSH signing-i yeni layihələrdə tövsiyə edin**: GPG-dən sadədir və artıq SSH key-i olan hər kəs üçün dərhal istifadəyə hazırdır.
 
 12. **CI/CD-də bot kommitlərini istisna edin**: Dependabot, Renovate kimi botlar fərqli qaydalarla işləyir – onları allow list-ə əlavə edin.
+
+## Əlaqəli Mövzular
+
+- [12-git-config.md](12-git-config.md) — git konfiqurasiyası
+- [29-codeowners-branch-protection.md](29-codeowners-branch-protection.md) — branch protection ilə birlikdə

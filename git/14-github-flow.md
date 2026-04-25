@@ -1,6 +1,6 @@
-# GitHub Flow
+# GitHub Flow (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 GitHub Flow, GitHub tərəfindən təklif olunan sadə branching strategiyasıdır. GitFlow-dan fərqli olaraq yalnız bir əsas branch (main) və qısa ömürlü feature branch-lərdən ibarətdir. Hər dəyişiklik Pull Request vasitəsilə review olunur və main-ə merge olunduqdan sonra dərhal deploy edilir.
 
@@ -34,6 +34,10 @@ hotfix:                        ●──┘
 5. Deploy et (və ya test et)
 6. main-ə merge et
 ```
+
+## Niyə Vacibdir
+
+Startup-lar və SaaS layihələrinin əksəriyyəti GitHub Flow-u seçir: sadədir, CI/CD ilə qüsursuz işləyir, hər PR deploy edilə bilən vəziyyətdə olur. GitFlow-un complexity-si olmadan sürətli delivery imkanı verir. Laravel layihələrindəki günlük deploy ritmi üçün bu model idealdır — main branch həmişə production-a göndərilə bilən vəziyyətdə olur.
 
 ## Əsas Əmrlər (Key Commands)
 
@@ -119,7 +123,7 @@ git rebase --continue
 git push --force-with-lease origin feature/my-feature
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Nümunə 1: Tam Feature Development Cycle
 
@@ -306,7 +310,7 @@ Author                    Reviewer              CI
   │                          Auto Deploy ────────>
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### PR Template (.github/pull_request_template.md)
 
@@ -436,6 +440,37 @@ Repository Settings → Branches → main:
 ✗ Allow force pushes (DISABLED)
 ✗ Allow deletions (DISABLED)
 ```
+
+## Praktik Tapşırıqlar
+
+1. **Tam GitHub Flow cycle**
+   ```bash
+   git checkout -b feature/stripe-integration
+   # Kod yaz, test et
+   git push origin feature/stripe-integration
+   # GitHub-da PR aç
+   # Review keç
+   # main-ə merge et
+   git checkout main
+   git pull
+   git branch -d feature/stripe-integration
+   ```
+
+2. **CI status check tələbi**
+   - GitHub Settings → Branches → Branch protection rules
+   - "Require status checks to pass before merging" aktiv et
+   - Test suite-ni required check kimi əlavə et
+
+3. **Draft PR workflow**
+   ```bash
+   git push origin feature/wip
+   # GitHub-da "Create draft pull request"
+   # Hazır olanda "Ready for review"
+   ```
+
+4. **Squash merge policy**
+   - Repository Settings → Pull Requests → Allow squash merging aktiv et
+   - Main branch-da clean history saxlamaq üçün
 
 ## Interview Sualları
 
@@ -598,3 +633,9 @@ resources/css/ @frontend-team
 .github/ @devops-team
 docker-compose.yml @devops-team
 ```
+
+## Əlaqəli Mövzular
+
+- [13-gitflow.md](13-gitflow.md) — daha strukturlu alternativ
+- [17-trunk-based-development.md](17-trunk-based-development.md) — daha sürətli alternativ
+- [15-pull-request-best-practices.md](15-pull-request-best-practices.md) — PR keyfiyyəti

@@ -1,6 +1,6 @@
-# Pull Request Best Practices
+# Pull Request Best Practices (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Pull Request (PR)** (GitLab-da Merge Request) - developer-in öz branch-ındakı dəyişiklikləri main branch-a birləşdirmək üçün etdiyi rəsmi sorğudur. PR kod review, CI/CD yoxlamaları, müzakirə və təsdiqləmə prosesini əhatə edir.
 
@@ -32,6 +32,10 @@ PR Axını:
 │ YAŞIL CI    - Bütün yoxlamalar keçir      │
 └────────────────────────────────────────────┘
 ```
+
+## Niyə Vacibdir
+
+Keyfiyyətli PR review prosesi bug-ları production-a çatmamış tutur. Böyük PR-lar review-u çətinləşdirir, kontekst itkisinə səbəb olur; yaxşı PR description isə team knowledge sharing-i artırır və onboarding zamanı kod anlamağı asanlaşdırır. Laravel layihələrindəki security yoxlamaları, N+1 problemləri, migration düzgünlüyü məhz PR review mərhələsində aşkar edilməlidir.
 
 ## Əsas Əmrlər (Key Commands)
 
@@ -90,7 +94,7 @@ git commit --amend --no-edit           # Əvvəlki commit-ə əlavə
 git push --force-with-lease            # Təhlükəsiz force push
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### 1. PR Şablonu (.github/pull_request_template.md)
 
@@ -434,7 +438,7 @@ PR Size          Review Time    Quality
 1000+ lines      "LGTM 👍"       ⭐ (rubber-stamp)
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### 1. Laravel PR Şablonu
 
@@ -591,6 +595,43 @@ public function store(StoreUserRequest $request) {
 - [ ] RefreshDatabase trait istifadə olunur
 - [ ] Factory-lər yaradılıb/yenilənib
 ```
+
+## Praktik Tapşırıqlar
+
+1. **PR template yarat**
+   ```bash
+   mkdir -p .github
+   # .github/PULL_REQUEST_TEMPLATE.md yarat:
+   ```
+   ```markdown
+   ## Nə dəyişdi
+   -
+
+   ## Niyə
+   -
+
+   ## Test planı
+   - [ ] Unit test
+   - [ ] Manuel test
+
+   ## Screenshot (UI varsa)
+   ```
+
+2. **Böyük PR-ı böl**
+   - 500+ sətirlik feature PR-ı götür
+   - Minimal deployable unit-lərə ayır:
+     1. Database migration + model
+     2. Service layer
+     3. Controller + route
+     4. Frontend (varsa)
+
+3. **Self-review məşqi**
+   - PR açmadan əvvəl `git diff main...HEAD` — öz gözünlə bax
+   - "Bu reviewera aydındırmı?" sualını özünə ver
+
+4. **Review comment-ə cavab vermə**
+   - Hər comment-ə ya "Done" ya da izahat yaz
+   - Qəbul etmədiyini professional şəkildə ifadə et
 
 ## Interview Sualları
 
@@ -767,3 +808,9 @@ Uzun davam edən PR-lar stale olur
 3. Feedback-i gözlə
 4. Problem çıxarsa, dərhal revert/fix
 ```
+
+## Əlaqəli Mövzular
+
+- [14-github-flow.md](14-github-flow.md) — PR-ın workflow-dakı yeri
+- [22-git-workflow-team.md](22-git-workflow-team.md) — komanda standartları
+- [29-codeowners-branch-protection.md](29-codeowners-branch-protection.md) — məcburi review qaydaları

@@ -1,6 +1,6 @@
-# Git LFS (Large File Storage)
+# Git LFS (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Git LFS** – böyük binary fayllar (video, şəkil, PSD, ML modellər, arxiv faylları) üçün Git-ə əlavə olunan genişlənmədir. Git əvvəlcə yalnız mətn faylları üçün dizayn edilib; böyük binary fayllar repozitoriyanı həddindən artıq şişirdir və performansı aşağı salır.
 
@@ -19,6 +19,10 @@
 - Böyük şəkillər (`.tiff`, `.raw`)
 
 ---
+
+## Niyə Vacibdir
+
+ML model-ləri, böyük SQL dump-lar, media faylları, PDF-lər olan Laravel layihələrindəki repo şişkinlik problemini həll edir. Normal git binary faylları diff edə bilmir, hər versiyasını tam saxlayır — LFS isə yalnız pointer saxlayır, real fayl ayrı storage-da olur.
 
 ## Əsas Əmrlər (Key Commands)
 
@@ -84,7 +88,7 @@ git lfs migrate export --include="*.psd"
 
 ---
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Nümunə 1: Yeni Laravel layihəsi üçün LFS qurmaq
 
@@ -257,7 +261,7 @@ Slow clone/fetch                Fast clone/fetch
 
 ---
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Tipik Laravel `.gitattributes` (LFS)
 
@@ -394,6 +398,42 @@ Artıq aktiv dəstəklənmir, yalnız legacy layihələrdə görünür.
 
 ---
 
+## Praktik Tapşırıqlar
+
+1. **LFS qurulumu**
+   ```bash
+   git lfs install  # bir dəfə global
+
+   # Mövcud repo-da aktiv et
+   git lfs track "*.pdf"
+   git lfs track "*.zip"
+   git lfs track "storage/app/uploads/**"
+   git add .gitattributes
+   git commit -m "chore: configure git lfs tracking"
+   ```
+
+2. **Mövcud faylları LFS-ə migrate et**
+   ```bash
+   git lfs migrate import --include="*.pdf" --everything
+   # Tarixçədəki bütün PDF-lər LFS-ə köçürüldü
+   git push --force-with-lease
+   ```
+
+3. **LFS status yoxla**
+   ```bash
+   git lfs ls-files       # LFS-dəki fayllar
+   git lfs status         # current state
+   git lfs env            # konfiqurasiya
+   ```
+
+4. **Selective download (CI üçün)**
+   ```bash
+   # CI-da LFS fayllarına ehtiyac yoxdursa:
+   GIT_LFS_SKIP_SMUDGE=1 git clone <repo>
+   # Sonra lazım olanda:
+   git lfs pull
+   ```
+
 ## Interview Sualları (Q&A)
 
 ### Q1: Git LFS-in əsas işləmə prinsipi nədir?
@@ -523,3 +563,8 @@ Sadə dizayn/media fayllar üçün LFS kifayətdir.
     ```
 
 12. **LFS versioning policy qurun**: Hansı fayl növləri LFS-də olmalıdır, quota necə bölünür, kim nəyə icazəlidir – bunu README-də sənədləşdirin.
+
+## Əlaqəli Mövzular
+
+- [30-git-performance-large-repos.md](30-git-performance-large-repos.md) — large repo optimizasiyası
+- [31-git-maintenance.md](31-git-maintenance.md) — repo saxlanması

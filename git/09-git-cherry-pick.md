@@ -1,6 +1,6 @@
-# Git Cherry-Pick
+# Git Cherry-Pick (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Cherry-pick, başqa bir branch-dəki **konkret commit-i** götürüb cari branch-ə tətbiq etmək deməkdir. Merge və ya rebase-dən fərqli olaraq, bütün branch-i birləşdirmək əvəzinə, yalnız lazım olan commit-ləri seçirsiniz.
 
@@ -23,6 +23,10 @@ F' = F-in kopyasıdır (yeni SHA hash ilə)
 ```
 
 **Vacib**: Cherry-pick orijinal commit-i kopyalayır, eyni dəyişiklikləri yeni commit kimi yaradır. Orijinal commit yerində qalır.
+
+## Niyə Vacibdir
+
+Hotfix-i release branch-a köçürmək, production-da yalnız müəyyən bir bug fix-i tətbiq etmək üçün ən dəqiq vasitədir. Bütün branch-ı merge etmədən tək commit götürmək imkanı verir. Laravel layihələrində hotfix-ləri develop və release branch-larına paralel tətbiq edərkən cherry-pick olmadan bu prosesi düzgün idarə etmək mümkün olmaz.
 
 ## Əsas Əmrlər (Key Commands)
 
@@ -99,7 +103,7 @@ git cherry-pick -S abc1234
 git cherry-pick --strategy=recursive --strategy-option=theirs abc1234
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Nümunə 1: Hotfix-i Develop Branch-ə Tətbiq Etmək
 
@@ -260,7 +264,7 @@ git cherry-pick abc1234
    Commit yaradılır ✓
 ```
 
-## PHP/Laravel Layihələrdə İstifadə
+## Praktik Baxış
 
 ### Ssenari 1: Hotfix-i Bütün Mühitlərə Tətbiq Etmək
 
@@ -337,6 +341,40 @@ git add tests/Feature/Api/
 git commit -m "test: add API endpoint tests"
 git checkout -- .  # Qalan dəyişiklikləri sil
 ```
+
+## Praktik Tapşırıqlar
+
+1. **Hotfix-i release branch-a köçür**
+   ```bash
+   # main-də bug fix var, release/v2 branch-ına lazımdır
+   git log main --oneline  # fix-in SHA-sını tap
+   git checkout release/v2
+   git cherry-pick <sha>
+   ```
+
+2. **Bir neçə commit-i seç**
+   ```bash
+   git cherry-pick <sha1> <sha2> <sha3>
+   # Range ilə (sha1 daxil deyil, sha2 daxildir):
+   git cherry-pick sha1..sha2
+   ```
+
+3. **Cherry-pick conflict həlli**
+   ```bash
+   git cherry-pick <sha>
+   # conflict baş verdi
+   # faylı düzəlt
+   git add .
+   git cherry-pick --continue
+   # ya da:
+   git cherry-pick --abort
+   ```
+
+4. **Commit etmədən apply et (--no-commit)**
+   ```bash
+   git cherry-pick --no-commit <sha>
+   # stage-də görürsən, commit et ya dəyişdir
+   ```
 
 ## Interview Sualları
 
@@ -478,3 +516,8 @@ Branch-i yeniləmək             → Rebase ✓
 Dəyişikliyi geri almaq        → Revert ✓
 Müvəqqəti saxlamaq            → Stash ✓
 ```
+
+## Əlaqəli Mövzular
+
+- [02-git-branching.md](02-git-branching.md) — branch-lar arası keçid
+- [08-git-reset-revert.md](08-git-reset-revert.md) — commit-ləri geri almaq
