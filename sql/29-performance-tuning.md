@@ -1,6 +1,4 @@
-# Performance Tuning
-
-> **Seviyye:** Intermediate ⭐⭐
+# Performance Tuning (Middle)
 
 ## MySQL Performance Tuning
 

@@ -1,6 +1,4 @@
-# Constraints (PK, FK, UNIQUE, CHECK, NOT NULL, DEFAULT)
-
-> **Seviyye:** Beginner ⭐
+# Constraints (PK, FK, UNIQUE, CHECK, NOT NULL, DEFAULT) (Junior)
 
 Constraint — table-a qoyulan **qayda**. Data integrity-ni DB səviyyəsində təmin edir.
 

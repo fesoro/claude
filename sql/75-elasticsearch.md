@@ -1,6 +1,4 @@
-# Elasticsearch
-
-> **Seviyye:** Advanced ⭐⭐⭐
+# Elasticsearch (Senior)
 
 ## Elasticsearch Nedir?
 

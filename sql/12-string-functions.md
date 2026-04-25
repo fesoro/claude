@@ -1,6 +1,4 @@
-# String Functions
-
-> **Seviyye:** Beginner ⭐
+# String Functions (Junior)
 
 String ilə işləmək üçün ən çox istifadə olunan funksiyalar. **Hər backend dev gündə onlarla istifadə edir**.
 

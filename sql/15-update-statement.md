@@ -1,6 +1,4 @@
-# UPDATE Statement
-
-> **Seviyye:** Beginner ⭐
+# UPDATE Statement (Junior)
 
 Mövcud row-ları dəyişdirmək. **WHERE olmayan UPDATE — TƏHLÜKƏLİ** (bütün table dəyişir).
 

@@ -1,6 +1,4 @@
-# Database Monitoring & Observability
-
-> **Seviyye:** Intermediate ⭐⭐
+# Database Monitoring & Observability (Middle)
 
 ## Niye Monitoring Vacibdir?
 

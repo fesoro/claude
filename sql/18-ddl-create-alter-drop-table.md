@@ -1,6 +1,4 @@
-# DDL: CREATE / ALTER / DROP TABLE
-
-> **Seviyye:** Beginner ⭐
+# DDL: CREATE / ALTER / DROP TABLE (Junior)
 
 DDL (Data Definition Language) — schema-nı dəyişdirən əmrlər. Production-da **backwards-compatible** ALTER vacibdir (downtime qaçınmaq üçün).
 

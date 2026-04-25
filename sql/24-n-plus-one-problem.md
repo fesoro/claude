@@ -1,6 +1,4 @@
-# N+1 Problem
-
-> **Seviyye:** Beginner ⭐
+# N+1 Problem (Junior)
 
 ## Problem nedir?
 

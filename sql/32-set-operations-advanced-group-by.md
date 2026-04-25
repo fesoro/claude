@@ -1,6 +1,4 @@
-# Set Operations & Advanced GROUP BY
-
-> **Seviyye:** Intermediate ⭐⭐
+# Set Operations & Advanced GROUP BY (Middle)
 
 ## Set Operations Nedir?
 

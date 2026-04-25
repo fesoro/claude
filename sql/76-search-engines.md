@@ -1,6 +1,4 @@
-# Search Engines: Meilisearch, Algolia, Typesense, Sphinx
-
-> **Seviyye:** Advanced ⭐⭐⭐
+# Search Engines: Meilisearch, Algolia, Typesense, Sphinx (Senior)
 
 ## Search Engine Nedir?
 

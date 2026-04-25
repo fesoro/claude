@@ -1,6 +1,4 @@
-# Cloud Databases (RDS, Aurora, Cloud SQL, PlanetScale, Neon, Supabase)
-
-> **Seviyye:** Advanced ⭐⭐⭐
+# Cloud Databases (RDS, Aurora, Cloud SQL, PlanetScale, Neon, Supabase) (Senior)
 
 ## Niye Managed Database?
 

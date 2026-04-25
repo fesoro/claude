@@ -1,6 +1,4 @@
-# Stored Procedures, Triggers & Views
-
-> **Seviyye:** Intermediate ⭐⭐
+# Stored Procedures, Triggers & Views (Middle)
 
 ## Stored Procedures
 

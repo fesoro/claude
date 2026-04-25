@@ -1,6 +1,4 @@
-# ID Generation Strategies (Auto-increment, UUID, ULID, Snowflake)
-
-> **Seviyye:** Intermediate ⭐⭐
+# ID Generation Strategies (Auto-increment, UUID, ULID, Snowflake) (Middle)
 
 ## Niye vacibdir?
 

@@ -1,6 +1,4 @@
-# Temporal Data & Slowly Changing Dimensions
-
-> **Seviyye:** Intermediate ⭐⭐
+# Temporal Data & Slowly Changing Dimensions (Middle)
 
 ## Temporal Data Nedir?
 

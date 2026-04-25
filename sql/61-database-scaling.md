@@ -1,6 +1,4 @@
-# Database Scaling Strategies
-
-> **Seviyye:** Advanced ⭐⭐⭐
+# Database Scaling Strategies (Senior)
 
 ## Scaling Nedir?
 

@@ -1,6 +1,4 @@
-# Redis & Caching Strategies
-
-> **Seviyye:** Intermediate ⭐⭐
+# Redis & Caching Strategies (Middle)
 
 ## Redis nedir?
 

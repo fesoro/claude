@@ -1,6 +1,4 @@
-# Multi-Tenancy Patterns
-
-> **Seviyye:** Advanced ⭐⭐⭐
+# Multi-Tenancy Patterns (Senior)
 
 ## Multi-Tenancy nedir?
 

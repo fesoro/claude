@@ -1,6 +1,4 @@
-# CASE Expressions
-
-> **Seviyye:** Beginner ⭐
+# CASE Expressions (Junior)
 
 `CASE` — SQL-də **if-else** ekvivalenti. İstənilən yerdə istifadə oluna bilir (SELECT, WHERE, ORDER BY, GROUP BY, UPDATE).
 

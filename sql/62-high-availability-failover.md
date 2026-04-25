@@ -1,6 +1,4 @@
-# High Availability & Failover (Patroni, Orchestrator, Aurora)
-
-> **Seviyye:** Advanced ⭐⭐⭐
+# High Availability & Failover (Patroni, Orchestrator, Aurora) (Senior)
 
 ## HA goals: RTO ve RPO
 

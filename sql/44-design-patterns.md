@@ -1,6 +1,4 @@
-# Database Design Patterns
-
-> **Seviyye:** Intermediate ⭐⭐
+# Database Design Patterns (Middle)
 
 ## 1. Repository Pattern
 

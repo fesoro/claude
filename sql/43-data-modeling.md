@@ -1,6 +1,4 @@
-# Data Modeling & Schema Design
-
-> **Seviyye:** Intermediate ⭐⭐
+# Data Modeling & Schema Design (Middle)
 
 ## Data Modeling Nedir?
 

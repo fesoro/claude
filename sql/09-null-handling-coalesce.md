@@ -1,6 +1,4 @@
-# NULL Handling, COALESCE, NULLIF
-
-> **Seviyye:** Beginner ⭐
+# NULL Handling, COALESCE, NULLIF (Junior)
 
 NULL — SQL-in ən **təhlükəli** hissələrindən biridir. Yanlış başa düşülməsi səhv nəticələrə və tapılması çətin bug-lara səbəb olur.
 

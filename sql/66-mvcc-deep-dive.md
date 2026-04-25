@@ -1,6 +1,4 @@
-# MVCC Deep Dive (Multi-Version Concurrency Control)
-
-> **Seviyye:** Advanced ⭐⭐⭐
+# MVCC Deep Dive (Multi-Version Concurrency Control) (Senior)
 
 ## MVCC nedir?
 

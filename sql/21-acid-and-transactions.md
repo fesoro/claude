@@ -1,6 +1,4 @@
-# ACID & Transactions
-
-> **Seviyye:** Beginner ⭐
+# ACID & Transactions (Junior)
 
 ## ACID nedir?
 

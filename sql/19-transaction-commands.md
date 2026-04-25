@@ -1,6 +1,4 @@
-# Transaction Commands (BEGIN / COMMIT / ROLLBACK / SAVEPOINT)
-
-> **Seviyye:** Beginner ⭐
+# Transaction Commands (BEGIN / COMMIT / ROLLBACK / SAVEPOINT) (Junior)
 
 Transaction — bir neçə əməliyyatı **bütöv** vahid kimi icra etmək. Ya hamısı keçir (COMMIT), ya heç biri (ROLLBACK).
 

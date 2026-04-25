@@ -1,6 +1,4 @@
-# Aggregate Functions, GROUP BY & HAVING
-
-> **Seviyye:** Beginner ⭐
+# Aggregate Functions, GROUP BY & HAVING (Junior)
 
 ## Aggregate Functions
 

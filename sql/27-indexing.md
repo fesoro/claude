@@ -1,6 +1,4 @@
-# Indexing (Indeksleme)
-
-> **Seviyye:** Intermediate ⭐⭐
+# Indexing (Indeksleme) (Middle)
 
 ## Index nedir?
 

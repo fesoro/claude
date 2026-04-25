@@ -1,6 +1,4 @@
-# CAP Theorem & Consistency Models
-
-> **Seviyye:** Advanced ⭐⭐⭐
+# CAP Theorem & Consistency Models (Senior)
 
 ## CAP Theorem
 

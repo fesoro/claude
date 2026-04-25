@@ -1,6 +1,4 @@
-# VACUUM, Autovacuum & Table Bloat (PostgreSQL)
-
-> **Seviyye:** Advanced ⭐⭐⭐
+# VACUUM, Autovacuum & Table Bloat (PostgreSQL) (Senior)
 
 ## MVCC ve dead tuples
 

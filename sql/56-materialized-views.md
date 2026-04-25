@@ -1,6 +1,4 @@
-# Materialized Views
-
-> **Seviyye:** Intermediate ⭐⭐
+# Materialized Views (Middle)
 
 ## View vs Materialized View
 

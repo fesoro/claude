@@ -1,6 +1,4 @@
-# WHERE Clause & Filter Operators
-
-> **Seviyye:** Beginner ⭐
+# WHERE Clause & Filter Operators (Junior)
 
 `WHERE` - row-lari **filter** edir. SELECT/UPDATE/DELETE-de işləyir. En çox səhv burada olur (index istifade olunmur, NULL pitfall-i, operator secimi).
 

@@ -1,6 +1,4 @@
-# Cursor Operations & Streaming Large Datasets
-
-> **Seviyye:** Intermediate ⭐⭐
+# Cursor Operations & Streaming Large Datasets (Middle)
 
 ## Problem: Boyuk Data Setleri
 

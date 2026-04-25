@@ -1,6 +1,4 @@
-# Type Casting & CAST
-
-> **Seviyye:** Beginner ⭐
+# Type Casting & CAST (Junior)
 
 Bir data type-ı digərinə çevirmək. SQL-də **çox istifadə olunur** — amma səhv istifadəsi index-i öldürə və yanlış nəticəyə səbəb ola bilər.
 

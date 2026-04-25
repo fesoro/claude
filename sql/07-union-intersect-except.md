@@ -1,6 +1,4 @@
-# UNION, INTERSECT, EXCEPT
-
-> **Seviyye:** Beginner ⭐
+# UNION, INTERSECT, EXCEPT (Junior)
 
 Set əməliyyatları — iki query-nin nəticəsini birləşdirir, kəsir və ya çıxarır.
 

@@ -1,6 +1,4 @@
-# Character Encoding & Collation
-
-> **Seviyye:** Intermediate ⭐⭐
+# Character Encoding & Collation (Middle)
 
 ## Niye bu movzu senior ucun vacibdir?
 

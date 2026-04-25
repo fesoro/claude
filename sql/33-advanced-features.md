@@ -1,6 +1,4 @@
-# JSON, Full-Text Search & Advanced Features
-
-> **Seviyye:** Intermediate ⭐⭐
+# JSON, Full-Text Search & Advanced Features (Middle)
 
 ## JSON Columns
 

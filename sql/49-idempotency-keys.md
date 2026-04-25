@@ -1,6 +1,4 @@
-# Idempotency Keys & Dedupe Patterns
-
-> **Seviyye:** Intermediate ⭐⭐
+# Idempotency Keys & Dedupe Patterns (Middle)
 
 ## Idempotency nedir?
 

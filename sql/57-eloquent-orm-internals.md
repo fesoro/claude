@@ -1,6 +1,4 @@
-# Eloquent / ORM Internals (Hydration, Chunking, Lazy)
-
-> **Seviyye:** Intermediate ⭐⭐
+# Eloquent / ORM Internals (Hydration, Chunking, Lazy) (Middle)
 
 ## ORM Overhead
 

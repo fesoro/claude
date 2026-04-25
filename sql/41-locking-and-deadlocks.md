@@ -1,6 +1,4 @@
-# Locking & Deadlocks
-
-> **Seviyye:** Intermediate ⭐⭐
+# Locking & Deadlocks (Middle)
 
 ## Lock nedir?
 

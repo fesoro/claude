@@ -1,6 +1,4 @@
-# JOIN Types & Algorithms
-
-> **Seviyye:** Intermediate ⭐⭐
+# JOIN Types & Algorithms (Middle)
 
 ## JOIN Tipleri
 

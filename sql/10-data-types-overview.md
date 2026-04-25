@@ -1,6 +1,4 @@
-# Data Types Overview
-
-> **Seviyye:** Beginner ⭐
+# Data Types Overview (Junior)
 
 Düzgün data type seçimi performans, storage və data integrity üçün vacibdir. **Schema-nın əsasıdır**.
 

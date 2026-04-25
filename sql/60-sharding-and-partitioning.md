@@ -1,6 +1,4 @@
-# Sharding & Partitioning
-
-> **Seviyye:** Advanced ⭐⭐⭐
+# Sharding & Partitioning (Senior)
 
 ## Partitioning (Tek server daxilinde)
 

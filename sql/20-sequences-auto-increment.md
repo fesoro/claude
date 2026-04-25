@@ -1,6 +1,4 @@
-# Sequences & AUTO_INCREMENT
-
-> **Seviyye:** Beginner ⭐
+# Sequences & AUTO_INCREMENT (Junior)
 
 Unique ID-lər avtomatik yaratmaq üçün. Primary key üçün ən çox istifadə olunur.
 

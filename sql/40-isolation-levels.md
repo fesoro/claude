@@ -1,6 +1,4 @@
-# Isolation Levels
-
-> **Seviyye:** Intermediate ⭐⭐
+# Isolation Levels (Middle)
 
 ## Niye lazimdir?
 

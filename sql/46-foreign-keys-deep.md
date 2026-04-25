@@ -1,6 +1,4 @@
-# Foreign Keys Deep Dive
-
-> **Seviyye:** Intermediate ⭐⭐
+# Foreign Keys Deep Dive (Middle)
 
 ## FK nedir?
 

@@ -1,6 +1,4 @@
-# CREATE INDEX Syntax Basics
-
-> **Seviyye:** Intermediate ⭐⭐
+# CREATE INDEX Syntax Basics (Middle)
 
 Index yaratma syntax-ı — **necə yaradılır**, algoritm və strategy üçün `27-indexing.md`.
 

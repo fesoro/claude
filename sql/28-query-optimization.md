@@ -1,6 +1,4 @@
-# Query Optimization & EXPLAIN
-
-> **Seviyye:** Intermediate ⭐⭐
+# Query Optimization & EXPLAIN (Middle)
 
 ## EXPLAIN - Query Analizi
 

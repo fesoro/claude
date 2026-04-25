@@ -1,6 +1,4 @@
-# Change Data Capture (CDC)
-
-> **Seviyye:** Advanced ⭐⭐⭐
+# Change Data Capture (CDC) (Senior)
 
 ## CDC Nedir?
 

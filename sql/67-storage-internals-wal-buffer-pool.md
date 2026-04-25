@@ -1,6 +1,4 @@
-# Storage Internals (WAL, Buffer Pool, Pages)
-
-> **Seviyye:** Advanced ⭐⭐⭐
+# Storage Internals (WAL, Buffer Pool, Pages) (Senior)
 
 ## Storage Layer Niye Vacibdir?
 

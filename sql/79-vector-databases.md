@@ -1,6 +1,4 @@
-# Vector Databases (pgvector, Pinecone, Weaviate, Qdrant, Milvus)
-
-> **Seviyye:** Expert ⭐⭐⭐⭐
+# Vector Databases (pgvector, Pinecone, Weaviate, Qdrant, Milvus) (Lead)
 
 ## Niye Vector Database Lazim Oldu?
 

@@ -1,6 +1,4 @@
-# Bulk Operations & UPSERT Patterns
-
-> **Seviyye:** Intermediate ⭐⭐
+# Bulk Operations & UPSERT Patterns (Middle)
 
 ## Niye bulk operations?
 

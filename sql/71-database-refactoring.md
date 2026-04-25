@@ -1,6 +1,4 @@
-# Database Refactoring (Expand-Contract, Strangler, Dual-Write)
-
-> **Seviyye:** Advanced ⭐⭐⭐
+# Database Refactoring (Expand-Contract, Strangler, Dual-Write) (Senior)
 
 ## Niye DB refactoring cetindir?
 

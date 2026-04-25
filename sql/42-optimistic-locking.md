@@ -1,6 +1,4 @@
-# Optimistic Locking & Version Columns
-
-> **Seviyye:** Intermediate ⭐⭐
+# Optimistic Locking & Version Columns (Middle)
 
 ## Concurrency Problem
 

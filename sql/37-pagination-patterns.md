@@ -1,6 +1,4 @@
-# Pagination Patterns (Offset, Cursor, Keyset/Seek)
-
-> **Seviyye:** Intermediate ⭐⭐
+# Pagination Patterns (Offset, Cursor, Keyset/Seek) (Middle)
 
 ## Pagination niye lazimdir?
 

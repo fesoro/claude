@@ -1,6 +1,4 @@
-# Distributed Transactions & Saga Pattern
-
-> **Seviyye:** Advanced ⭐⭐⭐
+# Distributed Transactions & Saga Pattern (Senior)
 
 ## Problem: Microservice-lerde Transaction
 

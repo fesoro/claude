@@ -1,6 +1,4 @@
-# Window Functions & CTEs (Common Table Expressions)
-
-> **Seviyye:** Intermediate ⭐⭐
+# Window Functions & CTEs (Common Table Expressions) (Middle)
 
 ## Window Functions nedir?
 

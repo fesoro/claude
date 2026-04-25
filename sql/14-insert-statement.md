@@ -1,6 +1,4 @@
-# INSERT Statement
-
-> **Seviyye:** Beginner ⭐
+# INSERT Statement (Junior)
 
 Table-a yeni row əlavə etmək. Sadə görünsə də **UPSERT, RETURNING, bulk insert, ON CONFLICT** kimi güclü imkanları var.
 

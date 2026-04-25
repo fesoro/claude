@@ -1,6 +1,4 @@
-# DELETE & TRUNCATE
-
-> **Seviyye:** Beginner ⭐
+# DELETE & TRUNCATE (Junior)
 
 Row-ları silmək. DELETE vs TRUNCATE vs Soft Delete — hər birinin öz istifadə halı var.
 

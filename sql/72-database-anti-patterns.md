@@ -1,6 +1,4 @@
-# Database Anti-patterns
-
-> **Seviyye:** Advanced ⭐⭐⭐
+# Database Anti-patterns (Senior)
 
 Bu siyahi production-da gorulen, ekserisini ozum yasamis ya da fix etmis senior PHP/Laravel developer-in bilməli oldugu səhvlərdir. Hər biri **anti-pattern → niye pisdir → fix** strukturunda.
 

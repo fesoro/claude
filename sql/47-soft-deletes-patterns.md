@@ -1,6 +1,4 @@
-# Soft Deletes Patterns & Pitfalls
-
-> **Seviyye:** Intermediate ⭐⭐
+# Soft Deletes Patterns & Pitfalls (Middle)
 
 ## Soft Delete nedir?
 

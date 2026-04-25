@@ -1,6 +1,4 @@
-# PostgreSQL Specific Features (LISTEN/NOTIFY, Advisory Locks, RLS, Arrays)
-
-> **Seviyye:** Advanced ⭐⭐⭐
+# PostgreSQL Specific Features (LISTEN/NOTIFY, Advisory Locks, RLS, Arrays) (Senior)
 
 PostgreSQL MySQL-den farqli olaraq boyuk movzuda extra feature destekleyir. Bu feature-lar adeten Redis/RabbitMQ/middleware-i evez ede biler.
 

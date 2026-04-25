@@ -1,6 +1,4 @@
-# NoSQL Databases
-
-> **Seviyye:** Advanced ⭐⭐⭐
+# NoSQL Databases (Senior)
 
 ## NoSQL Nedir?
 

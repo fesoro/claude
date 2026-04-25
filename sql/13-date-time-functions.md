@@ -1,6 +1,4 @@
-# Date/Time Functions & Intervals
-
-> **Seviyye:** Beginner ⭐
+# Date/Time Functions & Intervals (Junior)
 
 Tarix və zamanla işləmək — PHP backend dev-in gündəlik işidir: log-lar, report-lar, expired check, audit trail, scheduler.
 

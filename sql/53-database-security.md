@@ -1,6 +1,4 @@
-# Database Security
-
-> **Seviyye:** Intermediate ⭐⭐
+# Database Security (Middle)
 
 ## SQL Injection
 

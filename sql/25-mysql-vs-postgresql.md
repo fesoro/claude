@@ -1,6 +1,4 @@
-# MySQL vs PostgreSQL
-
-> **Seviyye:** Beginner ⭐
+# MySQL vs PostgreSQL (Junior)
 
 ## Umumi Muqayise
 

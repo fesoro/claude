@@ -1,6 +1,4 @@
-# Backup & Recovery
-
-> **Seviyye:** Intermediate ⭐⭐
+# Backup & Recovery (Middle)
 
 ## Niyə senior üçün kritikdir?
 

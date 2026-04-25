@@ -1,6 +1,4 @@
-# Hierarchical Data / Trees in SQL
-
-> **Seviyye:** Intermediate ⭐⭐
+# Hierarchical Data / Trees in SQL (Middle)
 
 ## Problem
 

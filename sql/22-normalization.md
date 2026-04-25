@@ -1,6 +1,4 @@
-# Normalization & Denormalization
-
-> **Seviyye:** Beginner ⭐
+# Normalization & Denormalization (Junior)
 
 ## Normalization nedir?
 

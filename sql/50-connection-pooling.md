@@ -1,6 +1,4 @@
-# Connection Pooling
-
-> **Seviyye:** Intermediate ⭐⭐
+# Connection Pooling (Middle)
 
 ## Problem
 

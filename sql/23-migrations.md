@@ -1,6 +1,4 @@
-# Migrations & Schema Management
-
-> **Seviyye:** Beginner ⭐
+# Migrations & Schema Management (Junior)
 
 ## Migration nedir?
 

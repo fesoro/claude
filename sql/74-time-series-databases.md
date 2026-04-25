@@ -1,6 +1,4 @@
-# Time-Series Databases
-
-> **Seviyye:** Advanced ⭐⭐⭐
+# Time-Series Databases (Senior)
 
 ## Time-Series Data Nedir?
 

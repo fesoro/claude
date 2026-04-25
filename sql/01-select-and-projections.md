@@ -1,6 +1,4 @@
-# SELECT & Projection Basics
-
-> **Seviyye:** Beginner ⭐
+# SELECT & Projection Basics (Junior)
 
 ## SELECT nedir?
 

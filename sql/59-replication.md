@@ -1,6 +1,4 @@
-# Replication
-
-> **Seviyye:** Advanced ⭐⭐⭐
+# Replication (Senior)
 
 ## Replication nedir?
 

@@ -1,6 +1,4 @@
-# NewSQL & Distributed SQL (CockroachDB, Spanner, TiDB, YugabyteDB)
-
-> **Seviyye:** Expert ⭐⭐⭐⭐
+# NewSQL & Distributed SQL (CockroachDB, Spanner, TiDB, YugabyteDB) (Lead)
 
 ## NewSQL Nedir?
 

@@ -1,6 +1,4 @@
-# JOIN Types & Practical Usage
-
-> **Seviyye:** Beginner ⭐
+# JOIN Types & Practical Usage (Junior)
 
 **Qeyd:** Bu fayl JOIN **yazma** və praktik istifadəni əhatə edir. JOIN **alqoritmləri** (Nested Loop, Hash Join, Merge Join) və query planner detalları üçün: `31-join-algorithms.md`.
 

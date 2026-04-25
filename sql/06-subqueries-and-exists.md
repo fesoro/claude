@@ -1,6 +1,4 @@
-# Subqueries, EXISTS, ANY, ALL
-
-> **Seviyye:** Beginner ⭐
+# Subqueries, EXISTS, ANY, ALL (Junior)
 
 ## Subquery Nədir?
 

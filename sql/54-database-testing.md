@@ -1,6 +1,4 @@
-# Database Testing
-
-> **Seviyye:** Intermediate ⭐⭐
+# Database Testing (Middle)
 
 ## Niye Database Testing Vacibdir?
 

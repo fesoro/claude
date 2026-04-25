@@ -1,6 +1,4 @@
-# ORDER BY, LIMIT & OFFSET
-
-> **Seviyye:** Beginner ⭐
+# ORDER BY, LIMIT & OFFSET (Junior)
 
 ## ORDER BY - Sıralama
 
