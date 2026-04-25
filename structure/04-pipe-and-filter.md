@@ -1,4 +1,4 @@
-# Pipe and Filter Architecture
+# Pipe and Filter Architecture (Middle)
 
 Data pipe-lərlə birləşdirilmiş processing komponentlər (filter-lər) silsiləsi boyunca axır.
 Hər filter data-nı müstəqil transformasiya edir və növbəti filter-ə ötürür.

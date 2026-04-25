@@ -1,4 +1,4 @@
-# CQRS (Command Query Responsibility Segregation)
+# CQRS (Lead)
 
 CQRS read (Query) və write (Command) əməliyyatlarını ayrı model-lərə bölür.
 Hər tərəfin öz data store-u ola bilər — öz yükünə optimallaşdırılmış.

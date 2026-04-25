@@ -1,4 +1,4 @@
-# Modular Monolith
+# Modular Monolith (Senior)
 
 Modular Monolith kodu tək deploy olunan vahidin içində müstəqil modullara bölür.
 Hər module-un aydın sərhədləri və kapsullaşdırılmış data-sı var, amma onlar eyni process və deployment-i paylaşırlar.

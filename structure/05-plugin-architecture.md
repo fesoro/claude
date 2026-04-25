@@ -1,4 +1,4 @@
-# Plugin (Microkernel) Architecture
+# Plugin Architecture (Middle)
 
 Core sistem minimal funksionallıq təqdim edir, feature-lər isə plugin-lər vasitəsilə əlavə olunur.
 Kernel core əməliyyatları idarə edir; plugin-lər core-u dəyişdirmədən davranışı genişləndirir.

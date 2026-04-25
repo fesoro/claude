@@ -1,4 +1,4 @@
-# Space-Based Architecture
+# Space-Based Architecture (Architect)
 
 Space-Based Architecture yüksək həcmli, yüksək concurrency yüklərini processing və storage-i
 bir neçə processing unit arasında paylayaraq idarə edir. In-memory data grid istifadə edərək

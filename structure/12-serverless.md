@@ -1,4 +1,4 @@
-# Serverless Architecture
+# Serverless Architecture (Senior)
 
 Serverless architecture kodu cloud provider tərəfindən idarə olunan stateless, event-triggered function-larda işlədir.
 Server idarəetməsi yoxdur, auto-scaling var, yalnız icra üçün ödəyirsən.

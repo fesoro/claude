@@ -1,4 +1,4 @@
-# Vertical Slice Architecture
+# Vertical Slice Architecture (Senior)
 
 Vertical Slice Architecture (Jimmy Bogard) kodu texniki layer əvəzinə feature əsasında təşkil edir.
 Hər feature/slice ehtiyac duyduğu hər şeyi özündə saxlayır: handler, validation, data access, response.

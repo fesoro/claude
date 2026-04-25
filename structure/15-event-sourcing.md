@@ -1,4 +1,4 @@
-# Event Sourcing
+# Event Sourcing (Lead)
 
 Event Sourcing application state-inə edilən bütün dəyişiklikləri event ardıcıllığı kimi saxlayır.
 Cari state-i saxlamaq əvəzinə sistem state-i event-ləri replay edərək yenidən qurur.

@@ -1,27 +1,64 @@
-# Software Architecture Folder Structures
+# Software Architecture — Folder Structures
 
-Müxtəlif software architecture-lar üçün folder strukturları — **Laravel**, **Symfony**, **Spring Boot (Java)** və **Golang** üzrə.
+Müxtəlif software architecture pattern-ləri üçün folder strukturları.  
+Hər fayl **Laravel**, **Spring Boot (Java)** və **Go** üzrə praktik nümunələr təqdim edir.
 
-## Architectures
+---
 
-| # | Architecture | Fayl | Təsvir |
-|---|---|---|---|
-| 1 | [MVC](mvc.md) | `mvc.md` | Model-View-Controller |
-| 2 | [Layered](layered-architecture.md) | `layered-architecture.md` | N-Tier horizontal layers |
-| 3 | [Clean Architecture](clean-architecture.md) | `clean-architecture.md` | Uncle Bob'un concentric layer-ləri |
-| 4 | [Hexagonal](hexagonal-architecture.md) | `hexagonal-architecture.md` | Ports and Adapters |
-| 5 | [Onion](onion-architecture.md) | `onion-architecture.md` | Jeffrey Palermo'nun içdən-çölə layer-ləri |
-| 6 | [DDD](ddd.md) | `ddd.md` | Domain-Driven Design, Bounded Context-lərlə |
-| 7 | [CQRS](cqrs.md) | `cqrs.md` | Command Query Responsibility Segregation |
-| 8 | [Event-Driven](event-driven.md) | `event-driven.md` | Event producer, consumer və bus-lar |
-| 9 | [Event Sourcing](event-sourcing.md) | `event-sourcing.md` | Append-only event store, projection-lar |
-| 10 | [Microservices](microservices.md) | `microservices.md` | Müstəqil deploy olunan servislər |
-| 11 | [Modular Monolith](modular-monolith.md) | `modular-monolith.md` | Güclü module sərhədləri, tək deployment |
-| 12 | [Vertical Slice](vertical-slice.md) | `vertical-slice.md` | Feature əsaslı təşkilat |
-| 13 | [Repository Pattern](repository-pattern.md) | `repository-pattern.md` | Abstract edilmiş data access |
-| 14 | [TDD](tdd.md) | `tdd.md` | Test-Driven Development strukturu |
-| 15 | [SOA](soa.md) | `soa.md` | Service-Oriented Architecture |
-| 16 | [Serverless](serverless.md) | `serverless.md` | FaaS, event ilə tetiklənən function-lar |
-| 17 | [Plugin/Microkernel](plugin-architecture.md) | `plugin-architecture.md` | Core + extensible plugin-lər |
-| 18 | [Pipe and Filter](pipe-and-filter.md) | `pipe-and-filter.md` | Data processing pipeline-ları |
-| 19 | [Space-Based](space-based.md) | `space-based.md` | In-memory data grid, yüksək concurrency |
+## Səviyyələr üzrə Mövzular
+
+### ⭐ Junior
+
+| # | Fayl | Mövzu |
+|---|------|-------|
+| 01 | [01-mvc.md](01-mvc.md) | MVC |
+| 02 | [02-layered-architecture.md](02-layered-architecture.md) | Layered Architecture |
+
+### ⭐⭐ Middle
+
+| # | Fayl | Mövzu |
+|---|------|-------|
+| 03 | [03-repository-pattern.md](03-repository-pattern.md) | Repository Pattern |
+| 04 | [04-pipe-and-filter.md](04-pipe-and-filter.md) | Pipe and Filter Architecture |
+| 05 | [05-plugin-architecture.md](05-plugin-architecture.md) | Plugin Architecture |
+
+### ⭐⭐⭐ Senior
+
+| # | Fayl | Mövzu |
+|---|------|-------|
+| 06 | [06-modular-monolith.md](06-modular-monolith.md) | Modular Monolith |
+| 07 | [07-vertical-slice.md](07-vertical-slice.md) | Vertical Slice Architecture |
+| 08 | [08-clean-architecture.md](08-clean-architecture.md) | Clean Architecture |
+| 09 | [09-hexagonal-architecture.md](09-hexagonal-architecture.md) | Hexagonal Architecture |
+| 10 | [10-onion-architecture.md](10-onion-architecture.md) | Onion Architecture |
+| 11 | [11-event-driven.md](11-event-driven.md) | Event-Driven Architecture |
+| 12 | [12-serverless.md](12-serverless.md) | Serverless Architecture |
+
+### ⭐⭐⭐⭐ Lead
+
+| # | Fayl | Mövzu |
+|---|------|-------|
+| 13 | [13-cqrs.md](13-cqrs.md) | CQRS |
+| 14 | [14-ddd.md](14-ddd.md) | Domain-Driven Design |
+| 15 | [15-event-sourcing.md](15-event-sourcing.md) | Event Sourcing |
+| 16 | [16-microservices.md](16-microservices.md) | Microservices Architecture |
+| 17 | [17-soa.md](17-soa.md) | Service-Oriented Architecture |
+
+### ⭐⭐⭐⭐⭐ Architect
+
+| # | Fayl | Mövzu |
+|---|------|-------|
+| 18 | [18-space-based.md](18-space-based.md) | Space-Based Architecture |
+
+---
+
+## Reading Paths
+
+### Laravel developer üçün əsas yol
+`01-mvc` → `02-layered` → `03-repository` → `06-modular-monolith` → `08-clean` → `09-hexagonal` → `13-cqrs` → `14-ddd`
+
+### Microservices yoluna keçid
+`06-modular-monolith` → `11-event-driven` → `13-cqrs` → `15-event-sourcing` → `16-microservices`
+
+### Senior-dən Lead-ə
+`08-clean` → `09-hexagonal` → `10-onion` → `13-cqrs` → `14-ddd` → `15-event-sourcing`

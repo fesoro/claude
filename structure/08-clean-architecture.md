@@ -1,4 +1,4 @@
-# Clean Architecture
+# Clean Architecture (Senior)
 
 Clean Architecture (Robert C. Martin) software-i concentric layer-lərə bölür — burada dependency-lər içəriyə doğru baxır.
 Əsas prinsip: iç layer-lər çöl layer-lər haqqında heç nə bilmir.

@@ -1,4 +1,4 @@
-# MVC (Model-View-Controller)
+# MVC (Junior)
 
 MVC ən fundamental architectural pattern-dir — application-ı üç komponentə ayırır:
 - **Model** — Data və business logic

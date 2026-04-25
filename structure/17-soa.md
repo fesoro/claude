@@ -1,4 +1,4 @@
-# Service-Oriented Architecture (SOA)
+# Service-Oriented Architecture (Lead)
 
 SOA software-i aydın təyin edilmiş contract-lar vasitəsilə ünsiyyət quran coarse-grained servislərin toplusu kimi təşkil edir.
 Microservices-dən fərqli olaraq, SOA servisləri daha böyükdür, daha çox infrastructure paylaşır

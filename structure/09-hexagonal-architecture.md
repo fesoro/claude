@@ -1,4 +1,4 @@
-# Hexagonal Architecture (Ports and Adapters)
+# Hexagonal Architecture (Senior)
 
 Hexagonal Architecture (Alistair Cockburn) application core-unu port-lar (interface-lər) və adapter-lər (implementation-lar) vasitəsilə
 xarici narahatlıqlardan təcrid edir.

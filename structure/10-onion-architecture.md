@@ -1,4 +1,4 @@
-# Onion Architecture
+# Onion Architecture (Senior)
 
 Onion Architecture (Jeffrey Palermo) kodu concentric layer-lərə bölür — burada
 dependency-lər içəriyə axır. Domain model mərkəzdə dayanır, infrastructure narahatlıqlarından azaddır.

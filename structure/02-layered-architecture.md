@@ -1,4 +1,4 @@
-# Layered (N-Tier) Architecture
+# Layered Architecture (Junior)
 
 Ən ənənəvi architecture pattern. Kod horizontal layer-lərə bölünür,
 hər birinin öz spesifik məsuliyyəti var. Hər layer yalnız birbaşa altındakı layer ilə ünsiyyət qurur.

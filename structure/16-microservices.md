@@ -1,4 +1,4 @@
-# Microservices Architecture
+# Microservices Architecture (Lead)
 
 Microservices application-ı kiçik, müstəqil deploy oluna bilən servislərə bölür.
 Hər servis öz data-sına sahibdir, öz process-ində işləyir və API-lər və ya messaging vasitəsilə ünsiyyət qurur.

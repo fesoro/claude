@@ -1,4 +1,4 @@
-# Repository Pattern
+# Repository Pattern (Middle)
 
 Repository Pattern domain ilə data mapping layer-ləri arasında vasitəçilik edir.
 Domain obyektlərinə müraciət üçün collection kimi interface verir və data mənbəyini abstract edir.

@@ -1,4 +1,4 @@
-# Event-Driven Architecture
+# Event-Driven Architecture (Senior)
 
 Event-Driven Architecture event-ləri komponentlər arasında əsas kommunikasiya mexanizmi kimi istifadə edir.
 Komponentlər event-ləri async olaraq produce və consume edir — bu, loose coupling və scalability verir.

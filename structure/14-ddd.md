@@ -1,4 +1,4 @@
-# Domain-Driven Design (DDD)
+# Domain-Driven Design (Lead)
 
 DDD software-i əsas business domain ətrafında modelləşdirməyə fokuslanır.
 Developer-lərlə domain mütəxəssisləri arasında ortaq dil (Ubiquitous Language) istifadə edir.
