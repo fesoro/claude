@@ -1,8 +1,8 @@
-# API Security
+# API Security (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
-API Security API-larin icazesiz erisim, data sizintisi, ve muxtelf hucumlardan qorunmasi ucun tetbiq olunan tedbir ve texnikalar mecmusudur. Modern web application-larin boyuk hissesi API-lara esaslandigindan, API tehlukesizliyi kritik ehamiyyete malikdir.
+API Security API-ların icazəsiz ərisim, data sızıntısı və müxtəlif hücumlardan qorunması üçün tətbiq olunan tədbir və texnikalar məcmusudur. Modern web tətbiqlərin böyük hissəsi API-lara əsaslandığından, API təhlükəsizliyi kritik əhəmiyyətə malikdir.
 
 ```
 OWASP API Security Top 10 (2023):
@@ -18,9 +18,13 @@ OWASP API Security Top 10 (2023):
 10. Unsafe Consumption of APIs
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
 
-### Tehlukesizlik Qatlari
+API-lar birbaşa internet-ə açıq olduğundan hücum səthi genişdir. BOLA (Broken Object Level Authorization) — istifadəçinin başqasının məlumatlarına ərisməsi — ən çox görülən API vulnerability-dir. Bir SQL injection həm bütün databasei məhv edə bilər, həm də GDPR cəzası gətirər. Senior developer səviyyəsində hər endpoint-ə təhlükəsizlik perspektivindən baxmaq məcburidir.
+
+## Əsas Anlayışlar
+
+### Təhlükəsizlik Qatları
 
 ```
 Internet
@@ -32,30 +36,28 @@ Internet
 [Rate Limiting]                      -- Layer 2: Abuse Prevention
    |
    v
-[Authentication]                     -- Layer 3: Kim oldugun
+[Authentication]                     -- Layer 3: Kim olduğun
    |
    v
-[Authorization]                      -- Layer 4: Ne ede bilersen
+[Authorization]                      -- Layer 4: Nə edə bilərsən
    |
    v
-[Input Validation]                   -- Layer 5: Melumat yoxlamasi
+[Input Validation]                   -- Layer 5: Məlumat yoxlaması
    |
    v
-[Business Logic]                     -- Layer 6: Esasnamə yoxlamasi
+[Business Logic]                     -- Layer 6: Əsasnamə yoxlaması
    |
    v
-[Data Encryption]                    -- Layer 7: Melumat sifrelemesi
+[Data Encryption]                    -- Layer 7: Məlumat şifrələməsi
    |
    v
-[Logging & Monitoring]               -- Layer 8: Izleme
+[Logging & Monitoring]               -- Layer 8: İzləmə
 ```
-
-## Əsas Konseptlər (Key Concepts)
 
 ### 1. SQL Injection
 
 ```
-Tehlukeli:
+Təhlükəli:
   GET /api/users?search='; DROP TABLE users; --
 
   $query = "SELECT * FROM users WHERE name = '{$search}'";
@@ -79,14 +81,14 @@ Qorunma: Output encoding, Content-Security-Policy header
 ### 3. CSRF (Cross-Site Request Forgery)
 
 ```
-Attacker-in saytinda:
+Attacker-in saytında:
   <form action="https://bank.com/api/transfer" method="POST">
     <input name="to" value="attacker">
     <input name="amount" value="10000">
   </form>
   <script>document.forms[0].submit();</script>
 
-  Istifadeci bank.com-da login olubsa, brauzer cookie-ni avtomatik gonderir.
+  İstifadəçi bank.com-da login olubsa, brauzer cookie-ni avtomatik göndərir.
 
 Qorunma: CSRF token, SameSite cookie, origin check
 ```
@@ -94,10 +96,10 @@ Qorunma: CSRF token, SameSite cookie, origin check
 ### 4. BOLA (Broken Object Level Authorization)
 
 ```
-GET /api/users/42/orders    (oz sifarislerin - OK)
-GET /api/users/43/orders    (basqasinin sifarisleri - BOLA!)
+GET /api/users/42/orders    (öz sifarişlərin - OK)
+GET /api/users/43/orders    (başqasının sifarişləri - BOLA!)
 
-Her zaman yoxlayin: bu user bu resource-a erise bilermi?
+Hər zaman yoxlayın: bu user bu resource-a ərisə bilərmi?
 ```
 
 ### 5. Mass Assignment
@@ -106,17 +108,50 @@ Her zaman yoxlayin: bu user bu resource-a erise bilermi?
 POST /api/users
 {"name": "Orkhan", "email": "...", "role": "admin"}
                                     ^^^^^^^^^^^^^^^^
-  Eger role field qorunmayibsa, user ozunu admin ede biler!
+  Əgər role field qorunmayıbsa, user özünü admin edə bilər!
 ```
 
-## PHP/Laravel ilə İstifadə
+## Praktik Baxış
 
-### Rate Limiting
+**Defense in depth prinsipi:** Heç vaxt tək bir müdafiə qatına güvənməyin. Auth varsa belə input validation lazımdır, input validation varsa belə authorization lazımdır.
+
+**Nə vaxt nəyə diqqət yetirin:**
+- Public endpoint-lər: Rate limiting + input validation ön planda
+- Private endpoint-lər: Authentication + authorization hər ikisi mütləq
+- Admin endpoint-lər: Əlavə audit logging + ikifaktorlu auth
+
+**Trade-off-lar:**
+- Çox sıx rate limit — legitimate user-lər bloklanır
+- Çox geniş CORS — third-party abuse
+- Uzun session — revocation çətin olur
+
+**Anti-pattern-lər:**
+- Error message-lərdə stack trace qaytarmaq — internal detail sızır
+- `$guarded = []` istifadə etmək — mass assignment açıq qalır
+- Raw query-lər üçün `DB::select("... {$input}")` — SQL injection
+- Authorization yalnız frontend-də — server-side olmadan işləmir
+- API key-i URL query parameter kimi göndərmək — server log-larında görünür
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+BOLA attack ssenarisi:
+
+```
+Attacker: GET /api/orders/1001 (öz sifarişi) → 200 OK
+Attacker: GET /api/orders/1002 (başqasının) → BOLA: 200 OK (yanlış!)
+Doğru:    GET /api/orders/1002              → 403 Forbidden (authorization yoxlama)
+```
+
+### Kod Nümunəsi
+
+**Rate Limiting:**
 
 ```php
 // routes/api.php - Laravel built-in throttle
 Route::middleware('throttle:60,1')->group(function () {
-    // Deqiqede 60 request
+    // Dəqiqədə 60 request
     Route::apiResource('users', UserController::class);
 });
 
@@ -126,19 +161,19 @@ use Illuminate\Support\Facades\RateLimiter;
 
 public function boot(): void
 {
-    // IP bazali
+    // IP bazalı
     RateLimiter::for('api', function (Request $request) {
         return Limit::perMinute(60)->by($request->ip());
     });
 
-    // User bazali
+    // User bazalı
     RateLimiter::for('authenticated', function (Request $request) {
         return $request->user()
             ? Limit::perMinute(100)->by($request->user()->id)
             : Limit::perMinute(10)->by($request->ip());
     });
 
-    // Endpoint bazali (login brute-force qorunmasi)
+    // Endpoint bazalı (login brute-force qorunması)
     RateLimiter::for('login', function (Request $request) {
         return [
             Limit::perMinute(5)->by($request->input('email')),
@@ -148,7 +183,7 @@ public function boot(): void
 }
 ```
 
-### Input Validation
+**Input Validation:**
 
 ```php
 namespace App\Http\Requests;
@@ -205,39 +240,36 @@ class StoreOrderRequest extends FormRequest
 }
 ```
 
-### SQL Injection Protection
+**SQL Injection Protection:**
 
 ```php
-// TEHLUKELI - Raw query
+// TƏHLÜKƏLİ - Raw query
 $users = DB::select("SELECT * FROM users WHERE name = '$name'"); // ✗
 
-// TEHLUKESIZ - Eloquent ORM (avtomatik parameterized)
+// TƏHLÜKƏSİZ - Eloquent ORM (avtomatik parameterized)
 $users = User::where('name', $name)->get(); // ✓
 
-// TEHLUKESIZ - Query Builder (avtomatik parameterized)
+// TƏHLÜKƏSİZ - Query Builder (avtomatik parameterized)
 $users = DB::table('users')->where('name', $name)->get(); // ✓
 
-// TEHLUKESIZ - Raw query with bindings
+// TƏHLÜKƏSİZ - Raw query with bindings
 $users = DB::select('SELECT * FROM users WHERE name = ?', [$name]); // ✓
 
-// TEHLUKELI - orderBy (column name bind olunmur!)
+// TƏHLÜKƏLİ - orderBy (column name bind olunmur!)
 $users = User::orderBy($request->sort)->get(); // ✗
 
-// TEHLUKESIZ - whitelist ile
+// TƏHLÜKƏSİZ - whitelist ilə
 $allowed = ['name', 'email', 'created_at'];
 $sort = in_array($request->sort, $allowed) ? $request->sort : 'created_at';
 $users = User::orderBy($sort)->get(); // ✓
 ```
 
-### XSS Protection
+**XSS Protection:**
 
 ```php
 // Blade template (avtomatik escape)
-{{ $user->name }}           // ✓ htmlspecialchars() ile escape olunur
-{!! $user->bio !!}          // ✗ TEHLUKELI - raw HTML
-
-// API response-da
-// Laravel JSON response avtomatik safe-dir (JSON encoding)
+{{ $user->name }}           // ✓ htmlspecialchars() ilə escape olunur
+{!! $user->bio !!}          // ✗ TƏHLÜKƏLİ - raw HTML
 
 // Manual sanitize
 use Illuminate\Support\Str;
@@ -266,17 +298,17 @@ class SecurityHeaders
 }
 ```
 
-### CSRF Protection
+**CSRF Protection:**
 
 ```php
-// Laravel-de CSRF avtomatik qorunur (web routes ucun)
-// API routes ucun token-based auth istifade edin
+// Laravel-də CSRF avtomatik qorunur (web routes üçün)
+// API routes üçün token-based auth istifadə edin
 
-// SPA ucun Sanctum CSRF:
-// 1. GET /sanctum/csrf-cookie  (XSRF-TOKEN cookie alir)
-// 2. POST /login               (Cookie avtomatik gonderilir)
+// SPA üçün Sanctum CSRF:
+// 1. GET /sanctum/csrf-cookie  (XSRF-TOKEN cookie alır)
+// 2. POST /login               (Cookie avtomatik göndərilir)
 
-// Manual CSRF yoxlamasi
+// Manual CSRF yoxlaması
 class ApiCsrfMiddleware
 {
     public function handle(Request $request, Closure $next)
@@ -293,10 +325,10 @@ class ApiCsrfMiddleware
 }
 ```
 
-### Authorization (BOLA Protection)
+**Authorization (BOLA Protection):**
 
 ```php
-// Policy ile authorization
+// Policy ilə authorization
 namespace App\Policies;
 
 use App\Models\Order;
@@ -323,20 +355,20 @@ class OrderPolicy
     }
 }
 
-// Controller-de istifade
+// Controller-də istifadə
 class OrderController extends Controller
 {
     public function show(Order $order): OrderResource
     {
-        $this->authorize('view', $order); // 403 eger icaze yoxdursa
+        $this->authorize('view', $order); // 403 əgər icazə yoxdursa
 
         return new OrderResource($order);
     }
 
-    // Ve ya scope ile
+    // Scope ilə
     public function index(Request $request)
     {
-        // User yalniz oz order-lerini gore biler
+        // User yalnız öz order-lərini görə bilər
         $orders = $request->user()->orders()->paginate();
 
         return OrderResource::collection($orders);
@@ -344,22 +376,22 @@ class OrderController extends Controller
 }
 ```
 
-### Mass Assignment Protection
+**Mass Assignment Protection:**
 
 ```php
 // app/Models/User.php
 
-// Yalniz bu field-ler mass assign oluna biler
+// Yalnız bu field-lər mass assign oluna bilər
 protected $fillable = ['name', 'email', 'password'];
 
-// Ve ya: bu field-ler OLMAZ
+// Və ya: bu field-lər OLMAZ
 protected $guarded = ['id', 'role', 'is_admin', 'email_verified_at'];
 
-// API response-dan hassas melumat cixar
+// API response-dan həssas məlumat çıxar
 protected $hidden = ['password', 'remember_token', 'two_factor_secret'];
 ```
 
-### API Key Authentication
+**API Key Authentication:**
 
 ```php
 namespace App\Http\Middleware;
@@ -402,7 +434,7 @@ class ValidateApiKey
 }
 ```
 
-### Logging & Monitoring
+**Logging & Monitoring:**
 
 ```php
 namespace App\Http\Middleware;
@@ -417,7 +449,7 @@ class ApiAuditLog
     {
         $response = $next($request);
 
-        // Sensitive endpoint-leri logla
+        // Sensitive endpoint-ləri logla
         if ($this->shouldLog($request)) {
             Log::channel('api-audit')->info('API Request', [
                 'method' => $request->method(),
@@ -430,7 +462,7 @@ class ApiAuditLog
             ]);
         }
 
-        // Ugursuz auth cehd-lerini logla
+        // Uğursuz auth cəhd-lərini logla
         if ($response->getStatusCode() === 401 || $response->getStatusCode() === 403) {
             Log::channel('security')->warning('Auth failure', [
                 'ip' => $request->ip(),
@@ -451,38 +483,25 @@ class ApiAuditLog
 }
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-### 1. OWASP API Top 10-da en boyuk risk nedir?
-**Cavab:** BOLA (Broken Object Level Authorization) - user basqa user-in resource-una erise bilmesi. Meselen, `/api/orders/123`-e erisim var, `/api/orders/124`-e de erise bilir. Her endpoint-de resource ownership yoxlanmalidir.
+1. **BOLA test:** `OrderController`-də authorization olmadan `/api/orders/{id}` endpoint-i yazın. Başqa user-in order ID-sini bilərək ərsim cəhdini simulate edin. Sonra `OrderPolicy` ilə düzəldin.
 
-### 2. SQL injection nedir ve nece qorunursuq?
-**Cavab:** Attacker SQL kodu input-a inject edir. Qorunma: 1) Prepared statements/parameterized queries, 2) ORM istifade edin (Eloquent), 3) Input validation, 4) Least privilege DB user. Laravel Eloquent avtomatik qoruyur.
+2. **SQL injection:** Test endpoint-i yazın. `?search='; DROP TABLE users; --` ilə test edin. Eloquent-in query log-larında parametrized query-ni göstərin.
 
-### 3. XSS ve CSRF arasinda ferq nedir?
-**Cavab:** **XSS** - attacker sehifeye zeresli script inject edir, script user-in brauzerinde isleyir. **CSRF** - attacker user-i bilmeden ona melumat gondermeye mecbur edir (forgery). XSS input/output-a aiddir, CSRF request forgery-dir.
+3. **Rate limiter:** Login endpoint-inə `RateLimiter` tətbiq edin: email bazalı 5/dəq, IP bazalı 20/dəq. 6-cı cəhddə `429 Too Many Requests` aldığınızı yoxlayın.
 
-### 4. Rate limiting niye vacibdir?
-**Cavab:** Brute-force hucum, DDoS, API abuse, resource exhaustion-un qarsisini alir. Muxtelif seviyyelerde olur: IP bazali, user bazali, endpoint bazali. Laravel-de `throttle` middleware ve `RateLimiter` facade istifade olunur.
+4. **Security headers middleware:** `SecurityHeaders` middleware-ini yazın. Browser DevTools-da bütün header-lərin gəldiyini yoxlayın. CSP header-i ilə inline script-i blokladığınızı test edin.
 
-### 5. Mass assignment nedir?
-**Cavab:** User-in request-de gondermemeli oldugu field-leri deyisdirmesidir (meselen, `role: admin`). Qorunma: `$fillable` ile yalniz icaze verilmis field-leri teyin edin, `$guarded` ile qadagan olunan field-leri teyin edin.
+5. **Mass assignment:** `User` modelinə `role` field-i əlavə edin. `$fillable`-dan çıxarın. POST request-ə `role: admin` əlavə edib işləmədiyini yoxlayın.
 
-### 6. API key ve OAuth token arasinda ferq nedir?
-**Cavab:** API key sabit identifikatordur, adeten masin-to-masin autentifikasiya ucun. OAuth token dinamik-dir, user icazesi ile yaranir, scope ile mehdudlasir, expire olur. OAuth daha tehlukesizdir, API key daha sadedir.
+6. **Audit log:** `ApiAuditLog` middleware-ini bütün API route-larına tətbiq edin. DELETE əməliyyatından sonra log faylında girişi tapın. 401 cavabını alan cəhdləri ayrı log channel-ında yoxlayın.
 
-### 7. Hansi security headerlari istifade etmeliyik?
-**Cavab:** `Strict-Transport-Security` (HTTPS mecburi), `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY` (clickjacking), `Content-Security-Policy` (XSS), `Referrer-Policy`, `Permissions-Policy`.
+## Əlaqəli Mövzular
 
-## Best Practices
-
-1. **HTTPS hemise** - Butun API traffic sifreli olmali
-2. **Input validation** - Her field-i validate edin, whitelist yanasmasi
-3. **Parameterized queries** - SQL injection qorunmasi
-4. **Rate limiting** - Muxtelif seviyyelerde
-5. **Authentication + Authorization** - Her endpoint-de her ikisi
-6. **Security headers** - HSTS, CSP, X-Frame-Options
-7. **Audit logging** - Butun hassas emeliyyatlari loglayin
-8. **Error messages** - Stack trace/internal detail gostermeyin
-9. **Dependency updates** - `composer audit` ile vulnerabilities yoxlayin
-10. **Principle of least privilege** - Minimum icaze verin
+- [OAuth 2.0](14-oauth2.md)
+- [JWT - JSON Web Token](15-jwt.md)
+- [CORS](16-cors.md)
+- [API Rate Limiting](25-api-rate-limiting.md)
+- [Network Security](26-network-security.md)
+- [Zero Trust](33-zero-trust.md)

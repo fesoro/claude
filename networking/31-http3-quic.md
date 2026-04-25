@@ -1,13 +1,13 @@
-# HTTP/3 və QUIC Protocol
+# HTTP/3 & QUIC (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
-HTTP/3 HTTP protokolunun üçüncü major versiyasıdır və **QUIC** (Quick UDP Internet Connections) nəqliyyat protokolu üzərində işləyir. QUIC Google tərəfindən yaradılıb və IETF tərəfindən RFC 9000 (QUIC) və RFC 9114 (HTTP/3) kimi standardlaşdırılıb.
+HTTP/3 HTTP protokolunun üçüncü major versiyasıdır və **QUIC** (Quick UDP Internet Connections) nəqliyyat protokolu üzərində işləyir. QUIC Google tərəfindən yaradılıb, IETF tərəfindən RFC 9000 (QUIC) və RFC 9114 (HTTP/3) kimi standardlaşdırılıb.
 
 HTTP/1.1 və HTTP/2 TCP üzərində işləyir. HTTP/3 isə **UDP** üzərində QUIC layer-i istifadə edir. Bu, TCP-nin head-of-line blocking problemini həll edir və daha sürətli connection setup təmin edir.
 
 ```
-Stack comparison:
+Stack müqayisəsi:
 
 HTTP/1.1, HTTP/2:        HTTP/3:
 +----------------+       +----------------+
@@ -21,9 +21,13 @@ HTTP/1.1, HTTP/2:        HTTP/3:
 +----------------+       +----------------+
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
 
-### 1. Connection Establishment
+Mobil istifadəçilər, zəif şəbəkə şəraiti, yüksək packet loss — bu hallarda HTTP/3 HTTP/2-dən əhəmiyyətli dərəcədə sürətlidir. ~30% internet trafiki artıq HTTP/3 istifadə edir (Cloudflare, Google, Facebook production-da). Laravel developer-i üçün vacibdir: server konfigurasiyasını və CDN seçimini başa düşmək lazımdır.
+
+## Əsas Anlayışlar
+
+### Connection Establishment
 
 ```
 TCP + TLS 1.2 (HTTP/1.1, HTTP/2):
@@ -32,10 +36,10 @@ TCP + TLS 1.2 (HTTP/1.1, HTTP/2):
     |<----- SYN-ACK ----------------|     | 1 RTT (TCP)
     |------ ACK ------------------->|    /
     |------ ClientHello ----------->|    \
-    |<----- ServerHello + Cert -----|     |
-    |------ Key exchange ---------->|     | 2 RTT (TLS 1.2)
-    |<----- Finished ---------------|    /
-  Total: 3 RTT before first byte sent
+    |<----- ServerHello + Cert -----|     | 2 RTT (TLS 1.2)
+    |------ Key exchange ---------->|    /
+    |<----- Finished ---------------|
+  Total: 3 RTT — ilk byte göndərilənə qədər
 
 QUIC (HTTP/3):
   Client                          Server
@@ -43,125 +47,115 @@ QUIC (HTTP/3):
     |<----- Initial + SH + Cert ----|     | 1 RTT
     |------ Handshake Finished ---->|    /
     |------ Application Data ------>|
-  Total: 1 RTT (or 0-RTT with resumption!)
+  Total: 1 RTT (0-RTT resumption ilə sıfır!)
 ```
 
-### 2. 0-RTT Resumption
+### 0-RTT Resumption
 
 ```
-First visit:
-  Client gets session ticket from server
+İlk ziyarət:
+  Client server-dən session ticket alır
 
-Subsequent visit (0-RTT):
+Sonrakı ziyarət (0-RTT):
   Client                          Server
-    |--- Initial + 0-RTT Data ----->|  <- Data sent immediately!
+    |--- Initial + 0-RTT Data ----->|  <- Data dərhal göndərilir!
     |<-- ServerHello + Response ----|
-  Total: 0 RTT for data transmission
 
-Security note: 0-RTT data can be replayed, so use only for idempotent requests (GET).
+Təhlükəsizlik: 0-RTT data replay attack-a həssasdır.
+Yalnız idempotent request-lər üçün (GET). POST/PUT üçün istifadə etmə.
 ```
 
-### 3. Multiplexing Without HOL Blocking
+### Multiplexing — HOL Blocking-siz
 
 ```
 HTTP/2 on TCP (Head-of-Line blocking):
   Stream 1: [====]
-  Stream 2: [===X]   <- packet lost
+  Stream 2: [===X]   <- paket itdi
   Stream 3: [====]
 
-  TCP sees byte stream, must wait for lost packet
-  ALL streams blocked until retransmission
+  TCP byte stream-dir, itən paketi gözləməlidir.
+  BÜTÜN stream-lər bloklanır.
 
-HTTP/3 on QUIC (No HOL blocking):
-  Stream 1: [====]   <- delivered
-  Stream 2: [===X]   <- only this stream blocked
-  Stream 3: [====]   <- delivered
+HTTP/3 on QUIC (HOL blocking yoxdur):
+  Stream 1: [====]   <- çatdırıldı
+  Stream 2: [===X]   <- yalnız bu stream bloklandı
+  Stream 3: [====]   <- çatdırıldı
 
-  QUIC streams are independent at transport layer
+  QUIC stream-lər transport layer-də müstəqildir.
 ```
 
-### 4. Connection Migration
+### Connection Migration
 
 ```
-Scenario: User on Wi-Fi walks outside, switches to 4G
+Ssenari: İstifadəçi Wi-Fi-dan 4G-yə keçir
 
 TCP connection:
-  Source IP changes -> Connection broken
-  Must re-establish TCP + TLS (3 RTT)
+  Source IP dəyişdi → Connection qırıldı
+  TCP + TLS yenidən qurulmalıdır (3 RTT)
 
 QUIC connection:
-  Connection identified by Connection ID (not IP:port tuple)
-  Client sends packet from new IP with same Connection ID
-  Server recognizes -> connection continues seamlessly
-  Zero downtime for user
+  Connection IP:port ilə deyil, Connection ID ilə identifikasiya olunur
+  Client yeni IP-dən eyni Connection ID ilə paket göndərir
+  Server tanıyır → connection davam edir
+  User üçün sıfır downtime
 ```
 
-## Əsas Konseptlər (Key Concepts)
-
-### QUIC Features
+### QPACK (Header Compression)
 
 ```
-1. UDP-based         - Bypass TCP limitations
-2. Built-in TLS 1.3  - Encryption mandatory
-3. Stream multiplexing - Independent streams
-4. 0-RTT / 1-RTT     - Fast handshake
-5. Connection migration - Survive IP changes
-6. Forward error correction (optional)
-7. Improved congestion control
+HTTP/2: HPACK — header compression üçün
+HTTP/3: QPACK — HPACK bənzəri, amma HOL blocking yaratmır
+
+QPACK iki stream istifadə edir:
+  - Encoder stream (dynamic table-a əlavə edir)
+  - Decoder stream (yenilikləri təsdiqləyir)
+
+Request stream-lərindən ayrılır — blocking önlənir.
 ```
 
-### HTTP/3 Frame Types
+### Alt-Svc Header
 
 ```
-DATA        - Request/response body
-HEADERS     - HTTP headers (QPACK compressed)
-SETTINGS    - Connection parameters
-GOAWAY      - Graceful shutdown
-MAX_PUSH_ID - Server push limit
-CANCEL_PUSH - Cancel server push
-```
-
-### QPACK vs HPACK
-
-```
-HTTP/2 uses HPACK for header compression.
-HTTP/3 uses QPACK - similar but avoids HOL blocking.
-
-QPACK uses two streams:
-  - Encoder stream (adds to dynamic table)
-  - Decoder stream (acknowledges updates)
-
-Decoupled from request streams to prevent blocking.
-```
-
-### Service Discovery: Alt-Svc Header
-
-```
-HTTP/2 response tells client: "I support HTTP/3 too"
+HTTP/2 cavabı client-ə deyir: "HTTP/3 də dəstəkləyirəm"
 
 HTTP/2 response header:
   Alt-Svc: h3=":443"; ma=86400
 
-Next request: Client uses HTTP/3 directly
-ma=86400: cache for 86400 seconds (24 hours)
+Növbəti request: Client HTTP/3 istifadə edir
+ma=86400: 86400 saniyə (24 saat) cache
 ```
 
-### DNS HTTPS Record (RFC 9460)
+## Praktik Baxış
+
+- **HTTP/3 hər zaman sürətli deyil:** Yaxşı Wi-Fi, stabil şəbəkədə fərq minimaldır. Üstünlük yüksək packet loss, yüksək latency (mobil, zəif internet) şəraitində görünür.
+- **UDP bəzi firewall-larda bloklanır:** Korporativ şəbəkələrdə UDP 443 bağlı ola bilər. HTTP/2 fallback mütləq saxlanılmalıdır.
+- **PHP HTTP/3 server kimi işləmir:** Bu web server (Nginx, Caddy) və CDN (Cloudflare) səviyyəsində həll olunur. Laravel server tərəfi deyil.
+- **0-RTT yalnız idempotent request-lər üçün:** POST, PUT, DELETE üçün 0-RTT disable edilməlidir (replay attack riski).
+- **CDN ən asan yol:** Cloudflare, Fastly avtomatik HTTP/3 dəstəkləyir — origin server-i dəyişmək lazım deyil.
+
+### Anti-patterns
+
+- HTTP/2 fallback-siz HTTP/3 aktiv etmək — korporativ şəbəkələrdə tam əlçatmazlıq
+- 0-RTT-ni POST request-lər üçün aktiv saxlamaq — replay attack
+- HTTP/3 support-u yoxlamadan "prodda aktiv edək" demək — real traffic ölçümü aparın
+
+## Nümunələr
+
+### Ümumi Nümunə
 
 ```
-Newer approach: DNS tells client about HTTP/3 before first request
+Alt-Svc mexanizmi:
 
-example.com. IN HTTPS 1 . alpn="h3,h2" port=443
-
-Client resolves DNS, sees h3 support, connects directly via QUIC.
+1. İstifadəçi brauzer-dən example.com-a HTTP/2 request göndərir
+2. Server cavabında: Alt-Svc: h3=":443"; ma=86400
+3. Brauzer bu məlumatı 24 saat cache-ə alır
+4. Sonrakı bütün request-lər HTTP/3 (QUIC) üzərindən gedir
+5. UDP 443 bloklanıbsa → avtomatik HTTP/2-yə fallback
 ```
 
-## PHP/Laravel ilə İstifadə
+### Kod Nümunəsi
 
-PHP özü HTTP/3 server kimi işləmir - bu web server (Nginx, Caddy, LiteSpeed) və CDN (Cloudflare) səviyyəsində həll olunur.
-
-### Nginx HTTP/3 Config (Nginx 1.25+)
-
+**Nginx HTTP/3 Config (Nginx 1.25+):**
 ```nginx
 server {
     listen 443 quic reuseport;
@@ -174,30 +168,31 @@ server {
     ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
     ssl_protocols TLSv1.3;
 
-    # Advertise HTTP/3 support
+    # HTTP/3 dəstəyini advertise et
     add_header Alt-Svc 'h3=":443"; ma=86400' always;
 
     location / {
+        proxy_set_header X-Protocol-QUIC $http3;
         proxy_pass http://127.0.0.1:9000;
     }
 }
 ```
 
-### Caddy (automatic HTTP/3)
-
+**Caddy (avtomatik HTTP/3):**
 ```
 example.com {
     reverse_proxy localhost:8000
-    # HTTP/3 enabled automatically since v2.6
+    # HTTP/3 v2.6-dan bəri avtomatik aktiv
 }
 ```
 
-### Cloudflare (zero config)
+**Cloudflare (konfigurasiya sıfır):**
+```
+Dashboard → Network → HTTP/3 (with QUIC): ON
+CDN HTTP/3 termination edir, origin server dəyişməz.
+```
 
-Dashboard -> Network -> HTTP/3 (with QUIC): ON. CDN handles HTTP/3 termination.
-
-### Laravel Side: Detect Protocol
-
+**Laravel: Protokol Detect etmə:**
 ```php
 // app/Http/Middleware/LogProtocol.php
 namespace App\Http\Middleware;
@@ -210,7 +205,6 @@ class LogProtocol
 {
     public function handle(Request $request, Closure $next)
     {
-        // Check Alt-Svc usage via custom header set by Nginx
         $protocol = $request->server('SERVER_PROTOCOL', 'unknown');
         $viaQuic  = $request->header('X-Protocol-QUIC') === '1';
 
@@ -225,42 +219,7 @@ class LogProtocol
 }
 ```
 
-### Nginx variable to detect HTTP/3
-
-```nginx
-location / {
-    proxy_set_header X-Protocol-QUIC $http3;
-    proxy_pass http://127.0.0.1:9000;
-}
-```
-
-### Testing HTTP/3 with curl
-
-```bash
-# curl with HTTP/3 support (requires --http3 flag, built with ngtcp2)
-curl --http3 -I https://example.com
-
-HTTP/3 200
-server: nginx
-content-type: text/html
-alt-svc: h3=":443"; ma=86400
-```
-
-### Guzzle Client (HTTP/2 only today)
-
-```php
-// Guzzle does not yet support HTTP/3 natively (as of 2026).
-// For outgoing requests, use HTTP/2 until support lands.
-$client = new \GuzzleHttp\Client([
-    'version' => 2.0, // HTTP/2
-    'base_uri' => 'https://api.example.com',
-]);
-
-// For HTTP/3 client: use ext-curl compiled with nghttp3, or shell out to curl --http3
-```
-
-### Advertising HTTP/3 from Laravel directly
-
+**Alt-Svc Header Middleware:**
 ```php
 // app/Http/Middleware/AltSvcHeader.php
 public function handle(Request $request, Closure $next)
@@ -271,60 +230,45 @@ public function handle(Request $request, Closure $next)
 }
 ```
 
-## Interview Sualları (Q&A)
+**curl ilə HTTP/3 test:**
+```bash
+# curl HTTP/3 dəstəyi ilə (--http3 flag, ngtcp2 ilə build olunmuş)
+curl --http3 -I https://example.com
 
-### 1. HTTP/3 niyə UDP istifadə edir TCP yerinə?
+HTTP/3 200
+server: nginx
+content-type: text/html
+alt-svc: h3=":443"; ma=86400
+```
 
-**Cavab:** TCP operating system kernel-də implementasiya olunur və dəyişdirilməsi illər tələb edir. UDP isə sadə və userspace-də control olunur. QUIC userspace-də işləyərək daha sürətli innovation imkan verir. Həmçinin TCP head-of-line blocking problem-ini həll edir: bir paket itəndə bütün streams bloklanır. QUIC-də streams transport səviyyəsində müstəqildir.
+**Guzzle (HTTP/2, HTTP/3 hələ dəstəklənmir):**
+```php
+// Guzzle 2026-da HTTP/3 dəstəkləmir.
+// Outgoing request-lər üçün HTTP/2 istifadə et.
+$client = new \GuzzleHttp\Client([
+    'version'  => 2.0,
+    'base_uri' => 'https://api.example.com',
+]);
 
-### 2. 0-RTT nədir və niyə təhlükəlidir?
+// HTTP/3 client üçün: ext-curl nghttp3 ilə compile, ya da `curl --http3`
+```
 
-**Cavab:** 0-RTT (Zero Round-Trip Time) client əvvəlki session-dan istifadə edərək handshake olmadan data göndərməyə imkan verir. Problem: bu data replay attack-a həssasdır - attacker həmin paketi sonra yenidən göndərə bilər. Buna görə 0-RTT yalnız **idempotent** request-lər (GET) üçün istifadə olunmalıdır, POST/PUT üçün deyil.
+## Praktik Tapşırıqlar
 
-### 3. HTTP/2 və HTTP/3 arasında əsas fərq nədir?
+1. **HTTP/3 yoxla:** `curl --http3 -I https://cloudflare.com` — cavabda `HTTP/3 200` görünürsə dəstəklənir.
 
-**Cavab:**
-- **Transport:** HTTP/2 TCP, HTTP/3 QUIC (UDP)
-- **HOL blocking:** HTTP/2 TCP səviyyəsində var, HTTP/3-də yoxdur
-- **Handshake:** HTTP/2 3 RTT (TCP+TLS), HTTP/3 1 RTT (0-RTT mümkündür)
-- **Connection migration:** HTTP/3 dəstəkləyir, HTTP/2 yox
-- **Encryption:** HTTP/2 optional (h2c exists), HTTP/3 mandatory (TLS 1.3)
-- **Header compression:** HPACK vs QPACK
+2. **Nginx-də HTTP/3 aktiv et:** Nginx 1.25+ quraşdır, yuxarıdakı konfiqurasiyanı tətbiq et, `Alt-Svc` header-i göstər.
 
-### 4. Connection migration nədir?
+3. **Cloudflare-dən keç:** Laravel layihəsini Cloudflare arxasına qoy, `Network → HTTP/3` aktiv et, brauzer DevTools-da `Protocol: h3` görünür.
 
-**Cavab:** Client IP dəyişsə belə (Wi-Fi-dan 4G-yə keçid), connection qırılmır. QUIC connection IP:port ilə deyil, **Connection ID** ilə identifikasiya olunur. Client yeni IP-dən eyni Connection ID ilə paket göndərir, server həmin session-a davam edir. Mobil istifadəçilər üçün çox faydalıdır.
+4. **Alt-Svc Middleware əlavə et:** Nginx olmadan da Laravel middleware-dən `Alt-Svc` header göndər, brauzer sonrakı request-i HTTP/3 ilə edər.
 
-### 5. HTTP/3 production-da hazırdırmı?
+5. **Protokol logla:** `LogProtocol` middleware-i qur, `X-Protocol-QUIC` header-ini Nginx-dən Laravel-ə ötür, hansı request-lərin HTTP/3 gəldiyini logda izlə.
 
-**Cavab:** Bəli. 2026 itibarilə:
-- Chrome, Firefox, Safari, Edge dəstəkləyir
-- Cloudflare, Fastly, Google, Facebook production-da
-- Nginx 1.25+, Caddy 2.6+, LiteSpeed dəstəkləyir
-- Trafik: ~30% of internet HTTP/3 istifadə edir
-Amma bəzi corporate firewall-lar UDP port 443-ü bloklayır, fallback HTTP/2-yə ehtiyac var.
+## Əlaqəli Mövzular
 
-### 6. QUIC niyə TLS 1.3-ü məcburi edir?
-
-**Cavab:** QUIC-in dizaynında security by default prinsipi var. Plain-text QUIC yoxdur. TLS 1.3 QUIC-ə **integrated** edilib - ayrı handshake deyil, QUIC paketlərinin bir hissəsidir. Bu həm performance (az RTT) həm də security (metadata şifrəli) verir. TLS 1.2 dəstəklənmir çünki 0-RTT və handshake optimizasiyaları yalnız TLS 1.3-də mümkündür.
-
-### 7. Alt-Svc header nədir?
-
-**Cavab:** `Alt-Svc: h3=":443"; ma=86400` - server client-ə "mən HTTP/3-də də əlçatanam" deyir. İlk request HTTP/2 ilə gəlir, server bu header-lə HTTP/3-ü advertise edir. Növbəti request-lər HTTP/3 ilə göndərilir. `ma` (max-age) - neçə saniyə cache edilməlidir.
-
-### 8. HTTP/3 hər zaman HTTP/2-dən sürətlidirmi?
-
-**Cavab:** Yox. HTTP/3 **high packet loss** və ya **high latency** şəraitində daha yaxşıdır (mobil, zəif internet). Yaxşı Wi-Fi və stabil şəbəkədə fərq minimal ola bilər. UDP bəzi şəbəkələrdə rate-limited olduğu üçün TCP bəzən daha stabil olur. Real ölçmə lazımdır.
-
-## Best Practices
-
-1. **HTTP/2 fallback saxla** - bəzi firewall-lar UDP 443-ü bloklayır, client HTTP/2-yə geri dönsün.
-2. **TLS 1.3 certificate hazırla** - HTTP/3 TLS 1.3 tələb edir, köhnə cipher suite-ləri disable et.
-3. **Alt-Svc header advertise et** - browser HTTP/3-ə avtomatik keçsin.
-4. **0-RTT yalnız idempotent request-lər üçün** - replay attack-dan qoruyun, POST üçün 0-RTT disable et.
-5. **Connection ID rotation istifadə et** - privacy üçün müxtəlif network-lərdə fərqli ID-lər.
-6. **UDP 443 firewall-da aç** - server-side HTTP/3 traffic üçün lazımdır.
-7. **CDN səviyyəsində aktivləşdir** - Cloudflare, Fastly avtomatik HTTP/3 təklif edir, origin server-ə yük salmır.
-8. **Monitoring əlavə et** - `$http3` variable Nginx-də, hansı request hansı protokolla gəlir izlə.
-9. **QPACK settings tune et** - yüksək throughput üçün dynamic table size artır (`http3_max_field_size`).
-10. **PMTU discovery-yə diqqət** - QUIC-də default 1200 bytes, şəbəkən dəstəkləyirsə artır.
+- [HTTP Protocol](05-http-protocol.md)
+- [HTTPS & SSL/TLS](06-https-ssl-tls.md)
+- [TCP](03-tcp.md)
+- [Network Troubleshooting](30-network-troubleshooting.md)
+- [mTLS Deep Dive](35-mtls-deep-dive.md)

@@ -1,18 +1,22 @@
-# UDP (User Datagram Protocol)
+# UDP - User Datagram Protocol (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
-UDP Transport Layer-de isleyen connectionless protokoldur. TCP-den ferqli olaraq, connection qurmadan, acknowledgment almadan, sira qarantiyas vermeden data gonderir. Buna gore daha suretli ve daha az overhead-e malikdir.
+UDP Transport Layer-də işləyən connectionless protokoldur. TCP-dən fərqli olaraq, connection qurmadan, acknowledgment almadan, sıra qarantiyası vermədən data göndərir. Buna görə daha sürətli və daha az overhead-ə malikdir.
 
-**Esas xususiyyetler:**
+Əsas xüsusiyyətlər:
 - Connectionless (handshake yoxdur)
-- Unreliable (catdirilma qarantiyasi yoxdur)
-- No ordering (sira qarantiyasi yoxdur)
+- Unreliable (çatdırılma qarantiyası yoxdur)
+- No ordering (sıra qarantiyası yoxdur)
 - No flow control / congestion control
 - Minimal overhead (8-byte header)
-- Supports multicast ve broadcast
+- Supports multicast və broadcast
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
+
+UDP-ni başa düşmək iki səbəbə görə vacibdir: birincisi, StatsD, syslog, DNS, DHCP kimi infrastruktur servisləri UDP istifadə edir — bunları konfiqurasiya edərkən niyə "fire-and-forget" seçildiyini bilmək lazımdır. İkincisi, QUIC (HTTP/3-ün transport layer-i) UDP üzərindədir; modern web performance optimizasiyasını anlamaq üçün bu bilik tələb olunur.
+
+## Əsas Anlayışlar
 
 ### UDP Header (8 bytes)
 
@@ -30,11 +34,11 @@ UDP Transport Layer-de isleyen connectionless protokoldur. TCP-den ferqli olaraq
 TCP header: 20-60 bytes  vs  UDP header: 8 bytes (fix)
 ```
 
-**Fields:**
-- **Source Port (16 bit):** Gonderen port
-- **Destination Port (16 bit):** Hedef port
-- **Length (16 bit):** Header + data-nin toplam uzunlugu (min 8 bytes)
-- **Checksum (16 bit):** Integrity check (IPv4-de optional, IPv6-da mecburi)
+Fields:
+- **Source Port (16 bit):** Göndərən port
+- **Destination Port (16 bit):** Hədəf port
+- **Length (16 bit):** Header + data-nın toplam uzunluğu (min 8 bytes)
+- **Checksum (16 bit):** Integrity check (IPv4-də optional, IPv6-da məcburi)
 
 ### UDP Communication Flow
 
@@ -55,11 +59,11 @@ Client      Server              Client      Server
   |  ACK     -->  |
 ```
 
-UDP-de:
-1. Hedef IP ve port-a data gonderilir
-2. Catib-catmadigini bilmirik
-3. Sira qarantiyasi yoxdur
-4. Duplicate ola biler
+UDP-də:
+1. Hədəf IP və port-a data göndərilir
+2. Çatıb-çatmadığını bilmirik
+3. Sıra qarantiyası yoxdur
+4. Duplicate ola bilər
 
 ### UDP Maximum Datagram Size
 
@@ -69,16 +73,14 @@ Theoretical max: 65,535 bytes (Length field 16-bit)
   - minus UDP header (8 bytes) = 65,507 bytes payload
 
 Practical max: ~1472 bytes (MTU 1500 - IP 20 - UDP 8)
-  - Bundan boyuk datagram-lar IP fragmentation-a ugrayir
-  - Fragmentation performance-i azaldir ve packet loss risikini artirir
+  - Bundan böyük datagram-lar IP fragmentation-a uğrayır
+  - Fragmentation performance-i azaldır və packet loss riskini artırır
 
 Common sizes:
-  DNS: typically < 512 bytes (EDNS ile 4096-ya qeder)
+  DNS: typically < 512 bytes (EDNS ilə 4096-ya qədər)
   VoIP: ~160-320 bytes per packet
   Gaming: ~100-500 bytes per packet
 ```
-
-## Əsas Konseptlər (Key Concepts)
 
 ### UDP vs TCP
 
@@ -101,83 +103,83 @@ Common sizes:
 
 ### UDP Use Cases
 
-**1. DNS (Domain Name System) - Port 53**
+**1. DNS (Domain Name System) — Port 53**
 ```
 Why UDP?
-- Sorgu kicikdir (< 512 bytes)
-- Suretli cavab lazimdir
-- Stateless - connection qurmaq manasizdir
-- Cavab gelmese, sadece tekrar sorusuruq (application-level retry)
+- Sorğu kiçikdir (< 512 bytes)
+- Sürətli cavab lazımdır
+- Stateless — connection qurmaq mənasızdır
+- Cavab gəlməsə, sadəcə təkrar soruşuruq (application-level retry)
 
-Not: DNS zone transfer-ler TCP istifade edir (boyuk data)
-Not: DNSSEC responses boyuk ola biler -> TCP fallback
+Not: DNS zone transfer-lər TCP istifadə edir (böyük data)
+Not: DNSSEC responses böyük ola bilər -> TCP fallback
 ```
 
 **2. Video/Audio Streaming**
 ```
 Why UDP?
-- Real-time data - gec gelen paket isə yaramaz
-- Bezi packet loss qebul edilir (video/audio quality azca duser)
+- Real-time data — gec gələn paket işə yaramaz
+- Bəzi packet loss qəbul edilir (video/audio quality azca düşər)
 - Low latency kritikdir
-- TCP retransmission delay yaradir
+- TCP retransmission delay yaradır
 
-RTP (Real-time Transport Protocol) UDP uzerinde isleyir
+RTP (Real-time Transport Protocol) UDP üzərində işləyir
 Protocols: RTP, RTSP, WebRTC
 ```
 
 **3. Online Gaming**
 ```
 Why UDP?
-- Player position, action data suretli catmalidir
-- 50ms latency artimi gameplay-i pozur
-- Kohne position data-si artiq lazim deyil (yenisi var)
-- Game engine oz reliability mechanism-ini implement edir
+- Player position, action data sürətli çatmalıdır
+- 50ms latency artımı gameplay-i pozur
+- Köhnə position data-sı artıq lazım deyil (yenisi var)
+- Game engine öz reliability mechanism-ini implement edir
 
-Typical: 20-60 packets/second, her biri ~100-500 bytes
+Typical: 20-60 packets/second, hər biri ~100-500 bytes
 ```
 
 **4. VoIP (Voice over IP)**
 ```
 Why UDP?
-- Real-time voice - gec gelen ses paketi istifade olunmaz
+- Real-time voice — gec gələn səs paketi istifadə olunmaz
 - 150ms one-way delay limiti var
-- Codec-ler packet loss-u kompensasiya ede biler
-- Jitter buffer istifade olunur
+- Codec-lər packet loss-u kompensasiya edə bilər
+- Jitter buffer istifadə olunur
 
-Protocols: SIP (signaling) + RTP (media, UDP uzerinde)
+Protocols: SIP (signaling) + RTP (media, UDP üzərində)
 ```
 
 **5. DHCP (Dynamic Host Configuration Protocol)**
 ```
 Why UDP?
-- Client-in hele IP adresi yoxdur
-- Broadcast lazimdir
-- Sadece 4 paket: Discover, Offer, Request, Ack
+- Client-in hələ IP adresi yoxdur
+- Broadcast lazımdır
+- Sadəcə 4 paket: Discover, Offer, Request, Ack
 ```
 
 **6. IoT / Telemetry**
 ```
 Why UDP?
-- Sensor data - bezi data itse problem deyil
-- Embedded device-larda TCP stack bahadir (memory/CPU)
-- CoAP (Constrained Application Protocol) UDP uzerindedir
-- MQTT-SN da UDP istifade ede biler
+- Sensor data — bəzi data itsə problem deyil
+- Embedded device-lərdə TCP stack bahalıdır (memory/CPU)
+- CoAP (Constrained Application Protocol) UDP üzərindədir
+- MQTT-SN da UDP istifadə edə bilər
 ```
 
 ### UDP-based Reliable Protocols
 
-Bezi application-lar UDP uzerinde oz reliability layer-lerini qurur:
+Bəzi application-lar UDP üzərində öz reliability layer-lərini qurur:
 
 ```
 +----------+-------------------------------------------+
 | Protocol | Description                               |
 +----------+-------------------------------------------+
-| QUIC     | Google/IETF. HTTP/3-un transport layer-i  |
-|          | UDP uzerinde TCP-like reliability + TLS    |
+| QUIC     | Google/IETF. HTTP/3-ün transport layer-i  |
+|          | UDP üzərində TCP-like reliability + TLS    |
 +----------+-------------------------------------------+
-| DTLS     | TLS-in UDP versiyasi. WebRTC istifade edir|
+| DTLS     | TLS-in UDP versiyası. WebRTC istifadə edir|
 +----------+-------------------------------------------+
-| KCP      | Fast reliable UDP. Gaming ucun populyar   |
+| KCP      | Fast reliable UDP. Gaming üçün populyar   |
 +----------+-------------------------------------------+
 | RUDP     | Reliable UDP. Custom implementations      |
 +----------+-------------------------------------------+
@@ -206,31 +208,58 @@ QUIC advantages over TCP:
 - 0-RTT connection establishment (reconnection)
 - 1-RTT for new connections (vs TCP+TLS = 3 RTT)
 - No head-of-line blocking (independent streams)
-- Connection migration (IP change-de connection qalir)
+- Connection migration (IP change-də connection qalır)
 - Built-in encryption
 ```
 
-### Multicast ve Broadcast
+### Multicast və Broadcast
 
 ```
-Broadcast (yalniz UDP):
+Broadcast (yalnız UDP):
   Destination: 255.255.255.255 (limited broadcast)
   Destination: 192.168.1.255   (directed broadcast for /24)
-  Butun network-deki device-lara gedir
+  Bütün network-dəki device-lara gedir
 
-Multicast (yalniz UDP):
+Multicast (yalnız UDP):
   Destination: 224.0.0.0 - 239.255.255.255
-  Yalniz subscribe olan device-lara gedir
-  IGMP protocol ile group membership idare olunur
+  Yalnız subscribe olan device-lara gedir
+  IGMP protocol ilə group membership idarə olunur
 
 Unicast: 1-to-1
 Broadcast: 1-to-all
 Multicast: 1-to-many (subscribed)
 ```
 
-## PHP/Laravel ilə İstifadə
+## Praktik Baxış
 
-### PHP UDP Socket Programming
+**Real layihələrdə istifadəsi:**
+- StatsD metrics collector UDP port 8125-dən qəbul edir — application metrics göndərməsi hətta StatsD down olsa belə app-i blok etmir
+- Syslog UDP port 514-dən log qəbul edir
+- DNS resolver-i Laravel/PHP-dən hər sorğuda UDP-dən istifadə edir (`gethostbyname()`)
+
+**Trade-off-lar:**
+- UDP: sürət > etibarlılıq; TCP: etibarlılıq > sürət
+- UDP-də congestion control yoxdur — network-ü doldurmaq mümkündür; öz rate limiting-inizi implement edin
+- Fragmentation UDP-ni TCP-dən daha az reliable edir — datagram-ı MTU-dan kiçik saxlayın
+
+**Ne zaman istifadə olunmamalı:**
+- Maliyyə əməliyyatları, kritik data transfer — hər paketi qəbul etdiyiniz təsdiqlənməlidir
+- Application-level retry tətbiq edə bilmədiyiniz hallarda
+- Böyük data transferi (video file download) — TCP daha effektivdir
+
+**Common mistakes:**
+- UDP-dən istifadə edib packet loss-u ignore etmək — metrics göndərəndə `@socket_sendto` ilə xəta supression düzgündür; amma business-critical data üçün bu anti-pattern-dir
+- Datagram-ı 1472 bytes-dan böyük göndərmək — fragmentation baş verir, bir fragment itsə datagram tamamilə itirilir
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+StatsD pattern: Laravel ərizəsi hər HTTP request-in response time-ını `myapp.http.response_time:45.2|ms` formatında UDP ilə 127.0.0.1:8125-ə göndərir. StatsD server aggregate edir, Graphite/Prometheus-a yönləndirir. Əgər StatsD down olsa, `@socket_sendto` xətanı suppress edir — app işləməyə davam edir.
+
+### Kod Nümunəsi
+
+UDP Server və Client:
 
 ```php
 // UDP Server
@@ -280,37 +309,17 @@ if ($result === false) {
 socket_close($socket);
 ```
 
-### Stream-based UDP
+Simple UDP Logger (Fire-and-forget pattern):
 
 ```php
-// UDP with streams (simpler API)
-$socket = stream_socket_server('udp://0.0.0.0:9999', $errno, $errstr, STREAM_SERVER_BIND);
-
-if (!$socket) {
-    die("Error: $errstr ($errno)");
-}
-
-while (true) {
-    $pkt = stream_socket_recvfrom($socket, 2048, 0, $peer);
-    echo "Received from $peer: $pkt\n";
-    stream_socket_sendto($socket, "ACK: $pkt", 0, $peer);
-}
-```
-
-### Simple UDP Logger (Practical Example)
-
-```php
-// Application sends logs via UDP (fire-and-forget)
 class UdpLogger
 {
     private $socket;
-    private string $host;
-    private int $port;
 
-    public function __construct(string $host = '127.0.0.1', int $port = 5140)
-    {
-        $this->host = $host;
-        $this->port = $port;
+    public function __construct(
+        private string $host = '127.0.0.1',
+        private int $port = 5140
+    ) {
         $this->socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
     }
 
@@ -350,12 +359,9 @@ $logger->log('info', 'User logged in', ['user_id' => 42]);
 $logger->log('error', 'Payment failed', ['order_id' => 123]);
 ```
 
-### Laravel StatsD Integration (UDP)
+Laravel StatsD Integration (UDP):
 
 ```php
-// StatsD metrics are sent over UDP
-// Why UDP? If metrics server is down, application should not be affected
-
 class StatsD
 {
     private $socket;
@@ -406,41 +412,46 @@ class TrackResponseTime
 }
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-### Q1: UDP nece isleyir ve TCP-den ne ferqi var?
-**A:** UDP connectionless protokoldur - handshake yoxdur, acknowledgment yoxdur, ordering qarantiyasi yoxdur. 8-byte header ile minimal overhead var. TCP reliable, ordered, connection-based-dir; UDP fast, simple, best-effort-dir.
+**Tapşırıq 1: UDP packet loss müşahidəsi**
 
-### Q2: UDP nə zaman TCP-den daha yaxsidir?
-**A:** 1) Real-time apps (video/audio streaming, gaming) - latency kritikdir, bezi loss qebul edilir. 2) DNS queries - kicik, stateless, suretli cavab lazim. 3) Metrics/logging - fire-and-forget, app-i yavaslatmamalıdir. 4) Broadcast/multicast lazim olanda. 5) IoT/embedded - limited resources.
+```bash
+# UDP traffic-i monitor edin
+sudo tcpdump -i lo -n udp port 9999
 
-### Q3: UDP reliable ola bilermi?
-**A:** UDP ozunde reliable deyil, amma uzerinde reliability qurmaq olar. QUIC (HTTP/3), DTLS, KCP, custom game protocols bunu edir. Bu application-level reliability-dir. Meselen, QUIC UDP uzerinde sequence numbers, acknowledgments, retransmission implement edir.
+# Başqa terminaldən UDP göndərin
+php -r "
+\$s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+for (\$i = 0; \$i < 100; \$i++) {
+    socket_sendto(\$s, 'packet-'.\$i, 8+strlen(\$i), 0, '127.0.0.1', 9999);
+}
+echo 'Sent 100 packets\n';
+"
+```
 
-### Q4: UDP packet-in maximum size-i nedir?
-**A:** Theoretical: 65,507 bytes (65,535 - 20 IP header - 8 UDP header). Practical: 1472 bytes (fragmentation-dan qacmaq ucun MTU 1500 - 28). DNS traditionally 512 bytes limit qoyur.
+**Tapşırıq 2: Metrics middleware implement edin**
 
-### Q5: QUIC nedir ve niye UDP istifade edir?
-**A:** QUIC HTTP/3-un transport layer-idir. UDP uzerinde TCP-like reliability + TLS encryption + multiplexing verir. UDP istifade edir cunki: 1) Middlebox ossification - TCP-ni deyismek coxdur (router/firewall interference). 2) UDP-ni user-space-de implement etmek asandir. 3) 0-RTT reconnection. 4) No head-of-line blocking.
+Laravel-də bütün API request-lərin response time-ını StatsD-yə göndərən middleware yazın. Test edin: StatsD server olmasa belə application işləməyə davam etməlidir.
 
-### Q6: Video streaming niye UDP istifade edir?
-**A:** 1) Gec gelen frame artiq lazim deyil (yenisi gosterilir). 2) TCP retransmission stutter/buffering yaradir. 3) Player bezi frame loss-u compensate ede biler (interpolation). 4) Latency daha vacibdir quantity-den. Amma Netflix kimi buffered streaming HTTP/TCP istifade edir - yalniz live streaming UDP tercih edir.
+**Tapşırıq 3: DNS query analizi**
 
-### Q7: DNS niye UDP istifade edir amma bezen TCP-ye kecir?
-**A:** Normal DNS query kicikdir ve UDP-ye uygundir (suretli, stateless). TCP-ye kecir: 1) Response 512 bytes-den boyukdur (DNSSEC, cox record). 2) Zone transfer (AXFR/IXFR). 3) DNS over TCP/TLS (DoT, port 853). 4) Truncated flag (TC) set olanda.
+```bash
+# DNS sorğusunun UDP üzərindən getdiyini görün
+sudo tcpdump -i any -n port 53
 
-## Best Practices
+# Başqa terminaldən
+php -r "echo gethostbyname('google.com');"
 
-1. **Application-level reliability elave edin:** Eger UDP istifade edirsizse ve bezi data muhimdirse, sequence numbers, ACKs, retry logic implement edin.
+# DNS response-u nə vaxt TCP-yə keçir?
+# DNSSEC-li domain istifadə edin:
+dig +dnssec google.com
+```
 
-2. **Datagram size-i MTU-dan kicik saxlayin:** 1472 bytes-den boyuk UDP datagram gondermekden qacinin. IP fragmentation reliability-ni azaldir.
+## Əlaqəli Mövzular
 
-3. **Timeout ve retry:** UDP-de cavab gelmeyine hazir olun. Timeout set edin ve retry logic implement edin.
-
-4. **Rate limiting:** UDP-de congestion control yoxdur. Oz rate limiting-inizi implement edin, eks halda network-u doldurarsiniz.
-
-5. **Checksum istifade edin:** IPv4-de UDP checksum optional olsa da, hemise aktiv saxlayin (data integrity ucun).
-
-6. **Fire-and-forget pattern:** Logging, metrics, telemetry kimi non-critical data ucun UDP ideal secimdir. Application performansi tesir olunmaz.
-
-7. **Security:** UDP amplification attack-lara hessasdir (DNS amplification, NTP amplification). Server-de rate limiting ve response size limiting tetbiq edin.
+- [TCP](03-tcp.md)
+- [DNS](07-dns.md)
+- [HTTP/3 & QUIC](31-http3-quic.md)
+- [WebRTC](32-webrtc.md)
+- [Network Troubleshooting](30-network-troubleshooting.md)

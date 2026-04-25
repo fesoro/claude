@@ -1,10 +1,10 @@
-# REST API (Representational State Transfer)
+# REST API (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
-REST Roy Fielding terefinden 2000-ci ilde doktora dissertasiyasinda teqdim edilmis arxitektural stildir. REST API HTTP protokolu uzerinde isleyen, resource-oriented web servisleridir. Bu gun internet-deki API-larin boyuk ekseriyyeti REST prinsipleri uzerine qurulub.
+REST Roy Fielding tərəfindən 2000-ci ildə doktora dissertasiyasında təqdim edilmiş arxitektural stildir. REST API HTTP protokolu üzərində işləyən, resource-oriented web servislərdir. Bu gün internetdəki API-ların böyük əksəriyyəti REST prinsipləri üzərinə qurulub.
 
-REST bir **protokol deyil**, arxitektural **constraint**-ler mecmusudur.
+REST bir **protokol deyil**, arxitektural **constraint**-lər məcmusudur.
 
 ```
 Client                          Server
@@ -19,18 +19,22 @@ Client                          Server
   |<------------------------------|
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
+
+REST API dizaynı backend developer-in əsas bacarıqlarından biridir. Düzgün resource naming, HTTP method seçimi, status code istifadəsi API-nın intuitivliyini müəyyən edir. Versioning strategiyası breaking change-lərin idarə edilməsinə imkan verir. Pagination, filtering, sorting backend-in gündəlik işidir. Zəif REST API dizaynı — yanlış status kod, həddindən artıq nested URL, pagination olmaması — client developer-lərlə münaqişəyə səbəb olur və production-da scale problemlər yaradır.
+
+## Əsas Anlayışlar
 
 ### REST 6 Constraint-i
 
-1. **Client-Server** - Client ve server bir-birinden asılı deyil
-2. **Stateless** - Her request butun lazimi melumati oz icinde saxlayir
-3. **Cacheable** - Response-lar cache oluna biler
-4. **Uniform Interface** - Vahid interface (resource identification, manipulation through representations, self-descriptive messages, HATEOAS)
-5. **Layered System** - Client ara layer-lerin oldugunu bilmir (proxy, LB)
-6. **Code on Demand** (optional) - Server client-e executable code gondere biler
+1. **Client-Server** — Client və server bir-birindən asılı deyil
+2. **Stateless** — Hər request bütün lazımi məlumatı öz içində saxlayır
+3. **Cacheable** — Response-lar cache oluna bilər
+4. **Uniform Interface** — Vahid interface (resource identification, manipulation through representations, self-descriptive messages, HATEOAS)
+5. **Layered System** — Client ara layer-lərin olduğunu bilmir (proxy, LB)
+6. **Code on Demand** (optional) — Server client-ə executable code göndərə bilər
 
-### HTTP Methods ve CRUD
+### HTTP Methods və CRUD
 
 ```
 +----------+------------------+-------------------+--------------+
@@ -43,19 +47,19 @@ Client                          Server
 | PATCH    | Update (partial) | /api/users/42     | No*          |
 | DELETE   | Delete           | /api/users/42     | Yes          |
 +----------+------------------+-------------------+--------------+
-* PATCH idempotent ola biler, amma specification bunu teleb etmir
+* PATCH idempotent ola bilər, amma specification bunu tələb etmir
 ```
 
 ### Resource Naming Conventions
 
 ```
-# Yaxsi - plural nouns
+# Yaxşı - plural nouns
 GET    /api/users
 GET    /api/users/42
 GET    /api/users/42/posts
 GET    /api/users/42/posts/7
 
-# Pis - verbs istifade etmeyin
+# Pis - verbs istifadə etməyin
 GET    /api/getUsers          ✗
 POST   /api/createUser        ✗
 DELETE /api/deleteUser/42     ✗
@@ -63,14 +67,14 @@ DELETE /api/deleteUser/42     ✗
 # Pis - singular noun
 GET    /api/user/42           ✗
 
-# Nested resources (2 seviyyeden cox olmamali)
+# Nested resources (2 səviyyədən çox olmamalı)
 GET    /api/users/42/posts/7/comments    ✓ (max depth)
-GET    /api/users/42/posts/7/comments/3/replies  ✗ (cox deep)
+GET    /api/users/42/posts/7/comments/3/replies  ✗ (çox deep)
 
 # Bunu edin:
 GET    /api/comments?post_id=7           ✓
 
-# Actions (non-CRUD emeliyyatlar)
+# Actions (non-CRUD əməliyyatlar)
 POST   /api/users/42/activate            ✓
 POST   /api/orders/99/cancel             ✓
 ```
@@ -79,19 +83,19 @@ POST   /api/orders/99/cancel             ✓
 
 ```
 2xx - Success
-  200 OK              - Ugurlu GET, PUT, PATCH
-  201 Created         - Ugurlu POST (Location header ile)
-  204 No Content      - Ugurlu DELETE
+  200 OK              - Uğurlu GET, PUT, PATCH
+  201 Created         - Uğurlu POST (Location header ilə)
+  204 No Content      - Uğurlu DELETE
 
 3xx - Redirection
   301 Moved Permanently
-  304 Not Modified    - Cache ucun
+  304 Not Modified    - Cache üçün
 
 4xx - Client Error
   400 Bad Request     - Validation error
-  401 Unauthorized    - Authentication lazimdir
+  401 Unauthorized    - Authentication lazımdır
   403 Forbidden       - Authorization yoxdur
-  404 Not Found       - Resource tapilmadi
+  404 Not Found       - Resource tapılmadı
   405 Method Not Allowed
   409 Conflict        - Resource conflict
   422 Unprocessable Entity - Validation error (Laravel default)
@@ -120,8 +124,6 @@ POST   /api/orders/99/cancel             ✓
   }
 }
 ```
-
-## Əsas Konseptlər (Key Concepts)
 
 ### Pagination
 
@@ -154,7 +156,7 @@ GET /api/users?fields=id,name,email
 ### API Versioning
 
 ```
-# URI versioning (en cox istifade olunan)
+# URI versioning (ən çox istifadə olunan)
 GET /api/v1/users
 GET /api/v2/users
 
@@ -166,9 +168,47 @@ Accept: application/vnd.myapp.v2+json
 GET /api/users?version=2
 ```
 
-## PHP/Laravel ilə İstifadə
+## Praktik Baxış
 
-### Route Definition
+**Real layihələrdə istifadəsi:**
+- `Location` header-i `201 Created` cavabında yeni resource-un URL-ini göstərir — client ayrıca fetch etmədən URL-i bilir
+- Cursor-based pagination böyük dataset-lərdə offset-based-dən effektivdir — offset-based-in sonrakı səhifələrdə performansı düşür
+- `sparse fieldsets` (`?fields=id,name`) yavaş mobile internet üçün bandwidth xərclərini azaldır
+
+**Trade-off-lar:**
+- URI versioning: sadə, debug rahat; amma URL-i "çirklədirir"
+- Header versioning: "daha RESTful"; amma curl ilə test etmək çətin, CDN keşləmə mürəkkəbdir
+- HATEOAS: tam implementation nadirdir — overhead-i faydasından çox ola bilər; minimum `self` link lazımdır
+
+**Common mistakes:**
+- POST-u update üçün istifadə etmək (idempotency itirilir, retry-da problem yaranır)
+- Hər şey üçün 200 qaytarmaq — client-ə mənasız cavab, debug çətin
+- Validation xətasını 400 ilə qaytarmaq (Laravel default 422-dir; 400 format xətası üçündür)
+- Pagination olmadan list endpoint-i — böyük data-da timeout, memory issue
+
+**Anti-pattern:** `/api/getUser`, `/api/createUserEndpoint` — URL-də verb istifadəsi REST semantikasını pozur; HTTP method-un özü artıq feli ifadə edir.
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+Bir REST API-nin tam resource lifecycle-ı:
+
+```
+POST   /api/v1/users           -> 201 Created (+ Location: /api/v1/users/42)
+GET    /api/v1/users/42        -> 200 OK
+PATCH  /api/v1/users/42        -> 200 OK
+DELETE /api/v1/users/42        -> 204 No Content
+
+GET    /api/v1/users           -> 200 OK (paginated list)
+GET    /api/v1/users?status=active&sort=-created_at -> 200 OK (filtered)
+
+POST   /api/v1/users/42/activate -> 200 OK (custom action)
+```
+
+### Kod Nümunəsi
+
+Route Definition:
 
 ```php
 // routes/api.php
@@ -185,7 +225,7 @@ Route::prefix('v1')->group(function () {
 });
 ```
 
-### Controller
+Controller:
 
 ```php
 namespace App\Http\Controllers\Api\V1;
@@ -278,7 +318,7 @@ class UserController extends Controller
 }
 ```
 
-### API Resource (Response Transformation)
+API Resource (Response Transformation):
 
 ```php
 namespace App\Http\Resources;
@@ -310,7 +350,63 @@ class UserResource extends JsonResource
 }
 ```
 
-### API Resource Collection
+Error Handling:
+
+```php
+// bootstrap/app.php (Laravel 11)
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+->withExceptions(function (Exceptions $exceptions) {
+    $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+        if ($request->is('api/*')) {
+            return response()->json([
+                'message' => 'Resource not found',
+            ], 404);
+        }
+    });
+
+    $exceptions->render(function (\Throwable $e, Request $request) {
+        if ($request->is('api/*')) {
+            $status = method_exists($e, 'getStatusCode')
+                ? $e->getStatusCode()
+                : 500;
+
+            return response()->json([
+                'message' => $e->getMessage(),
+                'code' => $status,
+            ], $status);
+        }
+    });
+});
+```
+
+## Praktik Tapşırıqlar
+
+**Tapşırıq 1: REST API dizaynı**
+
+Aşağıdakı əməliyyatlar üçün düzgün endpoint-lər dizayn edin:
+
+```
+- Blog post-larını listlə
+- Yeni comment əlavə et
+- Məqaləni arxivlə
+- İstifadəçinin şifrəsini sıfırla
+- Sifarişi ləğv et
+- Məhsulları kateqoriyaya görə filtrələ
+```
+
+Cavab nümunəsi:
+```
+GET    /api/v1/posts
+POST   /api/v1/posts/{post}/comments
+POST   /api/v1/posts/{post}/archive
+POST   /api/v1/users/{user}/password-reset
+POST   /api/v1/orders/{order}/cancel
+GET    /api/v1/products?category=electronics&sort=-price
+```
+
+**Tapşırıq 2: API Resource Collection implement edin**
 
 ```php
 namespace App\Http\Resources;
@@ -341,107 +437,38 @@ class UserCollection extends ResourceCollection
 }
 ```
 
-### Form Request (Validation)
+Test: `GET /api/v1/users?page=2&per_page=5&status=active&sort=-created_at`
+
+**Tapşırıq 3: N+1 problemini həll edin**
+
+Aşağıdakı endpoint-i optimallaşdırın:
 
 ```php
-namespace App\Http\Requests;
-
-use Illuminate\Foundation\Http\FormRequest;
-
-class StoreUserRequest extends FormRequest
+// Problem: N+1 query
+public function index(): UserCollection
 {
-    public function rules(): array
-    {
-        return [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email:rfc,dns', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role' => ['sometimes', 'in:user,admin,editor'],
-        ];
-    }
+    $users = User::paginate(15); // N users
+    // UserResource-da hər user üçün $this->posts -> N query!
+    return new UserCollection($users);
+}
 
-    /**
-     * Validation ugursuz olanda JSON response qaytarir
-     */
-    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
-    {
-        throw new \Illuminate\Validation\ValidationException($validator,
-            response()->json([
-                'message' => 'Validation failed',
-                'errors' => $validator->errors(),
-            ], 422)
-        );
-    }
+// Həll: Eager loading
+public function index(Request $request): UserCollection
+{
+    $users = User::with(['posts', 'profile'])
+        ->withCount('posts')
+        ->paginate(15);
+
+    return new UserCollection($users);
 }
 ```
 
-### Error Handling
+## Əlaqəli Mövzular
 
-```php
-// app/Exceptions/Handler.php (Laravel 10)
-// bootstrap/app.php (Laravel 11)
-use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
-->withExceptions(function (Exceptions $exceptions) {
-    $exceptions->render(function (NotFoundHttpException $e, Request $request) {
-        if ($request->is('api/*')) {
-            return response()->json([
-                'message' => 'Resource not found',
-            ], 404);
-        }
-    });
-
-    $exceptions->render(function (\Throwable $e, Request $request) {
-        if ($request->is('api/*')) {
-            $status = method_exists($e, 'getStatusCode')
-                ? $e->getStatusCode()
-                : 500;
-
-            return response()->json([
-                'message' => $e->getMessage(),
-                'code' => $status,
-            ], $status);
-        }
-    });
-});
-```
-
-## Interview Sualları
-
-### 1. REST nedir? SOAP-dan ferqi nedir?
-**Cavab:** REST resource-oriented arxitektural stildir, HTTP uzerinde isleyir, JSON/XML istifade edir, lightweight-dir. SOAP protokoldur, XML-based-dir, WSDL lazimdir, daha complex-dir. REST daha sadedir ve web/mobile API-lar ucun standartdir.
-
-### 2. Idempotent ne demekdir? Hansi HTTP methodlar idempotent-dir?
-**Cavab:** Eyni request-i bir ve ya bir nece defe gondermek eyni neticeni verir. GET, PUT, DELETE idempotent-dir. POST idempotent deyil - her POST yeni resource yaradır.
-
-### 3. PUT ve PATCH arasinda ferq nedir?
-**Cavab:** PUT resource-un **tam** replacement-idir - butun field-leri gondermek lazimdir. PATCH **qismi** yenilemedir - yalniz deyisen field-leri gonderirsiniz. Meselen: PUT-da name+email+role gonderirsiniz, PATCH-da yalniz name gondere bilersiniz.
-
-### 4. 401 ve 403 arasinda ferq nedir?
-**Cavab:** **401 Unauthorized** - authentication problem, kimliyin bilinmir (login olmamisan). **403 Forbidden** - authorization problem, kimlyin bilinir amma icazen yoxdur (login olmusan amma admin deyilsen).
-
-### 5. HATEOAS nedir?
-**Cavab:** Hypermedia as the Engine of Application State - API response-unda novbeti mumkun emeliyyatlarin linklerini qaytarmaq. Client hardcode edilmis URL-ler yerine response-daki linkleri istifade edir. Real dunyada tam implement olunmasi nadirdir.
-
-### 6. Stateless ne demekdir ve niye vacibdir?
-**Cavab:** Her request ozunde butun lazimi melumati saxlayir, server client-in state-ini yadda saxlamır. Bu scaling-i asanlashdırır (her server her request-e cavab vere biler), reliability artir, caching mumkun olur. Authentication ucun JWT/token istifade olunur.
-
-### 7. API versioning nece edilir? Hansi yol daha yaxsidir?
-**Cavab:** 3 usul var: URI versioning (/v1/users), Header versioning (Accept header), Query param (?version=1). URI versioning en sade ve en populyardır. Header versioning daha "RESTful"-dur amma debug etmek cetindir.
-
-### 8. N+1 problem API-da nece hell olunur?
-**Cavab:** Eager loading istifade edin: `User::with('posts')->paginate()`. Laravel-de `whenLoaded()` ile yalniz eager load olunmus relation-lari API response-a elave edin. API-da `?include=posts,profile` parametri ile client istediyi relation-lari sorusha biler.
-
-## Best Practices
-
-1. **Consistent response format** - Hemise eyni struktur: `{data, meta, links, errors}`
-2. **Plural nouns** - `/users` not `/user`
-3. **HTTP status codes duzgun istifade edin** - 200, 201, 204, 400, 404, 422
-4. **Versioning** - Ilk gunden versioning elave edin
-5. **Pagination default** - Butun list endpoint-lere pagination elave edin
-6. **Rate limiting** - API-ni suistifadeden qoruyun
-7. **Input validation** - Her request-i validate edin
-8. **Error messages** - Human-readable, actionable error mesajlari
-9. **Documentation** - OpenAPI/Swagger ile API-ni dokumentlashdirin
-10. **HATEOAS** - En azi self link qaytarin
+- [HTTP Protocol](05-http-protocol.md)
+- [GraphQL](09-graphql.md)
+- [API Versioning](22-api-versioning.md)
+- [API Pagination](24-api-pagination.md)
+- [API Rate Limiting](25-api-rate-limiting.md)
+- [API Security](17-api-security.md)
+- [OpenAPI/Swagger](38-openapi-swagger.md)

@@ -1,13 +1,13 @@
-# GraphQL
+# GraphQL (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
-GraphQL Facebook terefinden 2012-ci ilde yaradilib ve 2015-ci ilde open-source edilib. Client-in tam olaraq hansi data-ni istediyi sorusha bileceyi query language ve runtime-dir. REST-den ferqli olaraq, bir endpoint uzerinden isleyir ve over-fetching/under-fetching problemlerini hell edir.
+GraphQL Facebook tərəfindən 2012-ci ildə yaradılıb və 2015-ci ildə open-source edilib. Client-in tam olaraq hansı data-nı istədiyi soruşa biləcəyi query language və runtime-dir. REST-dən fərqli olaraq, bir endpoint üzərindən işləyir və over-fetching/under-fetching problemlərini həll edir.
 
 ```
 REST:
   GET /api/users/42           -> {id, name, email, phone, address, ...}  (over-fetching)
-  GET /api/users/42/posts     -> ayri request lazimdir (under-fetching)
+  GET /api/users/42/posts     -> ayrı request lazımdır (under-fetching)
   GET /api/users/42/followers -> daha bir request (under-fetching)
 
 GraphQL:
@@ -20,10 +20,14 @@ GraphQL:
       followers { name }
     }
   }
-  -> Tam istediyin data, bir request-de
+  -> Tam istədiyin data, bir request-də
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
+
+GraphQL xüsusilə mobile client-ləri olan layihələrdə güclüdür: mobile yavaş internet şəraitindədir, lazımsız field-ləri çəkmək bandwidth xərcini artırır. Çoxsaylı frontend-lər (web, iOS, Android) eyni backend-i paylaşdıqda REST-in hər client üçün ayrı endpoint-i problem yaradır; GraphQL bir endpoint-lə bütün client-lərin müxtəlif ehtiyaclarını həll edir. Schema strongly typed olduğundan documentation avtomatik generasiya olunur.
+
+## Əsas Anlayışlar
 
 ### Schema Definition Language (SDL)
 
@@ -56,7 +60,7 @@ type Comment {
   post: Post!
 }
 
-# Input types (mutation ucun)
+# Input types (mutation üçün)
 input CreateUserInput {
   name: String!
   email: String!
@@ -113,7 +117,7 @@ query GetUser {
   }
 }
 
-# MUTATION - data deyismek
+# MUTATION - data dəyişmək
 mutation CreateUser {
   createUser(input: {
     name: "Orkhan"
@@ -136,7 +140,7 @@ subscription OnPostCreated {
   }
 }
 
-# Variables istifade etmek
+# Variables istifadə etmək
 query GetUser($id: ID!) {
   user(id: $id) {
     name
@@ -145,7 +149,7 @@ query GetUser($id: ID!) {
 }
 # Variables: {"id": "42"}
 
-# Fragments - tekrarlanan fieldleri birlesdirmek
+# Fragments - təkrarlanan field-ləri birləşdirmək
 fragment UserBasic on User {
   id
   name
@@ -163,8 +167,6 @@ query {
 }
 ```
 
-## Əsas Konseptlər (Key Concepts)
-
 ### N+1 Problem
 
 ```
@@ -172,7 +174,7 @@ query {
 {
   users(first: 10) {
     name
-    posts { title }   # Her user ucun ayri SQL query!
+    posts { title }   # Hər user üçün ayrı SQL query!
   }
 }
 
@@ -181,12 +183,12 @@ SELECT * FROM users LIMIT 10;           -- 1 query
 SELECT * FROM posts WHERE user_id = 1;  -- +1
 SELECT * FROM posts WHERE user_id = 2;  -- +1
 ...                                      -- +N
-# Cemi: 11 query (1 + 10)
+# Cəmi: 11 query (1 + 10)
 
-# Hell yolu: DataLoader (batching)
+# Həll yolu: DataLoader (batching)
 SELECT * FROM users LIMIT 10;                              -- 1 query
 SELECT * FROM posts WHERE user_id IN (1,2,3,...,10);      -- 1 query
-# Cemi: 2 query
+# Cəmi: 2 query
 ```
 
 ### Resolvers
@@ -237,27 +239,62 @@ type PageInfo {
 +------------------+------------------+------------------+
 | Feature          | REST             | GraphQL          |
 +------------------+------------------+------------------+
-| Endpoints        | Coxlu            | Tek (/graphql)   |
-| Data fetching    | Over/under       | Tam lazim olan   |
+| Endpoints        | Çoxlu            | Tək (/graphql)   |
+| Data fetching    | Over/under       | Tam lazım olan   |
 | Versioning       | /v1, /v2         | Schema evolution |
-| Caching          | HTTP cache asan  | Daha cetin       |
-| File upload      | Native           | Ayri spec lazim  |
+| Caching          | HTTP cache asan  | Daha çətin       |
+| File upload      | Native           | Ayrı spec lazım  |
 | Error handling   | HTTP status      | 200 + errors[]   |
-| Learning curve   | Asagi            | Yuksek           |
+| Learning curve   | Aşağı            | Yüksək           |
 | Real-time        | WebSocket/SSE    | Subscription     |
 +------------------+------------------+------------------+
 ```
 
-## PHP/Laravel ilə İstifadə
+## Praktik Baxış
 
-### Laravel Lighthouse (GraphQL Server)
+**Real layihələrdə istifadəsi:**
+- Mobile BFF (Backend for Frontend) ssenarisi: iOS, Android, web — hər biri lazım olan field-ləri özü seçir
+- Çox cür dashboard widget-lər olan admin panel — hər widget fərqli data seçimi tələb edir
+- Laravel Lighthouse ilə schema-first approach: `@hasMany`, `@belongsTo`, `@paginate` directive-ləri Eloquent ilə avtomatik işləyir
+
+**Trade-off-lar:**
+- HTTP caching çətindir — hər şey `POST /graphql`-ə gedir; persisted queries ilə `GET` mümkündür
+- Deeply nested query-lər serveri yükləyə bilər — complexity limit və depth limit tətbiq edin
+- File upload üçün ayrı spec (multipart) lazımdır — REST-dəki kimi sadə deyil
+- Error handling fərqlidir: xəta baş versə belə HTTP 200 qaytarır, `errors[]` field-ındə xəta olur
+
+**Ne zaman istifadə olunmamalı:**
+- Sadə CRUD API — overhead çox, fayda az
+- Public API (3rd party developer-lər üçün) — REST daha tanınmış, tooling daha güclü
+- File-heavy API — upload/download üçün REST daha uyğun
+- Team GraphQL-ə yeni başlayırsa — learning curve ilkin produktivliyi azaldır
+
+**Common mistakes:**
+- N+1 problemini həll etməmək — ən çox görülən performance problemi
+- Schema-nı REST endpoint-lər kimi dizayn etmək (`createUser` mutation əvəzinə `userCreate`)
+- Bütün field-ləri nullable etmək — `!` (non-null) istifadə edin; client əmin olmalıdır ki, field mövcuddur
+- Subscription-ları lazımsız yerdə istifadə etmək — polling daha sadədir az hallarda
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+Mobile app ssenarisi:
+- İstifadəçi profili ekranı: `{ user(id: 42) { name, avatar, bio } }` — 3 field
+- Admin panel: `{ user(id: 42) { name, email, role, createdAt, lastLogin, posts { count } } }` — 7+ field
+
+Eyni endpoint, eyni server, fərqli client ehtiyacları.
+
+### Kod Nümunəsi
+
+Laravel Lighthouse quraşdırması:
 
 ```bash
 composer require nuwave/lighthouse
 php artisan vendor:publish --tag=lighthouse-schema
 ```
 
-### Schema Definition
+Schema Definition:
 
 ```graphql
 # graphql/schema.graphql
@@ -321,13 +358,12 @@ input UpdateUserInput {
 }
 ```
 
-### Custom Resolver
+Custom Resolver (Login mutation):
 
 ```php
 namespace App\GraphQL\Mutations;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use GraphQL\Error\Error;
 
@@ -351,7 +387,7 @@ class Login
 }
 ```
 
-### Custom Query with N+1 Prevention
+N+1 Prevention:
 
 ```php
 namespace App\GraphQL\Queries;
@@ -375,11 +411,11 @@ class PopularPosts
 }
 ```
 
-### Middleware & Authorization
+Middleware və Authorization:
 
 ```graphql
 type Query {
-    # Yalniz authenticated users
+    # Yalnız authenticated users
     me: User @auth @guard(with: ["sanctum"])
 
     # Admin only
@@ -401,7 +437,7 @@ type Mutation {
 }
 ```
 
-### Testing GraphQL
+Testing GraphQL:
 
 ```php
 namespace Tests\Feature;
@@ -471,38 +507,59 @@ class UserGraphQLTest extends TestCase
 }
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-### 1. GraphQL nedir ve REST-den nece ferqlenir?
-**Cavab:** GraphQL client-in lazim olan data-ni deqiq sorusha bileceyi query language-dir. REST-den ferqi: tek endpoint, over/under-fetching yoxdur, strongly typed schema, client data strukturunu ozü teyin edir.
+**Tapşırıq 1: Schema dizayn edin**
 
-### 2. N+1 problem nedir ve GraphQL-de nece hell olunur?
-**Cavab:** Her parent entity ucun ayri query atilmasidir. 10 user-in posts-unu cekende 1+10=11 query olur. Hell yolu: DataLoader pattern - butun ID-leri toplayib tek batch query atir. Laravel Lighthouse-da `@hasMany` directive avtomatik eager loading edir.
+Blog application üçün GraphQL schema yazın. Tələblər:
+- `Post`, `Comment`, `Tag`, `User` type-ları
+- Postları `status`, `tag`, `author` ilə filtrləmək
+- Cursor-based pagination
+- `publishPost` mutation
 
-### 3. Query, Mutation ve Subscription arasinda ferq nedir?
-**Cavab:** **Query** - data oxumaq (GET). **Mutation** - data yazmaq/deyismek (POST/PUT/DELETE). **Subscription** - real-time updates almaq (WebSocket uzerinden). Subscription server push edir, client subscribe olur.
+**Tapşırıq 2: N+1-i müəyyən edin və həll edin**
 
-### 4. GraphQL schema nedir?
-**Cavab:** API-nin type system-idir. Butun type-lari, query/mutation-lari, input-lari teyin edir. Strongly typed-dir - her field-in tipi melumdur. Schema client ve server arasinda contract rolunu oynayir.
+Aşağıdakı query-nin N+1 problemini tapın və Lighthouse directive-ləri ilə həll edin:
 
-### 5. GraphQL-de caching nece edilir?
-**Cavab:** HTTP caching cetindir (her sey POST /graphql). Hell yollari: persisted queries (query hash ile GET request), Apollo Client cache (normalized client-side cache), server-side caching (Redis ile response cache), CDN caching (persisted queries ile).
+```graphql
+{
+  posts(first: 20) {
+    title
+    author {        # N+1!
+      name
+    }
+    tags {          # N+1!
+      name
+    }
+  }
+}
+```
 
-### 6. GraphQL-in dezavantajlari nelerdir?
-**Cavab:** File upload cetin, HTTP caching cetin, complexity control lazimdir (deeply nested query-ler serveri yuka biler), error handling ferqlidir (hemise 200 qaytarir), learning curve yuksek, simple API-lar ucun overkill ola biler.
+Həll: Schema-da `@belongsTo` və `@belongsToMany` directive-lərini istifadə edin.
 
-### 7. Fragments nedir ve niye istifade olunur?
-**Cavab:** Tekrarlanan field secimlerini bir yerde teyin etmek ucun istifade olunur. `fragment UserBasic on User { id, name }` yaradirsiniz ve `...UserBasic` ile her yerde istifade edirsiniz. DRY prinsipi ucun vacibdir.
+**Tapşırıq 3: Query complexity limiti qurun**
 
-## Best Practices
+```php
+// config/lighthouse.php
+'security' => [
+    'max_query_complexity' => 200,
+    'max_query_depth' => 7,
+    'disable_introspection' => env('GRAPHQL_DISABLE_INTROSPECTION', false),
+],
+```
 
-1. **N+1 helli** - DataLoader ve ya Lighthouse directive-leri ile eager loading
-2. **Query complexity limiti** - Deeply nested query-leri mehdudlashdirin
-3. **Depth limiting** - Max query depth teyin edin (meselen, 7)
-4. **Persisted queries** - Production-da yalniz evvelceden teyin olunmus query-lere icaze verin
-5. **Input validation** - Schema level + custom validation
-6. **Error handling** - Structured error messages qaytarin
-7. **Pagination** - Cursor-based pagination (Relay spec) istifade edin
-8. **Schema design** - Domain-driven, REST resource naming conventions
-9. **Monitoring** - Query performance ve error rate izleyin
-10. **Versioning yerine evolution** - Schema-ni deprecate edin, deyismeyin
+Sonra bu query-nin complexity-sini hesablayın:
+```graphql
+{ users { posts { comments { author { posts { title } } } } } }
+```
+
+Niyə depth limit 7 ağlabatandır? Layihəniz üçün doğru hədd nədir?
+
+## Əlaqəli Mövzular
+
+- [REST API](08-rest-api.md)
+- [HTTP Protocol](05-http-protocol.md)
+- [WebSocket](11-websocket.md)
+- [API Security](17-api-security.md)
+- [API Rate Limiting](25-api-rate-limiting.md)
+- [gRPC](10-grpc.md)

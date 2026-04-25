@@ -1,25 +1,29 @@
-# Long Polling
+# Long Polling (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
-Long polling server-den real-time data almaq ucun istifade olunan texnikadir. Client request gonderir, server yeni data olana qeder cavab gondermir (baglantini "aciq saxlayir"). Data hazir olanda server cavab gonderir, client derhâl yeni request gonderir. Bu "yanlis real-time" yaradir.
+Long polling server-dən real-time data almaq üçün istifadə olunan texnikadır. Client request göndərir, server yeni data olana qədər cavab göndərmir (bağlantını "açıq saxlayır"). Data hazır olanda server cavab göndərir, client dərhal yeni request göndərir. Bu "yalançı real-time" yaradır.
 
 ```
 Normal Polling (Short Polling):
   Client --GET--> Server (yeni data yox) --> 200 []     (1 san)
   Client --GET--> Server (yeni data yox) --> 200 []     (2 san)
   Client --GET--> Server (YENİ DATA!)    --> 200 [data] (3 san)
-  Coxlu bosuna request, bandwidth israf
+  Çoxlu boşuna request, bandwidth israf
 
 Long Polling:
-  Client --GET--> Server ... gozleyir ... gozleyir ...
-                  (30 saniye gozledi, data geldi!)
+  Client --GET--> Server ... gözləyir ... gözləyir ...
+                  (30 saniyə gözlədi, data gəldi!)
                   Server --> 200 [data]
-  Client --GET--> Server ... gozleyir ...
-  Daha az request, amma her connection bir thread tutur
+  Client --GET--> Server ... gözləyir ...
+  Daha az request, amma hər connection bir thread tutur
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
+
+WebSocket və SSE mövcud olmayan mühitlərdə (köhnə browserlar, məhdud infrastruktur, proxy məhdudiyyətləri) long polling real-time-a yaxın davranış əldə etməyin praktiki yoludur. Əlavə protokol tələb etmədən standart HTTP ilə işlədiyindən universaldır. Bugün bu texnika əsasən legacy sistemlərə dəstək üçün və ya WebSocket/SSE-yə keçid hazırlığı kimi istifadə olunur.
+
+## Əsas Anlayışlar
 
 ### Long Polling Flow
 
@@ -27,39 +31,39 @@ Long Polling:
 Client                              Server
   |                                    |
   |--- GET /poll?since=0 ------------>|
-  |                                    |  (data yoxdur, gozleyir...)
-  |                                    |  ... 5 saniye ...
-  |                                    |  ... 10 saniye ...
-  |                                    |  (YENİ DATA GELDI!)
+  |                                    |  (data yoxdur, gözləyir...)
+  |                                    |  ... 5 saniyə ...
+  |                                    |  ... 10 saniyə ...
+  |                                    |  (YENİ DATA GƏLDİ!)
   |<-- 200 [{id:1, msg:"Salam"}] -----|
   |                                    |
-  |--- GET /poll?since=1 ------------>|  (derhâl yeni request)
-  |                                    |  (data yoxdur, gozleyir...)
-  |                                    |  ... 25 saniye ...
-  |                                    |  (TIMEOUT - data gelmedi)
+  |--- GET /poll?since=1 ------------>|  (dərhal yeni request)
+  |                                    |  (data yoxdur, gözləyir...)
+  |                                    |  ... 25 saniyə ...
+  |                                    |  (TIMEOUT - data gəlmədi)
   |<-- 204 No Content ----------------|
   |                                    |
-  |--- GET /poll?since=1 ------------>|  (tekrar request)
+  |--- GET /poll?since=1 ------------>|  (təkrar request)
   |                                    |
 ```
 
 ### Timeout Handling
 
 ```
-Niye timeout lazimdir?
-1. Server resource-larini serbest buraxmaq
+Niyə timeout lazımdır?
+1. Server resource-larını sərbəst buraxmaq
 2. Proxy/firewall connection timeout-dan qorunmaq
-3. Dead client-leri detect etmek
+3. Dead client-ləri detect etmək
 
-Tipik timeout: 30-60 saniye
+Tipik timeout: 30-60 saniyə
 
 Client timeout:
-  - Server cavab vermirsə, client yeni request gonderir
-  - Exponential backoff: error zamani gozleme artir
+  - Server cavab vermirsə, client yeni request göndərir
+  - Exponential backoff: error zamanı gözləmə artır
 
 Server timeout:
-  - Max hold time asildiqda bosh cavab gonder
-  - 204 No Content ve ya 200 {events: []}
+  - Max hold time aşıldıqda boş cavab göndər
+  - 204 No Content və ya 200 {events: []}
 ```
 
 ### Long Polling vs Short Polling vs WebSocket vs SSE
@@ -68,23 +72,21 @@ Server timeout:
 +-------------------+----------+-----------+-----------+-------+
 | Feature           | Short    | Long      | WebSocket | SSE   |
 +-------------------+----------+-----------+-----------+-------+
-| Latency           | Yuksek   | Asagi     | En asagi  | Asagi |
-| Server load       | Yuksek   | Orta      | Asagi     | Asagi |
-| Complexity        | En asagi | Asagi     | Yuksek    | Orta  |
-| Bidirectional     | Beli     | Beli*     | Beli      | Xeyr  |
-| Connection/request| Coxlu    | Orta      | 1         | 1     |
-| Compatibility     | Hemise   | Hemise    | Demek olar| Genis |
-| Real-time         | Yalanchi | Yalanchi  | Heqiqi    | Heqiqi|
+| Latency           | Yüksək   | Aşağı     | Ən aşağı  | Aşağı |
+| Server load       | Yüksək   | Orta      | Aşağı     | Aşağı |
+| Complexity        | Ən aşağı | Aşağı     | Yüksək    | Orta  |
+| Bidirectional     | Bəli     | Bəli*     | Bəli      | Xeyr  |
+| Connection/request| Çoxlu    | Orta      | 1         | 1     |
+| Compatibility     | Həmişə   | Həmişə    | Demək olar| Geniş |
+| Real-time         | Yalançı  | Yalançı   | Həqiqi    | Həqiqi|
 +-------------------+----------+-----------+-----------+-------+
-* Bidirectional amma her message ucun yeni request
+* Bidirectional amma hər message üçün yeni request
 ```
-
-## Əsas Konseptlər (Key Concepts)
 
 ### Etag / Since Pattern
 
 ```
-# Ilk request
+# İlk request
 GET /api/poll/messages?room=5
 Response: {
   "messages": [...],
@@ -92,12 +94,12 @@ Response: {
   "etag": "abc123"
 }
 
-# Sonraki request (yalniz yeni mesajlari iste)
+# Sonrakı request (yalnız yeni mesajları istə)
 GET /api/poll/messages?room=5&since_id=42
 If-None-Match: abc123
 
 # Data yoxdursa
-304 Not Modified (ve ya 204 No Content + timeout)
+304 Not Modified (və ya 204 No Content + timeout)
 
 # Yeni data varsa
 200 OK
@@ -111,20 +113,62 @@ If-None-Match: abc123
 ### Connection Management
 
 ```
-Problem: Her long poll bir server thread/process tutur
+Problem: Hər long poll bir server thread/process tutur
 
-100 istifadeci = 100 daimi connection = 100 PHP process
+100 istifadəçi = 100 daimi connection = 100 PHP process
 
-Hell yollari:
-1. Async PHP (Swoole, ReactPHP) - event loop ile minlerle connection
+Həll yolları:
+1. Async PHP (Swoole, ReactPHP) - event loop ilə minlərlə connection
 2. Database polling - sleep + query loop
 3. Redis Pub/Sub - blocking subscribe
-4. Ayri long-poll service (Node.js, Go)
+4. Ayrı long-poll service (Node.js, Go)
 ```
 
-## PHP/Laravel ilə İstifadə
+## Praktik Baxış
 
-### Basic Long Polling Controller
+**Nə vaxt long polling istifadə etmək lazımdır:**
+- WebSocket/SSE istifadə etmək mümkün olmayanda
+- Legacy browser dəstəyi tələb olunanda
+- Nadir update olan data üçün (az tezlikli notifications)
+- Mövcud HTTP infrastrukturundan çıxmaq istəmədikdə
+
+**Nə vaxt WebSocket/SSE seçmək lazımdır:**
+- Tezlikli real-time update lazımdır
+- Çoxlu eyni vaxtlı istifadəçi var
+- Server resource optimallaşdırması vacibdir
+
+**Trade-off-lar:**
+- Hər gözləyən connection bir server thread tutur
+- "Əsl" real-time deyil — mesaj + yeni request latency-si var
+- PHP-də 1000 long-poll = 1000 PHP process — kritik resource problemi
+
+**Anti-pattern-lər:**
+- Long polling-i əsas real-time mexanizm kimi istifadə etmək (müvəqqəti həll olmalıdır)
+- `session_write_close()` çağırmamaq — digər request-lər bloklanır
+- Timeout olmadan işlətmək — zombie connection-lar server-i tıxayır
+- DB polling-i sleep(1) ilə etmək — Redis BLPOP daha effektivdir
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+Long polling axını:
+
+```
+Client            Server
+  |                  |
+  |--- GET /poll --> | (data yoxdur)
+  |                  | ... 20 saniyə gözləyir ...
+  |                  | (Redis/DB-dən yeni data gəldi)
+  |<-- 200 [data] -- |
+  |                  |
+  |--- GET /poll --> | (dərhal yeni request — növbəti data üçün)
+  |                  | ...
+```
+
+### Kod Nümunəsi
+
+**Basic Long Polling Controller:**
 
 ```php
 namespace App\Http\Controllers;
@@ -136,7 +180,7 @@ use Illuminate\Http\Request;
 class LongPollController extends Controller
 {
     private const TIMEOUT_SECONDS = 30;
-    private const POLL_INTERVAL = 1; // Her 1 saniyede DB yoxla
+    private const POLL_INTERVAL = 1; // Hər 1 saniyədə DB yoxla
 
     /**
      * Long polling endpoint
@@ -149,7 +193,7 @@ class LongPollController extends Controller
         // PHP execution limit-i uzat
         set_time_limit(self::TIMEOUT_SECONDS + 5);
 
-        // Session lock-u ac (basqa request-ler block olmasin)
+        // Session lock-u aç (başqa request-lər block olmasın)
         if (session_status() === PHP_SESSION_ACTIVE) {
             session_write_close();
         }
@@ -157,7 +201,7 @@ class LongPollController extends Controller
         $startTime = time();
 
         while (true) {
-            // Yeni mesajlari yoxla
+            // Yeni mesajları yoxla
             $messages = Message::where('room_id', $roomId)
                 ->where('id', '>', $sinceId)
                 ->with('user:id,name,avatar')
@@ -165,7 +209,7 @@ class LongPollController extends Controller
                 ->limit(50)
                 ->get();
 
-            // Yeni mesaj varsa - cavab gonder
+            // Yeni mesaj varsa - cavab göndər
             if ($messages->isNotEmpty()) {
                 return response()->json([
                     'messages' => $messages,
@@ -188,7 +232,7 @@ class LongPollController extends Controller
                 break;
             }
 
-            // 1 saniye gozle ve tekrar yoxla
+            // 1 saniyə gözlə və təkrar yoxla
             sleep(self::POLL_INTERVAL);
         }
 
@@ -197,7 +241,7 @@ class LongPollController extends Controller
 }
 ```
 
-### Redis-based Long Polling (Daha Effektiv)
+**Redis-based Long Polling (Daha Effektiv):**
 
 ```php
 namespace App\Http\Controllers;
@@ -209,7 +253,7 @@ use Illuminate\Support\Facades\Redis;
 class RedisLongPollController extends Controller
 {
     /**
-     * Redis BLPOP ile long polling (DB polling-den daha effektiv)
+     * Redis BLPOP ilə long polling (DB polling-dən daha effektiv)
      */
     public function poll(Request $request): JsonResponse
     {
@@ -218,14 +262,14 @@ class RedisLongPollController extends Controller
 
         set_time_limit($timeout + 5);
 
-        // Redis BLPOP - data olana qeder block olur (max $timeout saniye)
+        // Redis BLPOP - data olana qədər block olur (max $timeout saniyə)
         $result = Redis::blpop([$channel], $timeout);
 
         if ($result) {
             [$key, $data] = $result;
             $message = json_decode($data, true);
 
-            // Queue-da daha cox mesaj var mi yoxla
+            // Queue-da daha çox mesaj var mı yoxla
             $additional = [];
             while ($extra = Redis::lpop($channel)) {
                 $additional[] = json_decode($extra, true);
@@ -237,7 +281,7 @@ class RedisLongPollController extends Controller
             ]);
         }
 
-        // Timeout - data gelmedi
+        // Timeout - data gəlmədi
         return response()->json([
             'messages' => [],
             'timeout' => true,
@@ -245,7 +289,7 @@ class RedisLongPollController extends Controller
     }
 
     /**
-     * Mesaj gondermek (basqa endpoint ve ya job-dan)
+     * Mesaj göndərmək (başqa endpoint və ya job-dan)
      */
     public function sendMessage(Request $request): JsonResponse
     {
@@ -262,10 +306,10 @@ class RedisLongPollController extends Controller
             'created_at' => now()->toISOString(),
         ];
 
-        // Redis-e push et (bekleyen long-poll request-ler bunu alacaq)
+        // Redis-ə push et (gözləyən long-poll request-lər bunu alacaq)
         Redis::rpush("room:{$data['room_id']}:messages", json_encode($message));
 
-        // Database-e de yazilmali (persistence ucun)
+        // Database-ə də yazılmalı (persistence üçün)
         \App\Models\Message::create([
             'room_id' => $data['room_id'],
             'user_id' => $request->user()->id,
@@ -277,7 +321,7 @@ class RedisLongPollController extends Controller
 }
 ```
 
-### Notification Long Polling
+**Notification Long Polling:**
 
 ```php
 namespace App\Http\Controllers;
@@ -287,9 +331,6 @@ use Illuminate\Http\Request;
 
 class NotificationPollController extends Controller
 {
-    /**
-     * Notification long polling
-     */
     public function poll(Request $request): JsonResponse
     {
         $user = $request->user();
@@ -320,7 +361,7 @@ class NotificationPollController extends Controller
             }
 
             if (connection_aborted()) break;
-            usleep(500000); // 0.5 saniye
+            usleep(500000); // 0.5 saniyə
         }
 
         return response()->json([
@@ -331,7 +372,7 @@ class NotificationPollController extends Controller
 }
 ```
 
-### JavaScript Client
+**JavaScript Client:**
 
 ```javascript
 class LongPollClient {
@@ -382,7 +423,7 @@ class LongPollClient {
                     data.messages.forEach(msg => this.onMessage(msg));
                 }
 
-                // Ugurlu oldu - retry delay reset
+                // Uğurlu oldu - retry delay reset
                 this.retryDelay = 1000;
 
             } catch (error) {
@@ -401,7 +442,7 @@ class LongPollClient {
     }
 }
 
-// Istifade
+// İstifadə
 const poller = new LongPollClient('/api/poll', {
     sinceId: 0,
     onMessage: (msg) => {
@@ -412,10 +453,10 @@ const poller = new LongPollClient('/api/poll', {
 });
 
 poller.start();
-// poller.stop();  // dayandirmaq ucun
+// poller.stop();  // dayandırmaq üçün
 ```
 
-### Routes
+**Routes:**
 
 ```php
 // routes/api.php
@@ -426,38 +467,24 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-### 1. Long polling nedir ve nece isleyir?
-**Cavab:** Client request gonderir, server yeni data olana qeder cavab vermir (baglantini saxlayir). Data olanda cavab gonderir, client derhal yeni request gonderir. Bu prosesi tekrarlayaraq "yalanchi real-time" yaradilir.
+1. **DB-based long poll:** `LongPollController`-i implement edin. `since_id` parametrini qəbul etsin, 30 saniyə timeout ilə yeni mesaj gözləsin. Postman ilə test edin.
 
-### 2. Long polling ve short polling arasinda ferq nedir?
-**Cavab:** Short polling-de client muntezer interval ile sorgu gonderir (meselen, her 1 saniye), server derhal cavab qaytarir (bosh da ola biler). Long polling-de server cavabi yeni data olana qeder saxlayir. Long polling daha az request edir amma her connection server thread tutur.
+2. **Redis BLPOP versiyası:** `RedisLongPollController`-i implement edin. `sendMessage` endpoint-i ilə mesaj göndərin, `poll` endpoint-inin onu necə aldığını izləyin.
 
-### 3. Long polling-in dezavantajlari nelerdir?
-**Cavab:** Her gozleyen connection bir server thread/process tutur (resource intensive), real real-time deyil (mesaj + yeni request latency-si var), timeout management lazimdir, scaling cetindir, message ordering problemi ola biler.
+3. **JavaScript client:** `LongPollClient` class-ını yazın. Exponential backoff implement edin. Network kesildikdə avtomatik reconnect olmasını test edin.
 
-### 4. Long polling ne vaxt istifade etmeliyik?
-**Cavab:** WebSocket/SSE istifade etmek mumkun olmayanda (kohne browser, mehdud infrastruktur), sade implementation lazim olanda, nadir update olan data ucun (notifications). Modern app-larda WebSocket ve ya SSE tercih edilir.
+4. **Session lock:** `session_write_close()` olmadan və olduqda paralel request-lərin davranışını müqayisə edin. Bloklanma effektini izləyin.
 
-### 5. PHP-de long polling-in problemi nedir?
-**Cavab:** PHP her request ucun ayri process/thread isleyir. 1000 long-poll connection = 1000 PHP process = cox memory/CPU. Hell yolu: Redis BLPOP istifade edin, async PHP (Swoole), ve ya long-poll logic-i Node.js/Go kimi async runtime-a kocurun.
+5. **Migration plan:** Mövcud DB polling-li long poll endpoint-ini SSE-yə çevirin. Hər iki versiyaı paralel işlədin — client-in SSE-ni dəstəklədiyini yoxlayın, dəstəkləmirsə long poll-a fall back edin.
 
-### 6. Timeout niye vacibdir?
-**Cavab:** Server resource-larini azad etmek, proxy/firewall idle connection timeout-undan qorunmaq (NAT tipik olaraq 60 saniye), dead client-leri detect etmek ucun. Timeout adeten 25-30 saniye olur.
+6. **Load test:** 100 paralel long poll connection aç. PHP-FPM worker sayını izləyin. Server yükünü ölçün.
 
-### 7. Long polling-de message ordering nece saxlanir?
-**Cavab:** Her mesaja monotonic ID verin, client son aldiqi ID-ni `since_id` olaraq gondersin. Server yalniz bu ID-den boyuk olan mesajlari qaytarsin. Client terefinede mesajlari ID-ye gore siralyin.
+## Əlaqəli Mövzular
 
-## Best Practices
-
-1. **Timeout teyin edin** - 25-30 saniye (proxy timeout-dan asagi)
-2. **Exponential backoff** - Error zamani gozleme muddeti artirlmali
-3. **since_id pattern** - Son aldiqi mesajin ID-sini izleyin
-4. **Session lock acin** - `session_write_close()` - basqa request-ler block olmasin
-5. **Connection limit** - Server basina max long-poll connection
-6. **Redis BLPOP** - DB polling yerine Redis blocking operation
-7. **Graceful degradation** - Server yuku artanda short polling-e kecin
-8. **AbortController** - Client terefde request-i cancel etmek ucun
-9. **Health endpoint** - Long-poll endpoint-den ayri health check
-10. **WebSocket/SSE-ye upgrade edin** - Long polling muvqqeti hell olmalidir
+- [WebSocket](11-websocket.md)
+- [SSE - Server-Sent Events](12-sse.md)
+- [HTTP Protocol](05-http-protocol.md)
+- [API Rate Limiting](25-api-rate-limiting.md)
+- [Network Timeouts](42-network-timeouts.md)

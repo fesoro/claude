@@ -1,22 +1,24 @@
-# gRPC (gRPC Remote Procedure Call)
+# gRPC (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
-gRPC Google terefinden yaradilmis, yuksek performansli, open-source RPC (Remote Procedure Call) framework-dur. HTTP/2 uzerinde isleyir ve data serializasiyasi ucun Protocol Buffers (protobuf) istifade edir. Microservices arasi kommunikasiya ucun idealdir.
+gRPC Google tərəfindən yaradılmış, yüksək performanslı, open-source RPC (Remote Procedure Call) framework-dür. HTTP/2 üzərində işləyir və data serializasiyası üçün Protocol Buffers (protobuf) istifadə edir. Microservices arası kommunikasiya üçün idealdır.
 
 ```
 REST:
   Client --> JSON over HTTP/1.1 --> Server
-  Yavash, text-based, schema yoxdur
+  Yavaş, text-based, schema yoxdur
 
 gRPC:
   Client --> Protobuf over HTTP/2 --> Server
-  Suretli, binary, strongly typed schema
+  Sürətli, binary, strongly typed schema
 ```
 
-gRPC "g" her release-de ferqli meaning dasiyir (good, great, green...).
+## Niyə Vacibdir
 
-## Necə İşləyir? (How does it work?)
+Microservices arxitekturasında servislər arası kommunikasiya performansı kritikdir. REST/JSON ilə müqayisədə gRPC ~50% daha az bandwidth istifadə edir, 5-10x daha sürətli serializasiya edir və güclü typing ilə compile-time xəta aşkarlaması verir. Polyglot sistemlərdə (müxtəlif dillər arasında) vahid `.proto` contract sayəsində API uyğunluğu avtomatik təmin olunur.
+
+## Əsas Anlayışlar
 
 ### Protocol Buffers (Protobuf)
 
@@ -31,24 +33,23 @@ option php_metadata_namespace = "App\\Grpc\\GPBMetadata";
 
 // Service definition
 service UserService {
-  // Unary RPC - tek request, tek response
+  // Unary RPC - tək request, tək response
   rpc GetUser (GetUserRequest) returns (UserResponse);
   rpc CreateUser (CreateUserRequest) returns (UserResponse);
   rpc UpdateUser (UpdateUserRequest) returns (UserResponse);
   rpc DeleteUser (DeleteUserRequest) returns (DeleteResponse);
   rpc ListUsers (ListUsersRequest) returns (ListUsersResponse);
 
-  // Server streaming - tek request, coxlu response
+  // Server streaming - tək request, çoxlu response
   rpc WatchUser (WatchUserRequest) returns (stream UserEvent);
 
-  // Client streaming - coxlu request, tek response
+  // Client streaming - çoxlu request, tək response
   rpc UploadAvatar (stream AvatarChunk) returns (UploadResponse);
 
-  // Bidirectional streaming - coxlu request, coxlu response
+  // Bidirectional streaming - çoxlu request, çoxlu response
   rpc Chat (stream ChatMessage) returns (stream ChatMessage);
 }
 
-// Messages
 message GetUserRequest {
   int64 id = 1;
 }
@@ -101,7 +102,6 @@ enum UserRole {
   USER_ROLE_EDITOR = 3;
 }
 
-// Streaming messages
 message WatchUserRequest {
   int64 user_id = 1;
 }
@@ -129,10 +129,10 @@ message ChatMessage {
 }
 ```
 
-### 4 RPC Novleri
+### 4 RPC Növü
 
 ```
-1. UNARY RPC (en cox istifade olunan)
+1. UNARY RPC (ən çox istifadə olunan)
    Client ----> Request ----> Server
    Client <---- Response <--- Server
 
@@ -153,7 +153,7 @@ message ChatMessage {
    Client <---- Response 1 <-------- Server
    Client ----> Request 2 ---------> Server
    Client <---- Response 2 <-------- Server
-   (her iki teref mustaqil gondere biler)
+   (hər iki tərəf müstəqil göndərə bilər)
 ```
 
 ### Protobuf Binary Encoding
@@ -165,10 +165,8 @@ JSON (91 bytes):
 Protobuf (~45 bytes):
 08 2A 12 06 4F 72 6B 68 61 6E 1A 13 6F 72 6B...
 
-~50% daha kicik, ~5-10x daha suretli serialize/deserialize
+~50% daha kiçik, ~5-10x daha sürətli serialize/deserialize
 ```
-
-## Əsas Konseptlər (Key Concepts)
 
 ### gRPC vs REST
 
@@ -181,10 +179,10 @@ Protobuf (~45 bytes):
 | Schema            | .proto file       | OpenAPI (optional)|
 | Streaming         | Bidirectional     | Limited           |
 | Code generation   | Automatic         | Manual/tools      |
-| Browser support   | gRPC-Web lazimdir | Native            |
-| Performance       | Yuksek            | Orta              |
-| Human readable    | Xeyr              | Beli              |
-| Tooling           | Mehdud            | Bol (Postman etc) |
+| Browser support   | gRPC-Web lazımdır | Native            |
+| Performance       | Yüksək            | Orta              |
+| Human readable    | Xeyr              | Bəli              |
+| Tooling           | Məhdud            | Bol (Postman etc) |
 | Use case          | Microservices     | Public APIs       |
 +-------------------+-------------------+-------------------+
 ```
@@ -192,19 +190,19 @@ Protobuf (~45 bytes):
 ### gRPC Status Codes
 
 ```
-OK                  = 0   (Ugurlu)
-CANCELLED           = 1   (Client legv etdi)
-UNKNOWN             = 2   (Namelum xeta)
-INVALID_ARGUMENT    = 3   (Yanlis argument)
+OK                  = 0   (Uğurlu)
+CANCELLED           = 1   (Client ləğv etdi)
+UNKNOWN             = 2   (Naməlum xəta)
+INVALID_ARGUMENT    = 3   (Yanlış argument)
 DEADLINE_EXCEEDED   = 4   (Timeout)
-NOT_FOUND           = 5   (Tapilmadi)
-ALREADY_EXISTS      = 6   (Artiq movcuddur)
-PERMISSION_DENIED   = 7   (Icaze yoxdur)
-UNAUTHENTICATED     = 16  (Authentication lazimdir)
+NOT_FOUND           = 5   (Tapılmadı)
+ALREADY_EXISTS      = 6   (Artıq mövcuddur)
+PERMISSION_DENIED   = 7   (İcazə yoxdur)
+UNAUTHENTICATED     = 16  (Authentication lazımdır)
 RESOURCE_EXHAUSTED  = 8   (Rate limit)
-UNIMPLEMENTED       = 12  (Method implement olunmayib)
-INTERNAL            = 13   (Server xetasi)
-UNAVAILABLE         = 14   (Service muvqqeti elcatmaz)
+UNIMPLEMENTED       = 12  (Method implement olunmayıb)
+INTERNAL            = 13  (Server xətası)
+UNAVAILABLE         = 14  (Service müvəqqəti əlçatmaz)
 ```
 
 ### Interceptors (Middleware)
@@ -220,28 +218,62 @@ Server Interceptor:
 ### Deadlines & Timeouts
 
 ```
-Client deadline: "Bu request 5 saniyede cavab almalidır"
-Eger timeout olursa -> DEADLINE_EXCEEDED status
+Client deadline: "Bu request 5 saniyədə cavab almalıdır"
+Əgər timeout olursa -> DEADLINE_EXCEEDED status
 
 Deadline propagation (microservices chain):
   Client (5s deadline) -> Service A (4.5s remaining) -> Service B (4s remaining)
 ```
 
-## PHP/Laravel ilə İstifadə
+## Praktik Baxış
 
-### PHP gRPC Setup
+**Nə vaxt gRPC istifadə etmək lazımdır:**
+- Internal microservices kommunikasiyası (public API deyil)
+- Low-latency, yüksək throughput tələb olunan yerlər
+- Polyglot sistemlər (müxtəlif proqramlaşdırma dilləri)
+- Bidirectional streaming lazım olan hallarda
+
+**Nə vaxt REST seçmək lazımdır:**
+- Public API (browser, mobil, third-party)
+- Simple CRUD əməliyyatları
+- Tooling (Postman, Swagger) vacib olanda
+- Human-readable format lazım olanda
+
+**Trade-off-lar:**
+- gRPC browser-də birbaşa işləmir — gRPC-Web proxy (Envoy) lazımdır
+- Proto file-ların versiyalanması əlavə iş yaradır
+- Debugging JSON-dan çətindir (binary format)
+- PHP-də gRPC server üçün RoadRunner/Spiral lazımdır
+
+**Anti-pattern-lər:**
+- Public REST API-ni gRPC ilə əvəz etmək (browser uyğunluğu pozulur)
+- Field number-lərini dəyişmək (backward compatibility pozulur)
+- Streaming lazım olmayanda bidirectional streaming seçmək
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+Tipik real layihə sxemi: PHP/Laravel frontend public REST API təqdim edir, daxildə isə gRPC ilə microserviceslərə müraciət edir:
+
+```
+[Browser] --REST/JSON--> [Laravel API Gateway] --gRPC/Protobuf--> [User Service]
+                                                               --> [Order Service]
+                                                               --> [Payment Service]
+```
+
+### Kod Nümunəsi
+
+**PHP gRPC Setup:**
 
 ```bash
 # gRPC PHP extension install
 pecl install grpc
 pecl install protobuf
 
-# php.ini-ye elave edin
+# php.ini-yə əlavə edin
 # extension=grpc.so
 # extension=protobuf.so
-
-# Protobuf compiler
-# protoc ve grpc_php_plugin install edin
 
 # Proto-dan PHP code generate edin
 protoc --php_out=./generated \
@@ -250,7 +282,7 @@ protoc --php_out=./generated \
        user.proto
 ```
 
-### gRPC Client in Laravel
+**gRPC Client in Laravel:**
 
 ```php
 namespace App\Services;
@@ -272,7 +304,7 @@ class UserGrpcClient
             config('grpc.user_service_host', 'localhost:50051'),
             [
                 'credentials' => ChannelCredentials::createInsecure(),
-                // Production-da SSL istifade edin:
+                // Production-da SSL istifadə edin:
                 // 'credentials' => ChannelCredentials::createSsl(
                 //     file_get_contents('/path/to/ca.pem')
                 // ),
@@ -358,7 +390,7 @@ class UserGrpcClient
 }
 ```
 
-### Laravel Service Provider
+**Laravel Service Provider:**
 
 ```php
 namespace App\Providers;
@@ -377,10 +409,10 @@ class GrpcServiceProvider extends ServiceProvider
 }
 ```
 
-### gRPC Server with RoadRunner/Spiral
+**gRPC Server with RoadRunner/Spiral:**
 
 ```php
-// Spiral Framework ile gRPC server (PHP-de en populyar yol)
+// Spiral Framework ilə gRPC server (PHP-də ən populyar yol)
 namespace App\Grpc\Service;
 
 use App\Grpc\User\GetUserRequest;
@@ -406,7 +438,7 @@ class UserService implements UserServiceInterface
 }
 ```
 
-### REST-to-gRPC Bridge in Laravel
+**REST-to-gRPC Bridge in Laravel:**
 
 ```php
 namespace App\Http\Controllers\Api;
@@ -422,7 +454,7 @@ class UserBridgeController extends Controller
 
     /**
      * REST API -> gRPC microservice
-     * Public REST API saxlayiriq, amma backend gRPC istifade edir
+     * Public REST API saxlayırıq, amma backend gRPC istifadə edir
      */
     public function show(int $id): JsonResponse
     {
@@ -451,38 +483,24 @@ class UserBridgeController extends Controller
 }
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-### 1. gRPC nedir ve ne vaxt istifade olunur?
-**Cavab:** gRPC Google-un high-performance RPC framework-udur. HTTP/2 + Protobuf istifade edir. Microservices arasi kommunikasiya, low-latency lazim olan yerler, polyglot sistemler (muxtelif diller arasi) ucun idealdir. Public API ucun REST, internal API ucun gRPC istifade olunur.
+1. **Proto file yaradın:** `user.proto` faylı yazın, `UserService` servisini `GetUser`, `ListUsers`, `CreateUser` methodları ilə təyin edin. Uyğun message tiplərini əlavə edin.
 
-### 2. Protocol Buffers nedir ve JSON-dan nece ferqlenir?
-**Cavab:** Protobuf Google-un binary serialization formatıdır. JSON-dan ferqi: schema required (.proto file), binary format (daha kicik, daha suretli), strong typing, backward/forward compatibility. Dezavantajı: human-readable deyil.
+2. **PHP client implement edin:** `UserGrpcClient` class-ı yazın, `GrpcServiceProvider` ilə Laravel-ə register edin. `getUser()` methodunu test edin.
 
-### 3. gRPC-nin 4 RPC tipi hansilardir?
-**Cavab:** 1) **Unary** - tek request/response (standart), 2) **Server Streaming** - tek request, coxlu response (meselen, live updates), 3) **Client Streaming** - coxlu request, tek response (meselen, file upload), 4) **Bidirectional Streaming** - her iki terefden coxlu mesaj (meselen, chat).
+3. **REST-to-gRPC bridge:** Laravel controller yazın — gelen REST request-i qəbul etsin, gRPC client ilə microservice-ə sorğu göndərsin, HTTP status-u gRPC status-dan düzgün map etsin.
 
-### 4. gRPC-de deadline/timeout nece isleyir?
-**Cavab:** Client request gonderende maximum gozleme muddeti teyin edir. Bu deadline microservices chain boyunca propagate olur ve her service qalan vakti bilir. Timeout olunca DEADLINE_EXCEEDED status qaytarilir. Bu cascading failure-in qarsisini alir.
+4. **Error handling əlavə edin:** `DEADLINE_EXCEEDED`, `NOT_FOUND`, `UNAVAILABLE` status kodlarını ayrı-ayrı exception-lara çevirin. Retry logic əlavə edin (`UNAVAILABLE` üçün 3 cəhd).
 
-### 5. gRPC niye browser-de birbaşa islemir?
-**Cavab:** Browserler HTTP/2 frame-lerine low-level erisim vermir ve trailer-leri duzgun desteklemirlir. gRPC-Web proxy (Envoy) istifade olunur - browser HTTP/1.1 ile proxy-ye, proxy gRPC ile backend-e danisir.
+5. **Interceptor yazın:** Server tərəfdə authentication interceptor implement edin — `Authorization` metadata-sından JWT token oxusun, verify etsin.
 
-### 6. gRPC vs REST - hansi daha yaxsidir?
-**Cavab:** Asilidir: gRPC internal microservices, low-latency, streaming ucun. REST public APIs, browser compatibility, simplicity ucun. Cox vaxt ikisi birlikde istifade olunur - public REST API + internal gRPC.
+6. **End-to-end test:** PHP-də gRPC server (RoadRunner ilə) qaldırın, Laravel client ilə `CreateUser` → `GetUser` → `ListUsers` axışını test edin.
 
-### 7. Protobuf-da backward compatibility nece saxlanir?
-**Cavab:** Field number-leri deyismeyin, kohne field-leri silmeyin (reserved edin), yeni field-ler optional olmalidir, enum-da default 0 value olmalidir. Bu kohne client-lerin yeni server ile islemesini temin edir.
+## Əlaqəli Mövzular
 
-## Best Practices
-
-1. **Proto file-lari version control-da saxlayin** - Ayri repo ve ya monorepo
-2. **Field numberlari deyismeyin** - Backward compatibility ucun
-3. **Deadline/timeout hemise teyin edin** - Cascading failure qarsisini alin
-4. **Health checking implement edin** - gRPC Health Checking Protocol
-5. **Interceptors istifade edin** - Logging, auth, metrics, retry
-6. **Load balancing** - Client-side ve ya proxy-based (Envoy)
-7. **TLS hemise istifade edin** - Production-da mutual TLS
-8. **Error details qaytarin** - Status code + error message + details
-9. **Streaming lazim olmayanda Unary istifade edin** - Basitlik ucun
-10. **gRPC-Web proxy** - Browser client-ler ucun Envoy proxy qurun
+- [REST API](08-rest-api.md)
+- [GraphQL](09-graphql.md)
+- [Protocol Buffers](39-protocol-buffers.md)
+- [WebSocket](11-websocket.md)
+- [API Gateway](21-api-gateway.md)

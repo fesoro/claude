@@ -1,20 +1,24 @@
-# JWT (JSON Web Token)
+# JWT - JSON Web Token (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
-JWT (RFC 7519) iki teref arasinda melumat oturen compact, URL-safe token formatıdır. Authentication ve information exchange ucun istifade olunur. Token 3 hisseden ibaretdir: Header, Payload, Signature. Server session saxlamadan istifadecini taniyi biler (stateless authentication).
+JWT (RFC 7519) iki tərəf arasında məlumat ötürən compact, URL-safe token formatıdır. Authentication və information exchange üçün istifadə olunur. Token 3 hissədən ibarətdir: Header, Payload, Signature. Server session saxlamadan istifadəçini tanıya bilər (stateless authentication).
 
 ```
 Sessiya-based auth:
   Client --> Cookie: session_id=abc123 --> Server --> Session Store-dan user tap
-  (Server state saxlayir - scaling cetin)
+  (Server state saxlayır - scaling çətin)
 
 JWT-based auth:
   Client --> Authorization: Bearer eyJhbG... --> Server --> Token-i verify et
   (Server state saxlamır - asan scale olunur)
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
+
+Microservices arxitekturasında hər servis ayrı-ayrılıqda token-i verify edə bilir — mərkəzi session store-a ehtiyac yoxdur. Mobile tətbiqlər, SPA-lar, API-lar üçün stateless autentifikasiya standartdır. Payload-da istənilən məlumat (role, permissions) daşına bilər ki, əlavə DB sorğusu olmadan authorization qərarı verilsin.
+
+## Əsas Anlayışlar
 
 ### JWT Structure
 
@@ -56,7 +60,7 @@ Client                          Server
   |-- POST /login -------------->|
   |   {email, password}          |
   |                               |  Credentials yoxla
-  |                               |  JWT yarat ve imzala
+  |                               |  JWT yarat və imzala
   |<-- {access_token, -----------|
   |     refresh_token}           |
   |                               |
@@ -65,7 +69,7 @@ Client                          Server
   |   Bearer eyJhbG...           |
   |                               |  Signature verify et
   |                               |  Expiration yoxla
-  |                               |  Claims-den user tap
+  |                               |  Claims-dən user tap
   |<-- 200 OK {users...} --------|
   |                               |
   |-- GET /api/users ----------->|
@@ -85,80 +89,120 @@ Symmetric (shared secret):
   HS256 - HMAC with SHA-256
   HS384 - HMAC with SHA-384
   HS512 - HMAC with SHA-512
-  (eyni key sign ve verify ucun - microservices ucun uygun deyil)
+  (eyni key sign və verify üçün - microservices üçün uyğun deyil)
 
 Asymmetric (public/private key pair):
   RS256 - RSA with SHA-256
   RS384 - RSA with SHA-384
   RS512 - RSA with SHA-512
   ES256 - ECDSA with SHA-256
-  (Private key sign edir, public key verify edir - microservices ucun ideal)
+  (Private key sign edir, public key verify edir - microservices üçün ideal)
 
-  Auth Server: private key ile sign edir
-  API Server 1: public key ile verify edir
-  API Server 2: public key ile verify edir
-  (API server-ler token yarada bilmir, yalniz yoxlaya bilir)
+  Auth Server: private key ilə sign edir
+  API Server 1: public key ilə verify edir
+  API Server 2: public key ilə verify edir
+  (API server-lər token yarada bilmir, yalnız yoxlaya bilir)
 ```
-
-## Əsas Konseptlər (Key Concepts)
 
 ### Registered Claims (Standard)
 
 ```
-iss (Issuer)      - Token-i kim yaratdi
-sub (Subject)     - Token kimin ucundur (user ID)
-aud (Audience)    - Token kimin ucun nezerde tutulub
-exp (Expiration)  - Token ne vaxt bitir (Unix timestamp)
-nbf (Not Before)  - Token ne vaxtdan kecerlidir
-iat (Issued At)   - Token ne vaxt yaradilib
+iss (Issuer)      - Token-i kim yaratdı
+sub (Subject)     - Token kimin üçündür (user ID)
+aud (Audience)    - Token kimin üçün nəzərdə tutulub
+exp (Expiration)  - Token nə vaxt bitir (Unix timestamp)
+nbf (Not Before)  - Token nə vaxtdan keçərlidir
+iat (Issued At)   - Token nə vaxt yaradıldı
 jti (JWT ID)      - Token-in unique ID-si (replay protection)
 ```
 
 ### Token Refresh Strategy
 
 ```
-Access Token:  Qisa omurlu (15 deq)
-Refresh Token: Uzun omurlu (7 gun), DB-de saxlanir
+Access Token:  Qısa ömürlü (15 dəq)
+Refresh Token: Uzun ömürlü (7 gün), DB-də saxlanır
 
 Login:
-  -> access_token (15 deq) + refresh_token (7 gun)
+  -> access_token (15 dəq) + refresh_token (7 gün)
 
 API Request:
-  -> access_token ile
-  -> 401 alinda -> refresh_token ile yeni access_token al
+  -> access_token ilə
+  -> 401 alındı -> refresh_token ilə yeni access_token al
 
 Refresh:
-  -> Kohne refresh_token gonderin
-  -> Yeni access_token + yeni refresh_token alin
-  -> Kohne refresh_token artiq kecersizdir (rotation)
+  -> Köhnə refresh_token göndərin
+  -> Yeni access_token + yeni refresh_token alın
+  -> Köhnə refresh_token artıq keçərsizdir (rotation)
 ```
 
 ### Token Blacklisting / Revocation
 
 ```
-Problem: JWT stateless-dir, logout olanda nece invalidate ederik?
+Problem: JWT stateless-dir, logout olanda necə invalidate edirik?
 
 1. Token Blacklist (Redis/DB):
-   Logout -> token-in jti-sini blacklist-e elave et
-   Her request -> blacklist-de var mi yoxla
-   TTL = token-in qalan omru
+   Logout -> token-in jti-sini blacklist-ə əlavə et
+   Hər request -> blacklist-də var mı yoxla
+   TTL = token-in qalan ömrü
 
 2. Short-lived tokens + Refresh token revocation:
-   Access token 15 deq yasar - logout-dan sonra max 15 deq isleyir
-   Refresh token DB-den silir - yeni access token ala bilmez
+   Access token 15 dəq yaşar - logout-dan sonra max 15 dəq işləyir
+   Refresh token DB-dən silir - yeni access token ala bilməz
 
 3. Token version (user-based):
-   User model-de token_version field
-   JWT-de version claim elave et
-   Logout -> token_version++ -> butun kohne token-ler invalid
+   User model-də token_version field
+   JWT-də version claim əlavə et
+   Logout -> token_version++ -> bütün köhnə token-lər invalid
 ```
 
-## PHP/Laravel ilə İstifadə
+## Praktik Baxış
 
-### Laravel Sanctum (Recommended for SPA/Mobile)
+**Nə vaxt JWT istifadə etmək lazımdır:**
+- Stateless API autentifikasiyası (mobile, SPA, third-party)
+- Microservices arası token paylaşımı (RS256 ilə)
+- Short-lived authorization token-ləri
+
+**Nə vaxt session-based auth seçmək lazımdır:**
+- Ənənəvi web tətbiqləri (server-side rendering)
+- Token revocation tez-tez lazım olanda
+- Payload boyutu bandwidth üçün problem yaradanda
+
+**Trade-off-lar:**
+- Token ölçüsü böyükdür — hər request-ə əlavə olunur
+- Revocation çətindir — stateless olduğundan token expire olana qədər işləyir
+- Payload dəyişə bilməz — role dəyişsə yeni token lazımdır
+
+**Anti-pattern-lər:**
+- Sensitive data (şifrə, kredit kartı) payload-a yazmaq — base64 encoded-dir, encrypted deyil
+- Token-i localStorage-də saxlamaq — XSS-ə həssasdır
+- `exp` claim-siz token yaratmaq — token heç vaxt bitmir
+- `alg: "none"` attack-dən qorunmamaq — algorithm-i explicit specify edin
+- Microservices-də HS256 istifadə etmək — bütün servislər secret key-i bilir
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+JWT token anatomy — decoded payload:
+
+```
+Header:  { "alg": "RS256", "typ": "JWT" }
+Payload: { "sub": "42", "role": "admin", "iat": 1714000000, "exp": 1714000900 }
+Sig:     RSA(private_key, header.payload)
+
+Server verify addımları:
+1. Signature-ı public key ilə yoxla
+2. exp-ı cari vaxtla müqayisə et
+3. iss, aud claim-lərini yoxla
+4. jti-ni blacklist-dən yoxla (əgər blacklist varsa)
+```
+
+### Kod Nümunəsi
+
+**Laravel Sanctum (Recommended for SPA/Mobile):**
 
 ```php
-// Sanctum - Laravel-in oz token sistemi (JWT deyil, amma oxsar istifade)
+// Sanctum - Laravel-in öz token sistemi (JWT deyil, amma oxşar istifadə)
 composer require laravel/sanctum
 php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
 php artisan migrate
@@ -223,7 +267,7 @@ class AuthController extends Controller
 
     public function logoutAll(Request $request): JsonResponse
     {
-        // Butun token-leri sil (butun cihazlardan cix)
+        // Bütün token-ləri sil (bütün cihazlardan çıx)
         $request->user()->tokens()->delete();
 
         return response()->json(['message' => 'Logged out from all devices']);
@@ -231,7 +275,7 @@ class AuthController extends Controller
 }
 ```
 
-### JWT Package (tymon/jwt-auth)
+**JWT Package (tymon/jwt-auth):**
 
 ```bash
 composer require tymon/jwt-auth
@@ -320,7 +364,7 @@ class JwtAuthController extends Controller
 }
 ```
 
-### Token Blacklisting with Redis
+**Token Blacklisting with Redis:**
 
 ```php
 namespace App\Services;
@@ -330,7 +374,7 @@ use Illuminate\Support\Facades\Redis;
 class TokenBlacklist
 {
     /**
-     * Token-i blacklist-e elave et
+     * Token-i blacklist-ə əlavə et
      */
     public function add(string $jti, int $expiresIn): void
     {
@@ -338,7 +382,7 @@ class TokenBlacklist
     }
 
     /**
-     * Token blacklist-de var mi?
+     * Token blacklist-də var mı?
      */
     public function isBlacklisted(string $jti): bool
     {
@@ -372,7 +416,7 @@ class CheckTokenBlacklist
 }
 ```
 
-### Routes
+**Routes:**
 
 ```php
 // routes/api.php
@@ -388,41 +432,24 @@ Route::prefix('auth')->group(function () {
 });
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-### 1. JWT nedir ve nece isleyir?
-**Cavab:** JWT 3 hisseden (Header.Payload.Signature) ibaret, base64url encoded token-dir. Server token-i secret key ile imzalayir. Her request-de client token-i gonderir, server signature-i verify edir. Stateless-dir - server session saxlamir.
+1. **JWT anatomy:** jwt.io saytında öz token-inizi decode edin. Header, payload, signature-ı müəyyən edin. `exp` claim-ini Unix timestamp-dən real vaxta çevirin.
 
-### 2. JWT ve session-based auth arasinda ferq nedir?
-**Cavab:** Session-based-de server session_id-ni DB/Redis-de saxlayir (stateful). JWT-de butun melumat token icindedir (stateless). JWT daha asan scale olunur (shared session store lazim deyil), amma revocation cetindir.
+2. **Sanctum token sistemi:** Login/logout/logoutAll endpoint-lərini implement edin. Abilities (`read`, `write`) ilə token yaradın, middleware-də `tokenCan()` ilə yoxlayın.
 
-### 3. JWT-ni nece invalidate edirsiniz (logout)?
-**Cavab:** 3 usul: 1) Token blacklist (Redis-de jti saxla), 2) Qisa omurlu access token + refresh token revocation (DB-den sil), 3) User-de token version saxla, version deyisende butun token-ler invalid olur.
+3. **JWT refresh flow:** `access_token` (15 dəq) + `refresh_token` (7 gün) məntiqi implement edin. Refresh zamanı köhnə refresh token-i ləğv edib yenisini verin.
 
-### 4. Access token ve refresh token arasinda ferq nedir?
-**Cavab:** Access token qisa omurlu (15 deq), API-ya erisim ucun. Refresh token uzun omurlu (7 gun), yeni access token almaq ucun. Refresh token DB-de saxlanir ve revoke oluna biler. Access token stateless-dir.
+4. **Redis blacklist:** `TokenBlacklist` service-ini yazın. Logout zamanı `jti`-ni Redis-ə əlavə edin (TTL = token-in qalan ömrü). `CheckTokenBlacklist` middleware-ini bütün protected route-lara tətbiq edin.
 
-### 5. HS256 ve RS256 arasinda ferq nedir?
-**Cavab:** HS256 symmetric-dir (eyni secret key sign+verify). RS256 asymmetric-dir (private key sign, public key verify). Microservices ucun RS256 daha yaxsidir - API serverlere yalniz public key lazimdir.
+5. **RS256 keçid:** HS256-dan RS256-ya keçin. RSA key pair generasiya edin. Private key ilə sign, public key ilə verify konfiqurasiyasını qurun.
 
-### 6. JWT-de hansi melumatlari saxlamamaliyiq?
-**Cavab:** Sensitive data: shifre, kredit karti, SSN. JWT base64 encoded-dir (encrypted deyil!) - her kes payload-u decode ede biler. Yalniz non-sensitive identifiers saxlayin: user_id, role, email.
+6. **Token version pattern:** `User` modelinə `token_version` sütunu əlavə edin. JWT-yə `version` claim əlavə edin. Logout zamanı `token_version++` edin. Middleware-də version uyğunluğunu yoxlayın.
 
-### 7. JWT-nin dezavantajlari nelerdir?
-**Cavab:** Token olcusu boyukdur (cookie/session ID-den), revocation cetindir (stateless), payload deyise bilmez (yeni token lazim), token boyudu artdiqca bandwidth artir. XSS-e qarsi hessasdir (localStorage-de saxlananda).
+## Əlaqəli Mövzular
 
-### 8. JWT-ni harada saxlamamliyiq?
-**Cavab:** **httpOnly cookie** (XSS-den qorunur, CSRF ucun ayri tedbir lazim) ve ya **memory** (en tehlukesiz, amma sehife yenilenende itir). **localStorage/sessionStorage** XSS-e hessasdir - tovsiye olunmur.
-
-## Best Practices
-
-1. **Qisa omurlu access token** - 15 deqiqe ideal
-2. **httpOnly cookie** - Token-i localStorage-de saxlamayin
-3. **RS256 istifade edin** - Microservices ucun asymmetric signing
-4. **Sensitive data qoymayin** - JWT encrypted deyil, base64-dir
-5. **exp claim hemise** - Token-e expiration elave edin
-6. **Refresh token rotation** - Her istifadede yeni refresh token
-7. **Token blacklisting** - Logout ucun Redis-based blacklist
-8. **jti claim** - Replay attack-den qorunmaq ucun unique ID
-9. **aud/iss claims** - Token-in hansi service ucun oldugunu yoxlayin
-10. **Algorithm specify edin** - `alg: "none"` attack-den qorunun
+- [OAuth 2.0](14-oauth2.md)
+- [API Security](17-api-security.md)
+- [HTTPS/SSL/TLS](06-https-ssl-tls.md)
+- [REST API](08-rest-api.md)
+- [mTLS Deep Dive](35-mtls-deep-dive.md)

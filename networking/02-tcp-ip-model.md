@@ -1,8 +1,8 @@
-# TCP/IP Model
+# TCP/IP Model (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
-TCP/IP (Transmission Control Protocol / Internet Protocol) modeli Internetin esasini teskil eden 4 layerli praktiki network modeldir. 1970-ci illerde DARPA terefinden yaradilib ve bugun butun Internet bu model uzerinde isleyir. OSI modelinden ferqli olaraq, TCP/IP real implementasiyaya esaslanir.
+TCP/IP (Transmission Control Protocol / Internet Protocol) modeli İnternetin əsasını təşkil edən 4 layerli praktiki network modeldir. 1970-ci illərdə DARPA tərəfindən yaradılıb və bu gün bütün İnternet bu model üzərində işləyir. OSI modelindən fərqli olaraq, TCP/IP real implementasiyaya əsaslanır.
 
 ```
 +------------------------+
@@ -17,16 +17,21 @@ TCP/IP (Transmission Control Protocol / Internet Protocol) modeli Internetin esa
 +------------------------+
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
+
+TCP/IP modeli real dünyada işləyən modeldır — OSI isə nəzəri referansdır. Backend developer olaraq database connection-larını, Redis-i, API çağırışlarını, hər biri TCP/IP üzərindən işləyir. IP addressing, subnet-ləmə, NAT anlayışları Docker network-lərini, Kubernetes pod-ları arasındakı kommunikasiyanı başa düşmək üçün tələb olunur. Cloud infrastrukturda VPC, security group, routing konfiqurasiyası bu bilikə söykənir.
+
+## Əsas Anlayışlar
 
 ### Layer 1: Network Access Layer (Link Layer)
 
-OSI modelinin Physical + Data Link layer-lerine uygun gelir. Fiziki medium uzerinden frame-lerin oturulmesine cavabdehdir.
+OSI modelinin Physical + Data Link layer-lərinə uyğun gəlir. Fiziki medium üzərindən frame-lərin ötürülməsinə cavabdehdir.
 
 **Protokollar:** Ethernet (802.3), Wi-Fi (802.11), ARP, PPP
-**Funksiyalar:**
+
+Funksiyalar:
 - Physical addressing (MAC)
-- Frame-lerin yaradilmasi ve oturulmesi
+- Frame-lərin yaradılması və ötürülməsi
 - Error detection (CRC/FCS)
 - Media access control (CSMA/CD, CSMA/CA)
 
@@ -45,7 +50,7 @@ Type field values:
 
 ### Layer 2: Internet Layer
 
-OSI-nin Network layer-ine uygun gelir. Logical addressing ve routing.
+OSI-nin Network layer-inə uyğun gəlir. Logical addressing və routing.
 
 **Protokollar:** IPv4, IPv6, ICMP, IGMP
 
@@ -69,7 +74,7 @@ OSI-nin Network layer-ine uygun gelir. Logical addressing ve routing.
 
 #### IP Addressing (IPv4)
 
-IPv4 address 32-bit-dir, 4 oktet ile yazilir (dotted decimal):
+IPv4 address 32-bit-dir, 4 oktet ilə yazılır (dotted decimal):
 
 ```
 IP: 192.168.1.100
@@ -103,16 +108,16 @@ Loopback: 127.0.0.0  - 127.255.255.255  (127.0.0.0/8)
 
 #### Subnetting
 
-Subnetting boyuk network-u kicik subnet-lere bolmekdir.
+Subnetting böyük network-u kiçik subnet-lərə bölməkdir.
 
 ```
-Numune: 192.168.1.0/26 subnet-ini hesablayaq
+Nümunə: 192.168.1.0/26 subnet-ini hesablayaq
 
 /26 = 26 bit network, 6 bit host
 Subnet mask: 255.255.255.192 (11111111.11111111.11111111.11000000)
 
-Hostlarin sayi: 2^6 - 2 = 62 usable hosts
-Subnet-lerin sayi: 2^2 = 4 subnets (cunku Class C /24-den /26-ya 2 bit elave)
+Hostların sayı: 2^6 - 2 = 62 usable hosts
+Subnet-lərin sayı: 2^2 = 4 subnets (çünki Class C /24-dən /26-ya 2 bit əlavə)
 
 Subnet 1: 192.168.1.0/26    (hosts: .1 - .62,    broadcast: .63)
 Subnet 2: 192.168.1.64/26   (hosts: .65 - .126,  broadcast: .127)
@@ -122,7 +127,7 @@ Subnet 4: 192.168.1.192/26  (hosts: .193 - .254, broadcast: .255)
 
 #### CIDR (Classless Inter-Domain Routing)
 
-CIDR classful addressing-in yerini alir. Slash notation istifade edir:
+CIDR classful addressing-in yerini alır. Slash notation istifadə edir:
 
 ```
 CIDR Notation    Subnet Mask         Hosts
@@ -139,10 +144,10 @@ CIDR Notation    Subnet Mask         Hosts
 /32              255.255.255.255     1 (single host)
 ```
 
-**CIDR aggregation (supernetting):**
+CIDR aggregation (supernetting):
 ```
 192.168.0.0/24 + 192.168.1.0/24 + 192.168.2.0/24 + 192.168.3.0/24
-= 192.168.0.0/22 (bir route ile 4 network)
+= 192.168.0.0/22 (bir route ilə 4 network)
 ```
 
 #### IPv6
@@ -169,7 +174,7 @@ IPv6 vs IPv4:
 
 ### Layer 3: Transport Layer
 
-End-to-end communication. TCP ve UDP bu layer-dedir.
+End-to-end communication. TCP və UDP bu layer-dədir.
 
 ```
 TCP (Transmission Control Protocol):
@@ -189,7 +194,7 @@ UDP (User Datagram Protocol):
 
 ### Layer 4: Application Layer
 
-OSI-nin Session + Presentation + Application layer-lerine uygun gelir.
+OSI-nin Session + Presentation + Application layer-lərinə uyğun gəlir.
 
 ```
 +----------+------+----------+
@@ -209,9 +214,7 @@ OSI-nin Session + Presentation + Application layer-lerine uygun gelir.
 +----------+------+----------+
 ```
 
-## Əsas Konseptlər (Key Concepts)
-
-### OSI vs TCP/IP Comparison
+### OSI vs TCP/IP Müqayisəsi
 
 ```
     OSI Model              TCP/IP Model
@@ -234,7 +237,7 @@ OSI-nin Session + Presentation + Application layer-lerine uygun gelir.
 
 ### NAT (Network Address Translation)
 
-Private IP-leri public IP-ye cevirir:
+Private IP-ləri public IP-yə çevirir:
 
 ```
 Private Network              NAT Router              Internet
@@ -252,7 +255,7 @@ NAT Table:
 
 ### ICMP (Internet Control Message Protocol)
 
-Network diagnostic ucun istifade olunur:
+Network diagnostic üçün istifadə olunur:
 
 ```
 Type 0: Echo Reply (ping response)
@@ -262,7 +265,32 @@ Type 11: Time Exceeded (traceroute)
 Type 30: Traceroute
 ```
 
-## PHP/Laravel ilə İstifadə
+## Praktik Baxış
+
+**Real layihələrdə istifadəsi:**
+- Docker network-ləri `/24` subnet-lər kimi işləyir; `docker network inspect` ilə görə bilərsiniz
+- Kubernetes pod CIDR adətən `10.244.0.0/16` kimidir — hər node bir subnet alır
+- AWS VPC-də subnet-ləri doğru ölçüdə seçmək resource israfının qarşısını alır
+
+**Trade-off-lar:**
+- Böyük subnet → daha çox host, amma broadcast domain genişlənir
+- Kiçik subnet → əhatəli idarəetmə, amma genişlənmə çətindir
+- IPv6 istifadəsi əsasən cloud/CDN tərəfindədir; backend-də hələ IPv4 dominant-dır
+
+**Common mistakes:**
+- Private IP range-lərin overlap etməsi (məs., VPN + Docker hər ikisi `172.16.0.0/12` istifadə edir)
+- Subnetting zamanı broadcast adresini host kimi planlamaq (2 adres itirilir: network + broadcast)
+- NAT arxasında olan servisin real client IP-sini almağı unutmaq — `X-Forwarded-For` lazımdır
+
+**Anti-pattern:** `FILTER_FLAG_NO_PRIV_RANGE` yoxlamadan gələn IP-ə güvənmək — load balancer arxasında real IP `X-Forwarded-For`-dan gəlir.
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+Docker-də iki container-in kommunikasiyası: hər container `172.17.0.0/16` subnet-dən IP alır. NAT sayəsində host-un public IP-si ilə İnternəetə çıxırlar. `docker0` bridge — Layer 2 switch kimi davranır.
+
+### Kod Nümunəsi
 
 ```php
 // IP address operations in PHP
@@ -294,10 +322,13 @@ $host = gethostbyaddr('93.184.216.34');       // 'example.com'
 $records = dns_get_record('example.com', DNS_ALL); // All DNS records
 
 // Laravel - Getting client IP (respecting proxies)
-// In a Controller:
 $clientIp = $request->ip();
+```
 
-// Trusted proxies in Laravel (app/Http/Middleware/TrustProxies.php)
+Laravel-də trusted proxy konfiqurasiyası:
+
+```php
+// app/Http/Middleware/TrustProxies.php
 class TrustProxies extends Middleware
 {
     protected $proxies = [
@@ -313,7 +344,7 @@ class TrustProxies extends Middleware
 }
 ```
 
-### Network-related Laravel configuration
+Network-related Laravel configuration:
 
 ```php
 // config/database.php - TCP connection to database
@@ -337,39 +368,56 @@ class TrustProxies extends Middleware
 ],
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-### Q1: TCP/IP modelinin 4 layer-ini izah edin.
-**A:** 1) Network Access - fiziki oturme, framing; 2) Internet - IP addressing, routing; 3) Transport - TCP/UDP, end-to-end delivery; 4) Application - HTTP, DNS, SMTP kimi user-facing protokollar.
+**Tapşırıq 1: IP hesablamaları**
 
-### Q2: Subnetting nece isleyir? 192.168.1.0/26 nece subnet verir?
-**A:** /26 demek 26 bit network, 6 bit host. 2^6 = 64 address per subnet (62 usable). 256/64 = 4 subnet: .0, .64, .128, .192.
+Verilmiş `10.0.0.0/22` subnet üçün tapın:
+- Subnet mask
+- Neçə host tutulur?
+- İlk və son usable host IP-ləri
+- Broadcast adresi
 
-### Q3: NAT nedir ve niye lazimdir?
-**A:** NAT private IP-leri public IP-ye cevirir. IPv4-de address exhaustion problemini hell edir. Bir public IP ile bir cox private device Internet-e cixir. Hem security (internal IP-ler gizli qalir) hem de address conservation ucun istifade olunur.
+Cavab: mask=`255.255.252.0`, hosts=1022, first=`10.0.0.1`, last=`10.0.3.254`, broadcast=`10.0.3.255`
 
-### Q4: IPv4 ve IPv6 arasinda esas ferqler nelardir?
-**A:** IPv4 32-bit (4.3 milyard), IPv6 128-bit (340 undecillion). IPv6-da NAT lazim deyil, IPSec built-in, broadcast yoxdur (multicast var), header fixed 40 byte-dir.
+**Tapşırıq 2: Docker network analizi**
 
-### Q5: CIDR nedir?
-**A:** Classless Inter-Domain Routing - classful addressing (A, B, C) evezine flexible subnet masking istifade edir. /notation ile yazilir. Bu IP address space-in daha effektiv istifadesine imkan verir.
+```bash
+# Docker-in network-lərini görün
+docker network ls
 
-### Q6: Private IP range-leri hansilardir?
-**A:** 10.0.0.0/8 (Class A), 172.16.0.0/12 (Class B), 192.168.0.0/16 (Class C). Bu IP-ler Internet-de route olunmur.
+# Default bridge network-i inspect edin
+docker network inspect bridge
 
-### Q7: Iki host eyni subnet-dedir ya yox - nece bilmek olar?
-**A:** Her iki IP-ye subnet mask tetbiq et. Network address-ler eyni olsa, eyni subnet-dedir. Numune: 192.168.1.10 ve 192.168.1.200 /24 mask ile - her ikisi 192.168.1.0 network-undedir.
+# Subnet və gateway-i tapın
+# Sonra bir container içindən başqa container-ə ping vurun
+```
 
-## Best Practices
+**Tapşırıq 3: Private IP yoxlama middleware**
 
-1. **CIDR istifade edin:** Classful addressing kohnelib. CIDR ile IP space-i effektiv istifade edin.
+Laravel-də gələn request-in IP-sinin private range-dən olub-olmadığını yoxlayan middleware yazın. Private IP-lər üçün 403 qaytarın (internal-only API endpoint).
 
-2. **Private IP-ler secerken planlayin:** Boyuk network ucun 10.0.0.0/8, kicik ucun 192.168.0.0/16. Overlap olmamasi ucun diqqetli olun (VPN, peering).
+```php
+class AllowOnlyPublicIps
+{
+    public function handle(Request $request, Closure $next)
+    {
+        $ip = $request->ip();
 
-3. **IPv6 transition planlayin:** Dual-stack (IPv4+IPv6) istifade edin. Yeni servislerde IPv6 support elave edin.
+        if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+            abort(403, 'Private IP not allowed');
+        }
 
-4. **Subnet sizing:** Lazim olandan biraz boyuk subnet secin (genislenme ucun). Amma cox boyuk subnet broadcast domain-i boyudur.
+        return $next($request);
+    }
+}
+```
 
-5. **VLSM (Variable Length Subnet Masking):** Ferqli subnet-ler ucun ferqli mask istifade edin. 50 host lazim olan subnet ucun /26, 10 host ucun /28 istifade edin.
+## Əlaqəli Mövzular
 
-6. **Documentation:** IP allocation-lari mutleq dokumentasiya edin. IPAM (IP Address Management) tool-larindan istifade edin.
+- [OSI Model](01-osi-model.md)
+- [TCP](03-tcp.md)
+- [UDP](04-udp.md)
+- [DNS](07-dns.md)
+- [IP Addressing](41-ip-addressing.md)
+- [Network Troubleshooting](30-network-troubleshooting.md)

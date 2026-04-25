@@ -1,18 +1,22 @@
-# TCP (Transmission Control Protocol)
+# TCP - Transmission Control Protocol (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
-TCP (Transmission Control Protocol) Transport Layer-de isleyen connection-oriented, reliable protokoldur. Data-nin tam, sirali ve seyhsiz catdirilmasini temin edir. Internet-deki trafikin boyuk hissesi (HTTP, HTTPS, FTP, SMTP, SSH) TCP uzerinde isleyir.
+TCP (Transmission Control Protocol) Transport Layer-də işləyən connection-oriented, reliable protokoldur. Data-nın tam, sıralı və xətasız çatdırılmasını təmin edir. İnternetdəki trafikin böyük hissəsi (HTTP, HTTPS, FTP, SMTP, SSH) TCP üzərində işləyir.
 
-**Esas xususiyyetler:**
-- Connection-oriented (elaqe qurulmalidir)
-- Reliable delivery (temin olunmus catdirilma)
-- Ordered (sirali catdirilma)
-- Flow control (axin kontrolu)
-- Congestion control (sixisma kontrolu)
-- Full-duplex (iki istiqametli eyni anda)
+Əsas xüsusiyyətlər:
+- Connection-oriented (əlaqə qurulmalıdır)
+- Reliable delivery (təmin olunmuş çatdırılma)
+- Ordered (sıralı çatdırılma)
+- Flow control (axın kontrolu)
+- Congestion control (sıxışma kontrolu)
+- Full-duplex (iki istiqamətli eyni anda)
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
+
+Hər database connection, Redis sorğusu, HTTP API çağırışı TCP üzərindən gedir. Connection pooling-in niyə lazım olduğunu, timeout-ların nə üçün konfiqurasiya edildiyini, "connection reset by peer" kimi xətaların niyə baş verdiyini başa düşmək üçün TCP-nin necə işlədiyini bilmək lazımdır. High-load sistemlərdə TIME_WAIT state, CLOSE_WAIT yığılması, ya da backlog overflow kimi production problemləri TCP anlayışı olmadan həll edilmir.
+
+## Əsas Anlayışlar
 
 ### TCP Header (20-60 bytes)
 
@@ -36,12 +40,12 @@ TCP (Transmission Control Protocol) Transport Layer-de isleyen connection-orient
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-**Key flags:**
-- **SYN:** Connection baslatma
+Key flags:
+- **SYN:** Connection başlatma
 - **ACK:** Acknowledgment
-- **FIN:** Connection bitirme
+- **FIN:** Connection bitirmə
 - **RST:** Connection reset
-- **PSH:** Data-ni derhall application-a otur
+- **PSH:** Data-nı dərhal application-a ötür
 - **URG:** Urgent data var
 
 ### Three-Way Handshake (Connection Establishment)
@@ -50,26 +54,26 @@ TCP (Transmission Control Protocol) Transport Layer-de isleyen connection-orient
     Client                    Server
       |                         |
       |    SYN (seq=100)        |
-      |------------------------>|   1. Client SYN gonderir
+      |------------------------>|   1. Client SYN göndərir
       |                         |
       |  SYN-ACK (seq=300,      |
       |          ack=101)       |
-      |<------------------------|   2. Server SYN+ACK gonderir
+      |<------------------------|   2. Server SYN+ACK göndərir
       |                         |
       |    ACK (seq=101,        |
       |        ack=301)         |
-      |------------------------>|   3. Client ACK gonderir
+      |------------------------>|   3. Client ACK göndərir
       |                         |
       |  CONNECTION ESTABLISHED |
       |<========================>|
 ```
 
-**Addimlar:**
-1. **SYN:** Client random sequence number (ISN=100) ile SYN gonderir
-2. **SYN-ACK:** Server oz ISN (300) + client-in seq+1 (ack=101) ile cavab verir
-3. **ACK:** Client server-in seq+1 (ack=301) ile tesdiqleyir
+Addımlar:
+1. **SYN:** Client random sequence number (ISN=100) ilə SYN göndərir
+2. **SYN-ACK:** Server öz ISN (300) + client-in seq+1 (ack=101) ilə cavab verir
+3. **ACK:** Client server-in seq+1 (ack=301) ilə təsdiqləyir
 
-**Niye 3-way? 2-way olmaz?** Cunki her iki teref oz sequence number-ini gondermeli ve terefin onu qebul etdiyini tesdiqlemalidir. 2-way-de server-in SYN-inin qebul edildiyi tesdiqlenmir.
+Niyə 3-way, 2-way olmaz? Çünki hər iki tərəf öz sequence number-ini göndərməli və tərəfin onu qəbul etdiyini təsdiqləməlidir. 2-way-də server-in SYN-inin qəbul edildiyi təsdiqlənmir.
 
 ### Connection Termination (Four-Way Handshake)
 
@@ -77,24 +81,24 @@ TCP (Transmission Control Protocol) Transport Layer-de isleyen connection-orient
     Client                    Server
       |                         |
       |    FIN (seq=500)        |
-      |------------------------>|   1. Client FIN gonderir
+      |------------------------>|   1. Client FIN göndərir
       |                         |
       |    ACK (ack=501)        |
-      |<------------------------|   2. Server ACK gonderir
+      |<------------------------|   2. Server ACK göndərir
       |                         |
-      |                         |   (Server remaining data gondere biler)
+      |                         |   (Server remaining data göndərə bilər)
       |                         |
       |    FIN (seq=700)        |
-      |<------------------------|   3. Server FIN gonderir
+      |<------------------------|   3. Server FIN göndərir
       |                         |
       |    ACK (ack=701)        |
-      |------------------------>|   4. Client ACK gonderir
+      |------------------------>|   4. Client ACK göndərir
       |                         |
       |   (TIME_WAIT 2*MSL)     |
       |                         |
 ```
 
-**Niye 4-way?** Cunki connection half-close ola biler. Server ACK gonderdikden sonra hele data gondermesi ola biler, sonra oz FIN-ini gonderir.
+Niyə 4-way? Çünki connection half-close ola bilər. Server ACK göndərdikdən sonra hələ data göndərməsi ola bilər, sonra öz FIN-ini göndərir.
 
 ### TCP States
 
@@ -141,19 +145,19 @@ TCP (Transmission Control Protocol) Transport Layer-de isleyen connection-orient
                CLOSE_WAIT --> LAST_ACK ----------+
 ```
 
-**Muhum state-ler:**
+Mühüm state-lər:
 - **ESTABLISHED:** Data transfer aktiv
-- **TIME_WAIT:** Client FIN gonderdikden sonra 2*MSL (Maximum Segment Lifetime, typically 60s) gozleyir. Bu, gec gelen paketlerin duzgun islenilmesini temin edir.
-- **CLOSE_WAIT:** Server FIN qebul edib, amma hele oz FIN-ini gondermeyi. CLOSE_WAIT-in cox olmasi application-da bug gosterir (socket duzgun close olunmur).
+- **TIME_WAIT:** Client FIN göndərdikdən sonra 2*MSL (adətən 60s) gözləyir. Bu, gec gələn paketlərin düzgün işlənilməsini təmin edir.
+- **CLOSE_WAIT:** Server FIN qəbul edib, amma hələ öz FIN-ini göndərməyib. CLOSE_WAIT-in çox olması application-da bug göstərir (socket düzgün close olunmur).
 
 ### Reliable Delivery
 
-TCP reliable delivery ucun bir nece mexanizm istifade edir:
+TCP reliable delivery üçün bir neçə mexanizm istifadə edir:
 
-**1. Sequence Numbers ve Acknowledgments:**
+**1. Sequence Numbers və Acknowledgments:**
 ```
 Client sends: [Seq=1, 100 bytes data]
-Server ACKs:  [Ack=101]  (men 101-e qeder aldim, novbetini gonder)
+Server ACKs:  [Ack=101]  (101-ə qədər aldım, növbətini göndər)
 
 Client sends: [Seq=101, 200 bytes data]
 Server ACKs:  [Ack=301]
@@ -167,11 +171,11 @@ Client: [Seq=1, data] ----> Server (retransmit)
 Server: [Ack=101] -------> Client
 ```
 
-**3. Duplicate Detection:** Sequence number ile duplicate paketler askar olunur ve atilir.
+**3. Duplicate Detection:** Sequence number ilə duplicate paketlər aşkar olunur və atılır.
 
 ### Flow Control (Sliding Window)
 
-Receiver oz buffer capacity-sini Window Size field ile bildirir:
+Receiver öz buffer capacity-sini Window Size field ilə bildirir:
 
 ```
 Receiver buffer: 4KB
@@ -184,41 +188,31 @@ Client                              Server
   |  [Seq=3073, 1KB] --->          | Window=3KB
   |  [Seq=4097, 1KB] --->          | Window=2KB
   
-Window=0 olsa, sender dayanir (Zero Window)
-Server buffer bosaldiqda Window Update gonderir
-```
-
-**Sliding Window mexanizmi:**
-```
-Bytes: 1  2  3  4  5  6  7  8  9  10 11 12
-       [sent+acked][sent,waiting][can send][cannot send]
-       ^^^^^^^^^^^^             ^^^^^^^^^^^^
-       |                        |
-       Window slides right      Window size
-       as ACKs arrive           determined by receiver
+Window=0 olsa, sender dayanır (Zero Window)
+Server buffer boşaldıqda Window Update göndərir
 ```
 
 ### Congestion Control
 
-Network-de sixisma olmamasi ucun:
+Network-də sıxışma olmaması üçün:
 
 **1. Slow Start:**
 ```
-cwnd (congestion window) 1 MSS-den baslar, her ACK-da 2x artir:
+cwnd (congestion window) 1 MSS-dən başlar, hər ACK-da 2x artır:
 Round 1: cwnd = 1 MSS  (1 segment)
 Round 2: cwnd = 2 MSS  (2 segments)
 Round 3: cwnd = 4 MSS  (4 segments)
 Round 4: cwnd = 8 MSS  (8 segments)
-...ssthresh-e catanda Congestion Avoidance-a kecir
+...ssthresh-ə çatanda Congestion Avoidance-a keçir
 ```
 
 **2. Congestion Avoidance:**
 ```
-cwnd her RTT-de 1 MSS artir (linear growth)
+cwnd hər RTT-də 1 MSS artır (linear growth)
 ```
 
 **3. Fast Retransmit:**
-3 duplicate ACK alinanda timeout gozlemeden retransmit:
+3 duplicate ACK alınanda timeout gözləmədən retransmit:
 ```
 Client sends: Seq 1, 2, 3, 4, 5
 Server receives: 1, 2, (3 lost), 4, 5
@@ -227,15 +221,13 @@ Client: Fast retransmit Seq 3
 ```
 
 **4. Fast Recovery:**
-Packet loss oldugda cwnd yarimcaya endirilir (slow start-a qayitmaq evezine).
+Packet loss olduqda cwnd yarıya endirilir (slow start-a qayıtmaq əvəzinə).
 
 ```
-Tahoe (kohne):  Loss -> cwnd=1, slow start
+Tahoe (köhnə):  Loss -> cwnd=1, slow start
 Reno:           Loss -> cwnd=cwnd/2, congestion avoidance
-CUBIC (modern): Loss -> cwnd * beta, cubic function ile artirir
+CUBIC (modern): Loss -> cwnd * beta, cubic function ilə artırır
 ```
-
-## Əsas Konseptlər (Key Concepts)
 
 ### MSS vs MTU
 
@@ -249,37 +241,52 @@ Packet structure:
 
 ### TCP Keep-Alive
 
-Idle connection-larin canli olub-olmadigini yoxlamaq ucun:
+Idle connection-ların canlı olub-olmadığını yoxlamaq üçün:
 ```
 Default settings (Linux):
-  tcp_keepalive_time = 7200s  (2 saat sonra basla)
-  tcp_keepalive_intvl = 75s   (her 75 saniye)
-  tcp_keepalive_probes = 9    (9 cehd)
+  tcp_keepalive_time = 7200s  (2 saat sonra başla)
+  tcp_keepalive_intvl = 75s   (hər 75 saniyə)
+  tcp_keepalive_probes = 9    (9 cəhd)
 ```
 
 ### Nagle's Algorithm
 
-Kicik paketlerin gondermesini optimallasdirir:
+Kiçik paketlərin göndərməsini optimallaşdırır:
 ```
-Nagle: Kicik data-ni buffer et, boyuk segment yarananda ve ya ACK geldikde gonder.
-Interaktiv application-lar ucun problem yarada biler (latency artir).
+Nagle: Kiçik data-nı buffer et, böyük segment yarananda və ya ACK gəldikdə göndər.
+İnteraktiv application-lar üçün problem yarada bilər (latency artır).
 Disable: TCP_NODELAY socket option
 ```
 
-### TCP vs Performance
+## Praktik Baxış
 
-```
-Factors affecting TCP performance:
-1. RTT (Round-Trip Time) - 3-way handshake zamani 1.5 RTT cost
-2. Bandwidth-delay product = bandwidth * RTT
-3. Window size - receiver buffer size limits throughput
-4. Congestion - slow start causes initial slowness
-5. Head-of-line blocking - bir packet iterse ardinca gelenler gozleyir
-```
+**Real layihələrdə istifadəsi:**
+- Database connection pool-u əslində hazır TCP connection-ların pool-udur; yeni connection açmaq 3-way handshake dəyərinə başa gəlir
+- Load balancer-lər TCP connection-ı terminate edib yeni bir connection açır (L4 LB) ya da HTTP-ni parse edir (L7 LB)
+- Nginx `keepalive` direktivi upstream TCP connection-larını yenidən istifadə edir
 
-## PHP/Laravel ilə İstifadə
+**Trade-off-lar:**
+- TCP reliable-dır amma latency ödəyir — real-time apps (gaming, video) UDP seçir
+- 3-way handshake hər yeni connection-a 1.5 RTT əlavə edir — buna görə connection pooling vacibdir
+- Head-of-line blocking: bir paket itərsə ardınca gələn paketlər gözləyir (HTTP/2 bunu TCP level-də həll edə bilmir, HTTP/3 QUIC ilə həll edir)
 
-### PHP Socket Programming
+**Common mistakes:**
+- `SO_REUSEADDR` olmadan server restart edəndə "Address already in use" xətası — TIME_WAIT state port-u tutur
+- CLOSE_WAIT-in çox olması — application socket-i close etmir, file descriptor leak
+- Çox uzun timeout — yavaş client bütün worker-ləri blok edir
+- Connection pool minimum size-ı sıfır — hər spike-da handshake delay
+
+**Anti-pattern:** `PDO::ATTR_PERSISTENT => true` lazım olmayan yerlərdə — persistent connection-lar köhnə state saxlaya bilər, transaction-lar açıq qala bilər.
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+Database connection pool-da 10 TCP connection hazır gözləyir. `$user = User::find(1)` çağırıldıqda pool-dan mövcud TCP connection götürülür, SQL query göndərilir, cavab gəlir, connection pool-a qaytarılır. Yeni handshake yoxdur.
+
+### Kod Nümunəsi
+
+PHP Socket ilə TCP Server:
 
 ```php
 // TCP Server
@@ -318,26 +325,7 @@ echo "Server says: $response\n";
 socket_close($socket);
 ```
 
-### Stream-based TCP in PHP
-
-```php
-// Simpler stream-based approach
-$server = stream_socket_server('tcp://0.0.0.0:8080', $errno, $errstr);
-
-if (!$server) {
-    die("Error: $errstr ($errno)");
-}
-
-while ($client = stream_socket_accept($server, -1)) {
-    $data = fread($client, 2048);
-    fwrite($client, "HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\r\nHello");
-    fclose($client);
-}
-
-fclose($server);
-```
-
-### Laravel TCP Connection Configuration
+Laravel TCP Connection Configuration:
 
 ```php
 // Database connection uses TCP
@@ -365,24 +353,24 @@ fclose($server);
 ],
 ```
 
-### PHP Socket Options
+PHP Socket Options:
 
 ```php
 $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 
-// TCP_NODELAY - Nagle algorithm-i sondur (low latency ucun)
+// TCP_NODELAY - Nagle algorithm-i söndür (low latency üçün)
 socket_set_option($socket, SOL_TCP, TCP_NODELAY, 1);
 
 // SO_KEEPALIVE - TCP keep-alive aktiv et
 socket_set_option($socket, SOL_SOCKET, SO_KEEPALIVE, 1);
 
-// SO_RCVBUF - Receive buffer size (flow control ile elaqeli)
+// SO_RCVBUF - Receive buffer size (flow control ilə əlaqəli)
 socket_set_option($socket, SOL_SOCKET, SO_RCVBUF, 65536);
 
 // SO_SNDBUF - Send buffer size
 socket_set_option($socket, SOL_SOCKET, SO_SNDBUF, 65536);
 
-// SO_REUSEADDR - TIME_WAIT state-deki port-u yeniden istifade et
+// SO_REUSEADDR - TIME_WAIT state-dəki portu yenidən istifadə et
 socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
 
 // Timeout settings
@@ -392,47 +380,53 @@ socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, [
 ]);
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-### Q1: TCP three-way handshake-i izah edin.
-**A:** 1) Client SYN (seq=x) gonderir. 2) Server SYN+ACK (seq=y, ack=x+1) gonderir. 3) Client ACK (ack=y+1) gonderir. Her iki teref oz ISN-ini gonderir ve qarsi terefin ISN-ini tesdiqleyir.
+**Tapşırıq 1: TCP state-lərini müşahidə edin**
 
-### Q2: Niye 3-way handshake lazimdir, 2-way olmaz?
-**A:** Her iki teref oz sequence number-ini qarsiya bildirmeli ve onun qebul edildiyini tesdiq almalidir. 2-way-de server-in SYN-i tesdiqlenmir. Hemcinin kohne duplicate SYN-lerin yanlis connection yaratmasinin qarsisini alir.
+```bash
+# ESTABLISHED, TIME_WAIT, CLOSE_WAIT vəziyyətlərini görün
+ss -tan | grep -E 'ESTABLISHED|TIME_WAIT|CLOSE_WAIT'
 
-### Q3: TIME_WAIT state nedir ve niye lazimdir?
-**A:** Connection close olandan sonra 2*MSL (adeten 60 saniye) gozlenilir. Sebebleri: 1) Son ACK iterse server FIN-i tekrar gonderir, biz cavab vere bilerik. 2) Kohne connection-dan qalan gec paketlerin yeni connection-a tesir etmesinin qarsisini alir.
+# PHP-FPM process-lərinin TCP connection-larını sayın
+ss -tan state established | grep ':9000'
 
-### Q4: TCP flow control nece isleyir?
-**A:** Receiver Window Size field ile oz buffer capacity-sini bildirir. Sender bu window-dan cox data gondermez. Window 0 olsa, sender dayanir (zero window probe gonderir). Sliding window mexanizmi istifade olunur.
+# Neçə TIME_WAIT var?
+ss -tan | grep TIME_WAIT | wc -l
+```
 
-### Q5: TCP congestion control-u izah edin.
-**A:** 4 esas mexanizm: 1) Slow Start - cwnd 1-den baslar, exponensial artir (ssthresh-e qeder). 2) Congestion Avoidance - linear artirim. 3) Fast Retransmit - 3 dup ACK-da derhal retransmit. 4) Fast Recovery - loss-da cwnd/2, slow start-a qayitmaq evezine.
+**Tapşırıq 2: Wireshark ilə handshake analizi**
 
-### Q6: Head-of-line blocking nedir?
-**A:** TCP-de bir paket itse, ardinca gelen paketler application-a verilmir (receiver buffer-de gozleyir) hele ki itirilen paket retransmit olunub catana qeder. Bu HTTP/2-de performance problem yaradir ve HTTP/3 bunu QUIC (UDP-based) ile hell edir.
+1. `tcpdump -i any -n port 80` işlədin
+2. `curl http://example.com` göndərin
+3. SYN, SYN-ACK, ACK paketlərini müşahidə edin
+4. 4-way FIN/ACK-ı da görəcəksiniz
 
-### Q7: CLOSE_WAIT state-in cox olmasi ne demekdir?
-**A:** Application socket-i duzgun close etmir. Remote teref FIN gonderib, biz ACK gondermisik amma oz FIN-imizi gondermirik. Bu resource leak-dir - her CLOSE_WAIT bir file descriptor tutur. Fix: application-da socket.close() duzgun cagirilmalidir.
+**Tapşırıq 3: Connection pool konfiqurasiyası**
 
-### Q8: TCP ve UDP-ni ne zaman secmeliyik?
-**A:** TCP: reliability lazim olanda (web, file transfer, email, database). UDP: speed ve low latency lazim olanda, bezi packet loss qebul edilende (video streaming, gaming, DNS, VoIP).
+Laravel-in database pool ölçüsünü tənzimləyin:
 
-## Best Practices
+```php
+// config/database.php
+'mysql' => [
+    'pool' => [
+        'min' => 5,   // Minimum hazır connection
+        'max' => 20,  // Maximum concurrent connection
+    ],
+    'options' => [
+        PDO::ATTR_TIMEOUT => 3,             // Connect timeout: 3s
+        PDO::MYSQL_ATTR_READ_TIMEOUT => 30, // Read timeout: 30s
+    ],
+],
+```
 
-1. **Connection pooling istifade edin:** Her request ucun yeni TCP connection acmaq bahadir (3-way handshake). Database, Redis, HTTP client ucun persistent connections saxlayin.
+Sonra `ab -n 1000 -c 50 http://localhost/api/users` ilə load test edin, `ss -tan` ilə connection state-lərini izləyin.
 
-2. **Timeout-lari duzgun set edin:**
-   - Connect timeout: 3-5 saniye
-   - Read timeout: application-dan asili (API: 30s, long process: 300s)
-   - Idle timeout: connection pool ucun 60-300s
+## Əlaqəli Mövzular
 
-3. **TCP_NODELAY interaktiv app-lar ucun:** Real-time communication lazim olanda Nagle algorithm-i sondur.
-
-4. **SO_REUSEADDR istifade edin:** Server restart zamani TIME_WAIT state-deki port-u yeniden istifade etmek ucun.
-
-5. **Backlog size-i duzgun secin:** `listen(socket, backlog)` - high traffic ucun backlog-u artirun (meselen 1024). Linux: `net.core.somaxconn` sysctl parametri.
-
-6. **Keep-alive production-da:** Long-lived connection-lar ucun TCP keep-alive aktiv edin. Load balancer-ler ve firewall-lar idle connection-lari kese biler.
-
-7. **MTU/MSS optimizasiyasi:** Path MTU Discovery aktiv olsun. Fragmentation performance-i azaldir.
+- [OSI Model](01-osi-model.md)
+- [UDP](04-udp.md)
+- [HTTP Protocol](05-http-protocol.md)
+- [HTTPS, SSL/TLS](06-https-ssl-tls.md)
+- [Network Timeouts](42-network-timeouts.md)
+- [Network Troubleshooting](30-network-troubleshooting.md)

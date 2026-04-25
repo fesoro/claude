@@ -1,13 +1,13 @@
-# DNS (Domain Name System)
+# DNS - Domain Name System (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
-DNS internet-in "telefon kitabcasi"dir. Insan ucun oxunaqli domain adlarini (meselen, google.com) IP adreslerine (meselen, 142.250.185.78) ceviren distributed, hierarchical sistemdir. DNS olmadan her defe website-a daxil olmaq ucun IP adresi yadda saxlamaliydiniz.
+DNS internet-in "telefon kitabçası"dır. İnsan üçün oxunaqlı domain adlarını (məsələn, google.com) IP adreslərinə (məsələn, 142.250.185.78) çevirən distributed, hierarchical sistemdir. DNS olmadan hər dəfə website-a daxil olmaq üçün IP adresi yadda saxlamalıydınız.
 
-DNS 1983-cu ilde Paul Mockapetris terefinden yaradilib (RFC 1035). Distributed database olaraq dizayn edilib - hec bir single server butun DNS melumatlarini saxlamır.
+DNS 1983-cü ildə Paul Mockapetris tərəfindən yaradılıb (RFC 1035). Distributed database olaraq dizayn edilib — heç bir single server bütün DNS məlumatlarını saxlamır.
 
 ```
-Istifadeci brauzerde yazir:  www.example.com
+İstifadəçi brauzerdə yazır:  www.example.com
                                   |
                                   v
                           DNS Resolution
@@ -16,12 +16,16 @@ Istifadeci brauzerde yazir:  www.example.com
                           IP: 93.184.216.34
                                   |
                                   v
-                          HTTP request gonderilir
+                          HTTP request göndərilir
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
 
-### DNS Hierarchy (Iyerarxiyasi)
+Backend developer-in DNS ilə birbaşa işi bir neçə yerdə olur: deployment zamanı DNS TTL-ni planlamaq, email konfiqurasiyası üçün MX/SPF/DKIM record-larını qurmaq, application-da DNS lookup-ları keşləmək (hər request-də `gethostbyname()` çağırmaq lazım deyil), migration zamanı blue-green switching üçün TTL-ni əvvəlcədən azaltmaq. Bundan əlavə, DNS poisoning attack-larını başa düşmək security məsuliyyətinizə daxildir.
+
+## Əsas Anlayışlar
+
+### DNS Hierarchy (İyerarxiyası)
 
 ```
                     . (Root)
@@ -63,24 +67,22 @@ Browser         Local DNS        Root DNS       TLD DNS (.com)    Authoritative 
   |  93.184.216.34 |                                                   |
 ```
 
-### Addim-addim proses:
+Addım-addım proses:
 
-1. **Browser Cache** - Brauzer evvelce sorgulanmis DNS-i yoxlayir
-2. **OS Cache** - Emeliyyat sisteminin DNS cache-i yoxlanir (`/etc/hosts` da burda)
-3. **Recursive Resolver** - ISP-nin DNS resolver-ine sorgu gonderilir
-4. **Root Server** - 13 root server clusteri var (a.root-servers.net - m.root-servers.net)
-5. **TLD Server** - .com, .org, .az kimi TLD server-ler
-6. **Authoritative Server** - Domain-in oz DNS server-i son cavabi verir
-
-## Əsas Konseptlər (Key Concepts)
+1. **Browser Cache** — Brauzer əvvəlcə sorğulanmış DNS-i yoxlayır
+2. **OS Cache** — Əməliyyat sisteminin DNS cache-i yoxlanır (`/etc/hosts` da burda)
+3. **Recursive Resolver** — ISP-nin DNS resolver-inə sorğu göndərilir
+4. **Root Server** — 13 root server clusteri var (a.root-servers.net — m.root-servers.net)
+5. **TLD Server** — .com, .org, .az kimi TLD server-lər
+6. **Authoritative Server** — Domain-in öz DNS server-i son cavabı verir
 
 ### DNS Record Types
 
-| Record | Meqsed | Numune |
+| Record | Məqsəd | Nümunə |
 |--------|--------|--------|
 | **A** | Domain -> IPv4 | `example.com -> 93.184.216.34` |
 | **AAAA** | Domain -> IPv6 | `example.com -> 2606:2800:220:1:...` |
-| **CNAME** | Alias (baska domain-e yonlendirir) | `www.example.com -> example.com` |
+| **CNAME** | Alias (başqa domain-ə yönləndirir) | `www.example.com -> example.com` |
 | **MX** | Mail server | `example.com -> mail.example.com (priority: 10)` |
 | **TXT** | Text record (SPF, DKIM, verification) | `"v=spf1 include:_spf.google.com ~all"` |
 | **NS** | Nameserver | `example.com -> ns1.example.com` |
@@ -91,71 +93,113 @@ Browser         Local DNS        Root DNS       TLD DNS (.com)    Authoritative 
 
 ### TTL (Time To Live)
 
-TTL DNS record-un nece muddet cache-de saxlanacagini gosterir (saniye ile):
+TTL DNS record-un neçə müddət cache-də saxlanacağını göstərir (saniyə ilə):
 
 ```
-; Yuksek TTL (1 gun) - nadir deyisen recordlar ucun
+; Yüksək TTL (1 gün) - nadir dəyişən record-lar üçün
 example.com.    86400   IN  A   93.184.216.34
 
-; Asagi TTL (5 deqiqe) - tez-tez deyisen recordlar ucun
+; Aşağı TTL (5 dəqiqə) - tez-tez dəyişən record-lar üçün
 api.example.com.  300   IN  A   10.0.0.1
 
-; Cok asagi TTL (60 san) - failover/migration zamani
+; Çox aşağı TTL (60 san) - failover/migration zamanı
 staging.example.com. 60 IN  A   10.0.0.2
 ```
 
-**TTL Strategy:**
-- Production: 3600-86400 (1 saat - 1 gun)
-- Migration oncesi: TTL-i evvelceden asalt (300-e)
+TTL Strategy:
+- Production: 3600-86400 (1 saat — 1 gün)
+- Migration öncəsi: TTL-i əvvəlcədən azaldın (300-ə)
 - Failover: 60-300
 
 ### DNSSEC (DNS Security Extensions)
 
-DNSSEC DNS cavablarinin authenticity-sini yoxlayir. DNS cache poisoning-in qarsisini alir.
+DNSSEC DNS cavablarının authenticity-sini yoxlayır. DNS cache poisoning-in qarşısını alır.
 
 ```
 Adi DNS:
   Client -> Resolver: "example.com?"
   Resolver -> Client: "93.184.216.34"  (heç bir doğrulama yoxdur!)
 
-DNSSEC ile:
+DNSSEC ilə:
   Client -> Resolver: "example.com?"
   Resolver -> Client: "93.184.216.34" + RRSIG (digital signature)
-  Client: Signature-i DNSKEY ile verify edir ✓
+  Client: Signature-i DNSKEY ilə verify edir ✓
 ```
 
-**DNSSEC Record Types:**
-- **RRSIG** - Record-un digital signature-i
-- **DNSKEY** - Zone-un public key-i
-- **DS** - Delegation Signer (parent zone-a link)
-- **NSEC/NSEC3** - Non-existence proof
+DNSSEC Record Types:
+- **RRSIG** — Record-un digital signature-i
+- **DNSKEY** — Zone-un public key-i
+- **DS** — Delegation Signer (parent zone-a link)
+- **NSEC/NSEC3** — Non-existence proof
 
-### DNS Caching Seviyeleri
+### DNS Caching Səviyyələri
 
 ```
 1. Browser Cache        (Chrome: chrome://net-internals/#dns)
 2. OS Cache             (Linux: systemd-resolved, Windows: ipconfig /displaydns)
-3. Router Cache         (Ev router-i oz cache-i saxlayir)
+3. Router Cache         (Ev router-i öz cache-i saxlayır)
 4. ISP Resolver Cache   (ISP-nin recursive resolver-i)
-5. Authoritative TTL    (Domain sahibinin teyin etdiyi TTL)
+5. Authoritative TTL    (Domain sahibinin təyin etdiyi TTL)
 ```
 
 ### DNS Query Types
 
-- **Recursive Query** - Resolver tam cavab tapmalidır (client -> resolver)
-- **Iterative Query** - Resolver "bilmirem, bura sor" deyir (resolver -> root/TLD/auth)
-- **Inverse Query** - IP-den domain tapma (PTR record)
+- **Recursive Query** — Resolver tam cavab tapmalıdır (client -> resolver)
+- **Iterative Query** — Resolver "bilmirəm, bura sor" deyir (resolver -> root/TLD/auth)
+- **Inverse Query** — IP-dən domain tapma (PTR record)
 
-## PHP/Laravel ilə İstifadə
+## Praktik Baxış
 
-### PHP-de DNS Sorgusu
+**Real layihələrdə istifadəsi:**
+- Deployment öncəsi TTL-i 5 dəqiqəyə endirmək (production switch sonra geri qaldırmaq)
+- Email spam filter-lərini keçmək üçün SPF, DKIM, DMARC record-larını düzgün qurmaq
+- Load balancing üçün Round-robin DNS — bir domain üçün bir neçə A record (health check olmadan sadə)
+- Wildcard DNS (`*.staging.example.com`) inkişaf mühitlərini asanlaqla idarə edir
+
+**Trade-off-lar:**
+- Yüksək TTL: daha az DNS sorğu, performans yaxşıdır; amma dəyişiklik gec yayılır
+- Aşağı TTL: çevik failover; amma DNS server-ə daha çox yük
+- Round-robin DNS: sadə load balancing; amma health check yoxdur — down server-ə sorğu gedir
+
+**Common mistakes:**
+- Migration öncəsi TTL-i azaltmamaq — köhnə IP günlərlə cache-də qalır
+- MX priority-ni yanlış qurmaq — email çatdırılmır
+- SPF record-unda bütün mail server-ləri daxil etməməmək — email spam kimi işarələnir
+- Wildcard DNS ilə phishing riskini nəzərə almamaq
+
+**Anti-pattern:** Hər API request-də `gethostbyname()` çağırmaq — PHP-nin öz DNS cache-i session-lar arasında itir; application-level caching (Redis) lazımdır.
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+Blue-green deployment ilə DNS switching:
+
+```
+Deployment öncəsi (3 gün əvvəl):
+  api.example.com TTL: 86400 -> 300-ə endirin
+
+Deployment günü:
+  Blue (köhnə): 10.0.0.1
+  Green (yeni): 10.0.0.2
+
+  api.example.com A record: 10.0.0.1 -> 10.0.0.2 dəyişin
+  300 saniyə sonra bütün client-lər yeni IP-yə keçir
+
+Deployment sonrası:
+  TTL-i 86400-ə qayıdın
+```
+
+### Kod Nümunəsi
+
+PHP-də DNS Sorğusu:
 
 ```php
-// A record sorgusu
+// A record sorğusu
 $ip = gethostbyname('example.com');
 echo $ip; // 93.184.216.34
 
-// Butun DNS recordlarini al
+// Bütün DNS record-larını al
 $records = dns_get_record('example.com', DNS_ALL);
 foreach ($records as $record) {
     echo "Type: {$record['type']}, ";
@@ -175,37 +219,82 @@ $records = dns_get_record('gmail.com', DNS_MX);
 $host = gethostbyaddr('8.8.8.8');
 echo $host; // dns.google
 
-// DNS record movcudlugunu yoxla
+// DNS record mövcudluğunu yoxla
 $exists = checkdnsrr('example.com', 'MX');
 echo $exists ? "MX record var" : "MX record yoxdur";
 ```
 
-### Laravel-de Email Validation (MX Check)
+Laravel-də Email Validation (MX Check):
 
 ```php
-// Form Request-de MX record yoxlamasi
+// Form Request-də MX record yoxlaması
 class RegisterRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            // dns: MX ve ya A record yoxlayir
+            // dns: MX və ya A record yoxlayır
             'email' => ['required', 'email:rfc,dns', 'unique:users'],
         ];
     }
 }
 ```
 
-### Custom DNS Health Check
+Laravel DNS Cache Layer:
+
+```php
+namespace App\Services;
+
+use Illuminate\Support\Facades\Cache;
+
+class CachedDnsResolver
+{
+    /**
+     * DNS nəticəsini cache-lə (PHP-nin öz DNS cache-i session arasında itirir)
+     */
+    public function resolve(string $domain, int $ttl = 300): ?string
+    {
+        return Cache::remember(
+            "dns:a:{$domain}",
+            $ttl,
+            function () use ($domain) {
+                $ip = gethostbyname($domain);
+                // gethostbyname uğursuz olsa domain-in özünü qaytarır
+                return $ip !== $domain ? $ip : null;
+            }
+        );
+    }
+
+    /**
+     * Bütün record-ları cache-lə
+     */
+    public function resolveAll(string $domain, int $type = DNS_ALL): array
+    {
+        return Cache::remember(
+            "dns:all:{$domain}:{$type}",
+            300,
+            fn() => dns_get_record($domain, $type) ?: []
+        );
+    }
+
+    /**
+     * Cache-i təmizlə (DNS dəyişikliyi zamanı)
+     */
+    public function flush(string $domain): void
+    {
+        Cache::forget("dns:a:{$domain}");
+        Cache::forget("dns:all:{$domain}:" . DNS_ALL);
+    }
+}
+```
+
+Custom DNS Health Check:
 
 ```php
 namespace App\Services;
 
 class DnsHealthChecker
 {
-    /**
-     * Domain-in DNS-ini yoxla
-     */
     public function check(string $domain): array
     {
         $results = [];
@@ -243,55 +332,7 @@ class DnsHealthChecker
 }
 ```
 
-### Laravel DNS Cache Layer
-
-```php
-namespace App\Services;
-
-use Illuminate\Support\Facades\Cache;
-
-class CachedDnsResolver
-{
-    /**
-     * DNS neticesini cache-le (PHP-nin oz DNS cache-i session arasinda itir)
-     */
-    public function resolve(string $domain, int $ttl = 300): ?string
-    {
-        return Cache::remember(
-            "dns:a:{$domain}",
-            $ttl,
-            function () use ($domain) {
-                $ip = gethostbyname($domain);
-                // gethostbyname ugursuz olsa domain-in ozunu qaytarir
-                return $ip !== $domain ? $ip : null;
-            }
-        );
-    }
-
-    /**
-     * Butun recordlari cache-le
-     */
-    public function resolveAll(string $domain, int $type = DNS_ALL): array
-    {
-        return Cache::remember(
-            "dns:all:{$domain}:{$type}",
-            300,
-            fn() => dns_get_record($domain, $type) ?: []
-        );
-    }
-
-    /**
-     * Cache-i temizle (DNS deyisikliyi zamani)
-     */
-    public function flush(string $domain): void
-    {
-        Cache::forget("dns:a:{$domain}");
-        Cache::forget("dns:all:{$domain}:" . DNS_ALL);
-    }
-}
-```
-
-### Artisan Command - DNS Lookup
+Artisan Command — DNS Lookup:
 
 ```php
 namespace App\Console\Commands;
@@ -331,47 +372,51 @@ class DnsLookup extends Command
 // php artisan dns:lookup example.com --type=MX
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-### 1. DNS nedir ve niye lazimdir?
-**Cavab:** DNS (Domain Name System) domain adlarini IP adreslerine ceviren distributed, hierarchical naming sistemdir. Insanlar IP adreslerini yadda saxlaya bilmez, DNS bu problemi hell edir. DNS olmadan `google.com` yerine `142.250.185.78` yazmaliydiniz.
+**Tapşırıq 1: DNS record-larını araşdırın**
 
-### 2. DNS resolution prosesini addim-addim izah edin.
-**Cavab:** 1) Browser oz cache-ine baxir, 2) OS cache yoxlanir (/etc/hosts daxil), 3) Recursive resolver-e sorgu gedir, 4) Resolver root server-e sorgu gonderir, 5) Root server TLD server-i gosterir, 6) TLD server authoritative NS-i gosterir, 7) Authoritative server son cavabi verir, 8) Resolver neticeni cache-leyir ve client-e qaytarir.
+```bash
+# A record
+dig example.com A
 
-### 3. A, AAAA, CNAME, MX recordlarinin ferqi nedir?
-**Cavab:** **A** record domain-i IPv4 adresine map edir. **AAAA** record IPv6 adresine map edir. **CNAME** bir domain-i basqa domain-e yonlendirir (alias). **MX** record domain ucun mail server-i gosterir ve priority deyeri olur.
+# MX records
+dig gmail.com MX
 
-### 4. TTL nedir ve niye vacibdir?
-**Cavab:** TTL (Time To Live) DNS record-un cache-de nece muddet (saniye ile) saxlanacagini bildirir. Yuksek TTL performansi artırır amma deyisiklikler gec yayilir. Asagi TTL deyisikliklerin tez yayilmasini temin edir amma DNS server-lere daha cox sorgu gedir. Migration oncesi TTL-i asaltmaq best practice-dir.
+# Bütün record-lar
+dig example.com ANY
 
-### 5. Recursive ve Iterative query arasinda ferq nedir?
-**Cavab:** **Recursive query**-de client resolver-den tam cavab gozleyir - resolver butun ishi gorur. **Iterative query**-de resolver her server-den "bilmirem, bu servere sor" cavabi alir ve ozü novbeti servere sorgu gonderir. Client adeten recursive, resolver ise iterative query istifade edir.
+# Authoritative server-dən birbaşa soruşun
+dig @ns1.example.com example.com
 
-### 6. DNSSEC nedir ve hansı problemi hell edir?
-**Cavab:** DNSSEC DNS cavablarinin dogrulugunu digital signature ile verify eden genislemedir. DNS cache poisoning (attacker-in saxta DNS cavabi inject etmesi) problemini hell edir. RRSIG, DNSKEY, DS recordlari istifade edir.
+# TTL-i görün
+dig +ttl example.com
 
-### 7. DNS cache poisoning nedir?
-**Cavab:** Attacker DNS resolver-in cache-ine yanlis IP adresi inject edir. Netice olaraq istifadeciler legit domain-e daxil olmaq isteyende attacker-in server-ine yonlendirilir. Buna DNS spoofing de deyilir. DNSSEC bu hucumun qarsisini alir.
+# Reverse DNS
+dig -x 8.8.8.8
+```
 
-### 8. /etc/hosts faylinin DNS ile elaqesi nedir?
-**Cavab:** `/etc/hosts` lokal DNS override faylidir. OS DNS resolver-e sorgu gondermezden evvel bu fayla baxir. Development ucun `127.0.0.1 myapp.local` kimi entry-ler elave etmek ucun istifade olunur.
+**Tapşırıq 2: Email DNS record-larını yoxlayın**
 
-### 9. Niye 13 root server var?
-**Cavab:** Texniki olaraq 13 root server **adresi** var (a-dan m-ye), amma Anycast texnologiyasi ile bu serverlerin yuzlerle instance-i dunyanin muxtelif yerlerinde yerlesir. 13 limiti DNS UDP paketinin 512 byte olcusunden ireli gelir.
+Öz domain-iniz üçün:
+1. SPF record-unu yoxlayın: `dig yourdomain.com TXT | grep spf`
+2. DKIM record-unu yoxlayın (Google Workspace): `dig google._domainkey.yourdomain.com TXT`
+3. DMARC record-unu yoxlayın: `dig _dmarc.yourdomain.com TXT`
+4. [MXToolbox](https://mxtoolbox.com) ilə tam audit edin
 
-### 10. Round-robin DNS nedir?
-**Cavab:** Bir domain ucun bir nece A record teyin etmek ve DNS-in her sorguya ferqli IP qaytarmasi ile primitive load balancing yaratmaq usulur. Meselen: `example.com -> 10.0.0.1, 10.0.0.2, 10.0.0.3`. Health check yoxdur, buna gore real load balancer-in yerine kecmir.
+**Tapşırıq 3: Application-level DNS caching implement edin**
 
-## Best Practices
+Laravel-də aşağıdakı tələbləri həyata keçirin:
+- `CachedDnsResolver` servisini implement edin (yuxarıdakı kod nümunəsindən)
+- API client-ləriniz üçün host IP-lərini Redis-də cache edin (TTL: 5 dəqiqə)
+- Artisan command: `php artisan dns:lookup yourdomain.com --type=MX`
+- Cache-i silmək üçün: `php artisan cache:forget dns:a:yourdomain.com`
 
-1. **TTL-i duzgun teyin edin** - Production ucun 3600+, migration oncesi 300-e endir
-2. **DNSSEC aktivlesdirin** - Domain-iniz ucun DNSSEC enable edin
-3. **Redundant NS istifade edin** - En az 2 nameserver, muxtelif network-lerde
-4. **SPF, DKIM, DMARC qurun** - Email spoofing-in qarsisini alin
-5. **CAA record elave edin** - Hansı CA-nin sertifikat vere bileceyini mehdudlashdirin
-6. **DNS monitoring qurun** - Resolution time ve availability izleyin
-7. **Wildcard DNS-den qaçın** - `*.example.com` tehlukeli ola biler
-8. **DNS failover** - Health check ile avtomatik failover ucun Cloudflare/Route53 istifade edin
-9. **Low TTL during migrations** - DNS deyisikliyi oncesi TTL-i asaldin, sonra geri qaldir
-10. **Application-level DNS caching** - PHP/Laravel-de DNS neticesini cache-leyin (her request-de DNS sorgusu gondermemek ucun)
+## Əlaqəli Mövzular
+
+- [TCP/IP Model](02-tcp-ip-model.md)
+- [HTTP Protocol](05-http-protocol.md)
+- [HTTPS, SSL/TLS](06-https-ssl-tls.md)
+- [Network Security](26-network-security.md)
+- [Network Troubleshooting](30-network-troubleshooting.md)
+- [Email Protocols](27-email-protocols.md)

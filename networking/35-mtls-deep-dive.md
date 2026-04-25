@@ -1,42 +1,24 @@
-# mTLS (Mutual TLS) Deep Dive
+# mTLS Deep Dive (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
-**mTLS** (Mutual TLS) standart TLS-in genişləndirilmiş formasıdır. Standart TLS yalnız server-in kimliyini doğrulayır - client anonimdir. mTLS-də **həm server, həm client** bir-birini sertifikatla authenticate edir.
-
-İstifadə halları:
-- **Service-to-service authentication** (microservices, service mesh)
-- **Zero Trust networking** (BeyondCorp style)
-- **IoT device authentication** (hər device unikal sertifikat)
-- **API-level mutual auth** (B2B integrations)
-- **VPN alternatives** (WireGuard, OpenVPN mTLS)
-- **Banking & fintech** (regulatory requirements)
+**mTLS** (Mutual TLS) standart TLS-in genişləndirilmiş formasıdır. Standart TLS yalnız server-in kimliyini doğrulayır — client anonimdir. mTLS-də **həm server, həm client** bir-birini sertifikatla authenticate edir.
 
 ```
 Standard TLS:                    mTLS:
   Client ---> verifies Server      Client <---> verifies each other <---> Server
-  (Client anonymous)               (Both have certificates)
+  (Client anonim)                  (Hər iki tərəfdə sertifikat var)
 ```
 
-## Necə İşləyir? (How does it work?)
+İstifadə halları: service-to-service authentication (microservices, service mesh), Zero Trust networking, IoT device authentication, B2B API integrations, banking & fintech (regulatory requirements).
 
-### 1. Standard TLS 1.3 Handshake (for comparison)
+## Niyə Vacibdir
 
-```
-Client                               Server
-  |---- ClientHello -------------------->|
-  |                                      |
-  |<--- ServerHello                      |
-  |     + Certificate (server's)         |
-  |     + CertificateVerify              |
-  |     + Finished ----------------------|
-  |                                      |
-  |---- Finished ----------------------->|
-  |                                      |
-  [encrypted application data]
-```
+Microserviceslər arasında traffic-i yalnız application-level token-larla qorumaq kifayət deyil — network-daxili traffic-i şifrələmək və hər servisin kriptoqrafik identity-sinə sahib olmaq lazımdır. Service mesh (Istio) bu prosesi avtomatlaşdırır, amma mTLS-i başa düşmədən konfiqurasiya və debug etmək mümkün deyil.
 
-### 2. mTLS 1.3 Handshake
+## Əsas Anlayışlar
+
+### mTLS 1.3 Handshake
 
 ```
 Client                                  Server
@@ -44,46 +26,46 @@ Client                                  Server
   |                                         |
   |<--- ServerHello                         |
   |     + Certificate (server's)            |
-  |     + CertificateRequest   <-- NEW      |
+  |     + CertificateRequest   <-- YENİ     |
   |     + CertificateVerify                 |
   |     + Finished -------------------------|
   |                                         |
-  |---- Certificate (client's) <-- NEW ---->|
-  |     + CertificateVerify    <-- NEW      |
+  |---- Certificate (client's) <-- YENİ --->|
+  |     + CertificateVerify    <-- YENİ     |
   |     + Finished ------------------------>|
   |                                         |
   [encrypted application data]
 
-CertificateRequest: server asks client for cert
-Client's Certificate: chain of X.509 certs
-Client's CertificateVerify: proves possession of private key
+CertificateRequest: server client-dən sertifikat istəyir
+Client's Certificate: X.509 sertifikat zənciri
+Client's CertificateVerify: private key sahibliyini sübut edir
 ```
 
-### 3. Verification Steps on Both Sides
+### Hər İki Tərəfin Yoxlamaları
 
 ```
-Server verifies client cert:
-  1. Cert signed by trusted CA? (matches server's CA bundle)
-  2. Cert not expired?
-  3. Cert not revoked? (CRL / OCSP check)
-  4. Subject/SAN matches expected identity?
-  5. CertificateVerify signature valid?
-    -> Proves client owns private key
+Server client sertifikatını yoxlayır:
+  1. Sertifikat etibarlı CA tərəfindən imzalanıb? (CA bundle ilə uyğun)
+  2. Sertifikat müddəti bitib?
+  3. Sertifikat revoke olunub? (CRL / OCSP yoxlaması)
+  4. Subject/SAN gözlənilən identity-ə uyğundur?
+  5. CertificateVerify imzası etibarlıdır?
+     → Client private key sahibidir sübut olunur
 
-Client verifies server cert:
-  Same checks, plus hostname verification (SNI matches CN/SAN).
+Client server sertifikatını yoxlayır:
+  Eyni yoxlamalar, əlavə olaraq hostname verification (SNI CN/SAN-a uyğundur).
 ```
 
-### 4. PKI Setup for mTLS
+### PKI Qurulumu
 
 ```
 +-------------------+
-|    Root CA        |  (kept offline, rarely used)
+|    Root CA        |  (offline saxlanılır, nadir istifadə)
 +---------+---------+
           |
           v
 +-------------------+
-| Intermediate CA   |  (issues client/server certs)
+| Intermediate CA   |  (client/server sertifikatları verir)
 +----+-------+------+
      |       |
      v       v
@@ -92,140 +74,157 @@ Client verifies server cert:
 | Cert   | | Cert   |
 +--------+ +--------+
 
-All parties trust Root CA.
-Client presents cert signed by Intermediate.
-Server verifies chain: Client -> Intermediate -> Root (trusted).
+Bütün tərəflər Root CA-ya güvənir.
+Client Intermediate CA tərəfindən imzalanmış sertifikat təqdim edir.
+Server zənciri yoxlayır: Client → Intermediate → Root (etibarlı).
 ```
-
-## Əsas Konseptlər (Key Concepts)
 
 ### Certificate Authentication vs Token Auth
 
 ```
 Token (JWT, OAuth):
-  + Simple to implement
+  + Sadə implementasiya
   + Stateless
-  - Tokens can be stolen (copy-paste)
-  - Revocation tricky
+  - Token oğurlana bilər (copy-paste)
+  - Revocation çətin
 
 mTLS Certificate:
-  + Private key never leaves device (TPM/HSM)
-  + Cryptographic proof of possession
-  + Clear identity (cert subject)
-  - Complex PKI management
-  - Cert rotation needed
+  + Private key cihazdan çıxmır (TPM/HSM)
+  + Kriptoqrafik sahib sübut
+  + Aydın identity (cert subject)
+  - Mürəkkəb PKI idarəetməsi
+  - Sertifikat rotasiyası lazımdır
 ```
 
-### Service Mesh mTLS (Istio Example)
+### Service Mesh mTLS (Istio)
 
 ```
-Istio automates mTLS for microservices:
+Istio microserviceslər üçün mTLS-i avtomatlaşdırır:
 
-1. Istiod (control plane) is a CA
-2. Each pod gets Envoy sidecar proxy
-3. Sidecar receives short-lived cert (24h TTL)
-4. SPIFFE ID embedded in cert:
+1. Istiod (control plane) CA-dır
+2. Hər pod Envoy sidecar proxy alır
+3. Sidecar qısa ömürlü sertifikat alır (24s TTL)
+4. Sertifikatda SPIFFE ID var:
      spiffe://cluster.local/ns/prod/sa/orders
-5. All traffic between sidecars is mTLS
-6. Application code unchanged (transparent)
+5. Sidecar-lar arasındakı bütün traffic mTLS-dir
+6. Application kodu dəyişdirilmir (şəffaf)
 
-Apply with:
+Tətbiq:
   apiVersion: security.istio.io/v1
   kind: PeerAuthentication
   metadata:
     name: default
   spec:
     mtls:
-      mode: STRICT     # reject non-mTLS
+      mode: STRICT     # mTLS olmayan bağlantıları rədd et
 ```
 
 ### SPIFFE / SPIRE
 
 ```
 SPIFFE (Secure Production Identity Framework For Everyone):
-  Universal identity standard for workloads.
+  Workload-lar üçün universal identity standartı.
   Format: spiffe://trust-domain/path
-  Example: spiffe://example.com/ns/prod/sa/api
+  Misal: spiffe://example.com/ns/prod/sa/api
 
 SPIRE (SPIFFE Runtime Environment):
-  Reference implementation.
-  Server + agents issue certs based on workload attestation.
-  Integrates with Kubernetes, VMs, bare metal.
+  Reference implementasiya.
+  Server + agentlər workload attestation əsasında sertifikat verir.
+  Kubernetes, VM, bare metal ilə inteqrasiya edir.
 
-Node attestation:    proves node identity (k8s_psat, aws_iid, etc.)
-Workload attestation: proves workload identity (pod labels, process unix uid)
+Node attestation:    node identity-sini sübut edir (k8s_psat, aws_iid)
+Workload attestation: workload identity-sini sübut edir (pod labels, unix uid)
 
-Workload calls:
-  -> Agent checks attestation
-  -> Issues short-lived X.509 or JWT-SVID
-  -> Valid for few hours, auto-rotated
+Workload çağırır:
+  → Agent attestation yoxlayır
+  → Qısa ömürlü X.509 və ya JWT-SVID verir
+  → Bir neçə saat etibarlı, avtomatik yenilənir
 ```
 
 ### Certificate Revocation
 
 ```
 CRL (Certificate Revocation List):
-  CA publishes signed list of revoked certs.
-  Client downloads periodically.
-  Problem: large file, delay in updates.
+  CA revoke olmuş sertifikatların siyahısını publish edir.
+  Client dövri olaraq yükləyir.
+  Problem: böyük fayl, gecikmə.
 
 OCSP (Online Certificate Status Protocol):
-  Client queries CA: "is this cert revoked?"
-  Real-time but adds latency + privacy leak.
+  Client CA-ya real-time soruşur: "bu sertifikat revoke olunub?"
+  Real-time amma latency əlavə edir + privacy problemi.
 
 OCSP Stapling:
-  Server queries CA, caches response, sends with handshake.
-  Best of both worlds.
+  Server CA-ya soruşur, cavabı cache edir, handshake ilə göndərir.
+  Hər ikisinin üstünlüyü.
 
-Short-lived certs (SPIRE, Istio):
-  TTL = 1-24 hours.
-  No revocation needed - just don't renew.
-  Modern Zero Trust approach.
-```
-
-### Cert Subject vs SAN
-
-```
-X.509 cert contains identity:
-
-Common Name (CN):  Legacy, avoid for hostnames
-Subject Alt Name (SAN):
-  DNS:api.example.com
-  DNS:*.api.example.com
-  IP:10.0.0.5
-  URI:spiffe://example.com/workload/api
-  email:service@example.com
-
-Modern clients ignore CN, check only SAN.
+Qısa ömürlü sertifikatlar (SPIRE, Istio):
+  TTL = 1-24 saat.
+  Revocation lazım deyil — yenilənmir.
+  Modern Zero Trust yanaşması.
 ```
 
 ### Performance Overhead
 
 ```
 TLS handshake: 1-2 RTT
-mTLS handshake: same RTT, plus:
-  - Server validates client cert (CPU)
-  - CRL/OCSP check (network, unless stapled)
-  - Larger certificate messages
+mTLS handshake: eyni RTT, əlavə:
+  - Server client sertifikatını yoxlayır (CPU)
+  - CRL/OCSP yoxlaması (network, stapling olmasa)
+  - Daha böyük sertifikat mesajları
 
-Mitigation:
-  - Session resumption (skip full handshake)
-  - Connection pooling (handshake once, reuse)
-  - HTTP/2 or HTTP/3 (multiplex over single conn)
-  - Short cert chains
+Azaltma:
+  - Session resumption (tam handshake skip et)
+  - Connection pooling (bir dəfə handshake, yenidən istifadə)
+  - HTTP/2 (tək connection üzərindən multiplexing)
+  - Qısa sertifikat zənciri
 ```
 
-## PHP/Laravel ilə İstifadə
+## Praktik Baxış
 
-### Outgoing mTLS Request (Guzzle)
+- **Avtomatik rotation məcburidir:** Manual rotation outage riski. Vault, cert-manager, SPIRE istifadə et.
+- **Qısa ömürlü sertifikatlar (1-24h):** Revocation problemini aradan qaldırır, blast radius azalır.
+- **Ayrı Intermediate CA:** Root CA offline, HSM-də saxla. Compromise olsa yalnız intermediate rotate et.
+- **Load balancer qərarı:** mTLS pass-through (end-to-end security) vs termination (performance) — istifadə case-ə görə seç.
+- **Debug çətin:** tcpdump ilə encrypted traffic görünmür. `openssl s_client` ilə handshake debug et.
 
+### Anti-patterns
+
+- Static, uzunömürlü client sertifikatları — rotation etmirsan, breach olsa uzun müddət açıq qalır
+- Yalnız IP-based trust + mTLS — IP dəyişə bilər (pod restart), SPIFFE ID daha etibarlıdır
+- Root CA-nı online saxlamaq — intermediate CA-dan keç
+- Development-da `ssl_verify_client off` qoyub unutmaq — production-da aktiv olduğunu yoxla
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+```
+mTLS request flow (Nginx termination):
+
+  [orders-service]
+       |
+       | mTLS (client cert: CN=orders-service)
+       v
+  [Nginx]
+       | ssl_verify_client on
+       | CN-i Laravel-ə header kimi göndərir
+       v
+  [Laravel]
+       | X-Client-Subject: CN=orders-service,OU=backend
+       | Middleware CN-i yoxlayır
+       | Route authorization edir
+```
+
+### Kod Nümunəsi
+
+**Outgoing mTLS Request (Laravel):**
 ```php
 use Illuminate\Support\Facades\Http;
 
 $response = Http::withOptions([
     'cert'    => [storage_path('certs/client.crt'), config('mtls.cert_password')],
     'ssl_key' => [storage_path('certs/client.key'), config('mtls.key_password')],
-    'verify'  => storage_path('certs/ca-bundle.crt'),  // trust this CA
+    'verify'  => storage_path('certs/ca-bundle.crt'),
 ])->post('https://api.partner.com/v1/transactions', [
     'amount' => 1000,
 ]);
@@ -238,26 +237,7 @@ if ($response->failed()) {
 }
 ```
 
-### Combined PEM File
-
-```bash
-# Some servers prefer combined cert + key:
-cat client.crt client.key > client.pem
-
-# Guzzle with single file:
-```
-
-```php
-Http::withOptions([
-    'cert'   => storage_path('certs/client.pem'),
-    'verify' => storage_path('certs/ca-bundle.crt'),
-])->get('https://api.partner.com/status');
-```
-
-### Receiving mTLS in Laravel (Nginx terminates)
-
-Nginx verifies client cert and passes info as headers.
-
+**Nginx mTLS Konfiqurasiyası:**
 ```nginx
 server {
     listen 443 ssl;
@@ -266,17 +246,17 @@ server {
     ssl_certificate     /etc/nginx/ssl/server.crt;
     ssl_certificate_key /etc/nginx/ssl/server.key;
 
-    # mTLS config
+    # mTLS konfigurasiyası
     ssl_client_certificate /etc/nginx/ssl/ca-bundle.crt;
     ssl_verify_client      on;
     ssl_verify_depth       2;
 
     location / {
-        # Pass client identity to Laravel
-        proxy_set_header X-Client-Verify   $ssl_client_verify;
-        proxy_set_header X-Client-Subject  $ssl_client_s_dn;
-        proxy_set_header X-Client-Issuer   $ssl_client_i_dn;
-        proxy_set_header X-Client-Serial   $ssl_client_serial;
+        # Client identity-ni Laravel-ə ötür
+        proxy_set_header X-Client-Verify      $ssl_client_verify;
+        proxy_set_header X-Client-Subject     $ssl_client_s_dn;
+        proxy_set_header X-Client-Issuer      $ssl_client_i_dn;
+        proxy_set_header X-Client-Serial      $ssl_client_serial;
         proxy_set_header X-Client-Fingerprint $ssl_client_fingerprint;
 
         proxy_pass http://127.0.0.1:9000;
@@ -284,8 +264,7 @@ server {
 }
 ```
 
-### Laravel Middleware Reading mTLS Identity
-
+**Laravel Middleware — mTLS Identity Oxuma:**
 ```php
 // app/Http/Middleware/MtlsAuthenticate.php
 namespace App\Http\Middleware;
@@ -324,8 +303,7 @@ class MtlsAuthenticate
 }
 ```
 
-### Per-route Authorization by Cert Identity
-
+**Per-route Service Authorization:**
 ```php
 // routes/api.php
 Route::middleware('mtls')->group(function () {
@@ -335,9 +313,7 @@ Route::middleware('mtls')->group(function () {
     Route::get('/internal/users', [UserController::class, 'index'])
          ->middleware('mtls.allow:reporting-service');
 });
-```
 
-```php
 // app/Http/Middleware/MtlsAllow.php
 class MtlsAllow
 {
@@ -352,24 +328,22 @@ class MtlsAllow
 }
 ```
 
-### Generating Client Certs (CLI, openssl)
-
+**Sertifikat Yaratma (CLI):**
 ```bash
-# Generate CA
+# CA yarat
 openssl req -x509 -newkey rsa:4096 -keyout ca.key -out ca.crt -days 3650 -nodes \
   -subj "/CN=Example Internal CA"
 
-# Generate service cert signing request
+# Servis sertifikat signing request
 openssl req -newkey rsa:4096 -keyout orders.key -out orders.csr -nodes \
   -subj "/CN=orders-service/O=Example"
 
-# Sign with CA
+# CA ilə imzala
 openssl x509 -req -in orders.csr -CA ca.crt -CAkey ca.key -CAcreateserial \
   -out orders.crt -days 365 -sha256
 ```
 
-### Cert Rotation with Laravel Scheduled Command
-
+**Avtomatik Sertifikat Rotasiyası (HashiCorp Vault):**
 ```php
 // app/Console/Commands/RotateMtlsCert.php
 class RotateMtlsCert extends Command
@@ -378,11 +352,10 @@ class RotateMtlsCert extends Command
 
     public function handle()
     {
-        // Fetch new cert from internal CA service (e.g., HashiCorp Vault)
         $response = Http::withToken(env('VAULT_TOKEN'))
-            ->post(env('VAULT_ADDR').'/v1/pki/issue/app-role', [
+            ->post(env('VAULT_ADDR') . '/v1/pki/issue/app-role', [
                 'common_name' => 'laravel-app',
-                'ttl' => '720h',
+                'ttl'         => '720h',
             ]);
 
         $data = $response->json('data');
@@ -397,65 +370,24 @@ class RotateMtlsCert extends Command
 $schedule->command('mtls:rotate')->dailyAt('02:00');
 ```
 
-## Interview Sualları (Q&A)
+## Praktik Tapşırıqlar
 
-### 1. mTLS ilə adi TLS arasında fərq nədir?
+1. **Local PKI qur:** `openssl` ilə Root CA, Intermediate CA, client sertifikatı yarat. Chain-i yoxla: `openssl verify -CAfile ca.crt client.crt`.
 
-**Cavab:** Adi TLS-də yalnız server sertifikat təqdim edir, client anonimdir (istifadəçi adı/parol kimi application-level auth olur). mTLS-də hər iki tərəf sertifikatla authenticate olur - server client-dən də sertifikat istəyir və yoxlayır. Service-to-service auth üçün ideal.
+2. **Nginx mTLS:** Nginx-i yuxarıdakı konfiqurasiya ilə qur, `ssl_verify_client on` aktiv et, `curl --cert client.crt --key client.key` ilə test et.
 
-### 2. mTLS niyə microservices üçün yaxşıdır?
+3. **Laravel middleware:** `MtlsAuthenticate` middleware-ini yaz, test üçün Nginx headers-i manual header kimi göndər, CN-i düzgün parse etdiyini yoxla.
 
-**Cavab:** (1) Strong identity - hər servisin kriptoqrafik identity-si var, (2) Mutual auth - heç bir servis digərini spoof edə bilməz, (3) Encrypted traffic - hətta private network-də, (4) Token-lardan fərqli olaraq private key workload-dan çıxmır, (5) Service mesh (Istio) bunu avtomatlaşdırır.
+4. **Vault PKI integration:** HashiCorp Vault-da PKI secret engine aktiv et, Laravel üçün role yarat, `RotateMtlsCert` command-ı yaz.
 
-### 3. SPIFFE və SPIRE nədir?
+5. **Sertifikat expiry monitoring:** `openssl x509 -in client.crt -noout -dates` — expiry tarixini çıxar, 30 gün qalmış alert göndərən script yaz.
 
-**Cavab:** **SPIFFE** workload identity üçün universal standartdır - `spiffe://trust-domain/path` formatlı ID. **SPIRE** onun reference implementation-u - Kubernetes pod-larına, VM-lərə workload attestation (hansı pod-dur, hansı service account-dur) əsasında short-lived X.509 sertifikatları paylayır. Istio bunu default istifadə edir.
+6. **mTLS + JWT combine:** mTLS ilə service identity, JWT ilə user identity. `MtlsAuthenticate` + `auth:api` middleware-lərini eyni route-da birlikdə işlət.
 
-### 4. Certificate revocation necə işləyir?
+## Əlaqəli Mövzular
 
-**Cavab:** 3 yanaşma: (1) **CRL** - CA revoked sertifikat listesi publish edir, böyük fayl, gecikməli, (2) **OCSP** - real-time CA-ya sorğu, latency və privacy problemləri, (3) **OCSP Stapling** - server özü OCSP-ni cache edib handshake-də verir, (4) **Short-lived certs** (1-24 saat TTL) - revocation-a ehtiyac yoxdur, yenilənmir.
-
-### 5. mTLS performance overhead necə olur?
-
-**Cavab:** Əlavə RTT yoxdur (handshake eyni mesaj sayıdır), amma əlavə CPU server-də client cert yoxlamağa, əlavə network CRL/OCSP check-ə sərf olunur. Mitigation: session resumption, connection pooling, HTTP/2 multiplexing, OCSP stapling, short cert chains.
-
-### 6. mTLS-i Nginx ilə necə implement edirsən?
-
-**Cavab:**
-```nginx
-ssl_client_certificate /etc/nginx/ssl/ca.crt;
-ssl_verify_client      on;
-```
-Nginx client cert-i yoxlayır, valid olsa, `$ssl_client_s_dn` (subject), `$ssl_client_verify` kimi variable-ları backend-ə header kimi ötürür. Laravel bu header-dən identity oxuyub authorization edir.
-
-### 7. Cert rotation-ı necə idarə edirsən?
-
-**Cavab:** Avtomatik olmalıdır. (1) HashiCorp Vault PKI secret engine-dən short-lived cert issue et, (2) Laravel scheduled command-la təzələ, (3) Istio/SPIRE istifadə edirsənsə, bunu avtomatik edir (24h TTL), (4) monitoring: cert expiry-yə 30 gün qalanda alert.
-
-### 8. mTLS və OAuth/JWT arasında nə vaxt seçməliyəm?
-
-**Cavab:**
-- **mTLS** - service-to-service, stabil infrastructure (eyni CA-dan keçir), Zero Trust, yüksək təhlükəsizlik tələbi.
-- **JWT/OAuth** - user authentication (browser, mobile), 3rd party integrations, dynamic client-lər, stateless.
-- **Combined** - mTLS transport, JWT user identity (bearer token mTLS connection üzərindən).
-
-### 9. SPIFFE ID-nin üstünlüyü nədir IP/hostname-ə görə?
-
-**Cavab:** IP dəyişə bilər (pod restart, scaling), hostname DNS-dən asılıdır. SPIFFE ID workload-a bağlıdır - pod yenidən başlasa da identity qalır (service account əsaslı). Kubernetes dynamic environment-də sabit identity verir. İstio policy-lər SPIFFE ID ilə yazılır.
-
-### 10. mTLS production-da hansı problemlərlə qarşılaşa bilərsən?
-
-**Cavab:** (1) Cert expiry unutmaq -> outage, (2) CA rotation mürəkkəb (bütün client-lər trust yeniləməlidir), (3) Debug çətin (tcpdump ilə encrypted trafik görünmür), (4) Cross-environment (dev/prod fərqli CA), (5) Mobile client-də private key qorumaq, (6) Load balancer mTLS pass-through vs termination qərarı.
-
-## Best Practices
-
-1. **Avtomatik cert rotation qur** - HashiCorp Vault, cert-manager (Kubernetes), SPIRE istifadə et. Manual rotation ölümcüldür.
-2. **Short-lived certs istifadə et** (1-24 saat) - revocation problemini ortadan qaldırır, blast radius-u azaldır.
-3. **Ayrı intermediate CA yarat** - Root CA offline saxla (HSM), intermediate-dən issue et. Compromise olsa intermediate rotate et.
-4. **Cert monitoring qur** - Prometheus blackbox exporter, Datadog ilə expiry izlə, 30 gün qalanda alert.
-5. **SPIFFE istifadə et microservices üçün** - vendor lock-in-dən qaç, standart API-lərdən istifadə et.
-6. **mTLS + JWT combine et** - transport-da mTLS (service identity), application-da JWT (user identity) istifadə et.
-7. **Verify mode "STRICT" qoy** - Istio-da `PERMISSIVE` yalnız migration müddəti üçün, sonra `STRICT`-ə keç.
-8. **Sensitive headers log-lama** - `X-Client-Subject` log-da qala bilər, amma private key heç vaxt.
-9. **Certificate pinning düşün** - kritik integrasiyalar üçün yalnız spesifik cert fingerprint-ə güvən, CA kompromis olsa da qorun.
-10. **Load balancer mTLS termination vs pass-through seç** - pass-through end-to-end security, termination performance. Istifadə case-ə görə.
+- [HTTPS & SSL/TLS](06-https-ssl-tls.md)
+- [Zero Trust Security](33-zero-trust.md)
+- [API Security](17-api-security.md)
+- [gRPC](10-grpc.md)
+- [Service Discovery](43-service-discovery.md)

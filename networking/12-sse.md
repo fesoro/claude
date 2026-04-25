@@ -1,53 +1,57 @@
-# Server-Sent Events (SSE)
+# Server-Sent Events (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
-Server-Sent Events (SSE) serverin client-e HTTP baglantisi uzerinden real-time data push etmesine imkan veren texnologiyadir. WebSocket-den ferqli olaraq, yalniz server-den client-e tek yonlu (unidirectional) data axini var. HTTP uzerinde isleyir, buna gore proxy/firewall problemi yoxdur.
+Server-Sent Events (SSE) serverin client-ə HTTP bağlantısı üzərindən real-time data push etməsinə imkan verən texnologiyadır. WebSocket-dən fərqli olaraq, yalnız server-dən client-ə tək yönlü (unidirectional) data axını var. HTTP üzərində işləyir, buna görə proxy/firewall problemi yoxdur.
 
 ```
 HTTP Polling:
-  Client --request--> Server  (1 saniye)
-  Client --request--> Server  (2 saniye)
-  Client --request--> Server  (3 saniye)
-  Her defe yeni connection, coxlu overhead
+  Client --request--> Server  (1 saniyə)
+  Client --request--> Server  (2 saniyə)
+  Client --request--> Server  (3 saniyə)
+  Hər dəfə yeni connection, çoxlu overhead
 
 SSE:
   Client --request--> Server
   Client <--- event 1 --- Server
   Client <--- event 2 --- Server
   Client <--- event 3 --- Server
-  Tek connection, davamedici stream
+  Tək connection, davamedici stream
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
+
+Notification sistemləri, live dashboard-lar, AI chat streaming (ChatGPT üslubu), progress bar-lar kimi server-dən client-ə tək yönlü data axını olan hallarda SSE WebSocket-dən daha sadə və effektivdir. HTTP üzərində işlədiyindən mövcud infrastrukturla tam uyğundur, browser-dən başqa heç bir konfiqurasiya tələb etmir. Auto-reconnect və event ID tracking kimi daxili mexanizmlər əlavə reliability verir.
+
+## Əsas Anlayışlar
 
 ### SSE Connection Flow
 
 ```
-1. Client EventSource API ile connect olur:
+1. Client EventSource API ilə connect olur:
    const source = new EventSource('/events');
 
-2. Server cavab qaytarir:
+2. Server cavab qaytarır:
    HTTP/1.1 200 OK
    Content-Type: text/event-stream
    Cache-Control: no-cache
    Connection: keep-alive
 
-3. Server event-leri stream edir:
+3. Server event-ləri stream edir:
    data: {"message": "Hello"}
 
    event: notification
    data: {"text": "Yeni mesaj var"}
 
-   data: Bu sadece text data-dir
+   data: Bu sadəcə text data-dır
 
-4. Baglanti qirilsa browser avtomatik reconnect edir
+4. Bağlantı qırılsa browser avtomatik reconnect edir
 ```
 
 ### Event Stream Format
 
 ```
-# Sadece data
+# Sadəcə data
 data: Hello World
 
 # Multi-line data
@@ -59,19 +63,19 @@ data: {"user": "Orkhan", "message": "Salam"}
 
 # Named event
 event: notification
-data: {"text": "Yeni sifaris!"}
+data: {"text": "Yeni sifariş!"}
 
-# Event ID (reconnect zamani Last-Event-ID gonderiir)
+# Event ID (reconnect zamanı Last-Event-ID göndərir)
 id: 42
 data: {"order": "shipped"}
 
 # Retry interval (milliseconds)
 retry: 5000
 
-# Comment (keep-alive ucun istifade olunur)
+# Comment (keep-alive üçün istifadə olunur)
 : this is a comment
 
-# Tam numune (her event bosh setirle ayrilir)
+# Tam nümunə (hər event boş sətirlə ayrılır)
 id: 1
 event: message
 data: {"text": "Salam!"}
@@ -86,7 +90,7 @@ data: ping
 
 ```
 
-### Auto-Reconnect ve Last-Event-ID
+### Auto-Reconnect və Last-Event-ID
 
 ```
 Client                              Server
@@ -99,12 +103,10 @@ Client                              Server
   |    ~~~ CONNECTION LOST ~~~         |
   |                                    |
   |--- GET /events ------------------>|  (avtomatik reconnect)
-  |    Last-Event-ID: 3               |  (son aldiqi ID-ni gonderir)
-  |<-- id: 4, data: "event 4" -------|  (server 3-den sonrakileri gonderir)
+  |    Last-Event-ID: 3               |  (son aldığı ID-ni göndərir)
+  |<-- id: 4, data: "event 4" -------|  (server 3-dən sonrakıları göndərir)
   |<-- id: 5, data: "event 5" -------|
 ```
-
-## Əsas Konseptlər (Key Concepts)
 
 ### SSE vs WebSocket vs Long Polling
 
@@ -117,21 +119,21 @@ Client                              Server
 | Auto reconnect     | Yes ✓     | No ✗      | Manual      |
 | Event ID tracking  | Yes ✓     | No ✗      | No ✗        |
 | Binary data        | No ✗      | Yes ✓     | Yes ✓       |
-| Max connections     | 6/domain  | Unlimited | 6/domain    |
+| Max connections    | 6/domain  | Unlimited | 6/domain    |
 | Proxy friendly     | Yes ✓     | Sometimes | Yes ✓       |
-| Complexity         | Asagi     | Orta      | Asagi       |
-| Browser support    | Genis     | Genis     | Genis       |
+| Complexity         | Aşağı     | Orta      | Aşağı       |
+| Browser support    | Geniş     | Geniş     | Geniş       |
 +--------------------+-----------+-----------+-------------+
 
-SSE ne vaxt istifade edin:
+SSE nə vaxt istifadə edin:
 - Server push (notifications, live feed, stock prices)
-- Client-den server-e data gondermek lazim olmayanda
-- Simple implementation lazim olanda
+- Client-dən server-ə data göndərmək lazım olmayanda
+- Simple implementation lazım olanda
 
-WebSocket ne vaxt istifade edin:
-- Bidirectional lazim olanda (chat, gaming)
-- Binary data lazim olanda
-- Cox suretli her iki yonlu kommunikasiya
+WebSocket nə vaxt istifadə edin:
+- Bidirectional lazım olanda (chat, gaming)
+- Binary data lazım olanda
+- Çox sürətli hər iki yönlü kommunikasiya
 ```
 
 ### EventSource API (Browser)
@@ -174,8 +176,7 @@ source.onerror = (event) => {
 // Manual close
 source.close();
 
-// Auth header ile (EventSource native desteklemir, polyfill lazimdir)
-// eventsource-polyfill ve ya fetch-based custom implementation
+// Auth header ilə (EventSource native dəstəkləmir, polyfill lazımdır)
 const source = new EventSourcePolyfill('/api/events', {
     headers: {
         'Authorization': 'Bearer ' + token,
@@ -183,18 +184,57 @@ const source = new EventSourcePolyfill('/api/events', {
 });
 ```
 
-## PHP/Laravel ilə İstifadə
+## Praktik Baxış
 
-### Basic SSE in PHP
+**Nə vaxt SSE istifadə etmək lazımdır:**
+- Real-time notifications (sifariş statusu, sistem xəbərləri)
+- Live dashboard-lar (server metrics, analytics)
+- AI chat streaming (ChatGPT üslubu token-by-token cavab)
+- Progress bar-lar (fayl upload, batch job tamamlanması)
+- Stock/kurs canlı qiymətləri
+
+**Nə vaxt WebSocket seçmək lazımdır:**
+- İstifadəçi server-ə mesaj da göndərməlidir (chat)
+- Binary data axını lazımdır
+- Çox yüksək sürətli bidirectional kommunikasiya
+
+**Trade-off-lar:**
+- PHP-də hər SSE connection bir PHP process tutur — 100 connection = 100 process
+- HTTP/1.1-də domain başına 6 connection limiti var (HTTP/2 ilə aradan qalxır)
+- Binary data dəstəklənmir (yalnız UTF-8 text)
+
+**Anti-pattern-lər:**
+- `X-Accel-Buffering: no` header-ini unutmaq (Nginx buffer-i SSE-ni bloklayır)
+- Session lock-u bağlamamaq — `session_write_close()` çağırmadan digər request-lər bloklanır
+- Event ID-siz istifadə etmək — disconnect zamanı itirilen event-lər bərpa olunmur
+- PHP-də çox sayda SSE connection üçün async runtime istifadə etməmək
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+SSE axını vizual olaraq:
+
+```
+[Client browser] --- GET /sse/notifications ---> [Laravel server]
+                                                       |
+                              <--- id:1, event:notif --|
+                              <--- : heartbeat --------|  (hər 30 san)
+                              <--- id:2, event:order---|
+```
+
+### Kod Nümunəsi
+
+**Basic SSE in PHP:**
 
 ```php
-// Sade PHP SSE
+// Sadə PHP SSE
 header('Content-Type: text/event-stream');
 header('Cache-Control: no-cache');
 header('Connection: keep-alive');
-header('X-Accel-Buffering: no');  // Nginx buffering-i sondur
+header('X-Accel-Buffering: no');  // Nginx buffering-i söndür
 
-// Output buffering-i sondur
+// Output buffering-i söndür
 if (ob_get_level()) {
     ob_end_clean();
 }
@@ -202,7 +242,7 @@ if (ob_get_level()) {
 $lastEventId = $_SERVER['HTTP_LAST_EVENT_ID'] ?? 0;
 
 while (true) {
-    // Yeni event-leri yoxla (DB, Redis, etc.)
+    // Yeni event-ləri yoxla (DB, Redis, etc.)
     $events = getNewEvents($lastEventId);
 
     foreach ($events as $event) {
@@ -230,7 +270,7 @@ while (true) {
 }
 ```
 
-### Laravel SSE with StreamedResponse
+**Laravel SSE with StreamedResponse:**
 
 ```php
 namespace App\Http\Controllers;
@@ -249,7 +289,7 @@ class SseController extends Controller
         $user = $request->user();
 
         return new StreamedResponse(function () use ($user) {
-            // Buffering sondur
+            // Buffering söndür
             if (ob_get_level()) {
                 ob_end_clean();
             }
@@ -257,7 +297,7 @@ class SseController extends Controller
             $lastId = 0;
 
             while (true) {
-                // Database-den yeni notifications
+                // Database-dən yeni notifications
                 $notifications = $user->unreadNotifications()
                     ->where('id', '>', $lastId)
                     ->orderBy('id')
@@ -300,9 +340,6 @@ class SseController extends Controller
         ]);
     }
 
-    /**
-     * SSE event format gondermek
-     */
     private function sendEvent(string $event, array $data, string|int $id = null): void
     {
         if ($id !== null) {
@@ -314,7 +351,7 @@ class SseController extends Controller
 }
 ```
 
-### Redis Pub/Sub ile SSE
+**Redis Pub/Sub ilə SSE:**
 
 ```php
 namespace App\Http\Controllers;
@@ -325,7 +362,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class LiveFeedController extends Controller
 {
     /**
-     * Redis Pub/Sub ile real-time feed
+     * Redis Pub/Sub ilə real-time feed
      */
     public function stream(string $channel): StreamedResponse
     {
@@ -334,7 +371,7 @@ class LiveFeedController extends Controller
                 ob_end_clean();
             }
 
-            // Retry interval (5 saniye)
+            // Retry interval (5 saniyə)
             echo "retry: 5000\n\n";
 
             Redis::subscribe([$channel], function ($message, $channel) {
@@ -360,7 +397,7 @@ class LiveFeedController extends Controller
     }
 
     /**
-     * Event publish etmek (basqa endpoint ve ya job-dan)
+     * Event publish etmək (başqa endpoint və ya job-dan)
      */
     public function publish(string $channel, array $data): void
     {
@@ -373,7 +410,7 @@ class LiveFeedController extends Controller
 }
 ```
 
-### SSE Route ve Middleware
+**SSE Route və Middleware:**
 
 ```php
 // routes/api.php
@@ -382,7 +419,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/sse/feed/{channel}', [LiveFeedController::class, 'stream']);
 });
 
-// SSE ucun timeout middleware (uzun connection)
+// SSE üçün timeout middleware (uzun connection)
 // app/Http/Middleware/SseMiddleware.php
 namespace App\Http\Middleware;
 
@@ -393,11 +430,11 @@ class SseMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        // PHP execution time limitini ardir
+        // PHP execution time limitini artır
         set_time_limit(0);
         ini_set('max_execution_time', 0);
 
-        // Session lock-u acirag (basqa request-ler block olmasin)
+        // Session lock-u aç (başqa request-lər block olmasın)
         if (session_status() === PHP_SESSION_ACTIVE) {
             session_write_close();
         }
@@ -407,7 +444,7 @@ class SseMiddleware
 }
 ```
 
-### AI Chat Streaming (ChatGPT style)
+**AI Chat Streaming (ChatGPT style):**
 
 ```php
 namespace App\Http\Controllers;
@@ -418,7 +455,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class AiChatController extends Controller
 {
     /**
-     * AI cavabini stream etmek (ChatGPT kimi)
+     * AI cavabını stream etmək (ChatGPT kimi)
      */
     public function stream(Request $request): StreamedResponse
     {
@@ -429,7 +466,7 @@ class AiChatController extends Controller
                 ob_end_clean();
             }
 
-            // OpenAI API ile streaming
+            // OpenAI API ilə streaming
             $stream = \OpenAI::chat()->createStreamed([
                 'model' => 'gpt-4',
                 'messages' => [
@@ -459,38 +496,24 @@ class AiChatController extends Controller
 }
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-### 1. SSE nedir ve nece isleyir?
-**Cavab:** Server-Sent Events serverin HTTP uzerinden client-e real-time data push etme texnologiyasidir. Client EventSource API ile baglanir, server `text/event-stream` content type ile cavab qaytarir ve event-leri stream edir. Unidirectional-dir (yalniz server -> client).
+1. **Sadə SSE endpoint:** `StreamedResponse` ilə `/api/sse/time` endpoint-i yazın — hər saniyə server vaxtını göndərsin. Browser-də `EventSource` ilə test edin.
 
-### 2. SSE ve WebSocket arasinda ferq nedir?
-**Cavab:** SSE tek yonlu (server->client), HTTP uzerinde isleyir, avtomatik reconnect var, text-only. WebSocket iki yonlu, ayri protokol, manual reconnect, binary destekliyir. Yalniz server push lazim olanda SSE daha sade ve uygundir.
+2. **Notification stream:** Login olmuş istifadəçi üçün unread notification-ları SSE ilə göndərin. `Last-Event-ID`-ni düzgün handle edin ki, disconnect zamanı itirilen notification-lar bərpa olunsun.
 
-### 3. SSE-de auto-reconnect nece isleyir?
-**Cavab:** Browser baglantiini itirende avtomatik yeniden baglanir. Son aldiqi event ID-ni `Last-Event-ID` header ile gonderir. Server bu ID-den sonraki event-leri gonderir. `retry:` field ile reconnect intervali teyin oluna biler.
+3. **Redis Pub/Sub:** `LiveFeedController`-i implement edin. Ayrı bir endpoint-dən `Redis::publish()` ilə mesaj göndərin, SSE vasitəsilə browser-ə çatdırılmasını izləyin.
 
-### 4. SSE-nin limitleri nelerdir?
-**Cavab:** Yalniz text data (binary yox), tek yonlu (server->client), HTTP/1.1-de browser basina 6 connection limiti var (HTTP/2-de bu problem yoxdur), IE/Edge kohne versiyalari desteklemirydi (indi destekleyir).
+4. **AI streaming:** OpenAI (və ya başqa LLM) streaming API-sından gələn token-ləri SSE ilə real-time browser-ə göndərin. `[DONE]` siqnalını qəbul edəndə UI-da "tamamlandı" göstərin.
 
-### 5. SSE-de keep-alive nece edilir?
-**Cavab:** Comment setiri gonderilir: `: heartbeat\n\n`. Bu proxy ve firewall-larin connection-u timeout etmesinin qarsisini alir. Her 15-30 saniye comment gonderilmesi tovsiye olunur.
+5. **Heartbeat middleware:** `SseMiddleware` yazın. Hər 15 saniyə comment göndərsin (`": ping\n\n"`). Nginx-in `proxy_read_timeout` ilə konflikt olmadığını yoxlayın.
 
-### 6. SSE ne zaman istifade etmeliyik?
-**Cavab:** Real-time notifications, live dashboards, stock price updates, news feeds, progress bars, AI chat streaming (ChatGPT uslubu). Client-den servere data gondermek lazim olmayan butun hallarda SSE uygun secimdir.
+6. **Load test:** 50 paralel SSE connection aç. PHP-FPM worker sayını izləyin. Sonra Swoole/Octane ilə eyni testi edin — fərqi müqayisə edin.
 
-### 7. PHP-de SSE-nin problemi nedir?
-**Cavab:** PHP traditional request-response model ile isleyir. Her SSE connection bir PHP process tutur. Cox connection = cox process = cox memory. Hell yolu: Nginx + Redis Pub/Sub, Swoole/ReactPHP kimi async PHP frameworks, ve ya SSE-ni Node.js/Go ile ayri service olaraq qurmaq.
+## Əlaqəli Mövzular
 
-## Best Practices
-
-1. **Heartbeat gonderin** - Her 15-30 saniye comment setiri ile keep-alive
-2. **Event ID istifade edin** - Reconnect zamani itirilen event-leri almaq ucun
-3. **Retry interval teyin edin** - `retry: 5000` ile reconnect muddeti
-4. **Nginx buffering sondurulmelidir** - `X-Accel-Buffering: no` header
-5. **Session lock** - `session_write_close()` cagirib session-u azad edin
-6. **PHP timeout** - `set_time_limit(0)` ile execution limit-i ardin
-7. **Connection limit** - Server basina max SSE connection limiti qoyun
-8. **HTTP/2 istifade edin** - 6 connection limiti aradan qalxir
-9. **Graceful degradation** - SSE desteklenmirsə polling-e kecin
-10. **Redis Pub/Sub** - Multi-process/multi-server ucun Redis istifade edin
+- [WebSocket](11-websocket.md)
+- [Long Polling](13-long-polling.md)
+- [HTTP Protocol](05-http-protocol.md)
+- [Webhooks](23-webhooks.md)
+- [API Gateway](21-api-gateway.md)

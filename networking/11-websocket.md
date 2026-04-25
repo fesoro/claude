@@ -1,26 +1,30 @@
-# WebSocket
+# WebSocket (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
-WebSocket client ve server arasinda full-duplex, persistent baglanti yaradan protokoldur (RFC 6455). HTTP-den ferqli olaraq, bir defe baglanti qurulduqdan sonra her iki teref istediyi vaxt mesaj gondere biler. Real-time applicationlar (chat, notifications, live data) ucun idealdir.
+WebSocket client və server arasında full-duplex, persistent bağlantı yaradan protokoldur (RFC 6455). HTTP-dən fərqli olaraq, bir dəfə bağlantı qurulduqdan sonra hər iki tərəf istədiyi vaxt mesaj göndərə bilər. Real-time tətbiqlər (chat, notifications, live data) üçün idealdır.
 
 ```
 HTTP (Half-duplex):
   Client --request-->  Server
   Client <--response-- Server
-  (Her defe yeni baglanti, yalniz client initiate edir)
+  (Hər dəfə yeni bağlantı, yalnız client initiate edir)
 
 WebSocket (Full-duplex):
   Client <============> Server
-  (Daimi baglanti, her iki teref istediyi vaxt mesaj gonderir)
+  (Daimi bağlantı, hər iki tərəf istədiyi vaxt mesaj göndərir)
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
+
+Real-time tətbiqlərdə (chat, online oyunlar, canlı dashboard-lar, trading platformaları) HTTP polling həddən artıq əlavə yük yaradır. WebSocket daimi açıq bağlantı saxlayır — hər mesaj üçün yeni HTTP connection qurulmur, header overhead yoxdur. Bu latency-ni əhəmiyyətli dərəcədə azaldır. Laravel Reverb vasitəsilə PHP ekosistemindən birbaşa istifadə olunur.
+
+## Əsas Anlayışlar
 
 ### WebSocket Handshake (HTTP Upgrade)
 
 ```
-1. Client HTTP Upgrade request gonderir:
+1. Client HTTP Upgrade request göndərir:
 
 GET /chat HTTP/1.1
 Host: example.com
@@ -31,7 +35,7 @@ Sec-WebSocket-Version: 13
 Sec-WebSocket-Protocol: chat, superchat
 Origin: http://example.com
 
-2. Server 101 Switching Protocols cavabi qaytarir:
+2. Server 101 Switching Protocols cavabı qaytarır:
 
 HTTP/1.1 101 Switching Protocols
 Upgrade: websocket
@@ -39,8 +43,8 @@ Connection: Upgrade
 Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
 Sec-WebSocket-Protocol: chat
 
-3. Indi baglanti WebSocket protokoluna keçdi!
-   Binary frames ile kommunikasiya bashlayir.
+3. İndi bağlantı WebSocket protokoluna keçdi!
+   Binary frames ilə kommunikasiya başlayır.
 ```
 
 ### WebSocket Frame Structure
@@ -93,22 +97,20 @@ Client                                  Server
 ### Heartbeat (Ping/Pong)
 
 ```
-Niye lazimdir?
-- Baglandinin hala aktiv oldugunu yoxlamaq
+Niyə lazımdır?
+- Bağlantının hala aktiv olduğunu yoxlamaq
 - NAT/proxy timeout-dan qorunmaq
-- Dead connection-lari aşkarlamaq
+- Dead connection-ları aşkarlamaq
 
 Client                   Server
   |                        |
-  |--- Ping -------------->|  (her 30 saniye)
+  |--- Ping -------------->|  (hər 30 saniyə)
   |<-- Pong ---------------|
   |                        |
   |--- Ping -------------->|
-  |     (cavab gelmedi)    |
+  |     (cavab gəlmədi)    |
   |--- Close + Reconnect   |  (connection dead)
 ```
-
-## Əsas Konseptlər (Key Concepts)
 
 ### WebSocket vs HTTP vs SSE
 
@@ -130,44 +132,76 @@ Client                   Server
 ### Scaling WebSocket
 
 ```
-Problem: WebSocket stateful-dir, load balancer arxasinda cetindir
+Problem: WebSocket stateful-dir, load balancer arxasında çətindir
 
-Tek server:
-  Client A -----> Server 1 (Client A-nin connection-u burda)
+Tək server:
+  Client A -----> Server 1 (Client A-nın connection-u burda)
   Client B -----> Server 1
 
-Coxlu server:
-  Client A -----> Server 1 (A burda qosuludur)
-  Client B -----> Server 2 (B burda qosuludur)
+Çoxlu server:
+  Client A -----> Server 1 (A burda qoşuludur)
+  Client B -----> Server 2 (B burda qoşuludur)
 
-  Server 1 A-ya mesaj gondermek istese OK.
-  Amma Server 1 B-ye mesaj gondermek istese? B Server 2-dedir!
+  Server 1 A-ya mesaj göndərmək istəsə OK.
+  Amma Server 1 B-yə mesaj göndərmək istəsə? B Server 2-dədir!
 
-Hell yolu: Pub/Sub (Redis, Pusher, etc.)
+Həll yolu: Pub/Sub (Redis, Pusher, etc.)
 
   Server 1 --publish--> Redis <--subscribe-- Server 2
                           |
   Client A <-- Server 1   |   Server 2 --> Client B
-  (Redis vasitesile butun serverler mesaji alir)
+  (Redis vasitəsilə bütün serverlər mesajı alır)
 ```
 
 ### Sticky Sessions
 
 ```
-Load Balancer WebSocket ucun sticky session istifade etmelidir:
+Load Balancer WebSocket üçün sticky session istifadə etməlidir:
 
-  Client A ----> LB ----> hemise Server 1
-  Client A ----> LB ----> Server 2  ✗ (baglantiyi itirir!)
+  Client A ----> LB ----> həmişə Server 1
+  Client A ----> LB ----> Server 2  ✗ (bağlantını itirir!)
 
-  ip_hash ve ya cookie-based sticky session
+  ip_hash və ya cookie-based sticky session
 ```
 
-## PHP/Laravel ilə İstifadə
+## Praktik Baxış
 
-### Laravel Broadcasting + Reverb
+**Nə vaxt WebSocket istifadə etmək lazımdır:**
+- Bidirectional real-time kommunikasiya (chat, oyunlar)
+- Binary data axını lazım olanda
+- Çox sürətli, hər iki yönlü mesajlaşma
+
+**Nə vaxt SSE seçmək lazımdır:**
+- Yalnız server-dən client-ə data lazımdır (notifications, live feed)
+- Daha sadə implementation lazım olanda
+
+**Trade-off-lar:**
+- Stateful olması scaling-i çətinləşdirir — Redis Pub/Sub mütləqdir
+- Proxy/firewall bəzən WebSocket bağlantılarını kəsir
+- Reconnection logic manual yazılmalıdır
+- Server resource (memory/connections) sərfi çoxdur
+
+**Anti-pattern-lər:**
+- Yalnız server-dən client-ə data lazım olanda WebSocket seçmək (SSE daha uyğundur)
+- Redis Pub/Sub olmadan multi-server deploy etmək
+- Reconnect logic-siz istifadə etmək
+- Sticky session olmadan session-based auth istifadə etmək
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+```
+Client qoşulur --> WebSocket server --> Redis channel-a subscribe olur
+Başqa server mesaj publish edir --> Redis --> Bütün subscriber-lər alır --> Öz client-lərinə göndərirlər
+```
+
+### Kod Nümunəsi
+
+**Laravel Broadcasting + Reverb setup:**
 
 ```bash
-# Laravel Reverb (Laravel-in oz WebSocket server-i, Laravel 11+)
+# Laravel Reverb (Laravel-in öz WebSocket server-i, Laravel 11+)
 composer require laravel/reverb
 php artisan reverb:install
 
@@ -180,7 +214,7 @@ REVERB_HOST=localhost
 REVERB_PORT=8080
 ```
 
-### Event Broadcasting
+**Event Broadcasting:**
 
 ```php
 // app/Events/MessageSent.php
@@ -190,7 +224,6 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -205,9 +238,6 @@ class MessageSent implements ShouldBroadcast
         public User $user
     ) {}
 
-    /**
-     * Public channel - her kes gore biler
-     */
     public function broadcastOn(): array
     {
         return [
@@ -215,9 +245,6 @@ class MessageSent implements ShouldBroadcast
         ];
     }
 
-    /**
-     * Broadcast olunacaq data
-     */
     public function broadcastWith(): array
     {
         return [
@@ -231,9 +258,6 @@ class MessageSent implements ShouldBroadcast
         ];
     }
 
-    /**
-     * Event adi (default: class adi)
-     */
     public function broadcastAs(): string
     {
         return 'message.sent';
@@ -241,18 +265,18 @@ class MessageSent implements ShouldBroadcast
 }
 ```
 
-### Channel Authorization
+**Channel Authorization:**
 
 ```php
 // routes/channels.php
 use App\Models\ChatRoom;
 
-// Private channel - yalniz authorized users
+// Private channel - yalnız authorized users
 Broadcast::channel('chat.{roomId}', function ($user, int $roomId) {
     return ChatRoom::find($roomId)?->hasUser($user);
 });
 
-// Presence channel - kim online-dir gormek ucun
+// Presence channel - kim online-dir görmək üçün
 Broadcast::channel('chat.{roomId}', function ($user, int $roomId) {
     if (ChatRoom::find($roomId)?->hasUser($user)) {
         return [
@@ -265,7 +289,7 @@ Broadcast::channel('chat.{roomId}', function ($user, int $roomId) {
 });
 ```
 
-### Controller - Message Gondermek
+**Controller - Mesaj Göndərmək:**
 
 ```php
 namespace App\Http\Controllers;
@@ -289,7 +313,7 @@ class ChatController extends Controller
             'body' => $validated['body'],
         ]);
 
-        // Bu event WebSocket ile butun channel-deki userlere broadcast olunur
+        // Bu event WebSocket ilə bütün channel-dəki userlərə broadcast olunur
         broadcast(new MessageSent($message, $request->user()))->toOthers();
 
         return response()->json(new MessageResource($message), 201);
@@ -297,7 +321,7 @@ class ChatController extends Controller
 }
 ```
 
-### Frontend - Laravel Echo
+**Frontend - Laravel Echo:**
 
 ```javascript
 // resources/js/bootstrap.js
@@ -313,7 +337,7 @@ window.Echo = new Echo({
     enabledTransports: ['ws', 'wss'],
 });
 
-// Private channel-e qosul
+// Private channel-ə qoşul
 Echo.private(`chat.${roomId}`)
     .listen('.message.sent', (e) => {
         console.log('New message:', e.body);
@@ -323,7 +347,7 @@ Echo.private(`chat.${roomId}`)
         console.log(`${e.name} is typing...`);
     });
 
-// Presence channel (kim online gormek ucun)
+// Presence channel (kim online görmək üçün)
 Echo.join(`chat.${roomId}`)
     .here((users) => {
         console.log('Online users:', users);
@@ -343,7 +367,7 @@ Echo.private(`chat.${roomId}`)
     .whisper('typing', { name: 'Orkhan' });
 ```
 
-### Real-time Notifications
+**Real-time Notifications:**
 
 ```php
 // app/Notifications/OrderShipped.php
@@ -371,12 +395,12 @@ class OrderShipped extends Notification
         return new BroadcastMessage([
             'order_id' => $this->order->id,
             'status' => 'shipped',
-            'message' => "Sifarishiniz #{$this->order->id} gonderildi!",
+            'message' => "Sifarişiniz #{$this->order->id} göndərildi!",
         ]);
     }
 }
 
-// Notification gondermek
+// Notification göndərmək
 $user->notify(new OrderShipped($order));
 
 // Frontend
@@ -387,41 +411,24 @@ Echo.private(`App.Models.User.${userId}`)
     });
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-### 1. WebSocket nedir ve HTTP-den nece ferqlenir?
-**Cavab:** WebSocket full-duplex, persistent connection protokoludur. HTTP-den ferqi: baglanti daimi qalir, her iki teref istediyi vaxt mesaj gonderir, daha az overhead (header yoxdur her frame-de). HTTP request-response-dur, WebSocket bidirectional-dir.
+1. **Laravel Reverb qaldırın:** `composer require laravel/reverb` ilə install edin, `.env`-i konfiqurasiya edin, `php artisan reverb:start` ilə serveri başladın.
 
-### 2. WebSocket handshake nece isleyir?
-**Cavab:** Client HTTP GET request gonderir `Upgrade: websocket` header ile. Server 101 Switching Protocols cavabi qaytarir. Bundan sonra protocol HTTP-den WebSocket-a kecir. Bu "HTTP Upgrade" mexanizmi adlanir.
+2. **Chat sistemi qurun:** `ChatRoom` modeli, `Message` modeli, `MessageSent` event-i yaradın. Private channel authorization implement edin.
 
-### 3. WebSocket-i nece scale edirsiniz?
-**Cavab:** WebSocket stateful-dir, buna gore cetin scale olunur. Redis Pub/Sub ile serverler arasi mesaj paylashmaq, sticky sessions (ip_hash) ile client-in hemise eyni servere qoshulmasi, horizontal scaling ucun Redis adapter istifade etmek.
+3. **Typing indicator:** `whisper` API-sını istifadə edərək "X is typing..." göstəricisini implement edin. 2 saniyə cavab gəlməsə indicator-u gizlədin.
 
-### 4. Ping/Pong (heartbeat) niye lazimdir?
-**Cavab:** Connection-un hala aktiv oldugunu yoxlamaq ucun. NAT/firewall/proxy idle timeout-dan qorunmaq ucun. Dead connection-lari detect edib temizlemek ucun. Adeten her 30-60 saniye Ping gonderilir.
+4. **Presence channel:** Kim online-dır? Siyahısını real-time göstərən panel qurun. Join/leave event-lərini handle edin.
 
-### 5. Laravel Broadcasting nece isleyir?
-**Cavab:** Laravel event-leri WebSocket uzerinden broadcast edir. ShouldBroadcast interface implement edin, broadcastOn() ile channel secin, broadcast() ile gonderin. Channel novleri: public (her kes), private (auth lazim), presence (kim online gormek).
+5. **Redis scale test:** 2 ayrı `php artisan reverb:start` process-i əvəzinə Redis Pub/Sub adapterini konfiqurasiya edin. Hər iki process arasında mesajın çatdırılmasını yoxlayın.
 
-### 6. WebSocket-in dezavantajlari nelerdir?
-**Cavab:** Stateful olmasi scaling-i cetinlesdirir, proxy/firewall problem yarada biler, reconnection logic lazimdir, server resource (memory/connections) serfi coxdur, debugging cetindir.
+6. **Notification sistemi:** `OrderShipped` notification-ını həm `database` həm `broadcast` channel-ı ilə göndərin. Frontend-də toast göstərin, unread count-u yeniləyin.
 
-### 7. wss:// ve ws:// arasinda ferq nedir?
-**Cavab:** `ws://` sifresiz WebSocket (HTTP kimi), `wss://` TLS ile sifreli WebSocket (HTTPS kimi). Production-da hemise `wss://` istifade edin. Port-lar: ws=80, wss=443.
+## Əlaqəli Mövzular
 
-### 8. Presence channel nedir?
-**Cavab:** Kimlerin online oldugunu gormek ucun istifade olunan channel novudur. `here()` - hal-hazirda online olanlari gosterir, `joining()` - yeni qosulan, `leaving()` - ayrilani. Chat applications ucun idealdir.
-
-## Best Practices
-
-1. **Reconnection logic** - Client avtomatik reconnect etmelidir (exponential backoff ile)
-2. **Heartbeat/Ping-Pong** - Her 30 saniye connection yoxlayin
-3. **Message queuing** - Disconnect zamani mesajlari queue-da saxlayin
-4. **Authentication** - Handshake zamani token verify edin
-5. **Rate limiting** - Message flood-dan qorunun
-6. **Compression** - Per-message deflate extension istifade edin
-7. **Redis Pub/Sub** - Multi-server ucun Redis adapter
-8. **Connection limits** - Max concurrent connection limiti teyin edin
-9. **Graceful shutdown** - Server restart zamani clientlere xeber verin
-10. **Message size limiti** - Boyuk payload-lari reject edin
+- [SSE - Server-Sent Events](12-sse.md)
+- [Long Polling](13-long-polling.md)
+- [HTTP Protocol](05-http-protocol.md)
+- [Load Balancing](18-load-balancing.md)
+- [API Gateway](21-api-gateway.md)

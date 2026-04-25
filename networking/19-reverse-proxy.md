@@ -1,73 +1,77 @@
-# Reverse Proxy
+# Reverse Proxy (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
-Reverse proxy client request-lerini qebul edib backend serverlere yonlendiren server-dir. Client reverse proxy-nin arxasindaki server-lerin varliqindan xeberdar deyil. Nginx, Apache, HAProxy, Caddy en populyar reverse proxy-lerdir.
+Reverse proxy client request-lərini qəbul edib backend serverlərə yönləndirən serverdir. Client, reverse proxy-nin arxasındakı serverlərin varlığından xəbərdar deyil. Nginx, Apache, HAProxy, Caddy ən populyar reverse proxy-lərdir.
 
 ```
-Forward Proxy (Client terefindir):
+Forward Proxy (Client tərəfindədir):
   Client --> [Forward Proxy] --> Internet --> Server
-  Client ozunu gizledir (VPN kimi)
+  Client özünü gizlədir (VPN kimi)
 
-Reverse Proxy (Server terefindir):
+Reverse Proxy (Server tərəfindədir):
   Client --> Internet --> [Reverse Proxy] --> Backend Server(s)
-  Server ozunu gizledir, client yalniz proxy-ni gorur
+  Server özünü gizlədir, client yalnız proxy-ni görür
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
+
+Reverse proxy müasir web arxitekturasının əsas komponentidir: SSL termination, static file serving, rate limiting, caching və security kimi cross-cutting concern-ləri backend-dən ayırır. PHP-FPM ilə birlikdə Nginx istifadəsi Laravel tətbiqləri üçün standart deployment modelidir. Bir reverse proxy arxasında bir neçə backend serveri gizlədib trafiki idarə etmək həm performansı artırır, həm də sistemi daha etibarlı edir.
+
+## Əsas Anlayışlar
 
 ### Forward vs Reverse Proxy
 
 ```
 Forward Proxy:
-  - Client terefinde durur
-  - Client internet-e cixisi kontrol edir
-  - Client IP-sini gizleyir
+  - Client tərəfində durur
+  - Client internet-ə çıxışı kontrol edir
+  - Client IP-sini gizlədir
   - Content filtering, caching
-  - Meselen: Squid, corporate proxy
+  - Məsələn: Squid, corporate proxy
 
   [Client A] --\
   [Client B] ----> [Forward Proxy] ----> [Internet] ----> [Server]
   [Client C] --/
 
 Reverse Proxy:
-  - Server terefinde durur
-  - Servere gelenleri kontrol edir
-  - Server IP-sini gizleyir
+  - Server tərəfində durur
+  - Serverə gələnləri kontrol edir
+  - Server IP-sini gizlədir
   - Load balancing, SSL, caching, security
-  - Meselen: Nginx, Apache
+  - Məsələn: Nginx, Apache
 
   [Client] ----> [Internet] ----> [Reverse Proxy] ----> [Server A]
                                         |-----------> [Server B]
                                         |-----------> [Server C]
 ```
 
-### Reverse Proxy Funksiyalari
+### Reverse Proxy Funksiyaları
 
 ```
 1. Load Balancing
-   Trafiki bir nece backend arasinda paylasdirmaq
+   Trafiki bir neçə backend arasında paylaşdırmaq
 
 2. SSL Termination
-   HTTPS-i acib backend-e HTTP gondermek
+   HTTPS-i açıb backend-ə HTTP göndərmək
 
 3. Caching
-   Static content ve API response-lari cache etmek
+   Static content və API response-ları cache etmək
 
 4. Compression
-   Response-lari gzip/brotli ile sixmaq
+   Response-ları gzip/brotli ilə sıxmaq
 
 5. Security
-   Backend serverleri gizlemek, DDoS qorunma, WAF
+   Backend serverləri gizləmək, DDoS qorunma, WAF
 
 6. Request/Response Modification
-   Header elave/silmek, URL rewrite
+   Header əlavə/silmək, URL rewrite
 
 7. Static File Serving
-   Statik faylları backend-e gondermeden birbaşa serve etmek
+   Statik faylları backend-ə göndərmədən birbaşa serve etmək
 
 8. Rate Limiting
-   Request sayini mehdudlashdirmaq
+   Request sayını məhdudlaşdırmaq
 ```
 
 ### Request Flow
@@ -94,8 +98,6 @@ Client                  Nginx (Reverse Proxy)           PHP-FPM
   |                          |-- Add headers                |
   |<-- HTTPS Response -------|                              |
 ```
-
-## Əsas Konseptlər (Key Concepts)
 
 ### Nginx + PHP-FPM Architecture
 
@@ -124,31 +126,64 @@ Client                  Nginx (Reverse Proxy)           PHP-FPM
                     └──────────────────────────┘
 
 PHP-FPM Process Manager Modes:
-  static    - Sabit sayda worker (oncareful = best performance)
-  dynamic   - Min/max arasi worker sayini tenzimleyir
-  ondemand  - Lazim olanda worker yaradir (az memory, cox latency)
+  static    - Sabit sayda worker (ən yaxşı performance)
+  dynamic   - Min/max arası worker sayını tənzimləyir
+  ondemand  - Lazım olanda worker yaradır (az memory, çox latency)
 ```
 
 ### Caching Proxy
 
 ```
-Nginx cache ile:
+Nginx cache ilə:
 
   Request 1: /api/products
-    -> Cache MISS -> PHP-FPM -> Response -> Cache-e yaz -> Client-e gonder
+    -> Cache MISS -> PHP-FPM -> Response -> Cache-ə yaz -> Client-ə göndər
   
-  Request 2: /api/products (5 saniye icinde)
-    -> Cache HIT -> Client-e gonder (PHP-FPM-e getmir!)
+  Request 2: /api/products (5 saniyə içində)
+    -> Cache HIT -> Client-ə göndər (PHP-FPM-ə getmir!)
 
-  Cache-Control headerine esasen nece cache olunur:
-    Cache-Control: public, max-age=300     (5 deqiqe cache)
-    Cache-Control: no-store                (cache etme)
-    Cache-Control: private                 (yalniz brauzer cache)
+  Cache-Control headerinə əsasən necə cache olunur:
+    Cache-Control: public, max-age=300     (5 dəqiqə cache)
+    Cache-Control: no-store                (cache etmə)
+    Cache-Control: private                 (yalnız brauzer cache)
 ```
 
-## PHP/Laravel ilə İstifadə
+## Praktik Baxış
 
-### Nginx Configuration for Laravel
+**Üstünlüklər:**
+- Backend serverlərini internet-dən gizlətmək (security)
+- SSL termination — sertifikat idarəsi bir yerdə
+- Static faylları PHP-yə göndərmədən serve etmək (performance)
+- Caching ilə backend yükünü azaltmaq
+
+**Trade-off-lar:**
+- Əlavə infrastructure komponenti — SPOF riski yaranır
+- Yanlış konfigurasiya bütün sistemi iflic edə bilər
+- SSL termination backend-ə plain HTTP göndərir — internal network trust tələb olunur
+
+**Nə vaxt istifadə edilməməlidir:**
+- Çox sadə, tək serverdə işləyən dev mühitlərində overhead-ə dəyməz (local docker-compose-da birbaşa PHP-FPM da olar)
+
+**Anti-pattern-lər:**
+- TCP port əvəzinə unix socket istifadə etməmək (eyni serverdə unix socket daha sürətlidir)
+- Static faylları PHP-FPM-ə göndərmək
+- `pm.max_children`-i RAM hesablamadan artırmaq (memory exhaustion)
+- `.env`, `.git`, `vendor` üçün deny rule yazmamaq
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+Nginx reverse proxy olaraq:
+1. Bütün HTTPS trafikini qəbul edir
+2. SSL-i açır
+3. Static faylları özü qaytarır
+4. PHP fayllarını FastCGI protokolu ilə PHP-FPM-ə göndərir
+5. Response-u sıxıb (gzip) clientə qaytarır
+
+### Kod Nümunəsi
+
+**Nginx Configuration for Laravel:**
 
 ```nginx
 # /etc/nginx/sites-available/laravel.conf
@@ -170,11 +205,9 @@ server {
     ssl_ciphers HIGH:!aNULL:!MD5;
     ssl_prefer_server_ciphers on;
 
-    # Root directory
     root /var/www/laravel/public;
     index index.php;
 
-    # Logging
     access_log /var/log/nginx/laravel-access.log;
     error_log /var/log/nginx/laravel-error.log;
 
@@ -190,7 +223,7 @@ server {
     add_header X-XSS-Protection "1; mode=block" always;
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
 
-    # Static files - Nginx birbase serve edir (PHP-ye getmir)
+    # Static files — Nginx birbaşa serve edir (PHP-yə getmir)
     location ~* \.(jpg|jpeg|png|gif|ico|css|js|woff2|svg)$ {
         expires 30d;
         add_header Cache-Control "public, immutable";
@@ -198,25 +231,20 @@ server {
         try_files $uri =404;
     }
 
-    # Laravel main location
     location / {
         try_files $uri $uri/ /index.php?$query_string;
     }
 
-    # PHP-FPM
     location ~ \.php$ {
         fastcgi_pass unix:/run/php/php8.3-fpm.sock;
-        # ve ya: fastcgi_pass 127.0.0.1:9000;
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         include fastcgi_params;
 
-        # Timeouts
         fastcgi_connect_timeout 60s;
         fastcgi_send_timeout 60s;
         fastcgi_read_timeout 60s;
 
-        # Buffering
         fastcgi_buffer_size 16k;
         fastcgi_buffers 4 16k;
     }
@@ -228,14 +256,13 @@ server {
         log_not_found off;
     }
 
-    # Vendor, .env, storage
     location ~ ^/(\.env|composer\.(json|lock)|package\.json) {
         deny all;
     }
 }
 ```
 
-### PHP-FPM Configuration
+**PHP-FPM Configuration:**
 
 ```ini
 ; /etc/php/8.3/fpm/pool.d/www.conf
@@ -244,28 +271,22 @@ server {
 user = www-data
 group = www-data
 
-; Socket (Nginx ile eyni serverdedirse)
 listen = /run/php/php8.3-fpm.sock
 listen.owner = www-data
 listen.group = www-data
 
-; Process Management
 pm = dynamic
-pm.max_children = 50        ; Max worker sayi
-pm.start_servers = 10       ; Baslangicda worker sayi
-pm.min_spare_servers = 5    ; Min bosda olan worker
-pm.max_spare_servers = 20   ; Max bosda olan worker
-pm.max_requests = 500       ; Memory leak qarsisi (500 request-den sonra restart)
+pm.max_children = 50        ; Max worker sayı
+pm.start_servers = 10       ; Başlanğıcda worker sayı
+pm.min_spare_servers = 5    ; Min boşda olan worker
+pm.max_spare_servers = 20   ; Max boşda olan worker
+pm.max_requests = 500       ; Memory leak qarşısı (500 request-dən sonra restart)
 
-; Status page (monitoring ucun)
 pm.status_path = /status
-
-; Slow log (yavas request-leri izlemek)
 slowlog = /var/log/php-fpm/slow.log
 request_slowlog_timeout = 5s
 request_terminate_timeout = 30s
 
-; PHP settings per pool
 php_admin_value[error_log] = /var/log/php-fpm/www-error.log
 php_admin_flag[log_errors] = on
 php_value[memory_limit] = 256M
@@ -274,26 +295,21 @@ php_value[upload_max_filesize] = 10M
 php_value[post_max_size] = 12M
 ```
 
-### Nginx Caching for Laravel API
+**Nginx Caching for Laravel API:**
 
 ```nginx
-# Cache zone teyin et
 proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=api_cache:10m
                  max_size=1g inactive=60m use_temp_path=off;
 
 server {
-    # ...
-
-    # Cached API endpoints
     location /api/products {
         proxy_cache api_cache;
-        proxy_cache_valid 200 5m;           # 200 response-u 5 deqiqe cache
-        proxy_cache_valid 404 1m;           # 404-u 1 deqiqe
-        proxy_cache_use_stale error timeout updating; # Error zamani kohne cache istifade
+        proxy_cache_valid 200 5m;
+        proxy_cache_valid 404 1m;
+        proxy_cache_use_stale error timeout updating;
         proxy_cache_key "$request_uri";
         add_header X-Cache-Status $upstream_cache_status;
 
-        # Auth olan request-leri cache etme
         proxy_cache_bypass $http_authorization;
         proxy_no_cache $http_authorization;
 
@@ -302,10 +318,9 @@ server {
 }
 ```
 
-### Laravel Response Cache
+**Laravel Response Cache Middleware:**
 
 ```php
-// Laravel terefinden cache header teyin etmek
 namespace App\Http\Middleware;
 
 use Closure;
@@ -326,28 +341,23 @@ class CacheResponse
     }
 }
 
-// Route-da istifade
+// Route-da istifadə
 Route::get('/api/products', [ProductController::class, 'index'])
-    ->middleware('cache.response:10'); // 10 deqiqe
+    ->middleware('cache.response:10'); // 10 dəqiqə
 ```
 
-### Multiple Backend Routing
+**Multiple Backend Routing:**
 
 ```nginx
-# Ferqli servisler ucun reverse proxy
-
-# API service
 upstream api_backend {
     server 10.0.1.1:8000;
     server 10.0.1.2:8000;
 }
 
-# Admin service
 upstream admin_backend {
     server 10.0.2.1:8000;
 }
 
-# WebSocket service
 upstream ws_backend {
     server 10.0.3.1:6001;
 }
@@ -355,7 +365,6 @@ upstream ws_backend {
 server {
     listen 443 ssl http2;
 
-    # API requests
     location /api/ {
         proxy_pass http://api_backend;
         proxy_set_header Host $host;
@@ -364,13 +373,11 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
-    # Admin panel
     location /admin/ {
         proxy_pass http://admin_backend;
         proxy_set_header Host $host;
     }
 
-    # WebSocket
     location /ws/ {
         proxy_pass http://ws_backend;
         proxy_http_version 1.1;
@@ -381,38 +388,22 @@ server {
 }
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-### 1. Forward proxy ve reverse proxy arasinda ferq nedir?
-**Cavab:** Forward proxy client terefinde durur, client-in internet-e cixisini kontrol edir, client IP-sini gizledir. Reverse proxy server terefinde durur, servere gelenleri kontrol edir, server IP-sini gizleder. Forward = client ucun, Reverse = server ucun.
+1. **Nginx + PHP-FPM quraşdırma:** Laravel layihəsi üçün sıfırdan Nginx konfiqurasiyası yazın. SSL, gzip, static file serving, PHP-FPM socket bağlantısını konfiqurasiya edin. `curl -I https://example.com` ilə response headerlərini yoxlayın.
 
-### 2. Nginx ve PHP-FPM nece birlikde isleyir?
-**Cavab:** Nginx HTTP request qebul edir, static faylları ozü serve edir, PHP fayllarini FastCGI protokolu ile PHP-FPM-e gonderir. PHP-FPM worker process-ler pool-u saxlayir, her worker bir PHP request-i isleyir ve neticeni Nginx-e qaytarir.
+2. **PHP-FPM tuning:** `pm.max_children` dəyərini serverinizin RAM-ına əsasən hesablayın. `pm.status` endpoint-ini aktiv edib `watch -n1 'curl -s localhost/status'` ilə real-time worker statistikasını izləyin.
 
-### 3. SSL termination nedir?
-**Cavab:** Reverse proxy-nin HTTPS traffic-i decypt edib backend serverlere plain HTTP gondermesidir. Ustulukleri: bir yerde SSL certificate, backend-ler daha suretli, sertifikat idaresi asan. Backend-ler internal network-de olmalıdır.
+3. **Nginx caching:** `/api/products` endpoint-i üçün Nginx-də 5 dəqiqəlik cache qurun. `X-Cache-Status` headerini izləyib HIT/MISS statistikasını müşahidə edin. Auth header olan request-lərin cache-lənmədiyini yoxlayın.
 
-### 4. Nginx-de `try_files` nedir?
-**Cavab:** Nginx-e fayl axtarish sirasi verir. `try_files $uri $uri/ /index.php?$query_string` - evvelce faylı tap, sonra qovlugu yoxla, tapilmazsa index.php-ye yonlendir. Bu Laravel-in routing-inin islemesi ucun lazimdir.
+4. **Multiple backend routing:** Eyni Nginx-dən `/api/`, `/admin/`, `/ws/` yollarını müxtəlif backend-lərə yönləndirin. WebSocket üçün `Upgrade` headerini düzgün ötürdüyünüzü yoxlayın.
 
-### 5. PHP-FPM process manager modlari nelerdir?
-**Cavab:** `static` - sabit worker sayi (en yaxsi performance), `dynamic` - min/max arasi worker (umumiyyetle en yaxsi secim), `ondemand` - lazim olanda yaradir (az memory, cox latency). Production-da adeten dynamic istifade olunur.
+5. **Security audit:** `.env`, `.git`, `vendor` qovluqlarının Nginx tərəfindən bloqlandığını `curl https://example.com/.env` ilə yoxlayın — 403 almalısınız.
 
-### 6. Reverse proxy nece tehlukesizlik temin edir?
-**Cavab:** Backend IP-lerini gizleyir, DDoS filterleme, rate limiting, WAF funksionalligi, SSL termination, request filtering (boyuk request-leri reject), gizli faylları bloklama (.env, .git).
+## Əlaqəli Mövzular
 
-### 7. pm.max_children nece hesablanir?
-**Cavab:** `Movcud RAM / Her PHP process-in orta memory istifadesi`. Meselen: 4GB RAM, her process ~50MB = 80 max_children. Amma OS ve basqa servisler ucun 30% saxlayin = ~50 max_children.
-
-## Best Practices
-
-1. **Unix socket istifade edin** - TCP port yerine (eyni server-de daha suretli)
-2. **Static faylları Nginx serve etsin** - PHP-ye gondermemek
-3. **Gzip/Brotli aktiv edin** - Response size azaldir
-4. **Buffer size tuning** - Boyuk response-lar ucun buffer artirin
-5. **Worker connection tuning** - `worker_connections 1024` ve ya daha cox
-6. **Keepalive backend** - Backend-e keepalive connection
-7. **Gizli faylları bloklayın** - `.env`, `.git`, `vendor`
-8. **Rate limiting** - `limit_req_zone` ile request mehdudlashdirin
-9. **pm.max_requests** - Memory leak-den qorunmaq ucun worker restart
-10. **Access log format** - JSON format ile structured logging
+- [Load Balancing](18-load-balancing.md)
+- [HTTPS / SSL / TLS](06-https-ssl-tls.md)
+- [API Gateway](21-api-gateway.md)
+- [Network Security](26-network-security.md)
+- [CDN](20-cdn.md)

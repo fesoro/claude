@@ -1,24 +1,28 @@
-# API Gateway
+# API Gateway (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
-API Gateway microservices arxitekturasinda butun API request-lerinin kecdiyi tek giris noqtesidir (single entry point). Routing, authentication, rate limiting, request transformation, monitoring kimi cross-cutting concerns-i merkezlesdirir. Client bir nece microservice yerine yalniz gateway ile danisir.
+API Gateway microservices arxitekturasında bütün API request-lərinin keçdiyi tək giriş nöqtəsidir (single entry point). Routing, authentication, rate limiting, request transformation, monitoring kimi cross-cutting concern-ləri mərkəzləşdirir. Client bir neçə microservice yerinə yalnız gateway ilə danışır.
 
 ```
 API Gateway olmadan:
-  Client --> User Service     (auth check lazim)
-  Client --> Order Service    (auth check lazim)
-  Client --> Payment Service  (auth check lazim)
-  (Her service ozunu qorumalıdır, client her servisi bilmelidir)
+  Client --> User Service     (auth check lazım)
+  Client --> Order Service    (auth check lazım)
+  Client --> Payment Service  (auth check lazım)
+  (Hər service özünü qorumalıdır, client hər servisi bilməlidir)
 
-API Gateway ile:
+API Gateway ilə:
   Client --> [API Gateway] --> User Service
                            --> Order Service
                            --> Payment Service
-  (Auth bir yerde, client yalniz gateway-i bilir)
+  (Auth bir yerdə, client yalnız gateway-i bilir)
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
+
+Microservice arxitekturasında hər servis öz auth, rate limiting, logging mexanizmini implement etsəydi, bu code duplication, inconsistency və maintenance yükü yaradardı. API Gateway bu concern-ləri bir yerdə mərkəzləşdirir. Bundan əlavə, client-ə bir neçə servisi birləşdirmiş (aggregated) response qaytarmaq mümkün olur — client bir request edir, gateway paralel olaraq bir neçə servisdən data toplayıb birləşdirir.
+
+## Əsas Anlayışlar
 
 ### API Gateway Architecture
 
@@ -49,25 +53,25 @@ API Gateway ile:
 
 ```
 1. API Gateway Pattern:
-   Single gateway, butun request-ler burdan kecir.
-   Sadedir, amma SPOF (Single Point of Failure) riski.
+   Single gateway, bütün request-lər burdan keçir.
+   Sadədir, amma SPOF (Single Point of Failure) riski.
 
 2. Backend for Frontend (BFF):
-   Her client tipi ucun ayri gateway.
-   
+   Hər client tipi üçün ayrı gateway.
+
    Mobile App  --> [Mobile BFF]  --> Services
    Web App     --> [Web BFF]     --> Services
    3rd Party   --> [Public API]  --> Services
 
 3. API Composition:
-   Gateway bir nece service-den data toplayir, birlesdirir.
-   
+   Gateway bir neçə service-dən data toplayır, birləşdirir.
+
    GET /api/dashboard -->
-     Gateway parallel olaraq:
+     Gateway paralel olaraq:
        User Service -> user data
        Order Service -> recent orders
        Analytics Service -> stats
-     Birlesdirip tek response qaytarir.
+     Birləşdirib tək response qaytarır.
 ```
 
 ### Request/Response Transformation
@@ -86,8 +90,6 @@ Backend Response:                  Gateway Response:
                                    },
                                    "meta": {"version": "v2"}}
 ```
-
-## Əsas Konseptlər (Key Concepts)
 
 ### API Gateway vs Reverse Proxy vs Load Balancer
 
@@ -115,37 +117,62 @@ Traefik      - Docker/K8s native, auto-discovery
 Envoy        - Service mesh, L7 proxy
 Tyk          - Open source, Go based
 KrakenD      - High performance, stateless
-Laravel      - Custom gateway with middleware (sade use case-ler ucun)
+Laravel      - Custom gateway with middleware (sadə use case-lər üçün)
 ```
 
-## PHP/Laravel ilə İstifadə
+## Praktik Baxış
 
-### Laravel as API Gateway
+**Üstünlüklər:**
+- Cross-cutting concern-ləri bir yerdə toplayır (DRY)
+- Client-ə sadə, unified API interface
+- Aggregation ilə N+1 problem-i azaltmaq
+- Centralized logging və monitoring
+
+**Trade-off-lar:**
+- SPOF riski — gateway down olsa bütün API-lər əlçatmaz olur (HA qurmaq lazım)
+- Əlavə latency — hər request gateway-dən keçir
+- Gateway-in özü bottleneck ola bilər
+
+**Nə vaxt istifadə edilməməlidir:**
+- Monolitik tətbiqdə gateway əlavə overhead yaradır
+- Çox sadə, bir-iki servisdən ibarət sistemlər üçün reverse proxy bəs edir
+
+**Anti-pattern-lər:**
+- Gateway-də business logic yerləşdirmək (routing + transformation olmalıdır, biznes logikası deyil)
+- Stateful gateway — scale etmək çətin olur
+- Timeout qoymadan backend-ə proxy etmək
+- Request ID olmadan logging — request-i trace etmək mümkün olmur
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+Laravel bir neçə microservice üçün sadə gateway rolunu oynaya bilər: Sanctum ilə auth, throttle middleware ilə rate limiting, `Http::pool()` ilə parallel aggregation. Böyük sistemlər üçün Kong, Traefik kimi dedicated gateway-lər tövsiyə olunur.
+
+### Kod Nümunəsi
+
+**Laravel as API Gateway — Routes:**
 
 ```php
-// routes/api.php - Gateway routing
+// routes/api.php
 use App\Http\Controllers\Gateway\GatewayController;
 
 Route::prefix('v1')->middleware(['auth:sanctum', 'throttle:api'])->group(function () {
-    // User service
     Route::any('users/{path?}', [GatewayController::class, 'proxyToUserService'])
         ->where('path', '.*');
 
-    // Order service
     Route::any('orders/{path?}', [GatewayController::class, 'proxyToOrderService'])
         ->where('path', '.*');
 
-    // Payment service
     Route::any('payments/{path?}', [GatewayController::class, 'proxyToPaymentService'])
         ->where('path', '.*')
         ->middleware('can:manage-payments');
 
-    // Aggregation endpoint
     Route::get('dashboard', [GatewayController::class, 'dashboard']);
 });
 ```
 
-### Gateway Controller (Proxy)
+**Gateway Controller (Proxy + Aggregation):**
 
 ```php
 namespace App\Http\Controllers\Gateway;
@@ -157,8 +184,8 @@ use Illuminate\Support\Facades\Http;
 class GatewayController extends Controller
 {
     private array $services = [
-        'user' => 'http://user-service:8001',
-        'order' => 'http://order-service:8002',
+        'user'    => 'http://user-service:8001',
+        'order'   => 'http://order-service:8002',
         'payment' => 'http://payment-service:8003',
     ];
 
@@ -177,9 +204,6 @@ class GatewayController extends Controller
         return $this->proxy($request, 'payment', "payments/{$path}");
     }
 
-    /**
-     * Request-i backend service-e proxy et
-     */
     private function proxy(Request $request, string $service, string $path): JsonResponse
     {
         $baseUrl = $this->services[$service];
@@ -187,18 +211,16 @@ class GatewayController extends Controller
         $requestId = (string) \Illuminate\Support\Str::uuid();
 
         $response = Http::withHeaders([
-            'X-Request-ID' => $requestId,
-            'X-User-ID' => (string) $request->user()->id,
-            'X-User-Role' => $request->user()->role,
+            'X-Request-ID'    => $requestId,
+            'X-User-ID'       => (string) $request->user()->id,
+            'X-User-Role'     => $request->user()->role,
             'X-Forwarded-For' => $request->ip(),
         ])
         ->timeout(30)
         ->send(
             $request->method(),
             $url . '?' . $request->getQueryString(),
-            [
-                'json' => $request->all(),
-            ]
+            ['json' => $request->all()]
         );
 
         return response()->json(
@@ -208,7 +230,7 @@ class GatewayController extends Controller
     }
 
     /**
-     * Dashboard - bir nece service-den data topla (aggregation)
+     * Dashboard — bir neçə service-dən data topla (aggregation)
      */
     public function dashboard(Request $request): JsonResponse
     {
@@ -225,15 +247,15 @@ class GatewayController extends Controller
         ]);
 
         return response()->json([
-            'user' => $responses['user']->json(),
+            'user'          => $responses['user']->json(),
             'recent_orders' => $responses['orders']->json(),
-            'stats' => $responses['stats']->json(),
+            'stats'         => $responses['stats']->json(),
         ]);
     }
 }
 ```
 
-### Service Registry
+**Service Registry:**
 
 ```php
 namespace App\Services\Gateway;
@@ -242,18 +264,13 @@ use Illuminate\Support\Facades\Cache;
 
 class ServiceRegistry
 {
-    /**
-     * Service URL-ini config ve ya service discovery-den al
-     */
     public function getServiceUrl(string $service): string
     {
-        // Config-den
         $url = config("services.gateway.{$service}.url");
         if ($url) return $url;
 
-        // Service discovery (Consul, etcd) - cache ile
+        // Service discovery (Consul, etcd) — cache ilə
         return Cache::remember("service:url:{$service}", 30, function () use ($service) {
-            // Consul-dan service URL al
             $response = Http::get("http://consul:8500/v1/catalog/service/{$service}");
             $services = $response->json();
 
@@ -261,33 +278,31 @@ class ServiceRegistry
                 throw new \RuntimeException("Service not found: {$service}");
             }
 
-            $instance = $services[array_rand($services)]; // Random instance
+            $instance = $services[array_rand($services)];
             return "http://{$instance['ServiceAddress']}:{$instance['ServicePort']}";
         });
     }
 }
 ```
 
-### Circuit Breaker Pattern
+**Circuit Breaker Pattern:**
 
 ```php
 namespace App\Services\Gateway;
 
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
 
 class CircuitBreaker
 {
-    private const STATE_CLOSED = 'closed';      // Normal - request-ler kecir
-    private const STATE_OPEN = 'open';          // Xeta coxdur - request-ler bloklenir
-    private const STATE_HALF_OPEN = 'half_open'; // Test - bir request burax
+    private const STATE_CLOSED    = 'closed';
+    private const STATE_OPEN      = 'open';
+    private const STATE_HALF_OPEN = 'half_open';
 
     public function call(string $service, callable $request): mixed
     {
         $state = $this->getState($service);
 
         if ($state === self::STATE_OPEN) {
-            // Cooldown bitibmi yoxla
             if ($this->cooldownExpired($service)) {
                 $this->setState($service, self::STATE_HALF_OPEN);
             } else {
@@ -300,14 +315,11 @@ class CircuitBreaker
             $this->recordSuccess($service);
             return $result;
         } catch (\Exception $e) {
-            $this->recordFailure($service);
-
             $failures = Cache::increment("circuit:{$service}:failures");
             if ($failures >= 5) {
                 $this->setState($service, self::STATE_OPEN);
                 Cache::put("circuit:{$service}:open_at", now(), 60);
             }
-
             throw $e;
         }
     }
@@ -337,63 +349,42 @@ class CircuitBreaker
             $this->setState($service, self::STATE_CLOSED);
         }
     }
-
-    private function recordFailure(string $service): void {}
 }
 ```
 
-### API Versioning in Gateway
+**API Versioning in Gateway:**
 
 ```php
-// Gateway seviyyesinde versioning
-
 Route::prefix('v1')->group(function () {
     Route::any('users/{path?}', function (Request $request, $path = '') {
-        // v1 -> User Service v1 endpoint
         return proxy($request, 'user', "v1/users/{$path}");
     })->where('path', '.*');
 });
 
 Route::prefix('v2')->group(function () {
     Route::any('users/{path?}', function (Request $request, $path = '') {
-        // v2 -> Yeni User Service ve ya transform olunmus response
         $response = proxy($request, 'user', "v2/users/{$path}");
-
-        // Response transformation (v1 -> v2 format)
         return transformV2Response($response);
     })->where('path', '.*');
 });
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-### 1. API Gateway nedir ve niye lazimdir?
-**Cavab:** Microservices ucun single entry point-dir. Authentication, rate limiting, routing, monitoring kimi cross-cutting concerns-i merkezlesdirir. Client bir cox service yerine yalniz gateway ile danisir.
+1. **Laravel gateway implement etmək:** User Service, Order Service üçün proxy controller yazın. Hər request-ə `X-Request-ID` header əlavə edin. Postman ilə `/api/v1/users/1` endpoint-ini test edib backend service-ə düzgün header-lərin çatdığını yoxlayın.
 
-### 2. API Gateway ve reverse proxy arasinda ferq nedir?
-**Cavab:** Reverse proxy request forwarding, load balancing, SSL termination edir. API Gateway bunlarin hamisi + API-specific funksiyalar: auth, rate limiting per user/key, request/response transformation, API versioning, developer portal, analytics.
+2. **Aggregation endpoint:** `/api/v1/dashboard` endpoint-i qurun. `Http::pool()` ilə paralel olaraq User, Order, Stats service-lərindən data toplayın. Sequential vs parallel sorğunun latency fərqini ölçün.
 
-### 3. Backend for Frontend (BFF) pattern nedir?
-**Cavab:** Her client tipi (mobile, web, 3rd party) ucun ayri gateway. Mobile app az data ister, web app daha cox. Her BFF oz client-inin ehtiyaclarina uygun response yaradir. Over-fetching/under-fetching azalir.
+3. **Circuit breaker:** `CircuitBreaker` class-ını gateway controller-ə inteqrasiya edin. Backend servisi dayandırın, 5 uğursuz request-dən sonra circuit-in OPEN vəziyyətinə keçdiyini yoxlayın.
 
-### 4. Circuit breaker pattern nedir?
-**Cavab:** Backend service down olanda gateway-in request gondermesini dayandirmasi. 3 state: Closed (normal), Open (blok, service down), Half-Open (test edir). Service recover olunca Open->Half-Open->Closed kecidir. Cascading failure-in qarsisini alir.
+4. **Service discovery (sadə):** Sabit URL-lər əvəzinə `config('services.gateway.user.url')` istifadə edin. `.env` faylında URL-ləri dəyişib gateway-i restart etmədən fərqli backend-ə yönləndirib yoxlayın.
 
-### 5. API composition nedir?
-**Cavab:** Gateway-in bir nece microservice-den data toplayib tek response qaytarmasidir. `GET /dashboard` -> parallel olaraq user, orders, stats service-lerden data alir ve birlesdirir. Client tek request edir, gateway composition edir.
+5. **Rate limiting per service:** Payment endpoint-i üçün daha sərt rate limit qoyun (`throttle:10,1`), adi API endpoint-lər üçün `throttle:100,1` istifadə edin. 429 response-da `Retry-After` header-inin gəldiyini yoxlayın.
 
-### 6. Gateway-in SPOF (Single Point of Failure) riski nece hell olunur?
-**Cavab:** Gateway-in ozunu HA qurun: multiple instances + load balancer, auto-scaling, health checks, geographic distribution. Gateway stateless olmalidir ki asan scale olunsun.
+## Əlaqəli Mövzular
 
-## Best Practices
-
-1. **Stateless gateway** - State saxlamayin, asan scale ucun
-2. **Circuit breaker** - Backend failure-i izolyasiya edin
-3. **Timeout teyin edin** - Her backend call ucun timeout
-4. **Request ID** - Her request-e unique ID verin (tracing)
-5. **Parallel requests** - Aggregation zamani parallel call edin
-6. **Cache** - Cacheable response-lari gateway-de cache edin
-7. **Rate limiting** - Per-user, per-API-key, per-endpoint
-8. **Health checks** - Backend servisleri muntezer yoxlayin
-9. **Logging/monitoring** - Butun request-leri loglayin
-10. **Versioning** - Gateway seviyyesinde API versioning
+- [Reverse Proxy](19-reverse-proxy.md)
+- [API Rate Limiting](25-api-rate-limiting.md)
+- [API Versioning](22-api-versioning.md)
+- [Load Balancing](18-load-balancing.md)
+- [OAuth2](14-oauth2.md)

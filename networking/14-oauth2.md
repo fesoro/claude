@@ -1,38 +1,42 @@
-# OAuth 2.0
+# OAuth 2.0 (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
-OAuth 2.0 authorization framework-dur (RFC 6749). Istifadecinin ucuncu teref application-a oz resurslarına mehdud erisim vermesine imkan yaradir - shifresini paylasmadan. Meselen, "Google ile daxil ol" duymesine basanda Google sizin email ve adınızı application-a paylasir amma shifrenizi vermirsiniz.
+OAuth 2.0 authorization framework-dür (RFC 6749). İstifadəçinin üçüncü tərəf application-a öz resurslarına məhdud ərisim verməsinə imkan yaradır — şifrəsini paylaşmadan. Məsələn, "Google ilə daxil ol" düyməsinə basdıqda Google sizin email və adınızı application-a paylaşır, amma şifrənizi vermirsiniz.
 
 ```
-Kohne usul (tehlukeli):
-  App: "Google shifrenizi verin ki, email-inizi oxuyaq"
-  User: "Buyurun: mypassword123"  ← TEHLUKELİ!
+Köhnə üsul (təhlükəli):
+  App: "Google şifrənizi verin ki, email-inizi oxuyaq"
+  User: "Buyurun: mypassword123"  ← TƏHLÜKƏLİ!
 
-OAuth 2.0 (tehlukesiz):
-  App: "Google-a yonlendirirem, orada icaze verin"
-  User: Google-da login olur, "Email erisimi icaze verirem" basir
-  Google: App-a mehdud token verir (yalniz email oxumaq)
-  App: Token ile yalniz email oxuyur, shifre bilmir
+OAuth 2.0 (təhlükəsiz):
+  App: "Google-a yönləndirirəm, orada icazə verin"
+  User: Google-da login olur, "Email ərisimi icazə verirəm" basır
+  Google: App-a məhdud token verir (yalnız email oxumaq)
+  App: Token ilə yalnız email oxuyur, şifrə bilmir
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
+
+"Google/GitHub ilə daxil ol" funksionallığı, üçüncü tərəf API-ları ilə inteqrasiya (Stripe, Slack, Dropbox), microservices arası güvənli komunikasiya — bunların hamısı OAuth 2.0-a əsaslanır. Şifrə paylaşımı olmadan məhdud ərisim vermə konsepti müasir autentifikasiya sistemlərinin özəyidir. Laravel Passport (OAuth server) və Socialite (OAuth client) bu prosesi standartlaşdırır.
+
+## Əsas Anlayışlar
 
 ### OAuth 2.0 Roles
 
 ```
 +-------------------+----------------------------------------+
-| Role              | Izah                                   |
+| Role              | İzah                                   |
 +-------------------+----------------------------------------+
-| Resource Owner    | Istifadeci (data sahibi)               |
-| Client            | Application (data isteyen)             |
+| Resource Owner    | İstifadəçi (data sahibi)               |
+| Client            | Application (data istəyən)             |
 | Authorization     | Google, Facebook, GitHub               |
-| Server            | (token veren)                          |
+| Server            | (token verən)                          |
 | Resource Server   | API server (data saxlayan)             |
 +-------------------+----------------------------------------+
 ```
 
-### Authorization Code Flow (en tehlukesiz, server-side apps)
+### Authorization Code Flow (ən təhlükəsiz, server-side apps)
 
 ```
 User        Client App       Auth Server       Resource Server
@@ -71,18 +75,18 @@ User        Client App       Auth Server       Resource Server
  |<-- 11. Data -|                 |                    |
 ```
 
-### Authorization Code + PKCE (SPA/Mobile ucun)
+### Authorization Code + PKCE (SPA/Mobile üçün)
 
 ```
-PKCE (Proof Key for Code Exchange) - client_secret istifade ede bilmeyen
-public client-ler ucun (SPA, mobile app).
+PKCE (Proof Key for Code Exchange) - client_secret istifadə edə bilməyən
+public client-lər üçün (SPA, mobile app).
 
-1. Client random code_verifier yaradir: "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"
+1. Client random code_verifier yaradır: "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"
 2. code_challenge = SHA256(code_verifier) -> base64url encode
 3. /authorize?... &code_challenge=E9Melhoa...&code_challenge_method=S256
-4. Auth server code_challenge-i yadda saxlayir
-5. Token exchange zamani: POST /token ... &code_verifier=dBjftJeZ4CVP...
-6. Auth server verify edir: SHA256(code_verifier) == saxlanmis code_challenge
+4. Auth server code_challenge-i yadda saxlayır
+5. Token exchange zamanı: POST /token ... &code_verifier=dBjftJeZ4CVP...
+6. Auth server verify edir: SHA256(code_verifier) == saxlanılmış code_challenge
 ```
 
 ### Client Credentials Flow (Machine-to-Machine)
@@ -100,7 +104,7 @@ Service A (Client)          Auth Server           Service B (Resource)
      |<-- access_token ---------|                       |
      |                          |                       |
      |------------- API Request + Bearer token -------->|
-     |<------------ Response ----------------------------| 
+     |<------------ Response ----------------------------|
 ```
 
 ### Refresh Token Flow
@@ -119,54 +123,91 @@ Client                     Auth Server
   |<-- new access_token -------|
   |    new refresh_token       |
   |                            |
-  (kohne refresh_token artiq kecersiz)
+  (köhnə refresh_token artıq keçərsizdir)
 ```
-
-## Əsas Konseptlər (Key Concepts)
 
 ### Scopes
 
 ```
-Scope = erişim mehdudiyyetleri
+Scope = ərisim məhdudiyyətləri
 
 # Google Scopes
 email                    - Email oxumaq
-profile                  - Profil melumatlari
+profile                  - Profil məlumatları
 https://www.googleapis.com/auth/calendar.readonly
 
 # GitHub Scopes
 read:user               - User profil
-repo                    - Repository erisimi
+repo                    - Repository ərisimi
 admin:org               - Organization admin
 
 # Custom Scopes
-read:users              - Userleri oxu
-write:users             - Userleri yaz
-delete:users            - Userleri sil
+read:users              - Userləri oxu
+write:users             - Userləri yaz
+delete:users            - Userləri sil
 ```
 
 ### Token Types
 
 ```
 Access Token:
-  - Qisa omurlu (15 deq - 1 saat)
-  - API request-lerine elave olunur
-  - Bearer token olaraq istifade
+  - Qısa ömürlü (15 dəq - 1 saat)
+  - API request-lərinə əlavə olunur
+  - Bearer token olaraq istifadə
 
 Refresh Token:
-  - Uzun omurlu (gunler/hefteler)
-  - Yeni access token almaq ucun
-  - Tehlukesiz saxlanmali (server-side)
-  - Bir defe istifade olunur (rotation)
+  - Uzun ömürlü (günlər/həftələr)
+  - Yeni access token almaq üçün
+  - Təhlükəsiz saxlanmalı (server-side)
+  - Bir dəfə istifadə olunur (rotation)
 
 Authorization Code:
-  - Cok qisa omurlu (1-10 deqiqe)
-  - Yalniz bir defe access token almaq ucun
+  - Çox qısa ömürlü (1-10 dəqiqə)
+  - Yalnız bir dəfə access token almaq üçün
 ```
 
-## PHP/Laravel ilə İstifadə
+## Praktik Baxış
 
-### Laravel Passport (OAuth2 Server)
+**Nə vaxt OAuth 2.0 istifadə etmək lazımdır:**
+- Social login (Google, GitHub, Facebook)
+- Third-party API inteqrasiyası (Stripe, Slack)
+- Machine-to-machine autentifikasiya (Client Credentials)
+- İstifadəçinin resurslarına məhdud ərisim vermə
+
+**Nə vaxt sadə token auth (Sanctum) seçmək lazımdır:**
+- Yalnız öz tətbiqinizin API-sı üçün
+- Mobile app + Laravel backend
+
+**Trade-off-lar:**
+- OAuth 2.0 kompleksdir — əlavə infrastruktur (auth server) tələb edir
+- Token saxlama strategiyası həll edilməlidir (httpOnly cookie vs memory)
+- Refresh token rotation hər dəfə DB əməliyyatı deməkdir
+
+**Anti-pattern-lər:**
+- Implicit flow istifadə etmək (OAuth 2.1-də silinib, PKCE istifadə edin)
+- `state` parametrini unutmaq — CSRF hücumuna açıqdır
+- Access token-i localStorage-də saxlamaq — XSS-ə həssasdır
+- Lazımsız scope-lar istəmək — minimum lazım olanı istəyin
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+Authorization Code flow — "GitHub ilə daxil ol":
+
+```
+1. User "GitHub ilə daxil ol" düyməsinə basır
+2. App GitHub-a yönləndirir: GET /oauth/authorize?client_id=...&scope=read:user
+3. User GitHub-da login olur, icazə verir
+4. GitHub app-a yönləndirir: /callback?code=abc123&state=xyz
+5. App backend-də code-u token ilə dəyişdirir: POST /oauth/token
+6. GitHub access_token qaytarır
+7. App access_token ilə GitHub API-ya müraciət edir: GET /user
+```
+
+### Kod Nümunəsi
+
+**Laravel Passport (OAuth2 Server):**
 
 ```bash
 composer require laravel/passport
@@ -191,7 +232,7 @@ class User extends Authenticatable
 ],
 ```
 
-### Passport Scopes
+**Passport Scopes:**
 
 ```php
 // app/Providers/AuthServiceProvider.php
@@ -210,7 +251,7 @@ public function boot(): void
     Passport::setDefaultScope(['read-users']);
 }
 
-// Route-larda scope yoxlamasi
+// Route-larda scope yoxlaması
 Route::middleware(['auth:api', 'scope:read-users'])->group(function () {
     Route::get('/users', [UserController::class, 'index']);
 });
@@ -220,7 +261,7 @@ Route::middleware(['auth:api', 'scopes:read-users,write-users'])->group(function
 });
 ```
 
-### Laravel Socialite (OAuth2 Client - Social Login)
+**Laravel Socialite (OAuth2 Client - Social Login):**
 
 ```bash
 composer require laravel/socialite
@@ -252,7 +293,7 @@ use Laravel\Socialite\Facades\Socialite;
 class SocialAuthController extends Controller
 {
     /**
-     * Google-a yonlendir (Step 1)
+     * Google-a yönləndir (Step 1)
      */
     public function redirect(string $provider): RedirectResponse
     {
@@ -262,7 +303,7 @@ class SocialAuthController extends Controller
     }
 
     /**
-     * Callback - Google-dan qayitma (Step 2)
+     * Callback - Google-dan qayıtma (Step 2)
      */
     public function callback(string $provider)
     {
@@ -272,7 +313,7 @@ class SocialAuthController extends Controller
             return redirect('/login')->withErrors('Authentication failed');
         }
 
-        // User-i tap ve ya yarat
+        // User-i tap və ya yarat
         $user = User::updateOrCreate(
             [
                 'provider' => $provider,
@@ -298,7 +339,7 @@ Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'
 Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback']);
 ```
 
-### Machine-to-Machine (Client Credentials)
+**Machine-to-Machine (Client Credentials):**
 
 ```php
 // Laravel Passport - Client credentials grant
@@ -317,13 +358,13 @@ $response = Http::asForm()->post('https://auth.example.com/oauth/token', [
 
 $token = $response->json('access_token');
 
-// Token ile API call
+// Token ilə API call
 $orders = Http::withToken($token)
     ->get('https://api.example.com/api/orders')
     ->json();
 ```
 
-### Token Refresh Service
+**Token Refresh Service:**
 
 ```php
 namespace App\Services;
@@ -334,7 +375,7 @@ use Illuminate\Support\Facades\Http;
 class OAuthTokenManager
 {
     /**
-     * Access token al (cache-den ve ya refresh et)
+     * Access token al (cache-dən və ya refresh et)
      */
     public function getToken(string $service): string
     {
@@ -359,7 +400,7 @@ class OAuthTokenManager
     }
 
     /**
-     * Token-i yenile (refresh token ile)
+     * Token-i yenilə (refresh token ilə)
      */
     public function refreshToken(string $service, string $refreshToken): array
     {
@@ -377,41 +418,24 @@ class OAuthTokenManager
 }
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-### 1. OAuth 2.0 nedir? Authentication ve ya Authorization-dir?
-**Cavab:** OAuth 2.0 **authorization** framework-dur. Ucuncu teref app-a user-in resurslarina mehdud erisim verir. Authentication deyil - amma OpenID Connect (OIDC) OAuth 2.0 uzerine authentication layer elave edir.
+1. **Social login:** Laravel Socialite ilə "GitHub ilə daxil ol" funksionallığını implement edin. İstifadəçi artıq varsa mövcud hesaba bağlasın, yoxdursa yenisini yaratsın.
 
-### 2. Authorization Code flow-nu izah edin.
-**Cavab:** 1) Client useri auth server-e yonlendirir, 2) User login olub icaze verir, 3) Auth server useri geri yonlendirir authorization code ile, 4) Client backend-de code-u access token ile deyisdirir (client_secret ile), 5) Access token ile API-ya muraciet edir.
+2. **Passport OAuth server:** Laravel Passport quraşdırın. Scope-lar təyin edin (`read-users`, `write-users`). Authorization Code flow-nu test edin.
 
-### 3. PKCE nedir ve niye lazimdir?
-**Cavab:** Proof Key for Code Exchange - SPA/mobile app-lar ucun. Bu app-lar client_secret saxlaya bilmir (public client). PKCE code_verifier/code_challenge ile authorization code-un ogurlunmasinin qarsisini alir. Indi hemise istifade olunmasi tovsiye olunur.
+3. **Client Credentials:** İki microservice arasında machine-to-machine autentifikasiya qurun. `OAuthTokenManager` ilə token-i cache-ləyin (expire-dan 100 saniyə əvvəl yenilənsin).
 
-### 4. Access token ve refresh token arasinda ferq nedir?
-**Cavab:** Access token qisa omurlu (deqiqeler/saatlar), API request-lerine elave olunur. Refresh token uzun omurlu, yalniz yeni access token almaq ucun istifade olunur, tehlukesiz saxlanmali. Access token expire olanda refresh token ile yenisi alinir.
+4. **PKCE implement:** SPA üçün PKCE flow-nu JavaScript-də implement edin. `code_verifier`, `code_challenge` generasiyasını yazın.
 
-### 5. Client Credentials flow ne vaxt istifade olunur?
-**Cavab:** Machine-to-machine kommunikasiya ucun - user istirak etmir. Service A-nin Service B-nin API-sina erisimi lazim olanda. Meselen, backend cron job-un payment API-a muraciet etmesi.
+5. **State parametri:** Authorization request-ə `state` parametri əlavə edin. Callback-də `state`-i yoxlayın. CSRF simulyasiyası edin — `state` uyğun gəlmədikdə reject edin.
 
-### 6. State parametri niye vacibdir?
-**Cavab:** CSRF hucumunun qarsisini almaq ucun. Client random deger yaradir, auth request-e elave edir, callback-de eyni degeri yoxlayir. Olmazsa attacker oz authorization code-unu victim-in session-una inject ede biler.
+6. **Scope middleware:** `scope:write-users` middleware-ini test edin — yalnız `read-users` olan token ilə `POST /users`-a müraciət cəhdini handle edin.
 
-### 7. Implicit flow niye deprecated olundu?
-**Cavab:** Access token URL fragment-de qaytarilir (#token=...) - bu browser history-de gorunur, referer header ile sizir. PKCE ile Authorization Code flow daha tehlukesizdir. OAuth 2.1-de implicit flow tamam silinib.
+## Əlaqəli Mövzular
 
-### 8. Scope nedir?
-**Cavab:** Access token-in erisim mehdudiyyetleridir. Meselen, `email` scope yalniz email oxumaga icaze verir, `repo` scope repository erisimi verir. Minimum lazim olan scope isteyin (principle of least privilege).
-
-## Best Practices
-
-1. **Hemise PKCE istifade edin** - Public ve confidential client-ler ucun
-2. **State parametri** - CSRF qorunmasi ucun random deger
-3. **Short-lived access tokens** - 15 deqiqe - 1 saat
-4. **Refresh token rotation** - Her istifadede yeni refresh token verin
-5. **Scope minimalligi** - Yalniz lazim olan scope-lari isteyin
-6. **HTTPS hemise** - Token-ler yalniz sifreli kanal ile gonderilmeli
-7. **Token storage** - Access token memory-de, refresh token httpOnly cookie-de
-8. **Client secret qoruyun** - Backend-de .env-de saxlayin
-9. **Token revocation** - Logout zamani token-leri legv edin
-10. **Implicit flow istifade etmeyin** - PKCE ile Auth Code flow istifade edin
+- [JWT - JSON Web Token](15-jwt.md)
+- [API Security](17-api-security.md)
+- [HTTPS/SSL/TLS](06-https-ssl-tls.md)
+- [REST API](08-rest-api.md)
+- [Zero Trust](33-zero-trust.md)

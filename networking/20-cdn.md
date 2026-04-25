@@ -1,19 +1,23 @@
-# CDN (Content Delivery Network)
+# CDN - Content Delivery Network (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
-CDN dunyanin muxtelif yerlerinde yerlesen edge server-ler sebekesidir. Content-i istifadeciye en yaxin serveden gore biler, bununla latency azalir ve performance artır. Static fayllar (images, CSS, JS), video, API response-lari CDN vasitesile paylashila biler.
+CDN dünyanın müxtəlif yerlərində yerləşən edge server-lər şəbəkəsidir. Content-i istifadəçiyə ən yaxın serverdən serve edərək latency-ni azaldır və performansı artırır. Static fayllar (images, CSS, JS), video, API response-ları CDN vasitəsilə paylaşıla bilər.
 
 ```
 CDN olmadan:
   User (Baku) ------- 200ms -------> Origin Server (Frankfurt)
 
-CDN ile:
+CDN ilə:
   User (Baku) --- 20ms ---> CDN Edge (Istanbul) --> Cache HIT --> Response
                                                 --> Cache MISS --> Origin (Frankfurt)
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
+
+CDN olmadan bütün trafik origin serverə gəlir — həm yüksək latency, həm də yüksək yük yaranır. Static asset-ləri CDN-ə köçürmək origin serverə düşən yükü 70-90% azalda bilər. Bundan əlavə, CDN DDoS hücumlarına qarşı birinci müdafiə xəttini təşkil edir — traffic CDN edge-lərindən keçərək filtrlənir, origin heç vaxt birbaşa məruz qalmır.
+
+## Əsas Anlayışlar
 
 ### CDN Architecture
 
@@ -37,25 +41,25 @@ CDN ile:
 
 ```
 Pull CDN (daha populyar):
-  1. User request gonderir: cdn.example.com/image.jpg
-  2. Edge server cache-de yoxlayir
-  3. Cache MISS -> Origin-den cekir (pull)
-  4. Cache-leyir + user-e qaytarir
-  5. Novbeti request: Cache HIT -> birbase qaytarir
+  1. User request göndərir: cdn.example.com/image.jpg
+  2. Edge server cache-də yoxlayır
+  3. Cache MISS -> Origin-dən çəkir (pull)
+  4. Cache-ləyir + user-ə qaytarır
+  5. Növbəti request: Cache HIT -> birbaşa qaytarır
 
   + Avtomatik, konfiqurasiya az
-  + Yalniz lazim olan content cache olunur
-  - Ilk request yavas (cold cache)
+  + Yalnız lazım olan content cache olunur
+  - İlk request yavaş (cold cache)
 
 Push CDN:
-  1. Developer content-i CDN-e upload edir (push)
-  2. CDN butun edge server-lere paylayir
-  3. User request edir -> hemise cache HIT
+  1. Developer content-i CDN-ə upload edir (push)
+  2. CDN bütün edge server-lərə paylaşır
+  3. User request edir -> həmişə cache HIT
 
-  + Ilk request de suretli
+  + İlk request də sürətli
   + Tam kontrol
-  - Manual idareetme
-  - Storage xercini odeyirsiniz
+  - Manual idarəetmə
+  - Storage xərcinini ödəyirsiniz
 ```
 
 ### Cache Headers
@@ -64,16 +68,16 @@ Push CDN:
 Origin Server response headers:
 
 Cache-Control: public, max-age=31536000    # 1 il cache (immutable assets)
-Cache-Control: public, max-age=300          # 5 deqiqe (API responses)
-Cache-Control: private, no-store            # Cache etme (user-specific data)
-Cache-Control: public, s-maxage=3600        # CDN ucun 1 saat (s-maxage CDN-e aiddir)
+Cache-Control: public, max-age=300          # 5 dəqiqə (API responses)
+Cache-Control: private, no-store            # Cache etmə (user-specific data)
+Cache-Control: public, s-maxage=3600        # CDN üçün 1 saat (s-maxage CDN-ə aiddir)
 Cache-Control: public, max-age=60, stale-while-revalidate=300
 
 ETag: "abc123"                              # Content fingerprint
 Last-Modified: Wed, 15 Apr 2026 10:00:00 GMT
 
-Vary: Accept-Encoding                       # Encoding-e gore ayri cache
-Vary: Accept-Language                       # Dile gore ayri cache
+Vary: Accept-Encoding                       # Encoding-ə görə ayrı cache
+Vary: Accept-Language                       # Dilə görə ayrı cache
 
 CDN-Specific:
   Cloudflare-CDN-Cache-Control: max-age=86400
@@ -84,47 +88,43 @@ CDN-Specific:
 
 ```
 1. TTL-based (Time-based expiry):
-   Cache-Control: max-age=300  (5 deqiqeden sonra expire)
-   En sade amma deyisiklikler gec yayilir.
+   Cache-Control: max-age=300  (5 dəqiqədən sonra expire)
+   Ən sadə, amma dəyişikliklər gec yayılır.
 
 2. Purge (Manual invalidation):
-   CDN API ile konkret URL-in cache-ini silin.
+   CDN API ilə konkret URL-in cache-ini silin.
    POST /purge {"url": "https://cdn.example.com/image.jpg"}
 
 3. Cache Tags (Grouped invalidation):
-   Response-a tag elave edin: Cache-Tag: product-42, category-5
-   Butun "product-42" tag-li cache-leri silin.
+   Response-a tag əlavə edin: Cache-Tag: product-42, category-5
+   Bütün "product-42" tag-li cache-ləri silin.
 
-4. Versioned URLs (en yaxsi):
-   /assets/style.v2.css  ve ya  /assets/style.css?v=abc123
-   Fayl deyisende URL deyisir -> cache avtomatik yenilenir.
+4. Versioned URLs (ən yaxşı):
+   /assets/style.v2.css  və ya  /assets/style.css?v=abc123
+   Fayl dəyişəndə URL dəyişir -> cache avtomatik yenilənir.
 
 5. Stale-While-Revalidate:
-   Cache expire olunca kohne versiyani gonder, arxada yenilesdir.
+   Cache expire olunca köhnə versiyasını göndər, arxada yeniləndir.
 ```
 
-## Əsas Konseptlər (Key Concepts)
-
-### CDN Use Cases
+### CDN Use Cases və Popular Providers
 
 ```
-1. Static Assets:     CSS, JS, images, fonts
-2. Video Streaming:   Netflix, YouTube
-3. Software Updates:  OS, app updates
-4. API Acceleration:  Cacheable API responses
-5. DDoS Protection:   Traffic distribution
-6. Dynamic content:   Edge computing (Cloudflare Workers)
-```
+Use Cases:
+  1. Static Assets:     CSS, JS, images, fonts
+  2. Video Streaming:   Netflix, YouTube
+  3. Software Updates:  OS, app updates
+  4. API Acceleration:  Cacheable API responses
+  5. DDoS Protection:   Traffic distribution
+  6. Dynamic content:   Edge computing (Cloudflare Workers)
 
-### Popular CDN Providers
-
-```
-Cloudflare  - Free plan, DNS, WAF, Workers (edge computing)
-AWS CloudFront - AWS integration, Lambda@Edge
-Google Cloud CDN - Google infrastructure
-Fastly  - Real-time purge, VCL, edge computing
-Akamai  - En boyuk CDN, enterprise
-Bunny CDN - Ucuz, sade
+Providers:
+  Cloudflare   - Free plan, DNS, WAF, Workers (edge computing)
+  AWS CloudFront - AWS integration, Lambda@Edge
+  Google Cloud CDN - Google infrastructure
+  Fastly       - Real-time purge, VCL, edge computing
+  Akamai       - Ən böyük CDN, enterprise
+  Bunny CDN    - Ucuz, sadə
 ```
 
 ### Edge Computing
@@ -134,19 +134,48 @@ Traditional CDN:
   Edge caches static content only
 
 Edge Computing (Cloudflare Workers, Lambda@Edge):
-  Edge runs code - dynamic response yaxin serverde yaranir
+  Edge runs code — dynamic response yaxın serverdə yaranır
 
-  Meselen:
-  - A/B testing edge-de
-  - Auth check edge-de
+  Məsələn:
+  - A/B testing edge-də
+  - Auth check edge-də
   - Geolocation redirect
   - API response transformation
   - Image resizing at edge
 ```
 
-## PHP/Laravel ilə İstifadə
+## Praktik Baxış
 
-### Laravel Asset CDN
+**Üstünlüklər:**
+- Latency dramatik azalır (200ms → 20ms)
+- Origin serverə düşən yük azalır
+- DDoS protection birinci xəttdə
+- Bandwidth xərcləri azalır
+
+**Trade-off-lar:**
+- Cache invalidation çətin problem — dəyişiklik dərhal bütün edge-lərə çatmır
+- User-specific data CDN-də cache edilə bilməz
+- Əlavə xərc (kiçik layihələr üçün Cloudflare free plan bəs edir)
+- Debug çətin olur — edge-dən gələn response-u origin ilə müqayisə etmək lazım gəlir
+
+**Nə vaxt istifadə edilməməlidir:**
+- Authenticated, user-specific endpoint response-ları (`private, no-store`)
+- Real-time data (stock prices, live scores) — stale data göstərər
+
+**Anti-pattern-lər:**
+- Bütün endpoint-ləri eyni TTL ilə cache etmək
+- `Cache-Control: private` əvəzinə `public` işlətmək user data üçün
+- Cache invalidation olmadan uzun TTL qoymaq
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+Laravel-in `asset()` helper-i `ASSET_URL` env dəyişəninə əsasən URL-ləri avtomatik CDN URL-inə çevirir. Vite build zamanı fayl adlarına hash əlavə edir — bu cache busting-i avtomatik həll edir.
+
+### Kod Nümunəsi
+
+**Laravel Asset CDN:**
 
 ```php
 // .env
@@ -163,7 +192,7 @@ ASSET_URL=https://cdn.example.com
 // Output: https://cdn.example.com/images/logo.png
 ```
 
-### Laravel Mix / Vite Versioning
+**Laravel Vite Versioning (cache busting):**
 
 ```javascript
 // vite.config.js
@@ -182,10 +211,10 @@ export default defineConfig({
 
 // Blade
 @vite(['resources/css/app.css', 'resources/js/app.js'])
-// Output: /assets/app-a1b2c3d4.css  (hash deyisende CDN cache yenilenir)
+// Output: /assets/app-a1b2c3d4.css  (hash dəyişəndə CDN cache yenilənir)
 ```
 
-### Cache Headers Middleware
+**Cache Headers Middleware:**
 
 ```php
 namespace App\Http\Middleware;
@@ -206,17 +235,17 @@ class CdnCacheHeaders
 
         return match ($type) {
             'static' => $this->staticCache($response),
-            'api' => $this->apiCache($response),
-            'private' => $this->privateCache($response),
-            default => $response,
+            'api'    => $this->apiCache($response),
+            'private'=> $this->privateCache($response),
+            default  => $response,
         };
     }
 
     private function staticCache(Response $response): Response
     {
         return $response->setCache([
-            'public' => true,
-            'max_age' => 31536000,  // 1 il
+            'public'    => true,
+            'max_age'   => 31536000,  // 1 il
             'immutable' => true,
         ]);
     }
@@ -224,9 +253,9 @@ class CdnCacheHeaders
     private function apiCache(Response $response): Response
     {
         return $response->setCache([
-            'public' => true,
-            'max_age' => 60,
-            's_maxage' => 300,  // CDN ucun 5 deqiqe
+            'public'   => true,
+            'max_age'  => 60,
+            's_maxage' => 300,  // CDN üçün 5 dəqiqə
         ])->header('Surrogate-Control', 'max-age=300')
           ->header('Cache-Tag', 'api');
     }
@@ -234,13 +263,13 @@ class CdnCacheHeaders
     private function privateCache(Response $response): Response
     {
         return $response->setCache([
-            'private' => true,
+            'private'  => true,
             'no_store' => true,
         ]);
     }
 }
 
-// Route-da istifade
+// Route-da istifadə
 Route::get('/api/products', [ProductController::class, 'index'])
     ->middleware('cdn.cache:api');
 
@@ -248,7 +277,7 @@ Route::get('/api/user/profile', [ProfileController::class, 'show'])
     ->middleware('cdn.cache:private');
 ```
 
-### CDN Cache Purge Service
+**CDN Cache Purge Service (Cloudflare):**
 
 ```php
 namespace App\Services;
@@ -258,9 +287,6 @@ use Illuminate\Support\Facades\Log;
 
 class CdnPurgeService
 {
-    /**
-     * Cloudflare cache purge
-     */
     public function purgeUrls(array $urls): bool
     {
         $response = Http::withHeaders([
@@ -280,9 +306,6 @@ class CdnPurgeService
         return false;
     }
 
-    /**
-     * Butun cache-i temizle
-     */
     public function purgeAll(): bool
     {
         $response = Http::withHeaders([
@@ -296,9 +319,6 @@ class CdnPurgeService
         return $response->successful();
     }
 
-    /**
-     * Tag ile purge (Cloudflare Enterprise)
-     */
     public function purgeByTags(array $tags): bool
     {
         $response = Http::withHeaders([
@@ -314,7 +334,7 @@ class CdnPurgeService
 }
 ```
 
-### Model Observer ile Auto-Purge
+**Model Observer ilə Auto-Purge:**
 
 ```php
 namespace App\Observers;
@@ -346,19 +366,17 @@ class ProductObserver
 }
 ```
 
-### File Upload to CDN (S3 + CloudFront)
+**File Upload to CDN (S3 + CloudFront):**
 
 ```php
 // config/filesystems.php
-'disks' => [
-    's3' => [
-        'driver' => 's3',
-        'key' => env('AWS_ACCESS_KEY_ID'),
-        'secret' => env('AWS_SECRET_ACCESS_KEY'),
-        'region' => env('AWS_DEFAULT_REGION'),
-        'bucket' => env('AWS_BUCKET'),
-        'url' => env('AWS_URL'),  // CloudFront URL
-    ],
+'s3' => [
+    'driver' => 's3',
+    'key'    => env('AWS_ACCESS_KEY_ID'),
+    'secret' => env('AWS_SECRET_ACCESS_KEY'),
+    'region' => env('AWS_DEFAULT_REGION'),
+    'bucket' => env('AWS_BUCKET'),
+    'url'    => env('AWS_URL'),  // CloudFront URL
 ],
 
 // Upload
@@ -367,38 +385,22 @@ $url = Storage::disk('s3')->url($path);
 // https://d1234.cloudfront.net/avatars/abc123.jpg
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-### 1. CDN nedir ve nece isleyir?
-**Cavab:** CDN dunyanin muxtelif yerlerinde edge serverler sebekesidir. Content-i user-e en yaxin serverden serve edir. Pull model ile ilk request origin-den cekilir ve cache-lenir, sonraki request-ler edge-den qaytarilir.
+1. **Cloudflare bağlantısı:** Domeninizi Cloudflare-ə əlavə edin. `curl -I https://example.com/css/app.css` ilə `CF-Cache-Status` headerini yoxlayın — ilk request MISS, növbəti HIT olmalıdır.
 
-### 2. Pull CDN ve Push CDN arasinda ferq nedir?
-**Cavab:** Pull CDN-de content ilk request zamani origin-den avtomatik cekilir (Cloudflare, CloudFront). Push CDN-de developer content-i manual upload edir. Pull daha populyar ve avtomatikdir, Push daha cox kontrol verir.
+2. **Cache header middleware:** `CdnCacheHeaders` middleware-ini layihənizə əlavə edin. Public API endpoint-lərini `cdn.cache:api`, profil endpoint-lərini `cdn.cache:private` ilə işarələyin. `curl -I` ilə response headerlərini yoxlayın.
 
-### 3. Cache invalidation nece edilir?
-**Cavab:** 1) TTL ile avtomatik expire, 2) API ile manual purge, 3) Cache tags ile qrup halinda, 4) Versioned URLs (file hash) - en effektiv. "Cache invalidation" CS-in en cetin problemlerinden biridir.
+3. **Auto-purge qurmaq:** `ProductObserver` yaradın. Product update olduqda müvafiq CDN URL-lərini purge edin. `Product::find(1)->update(['name' => 'Test'])` ilə test edin — Cloudflare dashboard-da purge tarixçəsini yoxlayın.
 
-### 4. `Cache-Control` headerlari neler var?
-**Cavab:** `public` (CDN cache ede biler), `private` (yalniz brauzer), `max-age` (brauzer TTL), `s-maxage` (CDN TTL), `no-store` (cache etme), `no-cache` (hemise revalidate), `immutable` (deyismez content), `stale-while-revalidate`.
+4. **Vite + CDN:** `ASSET_URL=https://cdn.example.com` qoyun, `npm run build` edin. Blade-dəki asset URL-lərinin CDN domain-inə işarə etdiyini yoxlayın.
 
-### 5. CDN hansi content-i cache etmelidir?
-**Cavab:** Static assets (CSS, JS, images, fonts) - uzun muddet. Public API responses - qisa muddet. User-specific content cache OLMAMALIDIR (private, no-store). HTML-de ehtiyatli olun - dynamic content ola biler.
+5. **Cache hit ratio monitoring:** Cloudflare Analytics-də cache hit ratio-nu izləyin. 80%-dən aşağıdırsa, hansı URL-lərin MISS olduğunu analiz edib TTL-ləri optimizasiya edin.
 
-### 6. Stale-while-revalidate nedir?
-**Cavab:** Cache expire olanda derhâl kohne (stale) versiyani qaytarir, arxada origin-den yeni versiyani alir. User gozlemirlir, amma kicik gecikmeli data gore biler. Performance ve freshness arasinda balansdir.
+## Əlaqəli Mövzular
 
-### 7. Edge computing nedir?
-**Cavab:** CDN edge serverlerde kod icra etmek (Cloudflare Workers, Lambda@Edge). Static cache yerine dynamic logic edge-de isleyir: A/B testing, auth, geolocation redirect, image optimization. Origin-e getmeden cavab yaradilir.
-
-## Best Practices
-
-1. **Versioned URLs** - Asset fayllarinda hash istifade edin (cache busting)
-2. **Uzun max-age + immutable** - Static assets ucun 1 il cache
-3. **s-maxage istifade edin** - CDN ve brauzer ucun ferqli TTL
-4. **Vary header** - Encoding, language-e gore cache ayirin
-5. **Cache-Tag** - Content qruplari ucun tag elave edin
-6. **Auto-purge** - Model deyisende avtomatik cache silin
-7. **Stale-while-revalidate** - Performance + freshness balansi
-8. **Private data cache etmeyin** - User-specific data: no-store
-9. **CDN monitoring** - Hit ratio, bandwidth, latency izleyin
-10. **Fallback** - CDN down olanda origin-e direct erisim temin edin
+- [Reverse Proxy](19-reverse-proxy.md)
+- [API Rate Limiting](25-api-rate-limiting.md)
+- [Network Security](26-network-security.md)
+- [HTTPS / SSL / TLS](06-https-ssl-tls.md)
+- [Load Balancing](18-load-balancing.md)

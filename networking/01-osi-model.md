@@ -1,10 +1,10 @@
-# OSI Model (Open Systems Interconnection)
+# OSI Model (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
-OSI modeli ISO (International Organization for Standardization) terefinden 1984-cu ilde yaradilmis 7 layerli referans modeldir. Network kommunikasiyasini standartlashdirmaq ucun istifade olunur. Her layer mueyyyen bir funksiyanı yerine yetirir ve yalniz oz yuxaridaki ve asagidaki layer ile elaqe saxlayir.
+OSI modeli ISO (International Organization for Standardization) tərəfindən 1984-cü ildə yaradılmış 7 layerli referans modeldir. Network kommunikasiyasını standartlaşdırmaq üçün istifadə olunur. Hər layer müəyyən bir funksiyanı yerinə yetirir və yalnız öz yuxarıdakı və aşağıdakı layer ilə əlaqə saxlayır.
 
-OSI modeli **konseptual** modeldir - real dunyada birbasa implement olunmur, amma networking-i anlamaq ucun en vacib framework-dur.
+OSI modeli **konseptual** modeldir — real dünyada birbaşa implement olunmur, amma networking-i anlamaq üçün ən vacib framework-dür.
 
 ```
 +-------------------+
@@ -24,13 +24,17 @@ OSI modeli **konseptual** modeldir - real dunyada birbasa implement olunmur, amm
 +-------------------+
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
+
+OSI modeli olmadan network problemlərini debugging etmək çox çətindir. Hər layer öz məsuliyyət dairəsini müəyyən etdiyinə görə, "ping işləyir amma HTTP işləmir" kimi vəziyyətlər dəqiq lokalizasiya edilir. Backend developer kimi TCP connection timeout-larını, TLS handshake xətalarını, ya da proxy konfiqurasiyasını debug edərkən bu layer-ların nə etdiyini bilmək vacibdir.
+
+## Əsas Anlayışlar
 
 ### Layer 1: Physical Layer
 
-**Funksiyanı:** Raw bitlarin fiziki medium uzerinden oturulmesi.
+**Funksiya:** Raw bitlərin fiziki medium üzərindən ötürülməsi.
 
-- Elektrik siqnallari, isiq impulslari, radio dalqalari
+- Elektrik siqnalları, işıq impulsları, radio dalğaları
 - Bit rate, voltage levels, pin layout, cable specs
 - Simplex, half-duplex, full-duplex kommunikasiya
 
@@ -46,16 +50,16 @@ Sender                           Receiver
   |  (copper wire / fiber optic)    |
 ```
 
-**Numuneler:**
+Nümunələr:
 - Cat5e/Cat6 Ethernet cable (1 Gbps)
 - Fiber optic cable (single-mode: 100+ km, multi-mode: 2 km)
 - Wi-Fi radio frequencies (2.4 GHz, 5 GHz, 6 GHz)
 
 ### Layer 2: Data Link Layer
 
-**Funksiyanı:** Node-to-node data transfer, error detection, MAC addressing.
+**Funksiya:** Node-to-node data transfer, error detection, MAC addressing.
 
-Iki sub-layer var:
+İki sub-layer var:
 - **LLC (Logical Link Control):** Flow control, error checking
 - **MAC (Media Access Control):** Physical addressing, media access
 
@@ -71,19 +75,19 @@ Iki sub-layer var:
 ```
 
 **MAC Address:** 48-bit unique identifier (e.g., `AA:BB:CC:DD:EE:FF`)
-- First 24 bits: OUI (Organizationally Unique Identifier) - vendor
+- First 24 bits: OUI (Organizationally Unique Identifier) — vendor
 - Last 24 bits: Device-specific
 
 **ARP (Address Resolution Protocol):**
 ```
-1. PC-A: "Kim 192.168.1.1 IP-ye sahibdir?" (broadcast)
-2. Router: "Menim MAC-im AA:BB:CC:DD:EE:FF" (unicast reply)
-3. PC-A ARP table-a yazir: 192.168.1.1 -> AA:BB:CC:DD:EE:FF
+1. PC-A: "Kim 192.168.1.1 IP-yə sahibdir?" (broadcast)
+2. Router: "Mənim MAC-im AA:BB:CC:DD:EE:FF" (unicast reply)
+3. PC-A ARP table-a yazır: 192.168.1.1 -> AA:BB:CC:DD:EE:FF
 ```
 
 ### Layer 3: Network Layer
 
-**Funksiyanı:** Logical addressing (IP), routing, packet forwarding.
+**Funksiya:** Logical addressing (IP), routing, packet forwarding.
 
 **Cihazlar:** Router, Layer 3 Switch
 **PDU:** Packet
@@ -96,12 +100,12 @@ Iki sub-layer var:
 +----------+-----------+-----------+---------+
 ```
 
-**Key concepts:**
-- **Routing:** Paketlerin optimal yolla gonderilmesi
-- **TTL (Time to Live):** Loop-larin qarsisini alir (her hop-da 1 azalir)
-- **Fragmentation:** Boyuk paketlerin kicik hisselere bolunmesi (MTU = 1500 bytes)
+Key concepts:
+- **Routing:** Paketlərin optimal yolla göndərilməsi
+- **TTL (Time to Live):** Loop-ların qarşısını alır (hər hop-da 1 azalır)
+- **Fragmentation:** Böyük paketlərin kiçik hissələrə bölünməsi (MTU = 1500 bytes)
 
-**Routing table numunesi:**
+Routing table nümunəsi:
 ```
 Destination     Gateway         Interface
 192.168.1.0/24  0.0.0.0         eth0
@@ -111,12 +115,12 @@ Destination     Gateway         Interface
 
 ### Layer 4: Transport Layer
 
-**Funksiyanı:** End-to-end communication, segmentation, flow control, error recovery.
+**Funksiya:** End-to-end communication, segmentation, flow control, error recovery.
 
 **PDU:** Segment (TCP) / Datagram (UDP)
 **Protokollar:** TCP, UDP, SCTP
 
-**Port ranges:**
+Port ranges:
 - Well-known: 0-1023 (HTTP=80, HTTPS=443, SSH=22, FTP=21)
 - Registered: 1024-49151 (MySQL=3306, PostgreSQL=5432, Redis=6379)
 - Dynamic/Private: 49152-65535
@@ -137,17 +141,15 @@ TCP vs UDP:
 
 ### Layer 5: Session Layer
 
-**Funksiyanı:** Session-larin yaradilmasi, idare edilmesi ve baglanmasi.
+**Funksiya:** Session-ların yaradılması, idarə edilməsi və bağlanması.
 
 **Protokollar:** NetBIOS, PPTP, RPC, SMB
 **PDU:** Data
 
-**Key concepts:**
+Key concepts:
 - **Session establishment:** Authentication, authorization
 - **Session maintenance:** Checkpoint/recovery, keep-alive
 - **Session termination:** Graceful close
-
-**Numune:** Bir video call zamani session layer elaqeni idare edir. Eger elaqe qirilsa, session layer son checkpoint-dan davam ede biler.
 
 ```
 Client                    Server
@@ -162,15 +164,15 @@ Client                    Server
 
 ### Layer 6: Presentation Layer
 
-**Funksiyanı:** Data formatting, encryption/decryption, compression.
+**Funksiya:** Data formatting, encryption/decryption, compression.
 
 **Protokollar:** SSL/TLS (encryption), JPEG/GIF/PNG (image), MPEG (video), ASCII/UTF-8 (text)
 **PDU:** Data
 
-**Key concepts:**
+Key concepts:
 - **Translation:** ASCII <-> EBCDIC, UTF-8 <-> UTF-16
-- **Encryption:** Data-nin sifreli formata cevrilmesi (SSL/TLS)
-- **Compression:** Data size-in azaldilmasi (gzip, deflate)
+- **Encryption:** Data-nın sifrəli formata çevrilməsi (SSL/TLS)
+- **Compression:** Data size-ın azaldılması (gzip, deflate)
 
 ```
 Application Data: {"name": "Orkhan"}
@@ -182,12 +184,12 @@ Compressed: [gzip encoded]
 
 ### Layer 7: Application Layer
 
-**Funksiyanı:** End-user servisler, network applications.
+**Funksiya:** End-user servislər, network applications.
 
 **Protokollar:** HTTP, HTTPS, FTP, SMTP, DNS, SSH, SNMP, LDAP
 **PDU:** Data
 
-Bu layer istifadeciye en yaxin olan layer-dir. Web browser, email client, file transfer application-lar bu layer-de isleyir.
+Bu layer istifadəçiyə ən yaxın olan layer-dir. Web browser, email client, file transfer application-lar bu layer-də işləyir.
 
 ```
 Browser (Application Layer)
@@ -199,11 +201,9 @@ Browser (Application Layer)
 Web Server
 ```
 
-## Əsas Konseptlər (Key Concepts)
-
 ### Data Encapsulation
 
-Data gonderildikde her layer oz header-ini elave edir (encapsulation). Qebul edildikde her layer oz header-ini silir (de-encapsulation).
+Data göndərildikdə hər layer öz header-ini əlavə edir (encapsulation). Qəbul edildikdə hər layer öz header-ini silir (de-encapsulation).
 
 ```
 Sending side:                          Receiving side:
@@ -241,11 +241,45 @@ Sending side:                          Receiving side:
 | 2 - Data Link | Frame | MAC addresses + packet |
 | 1 - Physical | Bits | Raw binary |
 
-### Real-World Example: Web Request
+### Mnemonic (Yadda saxlamaq üçün)
+
+**Top to bottom:** All People Seem To Need Data Processing
+**Bottom to top:** Please Do Not Throw Sausage Pizza Away
+
+## Praktik Baxış
+
+**Real layihələrdə istifadəsi:**
+- Backend developer olaraq əsasən Layer 4-7 ilə işləyirsiz (TCP, HTTP, TLS, DNS)
+- Docker/Kubernetes network problemi debuggingdə Layer 2-3 anlayışı lazımdır
+- Load balancer L4 (TCP) və L7 (HTTP) formalarında gəlir — ikisinin fərqini bilmək vacibdir
+
+**Troubleshooting strategiyası:**
+- Aşağıdan yuxarıya gedin: Physical → Data Link → Network → Transport → Application
+- Ping işləyirsə amma HTTP işləmirsə — problem Layer 4-7 arasındadır
+- TCP connect olur amma TLS handshake fails — problem Layer 6-dadır
+
+**Security hər layer-də lazımdır:**
+- Physical: Server room access control
+- Data Link: Port security, MAC filtering
+- Network: Firewalls, ACLs
+- Transport: TLS/SSL
+- Application: Authentication, input validation
+
+**Common mistakes:**
+- OSI-ni real implementation kimi düşünmək — bu yalnız referans modeldir
+- Switch-in Layer 2, Router-in Layer 3 olduğunu unutmaq
+- MTU (1500 bytes) limitini nəzərə almamaq — böyük paketlər fragment olunur, bu performance-a təsir edir
+
+**Ne zaman istifadə olunmamalı:**
+- OSI terminologiyası real implementasiyada TCP/IP stack-i izah etmir; layihə dokumentasiyasında TCP/IP model terminlərini istifadə etmək daha dəqiqdir
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+Brauzerinizdə `https://example.com` yazdığınızda:
 
 ```
-You type https://example.com in browser:
-
 Layer 7 (Application):
   Browser creates HTTP GET request
 
@@ -268,14 +302,9 @@ Layer 1 (Physical):
   Converts to electrical signals on the wire
 ```
 
-### Mnemonic (Yadda saxlamaq ucun)
+### Kod Nümunəsi
 
-**Top to bottom:** All People Seem To Need Data Processing
-**Bottom to top:** Please Do Not Throw Sausage Pizza Away
-
-## PHP/Laravel ilə İstifadə
-
-OSI modeli birbasa PHP-de implement olunmasa da, PHP muxtelif layer-lerde isleyir:
+OSI modeli birbaşa PHP-də implement olunmasa da, PHP müxtəlif layer-lərdə işləyir:
 
 ```php
 // Layer 7 - Application Layer: HTTP Request in Laravel
@@ -302,7 +331,7 @@ $hostname = gethostbyaddr('93.184.216.34'); // Reverse DNS
 $ip = gethostbyname('example.com');         // Forward DNS
 ```
 
-### Laravel Middleware - Layer analogy
+Laravel Middleware — Layer analogy:
 
 ```php
 // Middleware is like OSI layers - each adds/removes something
@@ -312,47 +341,55 @@ class ThrottleRequests extends Middleware    // Like Transport Layer (flow contr
 class TrustProxies extends Middleware        // Like Network Layer
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-### Q1: OSI modelinin 7 layer-ini sayın ve her birinin funksiyasini izah edin.
-**A:** Physical (bit transmission), Data Link (node-to-node, MAC), Network (routing, IP), Transport (end-to-end, TCP/UDP), Session (session management), Presentation (encryption, formatting), Application (user services, HTTP/DNS).
+**Tapşırıq 1: Network tool-larla layer-ları müşahidə edin**
 
-### Q2: Encapsulation nedir?
-**A:** Her layer gondermede oz header-ini data-ya elave edir. Transport layer port numreleri, Network layer IP adresleri, Data Link layer MAC adresleri elave edir. Qebul terefinde bu proses terstine basa verir (de-encapsulation).
+```bash
+# Layer 1-2: Network interface stats
+ip link show
 
-### Q3: Switch hansı layer-de isleyir? Router nece?
-**A:** Switch Layer 2-de (MAC addresses ile), Router Layer 3-de (IP addresses ile) isleyir. Layer 3 switch-ler her iki funksiyanı yerine yetire biler.
+# Layer 2: ARP table (IP → MAC mapping)
+arp -a
 
-### Q4: OSI ve TCP/IP modeli arasinda ne ferq var?
-**A:** OSI 7 layer-dir (theoretical), TCP/IP 4 layer-dir (practical). OSI-nin Session, Presentation, Application layer-leri TCP/IP-de tek Application layer-e uygun gelir. TCP/IP real dunyada istifade olunur, OSI isə ogretme ucun referans modeldir.
+# Layer 3: Routing table
+ip route show
 
-### Q5: ARP hansi layer-de isleyir?
-**A:** ARP Layer 2 (Data Link) ve Layer 3 (Network) arasinda isleyir. IP adresini (L3) MAC adresine (L2) cevirir. Bu sebebden bezen "Layer 2.5" adlandirilir.
+# Layer 3: ICMP ping (packet-level connectivity)
+ping -c 4 google.com
 
-### Q6: TTL nedir ve nə ucun lazimdir?
-**A:** Time to Live - paketlerin network-de sonsuz dovr etmesinin qarsisini alir. Her router (hop) TTL-i 1 azaldir. TTL 0 olduqda paket atilir ve ICMP Time Exceeded mesaji gonderilir. Traceroute bu mexanizmden istifade edir.
+# Layer 3: Traceroute (hər hop-u görürsüz)
+traceroute google.com
 
-### Q7: Layer 2 ve Layer 3 addressing arasinda ferq nedir?
-**A:** Layer 2 MAC address istifade edir (48-bit, hardware-based, local network scope). Layer 3 IP address istifade edir (32/128-bit, logical, global scope). MAC lokal segmentde, IP ise end-to-end routing ucun istifade olunur.
+# Layer 4: Open TCP/UDP connections
+ss -tuln
+netstat -an
 
-## Best Practices
+# Layer 7: HTTP request
+curl -v https://example.com
+```
 
-1. **Troubleshooting zamani asagidan yuxariya gedin:** Physical -> Data Link -> Network -> Transport -> Application. Eger ping isleyirse amma HTTP islemirse, problem Layer 4-7 arasindadir.
+**Tapşırıq 2: Encapsulation-ı Wireshark ilə müşahidə edin**
 
-2. **Layer separation prinsipi:** Her layer yalniz oz funksiyasina goredirr. Bu modularity troubleshooting-i asanlasdirir.
+1. Wireshark quraşdırın
+2. `ping google.com` işlədin
+3. ICMP paketini seçin
+4. Aşağıda görəcəksiniz: Frame (L2) → IP (L3) → ICMP (L3/L4) — hər layer-in header-i göstərilir
 
-3. **Security her layer-de lazimdir:**
-   - Physical: Server room access control
-   - Data Link: Port security, MAC filtering
-   - Network: Firewalls, ACLs
-   - Transport: TLS/SSL
-   - Application: Authentication, input validation
+**Tapşırıq 3: Troubleshooting simulyasiyası**
 
-4. **MTU (Maximum Transmission Unit):** Ethernet ucun standart MTU 1500 bytes-dir. Boyuk paketler fragment olunur ki bu performance-a tesir edir. Path MTU Discovery istifade edin.
+Verilmiş ssenari: "Laravel app-ınız database-ə qoşula bilmir"
 
-5. **Network monitoring:** Her layer-de muxtelif tool-lar istifade olunur:
-   - Physical: Cable tester
-   - Data Link: `arp -a`, switch port stats
-   - Network: `ping`, `traceroute`
-   - Transport: `netstat`, `ss`
-   - Application: `curl`, `wget`, browser DevTools
+Necə diaqnoz qoyursunuz:
+1. L3: `ping db-host` — IP connectivity var mı?
+2. L4: `telnet db-host 3306` — TCP port açıq mı?
+3. L7: Laravel `.env` DB credentials doğrudur mu?
+4. L7: MySQL user-in remote access icazəsi var mı?
+
+## Əlaqəli Mövzular
+
+- [TCP/IP Model](02-tcp-ip-model.md)
+- [TCP](03-tcp.md)
+- [UDP](04-udp.md)
+- [HTTP Protocol](05-http-protocol.md)
+- [Network Troubleshooting](30-network-troubleshooting.md)

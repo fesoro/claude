@@ -1,61 +1,62 @@
-# API Rate Limiting
+# API Rate Limiting (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
-Rate limiting muəyyen zaman ərzində client-in edə biləcəyi request sayini məhdudlaşdıran mexanizmdir. Məqsəd:
-- **Abuse prevention**: Brute force, scraping, DOS attack
+Rate limiting müəyyən zaman ərzində client-in edə biləcəyi request sayını məhdudlaşdıran mexanizmdir. Məqsəd:
+- **Abuse prevention**: Brute force, scraping, DoS attack
 - **Fair usage**: Bütün user-lərə eyni pay
 - **Resource protection**: Server, DB overload-dan qoru
-- **Cost control**: Third-party API çağırışlarini saxla
+- **Cost control**: Third-party API çağırışlarını saxla
 
 ```
 Rate limit olmadan:
-  Bad actor: 1 saniyede 10000 request --> Server crash
+  Bad actor: 1 saniyədə 10000 request --> Server crash
 
-Rate limit ile (100 req/min):
+Rate limit ilə (100 req/min):
   User: request 1-100  --> 200 OK
   User: request 101    --> 429 Too Many Requests
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
+
+Rate limiting olmayan API login endpoint-i brute force hücumuna açıqdır. Bir bot 1 saniyədə minlərlə şifrə cəhdi edə bilər. Bundan əlavə, tərəfindəniz API-ni istifadə edən pis niyyətli bir müştəri serverinizi digər müştərilər üçün əlçatmaz edə bilər. Rate limiting həm təhlükəsizliyi, həm fair usage-i, həm də tier-based pricing modelini dəstəkləyir.
+
+## Əsas Anlayışlar
 
 ### 1. Fixed Window Counter
 
 ```
-Sadə: Her 1 deqiqe-de counter sıfırlanır.
+Sadə: Hər 1 dəqiqədə counter sıfırlanır.
 
-Dakika 10:00-10:01  |  10:01-10:02  |  10:02-10:03
+Dəqiqə 10:00-10:01  |  10:01-10:02  |  10:02-10:03
   counter=100        |  counter=0    |  counter=0
   (window full)      |  (reset)      |
-
-Time: 10:00:59 - User 100 request etdi -> BLOCKED
-Time: 10:01:00 - Window reset, +100 olur -> OK
 
 Problem (burst problem):
   10:00:59 -> 100 request (ok, window sonu)
   10:01:00 -> 100 request (ok, yeni window)
-  1 saniyede 200 request kecdi! Limit 100 idi amma.
+  1 saniyədə 200 request keçdi! Limit 100 idi amma.
 ```
 
 ### 2. Sliding Window Log
 
 ```
-Her request-in timestamp-i saxlanir. Son 60 saniyede nece request olub hesablanir.
+Hər request-in timestamp-i saxlanır. Son 60 saniyədə neçə request olub hesablanır.
 
-Redis sorted set ile:
+Redis sorted set ilə:
   user:123:requests = [
     {timestamp: 1000, score: 1000},
     {timestamp: 1001, score: 1001},
     ...
   ]
 
-Her request:
-  1. 60 saniye öncekileri sil:  ZREMRANGEBYSCORE key 0 (now-60)
+Hər request:
+  1. 60 saniyə öncəkiləri sil:  ZREMRANGEBYSCORE key 0 (now-60)
   2. Count: ZCARD key
   3. If count < limit: add current timestamp
   4. Else: 429
 
-Memory intensive! Her request icun bir timestamp.
+Memory intensive! Hər request üçün bir timestamp.
 ```
 
 ### 3. Sliding Window Counter (Approximation)
@@ -78,11 +79,11 @@ If 135 > limit(100): BLOCKED
 ### 4. Token Bucket
 
 ```
-Bucket-də token-lar var. Her request 1 token yeyir.
-Token-lar müəyyən sürətle doldurulur.
+Bucket-də token-lar var. Hər request 1 token yeyir.
+Token-lar müəyyən sürətlə doldurulur.
 
 Bucket capacity: 100 tokens
-Refill rate: 10 tokens/saniye
+Refill rate: 10 tokens/saniyə
 
 Initial:  [##########] 100 tokens
 Request arrives -> token decrements:
@@ -91,42 +92,41 @@ Request arrives -> token decrements:
   ...
   [..........]  0 tokens  -> 429 (block)
 
-Refill:  her saniyede 10 token əlavə olunur (max 100).
+Refill:  hər saniyədə 10 token əlavə olunur (max 100).
 
-Ustunluk: Burst traffic-e icaze verir.
-  User 1 deqiqe quiet idi -> bucket full olur -> birden 100 request ata bilər.
+Üstünlük: Burst traffic-ə icazə verir.
+  User 1 dəqiqə quiet idi -> bucket full olur -> birdən 100 request ata bilər.
 ```
 
 ### 5. Leaky Bucket
 
 ```
-Fixed rate-de request-leri process edir. Bucket dolsa yeni request drop olunur.
+Fixed rate-də request-ləri process edir. Bucket dolsa yeni request drop olunur.
 
 [Requests in] --> [Bucket (queue)] --> [Process at fixed rate]
 
 Bucket size: 100
-Leak rate: 10/saniye
+Leak rate: 10/saniyə
 
-Requests come in burst: 100 request per saniye
-Bucket fills up, amma 10/sec ile process olunur
+Requests come in burst: 100 request per saniyə
+Bucket dolur, amma 10/sec ilə process olunur
 Bucket dolsa: 429
 
 Fərq token bucket-dən:
-  Token bucket: Burst-ə icaze verir (immediate process)
+  Token bucket: Burst-ə icazə verir (immediate process)
   Leaky bucket: Smooth output rate (queue-ed process)
 ```
 
 ### 6. Distributed Rate Limiting (Redis)
 
 ```
-Problem: Multiple server instances var. Hər birində counter ayri olsa limit bypass olunur.
+Problem: Multiple server instances var. Hər birində counter ayrı olsa limit bypass olunur.
 
-Həll: Shared storage (Redis) istifade et.
+Həll: Shared storage (Redis) istifadə et.
 
 Redis INCR with expire:
   INCR rate_limit:user_123
   If == 1: EXPIRE rate_limit:user_123 60
-
   If > 100: BLOCK
   Else: ALLOW
 
@@ -148,47 +148,35 @@ Response-da client-ə məlumat ver:
 
 HTTP/1.1 200 OK
 X-RateLimit-Limit: 100          # Maximum per window
-X-RateLimit-Remaining: 42       # Neçə request qalib
+X-RateLimit-Remaining: 42       # Neçə request qalıb
 X-RateLimit-Reset: 1634567890   # Next reset Unix timestamp
 
 Limit keçilərsə:
 HTTP/1.1 429 Too Many Requests
-Retry-After: 30                 # 30 saniye sonra yenə cəhd et
+Retry-After: 30                 # 30 saniyə sonra yenə cəhd et
 X-RateLimit-Limit: 100
 X-RateLimit-Remaining: 0
 X-RateLimit-Reset: 1634567920
-
-Content-Type: application/json
-{
-  "error": "Too many requests",
-  "retry_after": 30
-}
 ```
-
-## Əsas Konseptlər (Key Concepts)
 
 ### Rate Limit Identifier
 
 ```
-Kimə əsasen limit? Secenek:
+Kimə əsasən limit?
 
 1. IP address
-   - Pros: Anonymous users ucun
-   - Cons: NAT arxasinda coxlu user, VPN bypass
+   - Pros: Anonymous users üçün
+   - Cons: NAT arxasında çoxlu user, VPN bypass
 
 2. User ID (authenticated)
    - Pros: Accurate per-user
-   - Cons: Unauthenticated endpoints-də ishlemir
+   - Cons: Unauthenticated endpoint-lərdə işləmir
 
 3. API Key
    - Pros: Per-client tracking, tier-based limits
    - Cons: API key leak
 
-4. Device ID / Session
-   - Pros: Granular
-   - Cons: Easily spoofed
-
-Practical: User authenticated-dirse user_id, yoxsa IP.
+Praktik: User authenticated-dirsə user_id, yoxsa IP.
 ```
 
 ### Tier-Based Limits
@@ -199,59 +187,35 @@ Basic tier:     1000 req/hour
 Pro tier:       10000 req/hour
 Enterprise:     Unlimited (SLA-based)
 
-DB-də:
-  users: id, plan, rate_limit_override
-
-Middleware-də user-in plan-ina gore limit secilir.
+Middleware-də user-in plan-ına görə limit seçilir.
 ```
 
-### Different Limits per Endpoint
+## Praktik Baxış
 
-```
-POST /login:           5 per minute    (brute force protection)
-POST /register:        3 per hour      (spam prevention)
-GET  /users/:id:       100 per minute  (normal usage)
-POST /reports:         10 per minute   (expensive operation)
-POST /upload:          5 per minute    (bandwidth)
-```
+**Trade-off-lar:**
+- Token bucket burst-ə icazə verir (API-lər üçün yaxşı), leaky bucket output-u smooth edir (network shaping üçün)
+- Per-IP limit NAT arxasında çoxlu istifadəçini bloklaya bilər
+- Redis distributed rate limiting — əlavə dependency, amma multi-server üçün mütləq lazım
 
-### Retry-After Header
+**Nə vaxt istifadə edilməməlidir:**
+- Internal service-to-service sorğularda rate limiting tez-tez lazımsız overhead yaradır
+- Whitelist ilə trusted partner-ləri limit-dən azad edin
 
-```
-Server 429 qaytaranda Retry-After ver:
+**Anti-pattern-lər:**
+- `Retry-After` header-i olmadan 429 qaytarmaq — client nə vaxt yenidən cəhd edəcəyini bilmir
+- In-memory counter multi-server mühitdə — hər server ayrı counter sayır, limit bypass olunur
+- Bütün endpoint-lərə eyni limit — login üçün çox, GET /products üçün az
+- Rate limit hit-lərini log etməməmk — attack pattern-ləri görünmür
 
-Retry-After: 30                          # seconds
-Retry-After: Wed, 21 Oct 2025 07:28:00   # HTTP-date
+## Nümunələr
 
-Client bunu görüb exponential backoff edir:
-  try 1 -> 429, wait 30s
-  try 2 -> 429, wait 60s
-  try 3 -> 429, wait 120s
-```
+### Ümumi Nümunə
 
-### Graceful Degradation
+Laravel-in built-in `throttle` middleware-i Redis-ə əsaslanır. `RateLimiter::for()` ilə custom, tier-based limit-lər təyin etmək mümkündür. Production-da mütləq Redis driver istifadə olunmalıdır.
 
-```
-Rate limit hit olanda ne etmeli?
+### Kod Nümunəsi
 
-1. Block (default) - 429 qaytar
-
-2. Queue - request-i queue-a at, gec process et
-   Pros: No lost requests
-   Cons: Latency increase
-
-3. Throttle - request-i yavashlat (add delay)
-   Pros: Smooth degradation
-   Cons: Client kavshaq gorunur
-
-4. Fallback - cached response qaytar
-   Pros: Functional
-   Cons: Stale data
-```
-
-## PHP/Laravel ilə İstifadə
-
-### Built-in Throttle Middleware
+**Built-in Throttle Middleware:**
 
 ```php
 // routes/api.php
@@ -261,18 +225,18 @@ Route::middleware('throttle:60,1')->group(function () {
     Route::get('/users', [UserController::class, 'index']);
 });
 
-// Auth-lanmisdirsa user_id, else IP
+// Auth-lanmışdırsa user_id, yoxsa IP
 Route::middleware(['auth:sanctum', 'throttle:100,1'])->group(function () {
     Route::apiResource('posts', PostController::class);
 });
 
-// Named limiter (daha flexible)
+// Named limiter
 Route::middleware('throttle:api')->group(function () {
     // ...
 });
 ```
 
-### Custom RateLimiter (Laravel 8+)
+**Custom RateLimiter (Laravel 8+):**
 
 ```php
 // app/Providers/RouteServiceProvider.php
@@ -282,7 +246,7 @@ use Illuminate\Support\Facades\RateLimiter;
 
 public function boot()
 {
-    // Basit API limit
+    // Sadə API limit
     RateLimiter::for('api', function (Request $request) {
         return Limit::perMinute(60)->by(
             $request->user()?->id ?: $request->ip()
@@ -305,14 +269,14 @@ public function boot()
         $user = $request->user();
 
         return match($user?->plan) {
-            'free' => Limit::perHour(10)->by($user->id),
-            'pro' => Limit::perHour(100)->by($user->id),
+            'free'       => Limit::perHour(10)->by($user->id),
+            'pro'        => Limit::perHour(100)->by($user->id),
             'enterprise' => Limit::none(),
-            default => Limit::perHour(5)->by($request->ip()),
+            default      => Limit::perHour(5)->by($request->ip()),
         };
     });
 
-    // Multiple limits (both must pass)
+    // Multiple limits (hər ikisi pass etməli)
     RateLimiter::for('expensive', function (Request $request) {
         return [
             Limit::perMinute(10)->by($request->ip()),
@@ -322,7 +286,7 @@ public function boot()
 }
 ```
 
-### Route-da İstifadə
+**Route-da İstifadə:**
 
 ```php
 Route::post('/login', [AuthController::class, 'login'])
@@ -334,7 +298,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 ```
 
-### Manual Rate Limiting (RateLimiter facade)
+**Manual Rate Limiting (RateLimiter facade):**
 
 ```php
 use Illuminate\Support\Facades\RateLimiter;
@@ -343,7 +307,6 @@ public function sendOtp(Request $request)
 {
     $key = 'send-otp:' . $request->ip();
 
-    // Limit check
     if (RateLimiter::tooManyAttempts($key, 3)) {
         $seconds = RateLimiter::availableIn($key);
 
@@ -352,8 +315,7 @@ public function sendOtp(Request $request)
         ], 429);
     }
 
-    // Increment counter (1 dakika TTL)
-    RateLimiter::increment($key, 60);
+    RateLimiter::increment($key, 60); // 1 dəqiqə TTL
 
     // Send OTP logic
     $otp = rand(100000, 999999);
@@ -361,22 +323,11 @@ public function sendOtp(Request $request)
 
     return response()->json(['message' => 'OTP sent']);
 }
-
-// Executing with rate limit wrapper
-RateLimiter::attempt(
-    $key,
-    $maxAttempts = 5,
-    function() {
-        // logic
-    },
-    $decaySeconds = 60
-);
 ```
 
-### Custom Response Headers
+**Custom Response Headers:**
 
 ```php
-// app/Http/Middleware/RateLimitHeaders.php
 namespace App\Http\Middleware;
 
 use Closure;
@@ -388,8 +339,8 @@ class RateLimitHeaders
     {
         $response = $next($request);
 
-        $key = 'api:' . ($request->user()?->id ?: $request->ip());
-        $limit = 100;
+        $key       = 'api:' . ($request->user()?->id ?: $request->ip());
+        $limit     = 100;
         $remaining = $limit - RateLimiter::attempts($key);
 
         $response->headers->set('X-RateLimit-Limit', $limit);
@@ -401,7 +352,7 @@ class RateLimitHeaders
 }
 ```
 
-### Redis-based Distributed Rate Limiting
+**Redis-based Token Bucket:**
 
 ```php
 use Illuminate\Support\Facades\Redis;
@@ -448,14 +399,14 @@ class TokenBucketLimiter
     }
 }
 
-// Usage
+// İstifadə
 $limiter = new TokenBucketLimiter();
 if (!$limiter->check('user_' . auth()->id(), 100, 10)) {
     abort(429, 'Rate limit exceeded');
 }
 ```
 
-### Exception Handling (429)
+**429 Exception Handling:**
 
 ```php
 // app/Exceptions/Handler.php
@@ -463,7 +414,7 @@ public function render($request, Throwable $exception)
 {
     if ($exception instanceof ThrottleRequestsException) {
         return response()->json([
-            'error' => 'Too many requests',
+            'error'       => 'Too many requests',
             'retry_after' => $exception->getHeaders()['Retry-After'] ?? 60,
         ], 429, $exception->getHeaders());
     }
@@ -472,7 +423,7 @@ public function render($request, Throwable $exception)
 }
 ```
 
-### Frontend Handling
+**Frontend Retry Logic:**
 
 ```javascript
 async function apiCall(url, options = {}) {
@@ -486,7 +437,6 @@ async function apiCall(url, options = {}) {
         return apiCall(url, options); // retry
     }
 
-    // Show remaining quota
     const remaining = response.headers.get('X-RateLimit-Remaining');
     if (remaining && remaining < 10) {
         console.warn(`Only ${remaining} requests left!`);
@@ -496,152 +446,22 @@ async function apiCall(url, options = {}) {
 }
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-**Q1: Rate limiting niye vacibdir?**
+1. **Login brute force qoruması:** `POST /login` endpoint-inə `throttle:login` middleware əlavə edin — hər IP üçün 5 cəhd/dəqiqə. 6-cı cəhddə `429 Too Many Requests` + `Retry-After: 60` header-lərini yoxlayın.
 
-Səbəblər:
-1. **DOS/DDoS protection**: Malicious traffic server-i boğa bilər
-2. **Brute force**: Login, password reset endpoint-lərində
-3. **Resource protection**: DB, external API cost-larini qoru
-4. **Fair usage**: Multi-tenant app-də bir user bashqalarini etkileyir
-5. **Billing**: Tier-based pricing (Pro vs Free)
+2. **Tier-based limits:** `user.plan` (free/pro/enterprise) sütununa görə müxtəlif rate limit qurun. Free üçün 10/saat, Pro üçün 100/saat, Enterprise üçün limitsiz. Hər plan üçün test keçirin.
 
-**Q2: Token bucket vs Leaky bucket fərqi?**
+3. **Rate limit headers:** `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset` header-lərini bütün response-lara əlavə edin. Postman-da header-lərin düzgün azaldığını izləyin.
 
-**Token bucket**: Bucket-də token-lar var, request gelende token yeyir. Burst-ə icaze verir (bucket doludursa 100 request immediate). Refill rate constant.
+4. **Redis distributed testing:** Docker Compose ilə 2 PHP-FPM instance qaldırın, Redis shared cache istifadə edin. Hər iki instance-ə sorğu göndərib rate limit-in düzgün paylaşıldığını yoxlayın (in-memory cache ilə sınayın — fərqi görün).
 
-**Leaky bucket**: Request-lər queue-ya daxil olur, fixed rate-də process olunur. Output rate smooth, burst yoxdur. Queue dolsa drop.
+5. **Token bucket implement:** `TokenBucketLimiter` class-ını Redis Lua script ilə implement edin. Burst allowance-ı test edin: 10 saniyə gözləyin (bucket dolur), sonra 100 request biranda göndərin — hamısı keçməlidir.
 
-İstifadə:
-- Token bucket: API rate limiting (AWS, Stripe)
-- Leaky bucket: Network packet shaping
+## Əlaqəli Mövzular
 
-**Q3: Fixed window counter niye problemlidir?**
-
-Window boundary-də 2x burst mümkündür:
-- 10:00:59 - 100 request (window end)
-- 10:01:00 - 100 request (new window)
-- 1 saniyede 200 request keçdi, amma limit 100 idi!
-
-Həll: Sliding window (log və ya approximation).
-
-**Q4: Distributed rate limiting necə işləyir?**
-
-Multiple server instances varsa, hər birində ayri counter bypass problem yaradır. Həll: Shared storage (Redis).
-
-Redis atomic operations (INCR + EXPIRE, ya da Lua script) race condition-siz counter-i increment edir. Bütün server-lər eyni counter-ə baxır.
-
-**Q5: Per-user vs per-IP rate limiting?**
-
-**Per-user**: Authenticated endpoints üçün. Accurate, tier-based limits dəstəkləyir. NAT/VPN problem yoxdur.
-
-**Per-IP**: Unauthenticated endpoints (login, register). NAT arxasinda çoxlu user ola bilər - innocent user bloklana bilər. VPN ile bypass olar.
-
-Praktikada: auth olsa user, yoxsa IP.
-
-**Q6: 429-un "Retry-After" header-i necə istifade olunur?**
-
-Server 429 qaytaranda Retry-After header client-ə nə vaxt yenidən cəhd etmək olacağını deyir:
-```
-Retry-After: 30          (30 saniye)
-Retry-After: Wed, 21 Oct 2025 07:28:00   (specific time)
-```
-
-Client library-lər bunu oxuyur və exponential backoff-la retry edir. Manual retry olmadan, server-in hesabladığı optimum zamanı gözləyir.
-
-**Q7: Rate limit-in bypass üsulları və protection?**
-
-**Bypass**:
-1. IP rotation (proxy, VPN)
-2. Multiple API keys
-3. Distributed bot network
-4. User-Agent spoofing
-
-**Protection**:
-1. Device fingerprinting (browser fingerprint)
-2. Captcha ikinci layer
-3. Behavior analysis (ML-based anomaly)
-4. Tight rate limits for new accounts
-5. IP reputation services (Cloudflare)
-
-**Q8: Login endpoint üçün necə rate limit qurmaq lazim?**
-
-```php
-RateLimiter::for('login', function (Request $request) {
-    // Həm IP həm username üzrə limit
-    return [
-        Limit::perMinute(5)->by($request->ip()),
-        Limit::perMinute(5)->by($request->input('email').$request->ip()),
-    ];
-});
-```
-
-Bele: Bir IP 5 faili attempt edə bilər, eyni zamanda bir email 5 attempt. Lock account after N failures.
-
-**Q9: Rate limit-in cache storage seçimi?**
-
-**Memory (APCu, array)**: Single server, lost on restart
-**File**: Persistence, amma slow, race condition
-**Database**: Persistent, amma slow
-**Memcached**: Fast, distributed, no persistence
-**Redis (ən çox)**: Fast, persistent, atomic ops, TTL support
-
-Laravel default-ta cache driver istifade edir (`CACHE_DRIVER` config).
-
-**Q10: API user-ə rate limit məlumatini necə çatdırmaq lazim?**
-
-Response header-lərlə:
-```
-X-RateLimit-Limit: 100
-X-RateLimit-Remaining: 73
-X-RateLimit-Reset: 1634567890
-```
-
-429 response-da:
-```
-Retry-After: 30
-X-RateLimit-Reset: 1634567920
-```
-
-Documentation-da:
-- Endpoint-lər üzrə limit-lər
-- Tier-based limitler
-- Headers-in description-i
-- Retry best practices
-
-## Best Practices
-
-1. **Hər endpoint üçün uygun limit**:
-   - Login: 5/min
-   - API: 60-1000/min
-   - Heavy ops: 10/min
-   - Unauthenticated: stricter
-
-2. **Tier-based limits**: Free, Basic, Pro, Enterprise plan-lari.
-
-3. **Response header-lər mandatory**: X-RateLimit-* və Retry-After her zaman.
-
-4. **Graceful degradation**: Full block yerine degrade (cached response, queue).
-
-5. **Logging**: Rate limit hit-ləri logla - attack pattern detection üçün.
-
-6. **Alerting**: Anomaly detection - sudden spike-lərdə alert.
-
-7. **Whitelist**: Internal IP-lər, trusted partner-lər rate limit-dən exempt.
-
-8. **Gradual rollout**: Yeni limit tətbiq etməzdən əvvəl monitor mode-da test et.
-
-9. **Documentation**: API docs-da hər endpoint üçün limit aydın yaz.
-
-10. **Redis production-da**: Memory cache yalniz dev üçün - production Redis/Memcached.
-
-11. **Distributed-safe**: Single-instance assumption-dan qaç - multi-server hazir ol.
-
-12. **Client library-lər retry logic**: Automatic exponential backoff, jitter.
-
-13. **Token bucket for burst-friendly APIs**: User experience yaxşılaşdırır.
-
-14. **Captcha fallback**: Rate limit hit-də captcha göstər (CAPTCHA + rate limit combo).
-
-15. **Cost analysis**: Rate limit Redis usage-ini monitor et - expensive ola bilər.
+- [API Security](17-api-security.md)
+- [API Gateway](21-api-gateway.md)
+- [Network Security](26-network-security.md)
+- [CDN](20-cdn.md)
+- [JWT](15-jwt.md)

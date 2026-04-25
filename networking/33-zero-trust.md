@@ -1,48 +1,52 @@
-# Zero Trust Security
+# Zero Trust Security (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
-Zero Trust **"heç kəsə güvənmə, hər zaman yoxla"** prinsipinə əsaslanan security modelidir. Klassik "castle and moat" modelindən fərqli olaraq, network perimeter-ə güvənmir - istər daxili, istər xarici istifadəçi olsun, hər sorğu authenticate və authorize olunmalıdır.
+Zero Trust **"heç kəsə güvənmə, hər zaman yoxla"** prinsipinə əsaslanan security modelidir. Klassik "castle and moat" modelindən fərqli olaraq, network perimeter-ə güvənmir — istər daxili, istər xarici istifadəçi olsun, hər sorğu authenticate və authorize olunmalıdır.
 
 Termin Forrester analyst **John Kindervag** tərəfindən 2010-da təqdim edilib. Google-un BeyondCorp layihəsi (2014) ilk geniş miqyaslı real implementation olub.
 
 ```
 Traditional (Perimeter-based):       Zero Trust:
-                                     
+
   [Internet]                         [Internet]
      |                                  |
   +-----+  <- Firewall                  v
-  | DMZ |     (trust boundary)       [Policy Engine]  <- every request verified
+  | DMZ |     (trust boundary)       [Policy Engine]  <- hər request yoxlanır
   +-----+                               |
-     |                              Allow/Deny based on:
+     |                              Allow/Deny əsasən:
   [Internal]                          - User identity
-   - Trust users                      - Device posture
-   - Trust devices                    - Request context
-   - No re-verification               - Resource sensitivity
+   - İstifadəçiyə güvən               - Device posture
+   - Cihaza güvən                     - Request context
+   - Yenidən yoxlama yoxdur           - Resource sensitivity
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
 
-### 1. Core Principles
+VPN breach bütün şəbəkəni açır. Zero Trust blast radius-u məhdudlaşdırır — bir servis pozulsa, lateral movement çətindir. Remote work, cloud-native infrastruktura, microservices dövrundə perimeter yoxdur. Backend developer-i üçün: servislər arası mTLS, context-aware authorization, audit logging bu arxitekturanın praktik hissəsidir.
+
+## Əsas Anlayışlar
+
+### 3 Core Prinsip
 
 ```
-1. Verify explicitly
-   - Authenticate every request (user + device)
-   - MFA for sensitive resources
-   - Continuous verification (not just at login)
+1. Verify explicitly (açıq şəkildə doğrula)
+   - Hər request-i authenticate et (user + device)
+   - Sensitive resource-lar üçün MFA
+   - Continuous verification (yalnız login zamanı deyil)
 
-2. Least privilege access
+2. Least privilege access (minimal icazə)
    - Just-in-time (JIT) access
    - Just-enough access (JEA)
-   - Role-based + attribute-based (RBAC + ABAC)
+   - RBAC + ABAC
 
-3. Assume breach
-   - Segment network (microsegmentation)
-   - Encrypt everything (in transit + at rest)
-   - Log + monitor for anomalies
+3. Assume breach (pozulma ehtimalını qəbul et)
+   - Network-u seqmentlə (microsegmentation)
+   - Hər şeyi şifrələ (in transit + at rest)
+   - Anomaliya üçün log + monitor et
 ```
 
-### 2. Zero Trust Request Flow
+### Zero Trust Request Flow
 
 ```
 User ----> Zero Trust Gateway ----> Application
@@ -50,120 +54,97 @@ User ----> Zero Trust Gateway ----> Application
            v
       Policy Decision Point
            |
-    Checks:
+    Yoxlamalar:
     - Identity (SSO + MFA)
-    - Device posture (patched? EDR running?)
+    - Device posture (patch olunub? EDR işləyir?)
     - Location (geo, IP reputation)
-    - Time (business hours?)
+    - Time (iş saatlarıdır?)
     - Resource sensitivity
     - Behavioral anomaly
            |
-    Decision: Allow | Deny | Challenge (MFA)
+    Qərar: Allow | Deny | Challenge (MFA)
            |
            v
       Log + Audit
 ```
 
-### 3. Continuous Verification
+### Continuous Verification
 
 ```
-Old model:
-  Login once -> session valid for 8 hours
-  (if cookie stolen, attacker has 8 hours)
+Köhnə model:
+  Bir dəfə login → 8 saat session etibarlıdır
+  (cookie oğurlanırsa, attacker 8 saat vaxtı var)
 
-Zero Trust model:
-  Each request re-evaluated:
-    - Is session still valid?
-    - Has device posture changed?
-    - Has user location changed dramatically?
-    - Anomaly detected in behavior?
-  Session can be revoked mid-flight.
+Zero Trust modeli:
+  Hər request yenidən qiymətləndirilir:
+    - Session hələ etibarlıdır?
+    - Device posture dəyişib?
+    - User location anomal görünür?
+    - Behavior-da anomaliya?
+  Session ortada revoke oluna bilər.
 ```
 
-## Əsas Konseptlər (Key Concepts)
-
-### BeyondCorp (Google's Model)
+### BeyondCorp (Google modeli)
 
 ```
-Key innovations:
-1. No VPN for internal apps
-2. Every internal app behind an Identity-Aware Proxy (IAP)
-3. Access based on:
+Əsas yeniliklər:
+1. Daxili app-lar üçün VPN yoxdur
+2. Hər daxili app Identity-Aware Proxy (IAP) arxasındadır
+3. Giriş əsasdır:
    - User identity (Google account)
    - Device trust (managed, encrypted, patched)
    - Context (risk signals)
-4. Works from ANY network (coffee shop, home, office)
-5. Open-sourced as Chrome Enterprise, GCP IAP
+4. İstənilən şəbəkədən işləyir (kafe, ev, ofis)
+5. Chrome Enterprise, GCP IAP kimi məhsullaşıb
 
-Result: Employees work from anywhere without VPN.
-```
-
-### SASE (Secure Access Service Edge)
-
-```
-Pronounced "sassy". Coined by Gartner 2019.
-
-SASE = Network + Security, delivered as cloud service.
-
-Components:
-  - SD-WAN (software-defined networking)
-  - SWG (Secure Web Gateway)
-  - CASB (Cloud Access Security Broker)
-  - ZTNA (Zero Trust Network Access)
-  - FWaaS (Firewall as a Service)
-
-Vendors: Zscaler, Cloudflare, Netskope, Palo Alto Prisma
-
-User -> nearest SASE PoP -> security checks -> destination
-(replaces MPLS, VPN, on-premise firewall)
+Nəticə: İşçilər VPN olmadan hər yerdən işləyir.
 ```
 
 ### ZTNA (Zero Trust Network Access)
 
 ```
-Replaces VPN for application access.
+VPN-in əvəzləyicisi:
 
 VPN:                          ZTNA:
-  User -> VPN -> Network        User -> ZTNA Broker -> Specific App
-  Full network access             Access only to allowed app
+  User → VPN → Network          User → ZTNA Broker → Specific App
+  Tam network girişi              Yalnız icazəli app-a giriş
   IP-based ACL                    Identity + context-based
-  Static                          Dynamic, per-session
+  Statik                          Dinamik, session başına
 
-Examples: Cloudflare Access, Tailscale, Twingate, Zscaler Private Access
+Misal: Cloudflare Access, Tailscale, Twingate, Zscaler Private Access
 ```
 
 ### Microsegmentation
 
 ```
-Traditional flat network:
+Ənənəvi flat network:
   Web -- App -- Database
-  (all can talk to all, lateral movement easy)
+  (hamı hər şeyə danışa bilər, lateral movement asandır)
 
 Microsegmented:
   Web ---[policy]--- App ---[policy]--- DB
-  - Web can only call App on port 8080
-  - App can only call DB on port 5432
-  - No other flows allowed
+  - Web yalnız App-ı 8080-dən çağıra bilər
+  - App yalnız DB-ni 5432-dən çağıra bilər
+  - Digər axınlara icazə verilmir
 
-Implementation:
+İmplementasiya:
   - Kubernetes NetworkPolicies
   - Service Mesh (Istio, Linkerd)
   - Cloud native: AWS Security Groups, GCP VPC firewalls
-  - Host-based: iptables, Illumio
 ```
 
-### Service Mesh Role in Zero Trust
+### Service Mesh-in rolu
 
 ```
-Service mesh (Istio, Linkerd) implements Zero Trust for microservices:
+Service mesh (Istio, Linkerd) microserviceslər üçün Zero Trust implementasiya edir:
 
-1. mTLS everywhere (automatic certificate issuance)
+1. mTLS everywhere (avtomatik sertifikat verilməsi)
 2. Service identity (SPIFFE ID: spiffe://cluster.local/ns/prod/sa/api)
-3. Fine-grained authorization (who can call what)
-4. Observability (every call logged)
-5. Policy as code (AuthorizationPolicy CRDs)
+3. Fine-grained authorization (kim nəyi çağıra bilər)
+4. Observability (hər çağırış loglanır)
+5. Policy as code (AuthorizationPolicy CRD-lər)
 
-Example Istio policy:
+Istio policy nümunəsi:
   apiVersion: security.istio.io/v1
   kind: AuthorizationPolicy
   spec:
@@ -178,26 +159,10 @@ Example Istio policy:
           paths: ["/charge"]
 ```
 
-### Identity-Based Access
-
-```
-Old: IP-based firewall rules
-  "Allow 10.0.0.5 to access database"
-
-Zero Trust: Identity-based
-  "Allow user alice@company.com using managed laptop
-   to access payment-db during business hours from US"
-
-Identity sources:
-  - Humans: Okta, Azure AD, Google Workspace
-  - Services: SPIFFE/SPIRE, workload identity
-  - Devices: Device certificates, MDM
-```
-
 ### Trust Algorithm (Dynamic Risk Scoring)
 
 ```
-Factors:
+Amillər:
   + Valid MFA              (+50 trust)
   + Managed device         (+30)
   + Known IP / location    (+20)
@@ -205,19 +170,47 @@ Factors:
   - Anomalous behavior     (-30)
   - Off-hours access       (-10)
 
-Score 80+: Full access
-Score 50-79: Require MFA
-Score < 50: Deny
+Score 80+: Tam giriş
+Score 50-79: MFA tələb et
+Score < 50: Rədd et
 ```
 
-## PHP/Laravel ilə İstifadə
+## Praktik Baxış
 
-Laravel app-ı Zero Trust architecture-də genelde **arxada** qalır, ZTNA broker (Cloudflare Access, Google IAP) qarşısında. Laravel tərəfində kontekst-aware authorization-u gücləndiririk.
+- **Incremental migration:** "Big bang" deyil — pilot app-lardan başla, tədricən genişləndir. Perimeter-i birdən silmə.
+- **Legacy app-lar çətindir:** Zero Trust-ı hər app-a tətbiq etmək lazımdır, köhnə app-lar identity-aware olmaya bilər.
+- **Performance overhead:** Hər request policy check — latency artır. Caching və token-based check-lər ilə azalt.
+- **Bahalıdır:** SASE, EDR, SIEM, MDM kimi çoxlu alət tələb olunur. Pragmatik başla: SSO + MFA + Cloudflare Access.
+- **User experience:** Çox MFA prompt istifadəçini bezdirir. Risk score-a görə adaptiv MFA qur.
 
-### Cloudflare Access + Laravel
+### Anti-patterns
 
-Cloudflare Access JWT header kimi identity göndərir.
+- VPN-i bir anda söküb Zero Trust qurmaq — disruption böyük olur
+- Microsegmentation olmadan "Zero Trust var" iddiası — flat network hələ də lateral movement-ə açıqdır
+- Audit log olmadan — anomaly detection mümkün deyil
+- Permanent admin hesabları — JIT access tətbiq et
 
+## Nümunələr
+
+### Ümumi Nümunə
+
+```
+Cloudflare Access + Laravel arxitekturası:
+
+  [İstifadəçi] → [Cloudflare Access] → [Laravel App]
+                      |
+              JWT header əlavə edir:
+              Cf-Access-Jwt-Assertion: eyJ...
+
+Laravel:
+  1. JWT-ni JWKS ilə verify et
+  2. Email/identity çıxar
+  3. Context-aware authorization tətbiq et
+```
+
+### Kod Nümunəsi
+
+**Cloudflare Access Middleware:**
 ```php
 // app/Http/Middleware/CloudflareAccess.php
 namespace App\Http\Middleware;
@@ -247,16 +240,13 @@ class CloudflareAccess
             abort(401, 'Invalid Cloudflare Access token');
         }
 
-        // $decoded->email, $decoded->sub, $decoded->identity_nonce
         $request->attributes->set('cf_user_email', $decoded->email);
-
         return $next($request);
     }
 }
 ```
 
-### Context-Aware Authorization (Laravel Gate)
-
+**Context-Aware Authorization (Laravel Gate):**
 ```php
 // app/Providers/AuthServiceProvider.php
 use Illuminate\Support\Facades\Gate;
@@ -267,20 +257,20 @@ public function boot(): void
         // Identity
         if (! $user->hasRole('finance-admin')) return false;
 
-        // MFA recent?
+        // MFA yeni olmalıdır (1 saat)
         if (! $user->mfa_verified_at || $user->mfa_verified_at->lt(now()->subHour())) {
             return false;
         }
 
-        // Business hours (UTC 08-18)
+        // İş saatları (UTC 08-18)
         $hour = now()->utc()->hour;
         if ($hour < 8 || $hour > 18) return false;
 
-        // Known IP range
+        // Tanınan IP range
         $allowedIps = config('security.payment_admin_ips');
         if (! in_array($request->ip(), $allowedIps)) return false;
 
-        // Device attestation header (set by MDM or ZTNA broker)
+        // Device attestation header (MDM və ya ZTNA broker tərəfindən)
         if ($request->header('X-Device-Posture') !== 'managed-compliant') {
             return false;
         }
@@ -290,8 +280,7 @@ public function boot(): void
 }
 ```
 
-### Request Signals Logging (for anomaly detection)
-
+**Zero Trust Signals Logging:**
 ```php
 // app/Http/Middleware/ZeroTrustSignals.php
 use Illuminate\Support\Facades\Log;
@@ -301,15 +290,15 @@ class ZeroTrustSignals
     public function handle(Request $request, Closure $next)
     {
         Log::channel('zero-trust')->info('request', [
-            'user_id'     => $request->user()?->id,
-            'ip'          => $request->ip(),
-            'country'     => $request->header('Cf-Ipcountry'),
-            'user_agent'  => $request->userAgent(),
-            'device'      => $request->header('X-Device-Id'),
-            'posture'     => $request->header('X-Device-Posture'),
-            'asn'         => $request->header('Cf-Asn'),
-            'path'        => $request->path(),
-            'method'      => $request->method(),
+            'user_id'    => $request->user()?->id,
+            'ip'         => $request->ip(),
+            'country'    => $request->header('Cf-Ipcountry'),
+            'user_agent' => $request->userAgent(),
+            'device'     => $request->header('X-Device-Id'),
+            'posture'    => $request->header('X-Device-Posture'),
+            'asn'        => $request->header('Cf-Asn'),
+            'path'       => $request->path(),
+            'method'     => $request->method(),
         ]);
 
         return $next($request);
@@ -317,91 +306,56 @@ class ZeroTrustSignals
 }
 ```
 
-### Service-to-Service mTLS (Laravel Guzzle)
-
+**Service-to-Service mTLS (Laravel):**
 ```php
 // config/services.php
 'billing' => [
-    'url' => env('BILLING_URL'),
+    'url'  => env('BILLING_URL'),
     'cert' => env('MTLS_CLIENT_CERT'),
     'key'  => env('MTLS_CLIENT_KEY'),
     'ca'   => env('MTLS_CA'),
 ],
 
-// Call internal service with mTLS
+// Internal servis-ə mTLS ilə çağırış
 $response = Http::withOptions([
-    'cert'   => config('services.billing.cert'),
-    'ssl_key'=> config('services.billing.key'),
-    'verify' => config('services.billing.ca'),
-])->post(config('services.billing.url').'/charge', [
+    'cert'    => config('services.billing.cert'),
+    'ssl_key' => config('services.billing.key'),
+    'verify'  => config('services.billing.ca'),
+])->post(config('services.billing.url') . '/charge', [
     'amount' => 1000,
 ]);
 ```
 
-### Short-lived Sessions
-
+**Short-lived Sessions:**
 ```php
 // config/session.php
-'lifetime' => 15,            // 15 minutes
+'lifetime'        => 15,   // 15 dəqiqə
 'expire_on_close' => true,
 
-// Re-auth for sensitive actions
+// Sensitive action-lar üçün re-auth
 Route::middleware(['auth', 'password.confirm'])->group(function () {
     Route::post('/admin/delete-user', [AdminController::class, 'deleteUser']);
 });
 ```
 
-## Interview Sualları (Q&A)
+## Praktik Tapşırıqlar
 
-### 1. Zero Trust nədir?
+1. **SSO + MFA aktiv et:** Daxili alətlər (Jira, Notion, admin panel) üçün Google Workspace SSO + MFA qur. İlk addım ən vacibdir.
 
-**Cavab:** Security modelidir ki, network perimeter-ə güvənmir - hər request-i authenticate və authorize edir, istər daxili, istər xarici olsun. 3 əsas prinsip: (1) explicit verify, (2) least privilege, (3) assume breach. "Never trust, always verify" şüarı.
+2. **Cloudflare Access qur:** Bir daxili app-ı (məs: Laravel admin panel) Cloudflare Access arxasına qoy. JWT validation middleware-i yaz.
 
-### 2. Zero Trust və VPN arasında fərq nədir?
+3. **Context-aware gate yaz:** `Gate::define` ilə yuxarıdakı kimi MFA time, business hours, IP check tətbiq edən gate yaz.
 
-**Cavab:** VPN network-ə full access verir - bir dəfə daxil olandan sonra istənilən resurs-a çata bilirsən (flat trust). Zero Trust (ZTNA) hər tətbiqə ayrıca, konteksttə (user + device + context) əsaslanaraq icazə verir. VPN IP-based, ZTNA identity-based-dir. VPN breach bütün şəbəkəni açır, ZTNA blast radius-u məhdudlaşdırır.
+4. **mTLS service-to-service:** İki Laravel servis arasında mTLS qur. CA yarat, hər servisə sertifikat ver, `Http::withOptions()` ilə çağırış et.
 
-### 3. BeyondCorp nədir?
+5. **Audit log qur:** `ZeroTrustSignals` middleware-i əlavə et, SIEM-ə göndər (Datadog, Elastic). Anomalous IP, off-hours request-lər üçün alert yaz.
 
-**Cavab:** Google-un Zero Trust implementasiyasıdır (2014). Heç bir VPN yoxdur, bütün internal app-lar Identity-Aware Proxy arxasındadır. Access: user identity + device trust + context əsasında. İşçilər harda işləsə də (kafe, ev, ofis) eyni security applying olur. Chrome Enterprise və GCP IAP kimi məhsulluşub.
+6. **Microsegmentation planla:** Öz servislərin üçün "kim kimi çağıra bilər" matrix-ini çək. Hansı portlar açıq olmalıdır, hansılar bağlı?
 
-### 4. SASE nədir?
+## Əlaqəli Mövzular
 
-**Cavab:** Secure Access Service Edge - network + security-ni cloud service kimi birləşdirən arxitekturadır. Komponentlər: SD-WAN, SWG, CASB, ZTNA, FWaaS. User ən yaxın SASE PoP-a qoşulur, oradan security checks + routing. Köhnə MPLS + VPN + on-prem firewall yığımını əvəz edir. Vendors: Zscaler, Cloudflare, Palo Alto Prisma.
-
-### 5. Microsegmentation nədir?
-
-**Cavab:** Network-u kiçik zonalara ayırıb hər zonaya sərt access policy tətbiq etməkdir. Lateral movement-in qarşısını alır - əgər attacker bir servis-ə düşsə, digərinə keçə bilmir. Kubernetes NetworkPolicy, Istio AuthorizationPolicy, AWS Security Groups misal kimi.
-
-### 6. Service mesh Zero Trust-da hansı rolu oynayır?
-
-**Cavab:** Microservice-lər arasında mTLS-i avtomatik tətbiq edir (hər servisə sertifikat paylayır), identity verir (SPIFFE ID), fine-grained authorization (AuthorizationPolicy), və hər çağırışı loglayır. Zero Trust for east-west traffic (servislər arası) implement edir. Istio, Linkerd, Consul Connect nümunələrdir.
-
-### 7. Continuous verification nə deməkdir?
-
-**Cavab:** Klassik modeldə login bir dəfə olur və session 8 saat davam edir. Zero Trust-da hər request yenidən yoxlanılır: session hələ etibarlıdır? Device posture dəyişib? User location anomal göründü? Bu, cookie oğurluğu və session hijacking təsirini minimuma endirir. Real-time risk scoring tətbiq olunur.
-
-### 8. SPIFFE/SPIRE nədir?
-
-**Cavab:** **SPIFFE** (Secure Production Identity Framework For Everyone) workload-lar üçün universal identity standartıdır. `spiffe://trust-domain/path` formatı. **SPIRE** bu standart-ın reference implementation-u - hər workload-a short-lived X.509 sertifikat paylayır. Service mesh (Istio) ilə integrate olur. Hər microservice unikal kriptoqrafik identity-ə sahibdir.
-
-### 9. Zero Trust-ı kiçik komandaya necə tətbiq etmək olar?
-
-**Cavab:** Pragmatik addımlar: (1) SSO + MFA bütün daxili alətlərə, (2) VPN əvəzinə Cloudflare Access / Tailscale istifadə et, (3) least privilege IAM rolları, (4) mTLS service-to-service üçün, (5) audit log-u mərkəzləşdir. Big-bang yox, incremental migration.
-
-### 10. Zero Trust-ın çətinlikləri nələrdir?
-
-**Cavab:** (1) Kompleks implementation - bütün app-lar identity-aware olmalıdır, (2) legacy app-lar çətin uyğunlaşır, (3) performance overhead (hər request policy check), (4) user experience (çoxlu MFA prompt-ları), (5) bahadır - SASE, EDR, SIEM, MDM kimi çoxlu alət tələb olur.
-
-## Best Practices
-
-1. **SSO + MFA bütün resurslara tətbiq et** - identity fundament-dir, tək parol kifayət deyil.
-2. **Device trust əlavə et** - MDM və ya EDR ilə cihaz posture-unu yoxla, managed olmayan cihazdan sensitive resurs-a girişi bağla.
-3. **Least privilege + JIT access** - permanent admin yoxdur, sadə task-lar üçün temporary elevation istifadə et.
-4. **Microsegmentation tətbiq et** - flat network təhlükəlidir, blast radius-u məhdudlaşdır.
-5. **mTLS service-to-service** - internal traffic da şifrəli və authenticated olmalıdır.
-6. **Log hər şeyi** - SIEM-ə göndər (Splunk, Elastic, Datadog), anomaly detection qurn.
-7. **Short-lived credentials** - statik password/token yerinə qısa TTL-li cert və JWT-lər.
-8. **Policy as code** - manual firewall rule əvəzinə Git-də saxla (Istio policy, OPA, Terraform).
-9. **Continuous verification** - session mid-flight revoke oluna bilməlidir, risk score real-time yenilənməlidir.
-10. **Incremental migration planla** - perimeter-i bir anda silmə, pilot app-lardan başla, tədricən genişləndir.
+- [API Security](17-api-security.md)
+- [OAuth2](14-oauth2.md)
+- [JWT](15-jwt.md)
+- [mTLS Deep Dive](35-mtls-deep-dive.md)
+- [Network Security](26-network-security.md)

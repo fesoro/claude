@@ -1,8 +1,8 @@
-# Load Balancing
+# Load Balancing (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
-Load balancing daxil olan network traffic-i bir nece server arasinda paylashdiran texnikadir. Meqsed hec bir serverin heddinden artiq yuklenememesi, yuksek availability ve reliability temin etmekdir. Load balancer client ve server arasinda "traffic polisi" rolunu oynayir.
+Load balancing daxil olan network traffic-i bir neçə server arasında paylaşdıran texnikadır. Məqsəd heç bir serverin həddindən artıq yüklənməməsi, yüksək availability və reliability təmin etməkdir. Load balancer client və server arasında "traffic polisi" rolunu oynayır.
 
 ```
 Without Load Balancer:
@@ -14,30 +14,34 @@ With Load Balancer:
                     |--------------> Server 3
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
+
+Tək server həm SPOF (Single Point of Failure)-dur, həm də yük artdıqda sistem çöküşünə uğrayır. Load balancing horizontal scaling-i mümkün edir — trafikə görə server sayını artırmaq/azaltmaq. Health check mexanizmi sayəsində problem olan server avtomatik pool-dan çıxarılır, istifadəçi xidməti kəsilmədən davam edir. Production Laravel tətbiqləri mütləq load balancer arxasında işləməlidir.
+
+## Əsas Anlayışlar
 
 ### L4 vs L7 Load Balancing
 
 ```
 L4 (Transport Layer - TCP/UDP):
-  - IP + Port esasinda routing
-  - Packet content-ine baxmir
-  - Daha suretli (az processing)
+  - IP + Port əsasında routing
+  - Packet content-inə baxmır
+  - Daha sürətli (az processing)
   - TCP connection forwarding
-  - Meselen: AWS NLB
+  - Məsələn: AWS NLB
 
   Client --> LB (TCP) --> Backend
-  LB content-i bilmir, yalniz IP:Port-a gore yonlendirir
+  LB content-i bilmir, yalnız IP:Port-a görə yönləndirir
 
 L7 (Application Layer - HTTP/HTTPS):
-  - HTTP headers, URL, cookies esasinda routing
+  - HTTP headers, URL, cookies əsasında routing
   - Content-based routing (path, host, header)
   - SSL termination, compression, caching
-  - Daha flexible, amma daha yavas
-  - Meselen: AWS ALB, Nginx, HAProxy
+  - Daha flexible, amma daha yavaş
+  - Məsələn: AWS ALB, Nginx, HAProxy
 
   Client --> LB (HTTP) --> Backend
-  LB URL-e baxir: /api/* -> API servers, /images/* -> Static servers
+  LB URL-ə baxır: /api/* -> API servers, /images/* -> Static servers
 ```
 
 ```
@@ -56,50 +60,50 @@ Client --> [L7 LB] --> /static/*  --> [CDN / Static Pool]
    Request 1 -> Server A
    Request 2 -> Server B
    Request 3 -> Server C
-   Request 4 -> Server A  (yeniden)
-   Sadedir, amma server capacity ferqlerini nezeere almır.
+   Request 4 -> Server A  (yenidən)
+   Sadədir, amma server capacity fərqlərini nəzərə almır.
 
 2. Weighted Round Robin:
    Server A (weight: 3) -> 3 request
    Server B (weight: 2) -> 2 request
    Server C (weight: 1) -> 1 request
-   Muxtelif gucde serverlər ucun.
+   Müxtəlif gücde serverlər üçün.
 
 3. Least Connections:
    Server A: 10 connections
    Server B: 5 connections  <-- yeni request bura gedir
    Server C: 8 connections
-   En az connection-u olan servere gonderir.
+   Ən az connection-u olan serverə göndərir.
 
 4. IP Hash:
    hash(client_ip) % server_count = target server
-   Eyni client hemise eyni servere dusur (sticky session).
+   Eyni client həmişə eyni serverə düşür (sticky session).
 
 5. Least Response Time:
    Server A: 50ms
    Server B: 20ms  <-- yeni request bura gedir
    Server C: 35ms
-   En suretli cavab veren servere gonderir.
+   Ən sürətli cavab verən serverə göndərir.
 
 6. Random:
-   Her request random servere gonderilir.
+   Hər request random serverə göndərilir.
 
 7. Weighted Least Connections:
-   (connections / weight) en asagi olana gonderir.
+   (connections / weight) ən aşağı olana göndərir.
 ```
 
 ### Health Checks
 
 ```
-Load Balancer muntezer olaraq serverleri yoxlayir:
+Load Balancer müntəzər olaraq serverləri yoxlayır:
 
 Active Health Check:
   LB ---> GET /health --> Server A (200 OK ✓)
   LB ---> GET /health --> Server B (200 OK ✓)
-  LB ---> GET /health --> Server C (503 ✗) --> Pool-dan cixar!
+  LB ---> GET /health --> Server C (503 ✗) --> Pool-dan çıxar!
 
 Passive Health Check:
-  Real request ugursuz olursa serveri "unhealthy" qeyd edir.
+  Real request uğursuz olursa serveri "unhealthy" qeyd edir.
 
 Health Check Response:
 {
@@ -114,24 +118,24 @@ Health Check Response:
 ### Session Persistence (Sticky Sessions)
 
 ```
-Problem: User login oldu Server A-da, novbeti request Server B-ye gedir,
-         session tapilmir!
+Problem: User login oldu Server A-da, növbəti request Server B-yə gedir,
+         session tapılmır!
 
-Hell yollari:
+Həll yolları:
 
 1. Sticky Session (Cookie-based):
-   LB cookie elave edir: Set-Cookie: SERVERID=server-a
-   Novbeti request-de bu cookie-ye gore eyni servere yonlendirir.
+   LB cookie əlavə edir: Set-Cookie: SERVERID=server-a
+   Növbəti request-də bu cookie-yə görə eyni serverə yönləndirir.
 
 2. IP Hash:
-   Eyni IP hemise eyni servere gedir.
-   Problem: NAT arxasindaki user-ler eyni IP paylaşır.
+   Eyni IP həmişə eyni serverə gedir.
+   Problem: NAT arxasındakı user-lər eyni IP paylaşır.
 
-3. Shared Session Store (en yaxsi):
+3. Shared Session Store (ən yaxşı):
    Server A -\
    Server B ---> Redis/Memcached (shared session)
    Server C -/
-   Hansi servere dussun, session Redis-den oxunur.
+   Hansı serverə düşsün, session Redis-dən oxunur.
 ```
 
 ### SSL/TLS Termination
@@ -139,29 +143,64 @@ Hell yollari:
 ```
 1. SSL Termination at LB:
    Client --HTTPS--> [LB] --HTTP--> Backend Servers
-   LB SSL-i acir, backend plain HTTP isleyir.
-   + SSL certificate bir yerde
-   + Backend-ler daha suretli (SSL overhead yox)
-   - LB ile backend arasi sifreli deyil (internal network-de OK)
+   LB SSL-i açır, backend plain HTTP işləyir.
+   + SSL certificate bir yerdə
+   + Backend-lər daha sürətli (SSL overhead yox)
+   - LB ilə backend arası şifrəli deyil (internal network-də OK)
 
 2. SSL Passthrough:
    Client --HTTPS--> [LB] --HTTPS--> Backend Servers
-   LB traffic-e toxunmur, birbase forwarding.
+   LB traffic-ə toxunmur, birbaşa forwarding.
    + End-to-end encryption
-   - LB content-e baxa bilmir (L7 routing yox)
-   - Her backend-de SSL certificate lazim
+   - LB content-ə baxa bilmir (L7 routing yox)
+   - Hər backend-də SSL certificate lazım
 
 3. SSL Re-encryption:
    Client --HTTPS--> [LB] --HTTPS--> Backend Servers
-   LB acir, yeniden sifrleyir.
+   LB açır, yenidən şifrləyir.
    + End-to-end encryption
-   + LB content-e baxa biler
+   + LB content-ə baxa bilər
    - Double SSL overhead
 ```
 
-## PHP/Laravel ilə İstifadə
+## Praktik Baxış
 
-### Laravel Health Check Endpoint
+**Nə vaxt L4, nə vaxt L7 istifadə etmək lazımdır:**
+- L4: Yüksək throughput, sadə TCP forwarding, minimum latency tələb olunanda
+- L7: Content-based routing, SSL termination, header manipulation, authentication lazım olanda
+
+**Trade-off-lar:**
+- Sticky session uneven load distribution yaradır — Redis shared session daha yaxşıdır
+- SSL termination LB ilə backend arası trafikin şifrəsiz getməsi deməkdir (internal network güvənirsinizsə OK)
+- Health check intervali qısa olsa LB özü də yük yaradır
+
+**Anti-pattern-lər:**
+- Trusted Proxies konfiqurasiyasız deploy etmək — `$request->ip()` LB IP-sini qaytarır
+- Session-u sticky session ilə həll etmək (Redis lazımdır)
+- Health check endpoint-ini autentifikasiya arxasında saxlamaq — LB ərisə bilmir
+- Bütün serverləri eyni AZ-da yerləşdirmək — AZ down olanda hamısı gedir
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+Multi-server Laravel deploy arxitekturası:
+
+```
+[Nginx LB: 10.0.0.0]
+        |
+        |-- Round Robin --> [Laravel App: 10.0.0.1:8000]
+        |-- Round Robin --> [Laravel App: 10.0.0.2:8000]
+        |-- Round Robin --> [Laravel App: 10.0.0.3:8000]
+                                    |
+                            [Redis Cluster] (shared session, cache, queue)
+                                    |
+                            [MySQL Primary + Replicas]
+```
+
+### Kod Nümunəsi
+
+**Laravel Health Check Endpoint:**
 
 ```php
 // routes/api.php
@@ -206,13 +245,13 @@ Route::get('/health', function () {
 });
 ```
 
-### Trusted Proxies (Load Balancer arxasinda)
+**Trusted Proxies (Load Balancer arxasında):**
 
 ```php
 // bootstrap/app.php (Laravel 11)
 ->withMiddleware(function (Middleware $middleware) {
     $middleware->trustProxies(
-        at: '*',  // Butun proxy-lere guven (ve ya konkret IP)
+        at: '*',  // Bütün proxy-lərə güvən (və ya konkret IP)
         headers: Request::HEADER_X_FORWARDED_FOR |
                  Request::HEADER_X_FORWARDED_HOST |
                  Request::HEADER_X_FORWARDED_PORT |
@@ -221,15 +260,15 @@ Route::get('/health', function () {
     );
 })
 
-// Niye lazimdir?
-// LB arxasinda $request->ip() LB-nin IP-sini qaytarir (real client IP deyil)
-// X-Forwarded-For header ile real IP alinir
+// Niyə lazımdır?
+// LB arxasında $request->ip() LB-nin IP-sini qaytarır (real client IP deyil)
+// X-Forwarded-For header ilə real IP alınır
 // $request->ip()     -> Client-in real IP-si
-// $request->secure() -> HTTPS oldugunu bilir (X-Forwarded-Proto)
-// $request->url()    -> Duzgun URL qaytarir
+// $request->secure() -> HTTPS olduğunu bilir (X-Forwarded-Proto)
+// $request->url()    -> Düzgün URL qaytarır
 ```
 
-### Shared Session (Redis)
+**Shared Session (Redis):**
 
 ```php
 // .env
@@ -239,7 +278,7 @@ REDIS_PORT=6379
 
 // config/session.php
 'driver' => env('SESSION_DRIVER', 'redis'),
-'connection' => 'session',  // ayri Redis connection
+'connection' => 'session',  // ayrı Redis connection
 'lifetime' => 120,
 
 // config/database.php
@@ -247,17 +286,17 @@ REDIS_PORT=6379
     'session' => [
         'host' => env('REDIS_HOST'),
         'port' => env('REDIS_PORT'),
-        'database' => 1,  // session ucun ayri database
+        'database' => 1,  // session üçün ayrı database
     ],
 ],
 
-// Indi butun serverler eyni session-u oxuyur
+// İndi bütün serverlər eyni session-u oxuyur
 ```
 
-### Queue Worker Load Distribution
+**Queue Worker Load Distribution:**
 
 ```php
-// Muxtelif serverler muxtelif queue-lari isleyir:
+// Müxtəlif serverlər müxtəlif queue-ları işləyir:
 
 // Server 1 - High priority
 // php artisan queue:work --queue=high,default
@@ -268,7 +307,7 @@ REDIS_PORT=6379
 // Server 3 - Low priority (reports, emails)
 // php artisan queue:work --queue=low,notifications
 
-// Supervisor config (her server ucun)
+// Supervisor config (hər server üçün)
 // /etc/supervisor/conf.d/worker.conf
 [program:queue-worker]
 process_name=%(program_name)s_%(process_num)02d
@@ -278,7 +317,7 @@ autorestart=true
 numprocs=4
 ```
 
-### Nginx Load Balancer Configuration
+**Nginx Load Balancer Configuration:**
 
 ```nginx
 # /etc/nginx/conf.d/load-balancer.conf
@@ -292,15 +331,11 @@ upstream backend {
     server 10.0.0.2:8000 weight=2;
     server 10.0.0.3:8000 weight=1;
 
-    # Backup server (yalniz digerleri down olanda)
+    # Backup server (yalnız digərləri down olanda)
     server 10.0.0.4:8000 backup;
 
-    # Health check parametrleri
-    # max_fails=3 fail_timeout=30s
+    # Health check parametrləri
     server 10.0.0.1:8000 max_fails=3 fail_timeout=30s;
-
-    # Sticky session (ip_hash)
-    # ip_hash;
 
     # Keep-alive connections to backend
     keepalive 32;
@@ -338,38 +373,25 @@ server {
 }
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-### 1. L4 ve L7 load balancing arasinda ferq nedir?
-**Cavab:** L4 (Transport layer) TCP/UDP seviyyesinde isleyir, IP+port-a gore routing edir, content-e baxmır, daha suretlidir. L7 (Application layer) HTTP seviyyesinde isleyir, URL/header/cookie-ye gore routing eder, SSL termination edir, daha flexible-dir amma daha yavasdır.
+1. **Health check endpoint:** `/api/health` endpoint-ini implement edin. DB, Redis, disk məkanını yoxlasın. Hər hansı biri uğursuz olsa 503, hamısı OK-dırsa 200 qaytarsın.
 
-### 2. En cox istifade olunan LB algorithms hansılardir?
-**Cavab:** Round Robin (sade, sira ile), Least Connections (en az baglantisi olana), IP Hash (sticky session ucun), Weighted Round Robin (ferqli gucde serverler ucun), Least Response Time (en suretli cavab verene).
+2. **Trusted Proxies:** LB arxasında `$request->ip()` yanlış IP qaytardığını göstərin. `trustProxies()` konfiqurasiyası ilə düzəldin. `X-Forwarded-For` header-ini test edin.
 
-### 3. Sticky session nedir ve niye problemlidir?
-**Cavab:** Eyni client-in hemise eyni servere yonlendirilmesidir. Session state ucun lazimdir. Problemleri: uneven load distribution, server down olanda session itir, scale-down cetin. Hell yolu: shared session store (Redis).
+3. **Redis session:** `SESSION_DRIVER=redis` konfiqurasiya edin. 2 ayrı `php artisan serve` prosesi başladın. Birində login olun, digərinin eyni session-u oxuduğunu yoxlayın.
 
-### 4. Health check nece isleyir?
-**Cavab:** LB muntezer olaraq (her 5-30 saniye) serverlere health endpoint-e sorgu gonderir. 200 OK alsa healthy, ugursuz olsa unhealthy qeyd edir ve traffic gondermez. Server recovery olunca yeniden pool-a elave edir.
+4. **Nginx upstream:** Nginx ilə 2 Laravel backend arasında `round_robin` load balancing qurun. `server_name` response header-i əlavə edərək hansı serverə düşüldüyünü göstərin.
 
-### 5. SSL termination nedir?
-**Cavab:** Load balancer-in HTTPS traffic-i acib backend serverlere plain HTTP olaraq gondermesidir. Ustulukleri: SSL certificate bir yerde, backend-ler daha suretli. Dezavantaj: LB-backend arasi sifreli deyil (internal network-de OK).
+5. **Algorithm müqayisəsi:** `round_robin` vs `least_conn` vs `ip_hash` algoritmini `curl` ilə test edin. 100 request göndərin — hansı server neçə request aldı?
 
-### 6. Laravel-de LB arxasinda hansi problem olur?
-**Cavab:** `$request->ip()` LB-nin IP-sini qaytarir, `$request->secure()` yanlis isleyir. Trusted Proxies middleware ile X-Forwarded-* headerlari oxuyub real client IP ve proto alinir.
+6. **Graceful shutdown:** `php artisan queue:work --stop-when-empty` ilə server-i yük olmadan dayandırın. Nginx-in connection draining-i `proxy_read_timeout` ilə necə idarə etdiyini izləyin.
 
-### 7. Session problemi LB arxasinda nece hell olunur?
-**Cavab:** 1) Shared session store (Redis/Memcached) - butun serverler eyni session-u oxuyur. 2) Sticky sessions (LB cookie ile). 3) Stateless auth (JWT). En yaxsi yol Redis-dir.
+## Əlaqəli Mövzular
 
-## Best Practices
-
-1. **Health check hemise** - Backend serverleri muntezer yoxlayin
-2. **Shared session** - Redis ile session paylashin
-3. **SSL termination** - LB seviyyesinde SSL qurun
-4. **Trusted proxies** - X-Forwarded-* headerlari duzgun handle edin
-5. **Graceful shutdown** - Deploy zamani connection-lar tamamlansin
-6. **Auto-scaling** - Yuke gore server sayi artsin/azalsin
-7. **Connection draining** - Server ciximindan evvel aktiv request-ler tamamlansin
-8. **Multiple AZ** - Serverler ferqli availability zone-larda olsun
-9. **Monitoring** - Response time, error rate, connection count izleyin
-10. **Backup servers** - En az 1 backup server saxlayin
+- [Reverse Proxy](19-reverse-proxy.md)
+- [CDN](20-cdn.md)
+- [API Gateway](21-api-gateway.md)
+- [WebSocket](11-websocket.md)
+- [Network Timeouts](42-network-timeouts.md)
+- [Service Discovery](43-service-discovery.md)

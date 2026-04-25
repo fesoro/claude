@@ -1,8 +1,8 @@
-# Message Protocols
+# Message Protocols - AMQP, MQTT, STOMP (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
-Message protocols distributed system-lərdə komponentlər arasında asynchronous komunikasiya üçün istifade olunan standartlardır. Məsləhətlə message broker (RabbitMQ, Kafka) istifadə olunur, producer message göndərir, consumer isə alır. Decoupling, scalability, reliability təmin edir.
+Message protocols distributed system-lərdə komponentlər arasında asynchronous kommunikasiya üçün istifadə olunan standartlardır. Message broker (RabbitMQ, Kafka) vasitəsilə producer message göndərir, consumer isə alır. Decoupling, scalability, reliability təmin edir.
 
 Əsas protokollar:
 - **AMQP** (Advanced Message Queuing Protocol): RabbitMQ-nin native protokolu
@@ -22,18 +22,20 @@ Producer                 Message Broker              Consumer
    |                         |                          |
    |-- publish message ----> |                          |
    |                         |-- queue/topic -----------|
-   |                         |                          |
    |                         |<-- poll / push ----------|
-   |                         |                          |
    |                         |<-- ack -------------------|
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
+
+Monolitik tətbiqdə belə, uzun sürən işləri (email göndərmək, hesabat yaratmaq, üçüncü tərəf API çağırışları) queue-a atmaq responsiveness-i artırır. Microservice arxitekturasında isə message broker servisləri decoupled saxlayır — bir servis down olsa digəri işləməyə davam edir. RabbitMQ Laravel ekosistemindəki ən çox istifadə edilən message broker-dir; Kafka isə yüksək həcmli event streaming-də standartdır.
+
+## Əsas Anlayışlar
 
 ### 1. AMQP (RabbitMQ)
 
 ```
-AMQP 0.9.1 / 1.0 - Full-featured message protocol.
+AMQP 0.9.1 — Full-featured message protocol.
 
 Komponentlər:
   Producer  --> Exchange --> Queue(s) --> Consumer
@@ -45,7 +47,7 @@ Exchange types:
      routing_key="order.created" --> Queue "orders"
 
 2. Fanout Exchange
-   Broadcast - all bound queues:
+   Broadcast — all bound queues:
      [exchange] --> [queue1, queue2, queue3]
 
 3. Topic Exchange
@@ -58,22 +60,12 @@ Exchange types:
    Match on headers, not routing key.
 
 Flow example:
-
-C: [connect to rabbitmq:5672]
-C: Protocol handshake
-C: Authenticate
-C: Open channel
-C: Declare exchange "orders" (topic)
-C: Declare queue "new_orders"
-C: Bind queue to exchange with routing_key "order.created"
-C: Publish message
-   routing_key="order.created"
-   payload={"order_id":123,"amount":5000}
-S: Routes to "new_orders" queue
-C: [another client] Subscribe to "new_orders"
-S: Delivers message
-C: Process, send ACK
-S: Removes from queue
+  1. Exchange declare: "orders" (topic)
+  2. Queue declare: "new_orders"
+  3. Bind queue to exchange: routing_key "order.created"
+  4. Publish message: routing_key="order.created"
+  5. Route to "new_orders" queue
+  6. Consumer subscribes, processes, sends ACK
 
 Features:
   - Acknowledgments (at-least-once delivery)
@@ -103,23 +95,11 @@ QoS levels:
   1 - At least once (acknowledged delivery)
   2 - Exactly once (4-way handshake)
 
-Connection:
-  C: CONNECT (client_id, username, password, keep_alive)
-  S: CONNACK (session_present, return_code)
-
-Subscribe:
-  C: SUBSCRIBE topic="home/+/temp" qos=1
-  S: SUBACK
-
-Publish:
-  C: PUBLISH topic="home/kitchen/temp" qos=1 payload="22.5"
-  S: PUBACK (if qos >= 1)
-
 Features:
   - Lightweight (2-byte header)
   - Low bandwidth (sensors, mobile)
   - Retained messages (latest state available)
-  - Last Will and Testament (LWT) - disconnect notification
+  - Last Will and Testament (LWT) — disconnect notification
   - Session persistence
 ```
 
@@ -132,52 +112,21 @@ Human-readable, HTTP-like frames.
 Frame structure:
   COMMAND
   header1:value1
-  header2:value2
 
   body^@
 
-Example CONNECT:
-  CONNECT
-  accept-version:1.2
-  host:broker.example.com
-  login:user
-  passcode:password
-
-  ^@
-
-Server response:
-  CONNECTED
-  version:1.2
-  heart-beat:10000,10000
-
-  ^@
-
-Publish:
+Example — Publish:
   SEND
   destination:/queue/orders
   content-type:application/json
 
   {"order_id":123}^@
 
-Subscribe:
+Example — Subscribe:
   SUBSCRIBE
   id:sub-1
   destination:/queue/orders
   ack:client
-
-  ^@
-
-Receive:
-  MESSAGE
-  destination:/queue/orders
-  message-id:abc
-  subscription:sub-1
-
-  {"order_id":123}^@
-
-ACK:
-  ACK
-  id:abc
 
   ^@
 
@@ -199,17 +148,6 @@ Topic "orders" with 3 partitions:
   Partition 2: [msg3, msg6, msg9, ...]
 
 Offset: Monotonically increasing ID per partition
-  Partition 0, offset 0, 1, 2, ...
-
-Producer:
-  ProduceRequest(topic, partition, records)
-    -> Broker appends to log
-  ProduceResponse(offset)
-
-Consumer:
-  FetchRequest(topic, partition, offset)
-    -> Broker returns records from offset
-  FetchResponse(records)
 
 Consumer group:
   Multiple consumers, each gets a subset of partitions.
@@ -221,112 +159,11 @@ Features:
   - Append-only log (very fast)
   - Retention (days/weeks)
   - Replay (re-consume old messages)
-  - Exactly-once semantics (idempotent producer + transactions)
+  - Exactly-once semantics
   - High throughput (millions/sec)
 ```
 
-### 5. JSON Serialization
-
-```json
-{
-  "order_id": 123,
-  "user_id": 456,
-  "items": [
-    {"product_id": 789, "quantity": 2}
-  ],
-  "total": 5000
-}
-
-Size: ~120 bytes
-Parsing: Slow (text)
-Schema: None (runtime validation)
-
-Pros:
-  - Human-readable
-  - Universal support
-  - Debug-friendly
-
-Cons:
-  - Verbose
-  - No type safety
-  - Slow parsing
-  - No schema evolution
-```
-
-### 6. Protocol Buffers (Protobuf)
-
-```
-Schema first (.proto file):
-
-message Order {
-  int64 order_id = 1;
-  int64 user_id = 2;
-  repeated OrderItem items = 3;
-  int64 total = 4;
-}
-
-message OrderItem {
-  int64 product_id = 1;
-  int32 quantity = 2;
-}
-
-Binary encoding (~30 bytes for same data):
-  - Field numbers + wire types
-  - Varint encoding for integers
-  - Much smaller than JSON
-
-Code generation:
-  protoc --php_out=. order.proto
-  protoc --java_out=. order.proto
-
-Usage (PHP):
-  $order = new Order();
-  $order->setOrderId(123);
-  $binary = $order->serializeToString();
-
-  $order2 = new Order();
-  $order2->mergeFromString($binary);
-
-Pros:
-  - Compact (3-10x smaller than JSON)
-  - Fast parsing (binary)
-  - Schema evolution (backward/forward compatible)
-  - Strong typing
-
-Cons:
-  - Not human-readable
-  - Requires code generation
-  - Schema management
-```
-
-### 7. Apache Avro
-
-```
-Schema-based binary format (.avsc):
-
-{
-  "type": "record",
-  "name": "Order",
-  "fields": [
-    {"name": "order_id", "type": "long"},
-    {"name": "user_id", "type": "long"},
-    {"name": "total", "type": "int"}
-  ]
-}
-
-Features:
-  - Schema registry (Confluent)
-  - Writer vs Reader schema (evolution)
-  - Dynamic typing (no code gen required)
-  - Compact binary
-
-Use case: Kafka + Schema Registry
-  Producer --> Schema Registry (register schema v1)
-  Message has schema ID, not full schema
-  Consumer --> Schema Registry (fetch schema by ID)
-```
-
-### Comparison Table
+### Protocol Müqayisəsi
 
 ```
 Protocol  | Type      | Header Size | Features              | Use Case
@@ -341,27 +178,23 @@ Format    | Size      | Speed       | Schema    | Use Case
 JSON      | Large     | Slow        | None      | REST APIs
 Protobuf  | Small     | Fast        | Required  | gRPC, microservices
 Avro      | Small     | Fast        | Required  | Kafka, big data
-MessagePack| Small    | Fast        | None      | Alternative JSON
 ```
-
-## Əsas Konseptlər (Key Concepts)
 
 ### At-most-once, At-least-once, Exactly-once
 
 ```
-At-most-once: Message ya bir defe, ya da hec çatdırılmır.
+At-most-once: Message ya bir dəfə, ya da heç çatdırılmır.
   - Fast, no acknowledgments
   - Can lose messages
   - MQTT QoS 0
 
-At-least-once: Message ən azı bir defe çatdırılır (duplicate mümkündür).
+At-least-once: Message ən azı bir dəfə çatdırılır (duplicate mümkündür).
   - Acknowledgments required
-  - Idempotent processing lazim
+  - Idempotent processing lazım
   - AMQP default, MQTT QoS 1
 
 Exactly-once: Tam bir dəfə çatdırılır.
   - Ən çətin, performance cost
-  - Distributed transactions or idempotency
   - MQTT QoS 2, Kafka exactly-once
 ```
 
@@ -369,16 +202,16 @@ Exactly-once: Tam bir dəfə çatdırılır.
 
 ```
 Auto-ack (fire and forget):
-  Consumer alir, broker derhal queue-dan silir.
-  Risk: Consumer crash olsa message itir.
+  Consumer alır, broker dərhal queue-dan silir.
+  Risk: Consumer crash olsa message itirir.
 
 Manual ack:
-  Consumer process edir, sonra ack gonderir.
-  Broker ack alana kimi message-i saxlayir.
-  Consumer crash olsa, message yenidən queue-ya qayidir.
+  Consumer process edir, sonra ack göndərir.
+  Broker ack alana kimi message-i saxlayır.
+  Consumer crash olsa, message yenidən queue-ya qayıdır.
 
 Nack (negative ack):
-  Consumer "bunu process ede bilmedim" deyir.
+  Consumer "bunu process edə bilmədim" deyir.
   Requeue: yenidən bu consumer-ə göndərilir
   Dead letter: DLX-ə göndərilir
 ```
@@ -386,7 +219,7 @@ Nack (negative ack):
 ### Dead Letter Queue (DLQ)
 
 ```
-Failed message-lər üçün ayri queue:
+Failed message-lər üçün ayrı queue:
 
 Normal queue -> (N failures) -> Dead Letter Queue
                                       |
@@ -404,7 +237,7 @@ Səbəblər:
 ### Idempotency
 
 ```
-Duplicate message gelsə, bir dəfə process olan kimi davran.
+Duplicate message gəlsə, bir dəfə process olan kimi davran.
 
 Method 1: Idempotency key
   {"order_id": "unique_uuid", ...}
@@ -422,26 +255,32 @@ Method 3: Deduplication window
   Next duplicate within window -> skip
 ```
 
-### Backpressure
+## Praktik Baxış
 
-```
-Fast producer, slow consumer:
+**Trade-off-lar:**
+- RabbitMQ — rich routing, complex workflows; Kafka — high throughput, event streaming, replay
+- JSON — debug asan, amma 3-10x böyük; Protobuf — compact, fast, amma schema management
+- At-least-once + idempotency praktikdə exactly-once-dan daha çox istifadə olunur
 
-Producer: 10000 msg/sec
-Consumer: 100 msg/sec
+**Nə vaxt istifadə edilməməlidir:**
+- Sadə request-response pattern üçün HTTP daha uyğundur (broker əlavə complexity yaradır)
+- Real-time (<10ms) tələblər üçün broker latency-si yüksək ola bilər
 
-Without backpressure: Queue fills up, memory overflow.
+**Anti-pattern-lər:**
+- Auto-ack istifadə etmək — consumer crash-da message itirir
+- DLQ konfigurasiya etməmək — failed message-lər görünməz olur
+- Hər request üçün yeni connection açmaq — connection pooling istifadə edin
+- JSON-u internal microservice kommunikasiyası üçün istifadə etmək (Protobuf/Avro daha uyğun)
 
-Solutions:
-  1. Bounded queue (drop new messages)
-  2. Consumer-driven flow control (pull model)
-  3. Rate limiting producer
-  4. Scale out consumers
-```
+## Nümunələr
 
-## PHP/Laravel ilə İstifadə
+### Ümumi Nümunə
 
-### RabbitMQ ile Laravel (php-amqplib)
+Laravel Queue abstraction RabbitMQ üzərindən işləyə bilər. `ShouldQueue` interface-ini implement edən hər job avtomatik olaraq RabbitMQ queue-una göndərilə bilər. Kafka üçün ayrıca library lazımdır. Outbox pattern DB consistency-ni message publishing ilə birlikdə təmin edir.
+
+### Kod Nümunəsi
+
+**RabbitMQ ilə Laravel (php-amqplib):**
 
 ```php
 // composer require php-amqplib/php-amqplib
@@ -451,9 +290,8 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 // Producer
 $connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
-$channel = $connection->channel();
+$channel    = $connection->channel();
 
-// Exchange decare
 $channel->exchange_declare('orders', 'topic', false, true, false);
 
 $msg = new AMQPMessage(
@@ -462,18 +300,16 @@ $msg = new AMQPMessage(
 );
 
 $channel->basic_publish($msg, 'orders', 'order.created');
-echo "Published\n";
 
 $channel->close();
 $connection->close();
 
 // Consumer
 $connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
-$channel = $connection->channel();
+$channel    = $connection->channel();
 
 $channel->queue_declare('new_orders', false, true, false, false);
 $channel->queue_bind('new_orders', 'orders', 'order.*');
-
 $channel->basic_qos(null, 1, null); // prefetch count
 
 $callback = function (AMQPMessage $msg) {
@@ -481,11 +317,9 @@ $callback = function (AMQPMessage $msg) {
     echo "Received order: {$data['order_id']}\n";
 
     try {
-        // Process
         processOrder($data);
         $msg->ack();
-    } catch (Exception $e) {
-        // Retry or send to DLQ
+    } catch (\Exception $e) {
         $msg->nack(false, false); // dont requeue, go to DLQ
     }
 };
@@ -497,7 +331,7 @@ while ($channel->is_consuming()) {
 }
 ```
 
-### Laravel Queue with RabbitMQ (vladimir-yuldashev package)
+**Laravel Queue with RabbitMQ (vladimir-yuldashev package):**
 
 ```bash
 composer require vladimir-yuldashev/laravel-queue-rabbitmq
@@ -513,7 +347,6 @@ RABBITMQ_VHOST=/
 ```
 
 ```php
-// Job
 class ProcessOrder implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -536,7 +369,7 @@ ProcessOrder::dispatch($order->id)
 // php artisan queue:work rabbitmq --queue=orders
 ```
 
-### Kafka ile Laravel
+**Kafka ilə Laravel (mateusjunges/laravel-kafka):**
 
 ```bash
 composer require mateusjunges/laravel-kafka
@@ -550,9 +383,9 @@ use Junges\Kafka\Message\Message;
 Kafka::publish('localhost:9092')
     ->onTopic('orders')
     ->withMessage(new Message(
-        body: ['order_id' => 123, 'user_id' => 456],
+        body   : ['order_id' => 123, 'user_id' => 456],
         headers: ['source' => 'web'],
-        key: 'order-123'
+        key    : 'order-123'
     ))
     ->send();
 
@@ -570,7 +403,7 @@ $consumer = Kafka::createConsumer(['orders'])
 $consumer->consume();
 ```
 
-### MQTT ile Laravel
+**MQTT ilə Laravel:**
 
 ```bash
 composer require php-mqtt/client
@@ -597,12 +430,11 @@ $client->subscribe('home/+/temperature', function ($topic, $message) {
     echo "[{$topic}] {$message}\n";
 }, 1);
 
-$client->loop(true); // blocking loop
-
+$client->loop(true);
 $client->disconnect();
 ```
 
-### Protobuf with PHP
+**Protobuf ilə PHP:**
 
 ```proto
 // order.proto
@@ -622,16 +454,10 @@ message OrderItem {
 ```
 
 ```bash
-# Generate PHP classes
 protoc --php_out=./generated order.proto
 ```
 
 ```php
-require 'vendor/autoload.php';
-require 'generated/Order.php';
-require 'generated/OrderItem.php';
-
-// Serialize
 $order = new Order();
 $order->setId(123);
 $order->setUserId(456);
@@ -640,17 +466,10 @@ $order->setTotal(5000);
 $item = new OrderItem();
 $item->setProductId(789);
 $item->setQuantity(2);
-
 $order->setItems([$item]);
 
 $binary = $order->serializeToString();
 echo "Size: " . strlen($binary) . " bytes\n"; // ~20 bytes
-
-// Send via message broker
-Kafka::publish('localhost:9092')
-    ->onTopic('orders')
-    ->withMessage(new Message(body: $binary))
-    ->send();
 
 // Deserialize
 $order2 = new Order();
@@ -658,7 +477,7 @@ $order2->mergeFromString($binary);
 echo $order2->getId(); // 123
 ```
 
-### Laravel Outbox Pattern
+**Laravel Outbox Pattern:**
 
 ```php
 // Transaction + outbox
@@ -668,16 +487,16 @@ DB::transaction(function () use ($data) {
 
     // Outbox message
     OutboxMessage::create([
-        'topic' => 'orders',
+        'topic'   => 'orders',
         'payload' => json_encode([
             'event' => 'order.created',
-            'data' => $order->toArray(),
+            'data'  => $order->toArray(),
         ]),
-        'status' => 'pending',
+        'status'  => 'pending',
     ]);
 });
 
-// Separate worker publishes outbox messages
+// Ayrı worker outbox message-ləri publish edir
 class OutboxPublisher extends Command
 {
     public function handle()
@@ -692,7 +511,7 @@ class OutboxPublisher extends Command
                         ->send();
 
                     $msg->update(['status' => 'published']);
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $msg->increment('attempts');
                     if ($msg->attempts > 5) {
                         $msg->update(['status' => 'failed']);
@@ -703,222 +522,22 @@ class OutboxPublisher extends Command
 }
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-**Q1: AMQP və MQTT arasında fərq?**
+1. **RabbitMQ ilə Laravel Queue:** Docker-da RabbitMQ qaldırın (`rabbitmq:3-management`). `vladimir-yuldashev/laravel-queue-rabbitmq` quraşdırın. `ProcessOrder` job-unu RabbitMQ queue-una dispatch edin. RabbitMQ Management UI-da (`localhost:15672`) queue-u izləyin.
 
-**AMQP** (RabbitMQ protokolu): Full-featured, enterprise. Exchanges (direct, topic, fanout, headers), queues, routing keys, acknowledgments, DLX, priority. Binary protocol, orta header size.
+2. **Topic Exchange routing:** AMQP topic exchange qurun. `order.created`, `order.paid`, `order.shipped` routing key-ləri üçün müxtəlif queue-lar bağlayın. Hər event tipini müvafiq queue-a düzgün yönləndirildiyini yoxlayın.
 
-**MQTT**: Lightweight, IoT üçün. Pub/sub only (no exchanges). Topic hierarchy, wildcards. QoS 0/1/2. 2-byte header - very small. Retained messages, LWT.
+3. **Dead Letter Queue:** `orders` queue-una DLX konfiqurasiya edin. Consumer-dən `nack(false, false)` göndərin. Message-in `orders.dlq` queue-una keçdiyini RabbitMQ Management UI-da yoxlayın.
 
-İstifadə:
-- AMQP: Enterprise app, microservices, workflow
-- MQTT: IoT sensors, mobile apps, constrained devices
+4. **Outbox pattern:** `outbox_messages` cədvəlini yaradın. Order yaratmaq ilə outbox message insert-ini eyni DB transaction-a daxil edin. `OutboxPublisher` command-ı `schedule()->everyMinute()` ilə işlədin.
 
-**Q2: Kafka-nın RabbitMQ-dən fərqi?**
+5. **JSON vs Protobuf benchmark:** Eyni data üçün JSON və Protobuf serialization-ı müqayisə edin. `strlen($binary)` ilə ölçü fərqini, `microtime()` ilə sürət fərqini ölçün.
 
-**Kafka**:
-- Log-structured storage (append-only)
-- Messages persistent (retention days/weeks)
-- Replay mümkün (old messages re-consume)
-- Very high throughput (millions/sec)
-- Consumer pull model
-- Partitioned topics
+## Əlaqəli Mövzular
 
-**RabbitMQ**:
-- Traditional message queue
-- Messages deleted after ack
-- Complex routing (exchanges)
-- Lower throughput (~50K msg/sec)
-- Push or pull model
-- Priority queues, DLX
-
-İstifadə:
-- Kafka: Event streaming, log aggregation, analytics pipeline
-- RabbitMQ: Task queues, RPC, complex routing
-
-**Q3: At-least-once delivery-də duplicate-lər necə handle olunur?**
-
-**Idempotency** prinsipi:
-- Unique message ID
-- DB constraint (UNIQUE)
-- Duplicate fails gracefully
-
-```php
-public function handle(OrderCreatedEvent $event) {
-    $exists = Processed::where('event_id', $event->id)->exists();
-    if ($exists) return; // duplicate, skip
-
-    DB::transaction(function() use ($event) {
-        // business logic
-        Processed::create(['event_id' => $event->id]);
-    });
-}
-```
-
-Alternativ: Redis-də mark (TTL window), outbox + inbox pattern.
-
-**Q4: JSON vs Protobuf - nə vaxt hansi?**
-
-**JSON**:
-- REST API-lər (browser-based)
-- Debug, human-readable
-- Schema yoxdur, flexibility
-- Small scale (<1000 req/sec)
-
-**Protobuf**:
-- High-throughput microservices
-- Mobile (bandwidth matters)
-- Schema evolution lazım
-- gRPC (default format)
-- Internal service-to-service
-
-Protobuf 3-10x kiçik, 5-10x sürətli. Amma schema management overhead.
-
-**Q5: Exactly-once delivery necə mümkündür?**
-
-İki hissə var:
-1. **Publish**: Idempotent producer (Kafka producer ID + sequence number)
-2. **Consume**: Transaction-al processing (message + DB commit bir atomic operation)
-
-Kafka-da:
-```
-Producer: enable.idempotence=true + transactional.id
-Consumer: isolation.level=read_committed
-```
-
-Alternativ: At-least-once + idempotency (daha praktik).
-
-**Q6: Dead Letter Queue nə vaxt istifadə olunur?**
-
-Message process edilmir (retry-dən sonra da):
-- Malformed payload
-- Consumer bug
-- External dependency persistent fail
-- TTL expired
-
-DLQ-ya göndərilir:
-- Manual review
-- Replay logic
-- Alerting
-- Debugging
-
-```
-Queue "orders" -> max 3 retries -> DLX -> "orders.dlq"
-```
-
-**Q7: Topic vs Queue fərqi?**
-
-**Queue**: Point-to-point. 1 message = 1 consumer (work distribution).
-```
-[Producer] -> [Queue] -> [Consumer A, B, C]
-                         (only one receives each message)
-```
-
-**Topic**: Pub/sub. 1 message = hamı üçün.
-```
-[Producer] -> [Topic] -> [Subscriber A]
-                      -> [Subscriber B]
-                      -> [Subscriber C]
-                      (hər biri öz kopyasını alır)
-```
-
-Kafka: Topic-lər var, amma consumer group-la queue semantics də əldə olunur.
-
-**Q8: Message broker vs direct HTTP fərqi?**
-
-**Direct HTTP (sync)**:
-- Real-time response
-- Tight coupling
-- Caller waits (latency)
-- Failure propagates
-- Same availability window
-
-**Message broker (async)**:
-- Decoupling (producer/consumer independent)
-- Buffer (burst handling)
-- Retry logic
-- Different availability (broker down-a tolerant)
-- Eventual consistency
-
-İstifadə:
-- HTTP: Synchronous queries, CRUD
-- Broker: Background tasks, events, workflows
-
-**Q9: Schema Registry (Avro) nə üçündür?**
-
-Problem: Kafka message-lər binary, schema lazımdır decode üçün. Hər message-ə schema əlavə etmək çox böyük yük.
-
-Schema Registry həll:
-1. Producer schema-nı registry-ə publish edir, ID alır
-2. Message-də yalniz schema ID var (binary data + ID)
-3. Consumer schema ID ilə registry-dən schema-nı çəkir
-4. Schema cache-lənir
-
-Faydalar:
-- Kiçik message
-- Schema evolution (backward compatible check)
-- Centralized schema management
-- Version tracking
-
-**Q10: MQTT QoS 0, 1, 2 fərqi nədir?**
-
-**QoS 0** (at most once): PUBLISH göndərilir, ack yoxdur. Message itə bilər. Fastest.
-
-**QoS 1** (at least once): PUBLISH -> PUBACK. Ack alinana kimi retry. Duplicate mümkündür.
-```
-C -> PUBLISH (msg_id=1)
-S -> PUBACK (msg_id=1)
-```
-
-**QoS 2** (exactly once): 4-way handshake. Guaranteed one delivery.
-```
-C -> PUBLISH (msg_id=1)
-S -> PUBREC (msg_id=1)
-C -> PUBREL (msg_id=1)
-S -> PUBCOMP (msg_id=1)
-```
-
-Trade-off: Higher QoS = slower, more bandwidth.
-
-## Best Practices
-
-1. **Idempotent consumer design** - duplicate message-lər qaçılmaz, safely handle et.
-
-2. **Manual ack istifadə et** - auto-ack crash zamanı message itirir.
-
-3. **Dead letter queue configure et** - failed message-lər isolate olunsun.
-
-4. **Message retention policy** - disk dolmasin (Kafka-da önəmli).
-
-5. **Prefetch count tune et** - RabbitMQ-də consumer-in bir anda nə qədər alması.
-
-6. **Persistent messages** - important data üçün (delivery_mode=2).
-
-7. **Connection pooling** - hər request üçün yeni connection açma.
-
-8. **Serialization format dogru seç** - JSON internal yox, Protobuf/Avro.
-
-9. **Schema evolution** - backward compatibility qoru (Avro, Protobuf).
-
-10. **Outbox pattern** - DB consistency message publishing ilə (transactional).
-
-11. **Monitoring** - queue depth, consumer lag, failed messages.
-
-12. **Circuit breaker** - external dependency down olsa retry-dən qac.
-
-13. **Rate limiting** - producer-ın burst-i broker-i overload etməsin.
-
-14. **Consumer group scalability** - Kafka-da partition count + consumer count.
-
-15. **TLS encryption** - production-da plain-text connection istifadə etmə.
-
-16. **Authentication & authorization** - ACL ilə topic/queue access control.
-
-17. **Graceful shutdown** - consumer-da SIGTERM alanda mövcud message-i bitir.
-
-18. **Message versioning** - payload-da version field (schema change-lərdə).
-
-19. **Compression** - large message-lər (gzip, snappy) - Kafka-da builtin.
-
-20. **Load testing** - production-a çıxmazdan əvvəl throughput limit-lərini bil.
+- [WebSocket](11-websocket.md)
+- [SSE](12-sse.md)
+- [Webhooks](23-webhooks.md)
+- [API Rate Limiting](25-api-rate-limiting.md)
+- [Protocol Buffers](39-protocol-buffers.md)

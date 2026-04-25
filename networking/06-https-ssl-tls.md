@@ -1,26 +1,30 @@
-# HTTPS, SSL/TLS
+# HTTPS, SSL/TLS (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
-HTTPS (HTTP Secure) HTTP-nin TLS (Transport Layer Security) uzerinden isleyen versiyasidir. Data-ni encrypt edir, server identity-ni tesdiqleyir ve data integrity-ni temin edir. SSL (Secure Sockets Layer) TLS-in kohne ve artiq istifade olunmayan selefiddir.
+HTTPS (HTTP Secure) HTTP-nin TLS (Transport Layer Security) üzərindən işləyən versiyasıdır. Data-nı encrypt edir, server identity-ni təsdiqləyir və data integrity-ni təmin edir. SSL (Secure Sockets Layer) TLS-in köhnə və artıq istifadə olunmayan sələfidir.
 
 ```
-Versiya tarixcesi:
-SSL 1.0  (1994) - Hec vaxt release olunmadi
-SSL 2.0  (1995) - Ciddi zeifliklər, deprecated
+Versiya tarixçəsi:
+SSL 1.0  (1994) - Heç vaxt release olunmadı
+SSL 2.0  (1995) - Ciddi zəifliklər, deprecated
 SSL 3.0  (1996) - POODLE attack, deprecated
 TLS 1.0  (1999) - SSL 3.0 upgrade, deprecated 2020
 TLS 1.1  (2006) - Deprecated 2020
-TLS 1.2  (2008) - Hal-hazirda genis istifade olunur
-TLS 1.3  (2018) - En yeni, en suretli, en tehlukesiz
+TLS 1.2  (2008) - Hal-hazırda geniş istifadə olunur
+TLS 1.3  (2018) - Ən yeni, ən sürətli, ən təhlükəsiz
 ```
 
-**3 esas meqsed:**
-1. **Confidentiality (Gizlilik):** Data encrypt olunur, ucuncu teref oxuya bilmir
-2. **Integrity (Butovluk):** Data transfer zamani deyisdirilmeyib
-3. **Authentication (Dogrulama):** Server (ve optional client) kimliyi tesdiqlanir
+3 əsas məqsəd:
+1. **Confidentiality (Gizlilik):** Data encrypt olunur, üçüncü tərəf oxuya bilmir
+2. **Integrity (Bütövlük):** Data transfer zamanı dəyişdirilməyib
+3. **Authentication (Doğrulama):** Server (və optional client) kimliyini təsdiqlanır
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
+
+Production-da HTTPS olmadan brauzerlər "Not Secure" xəbərdarlığı göstərir, Google axtarış sıralamaqasını endirir, istifadəçilər məlumatlarını risk altına atar. Backend developer olaraq TLS versiyasını düzgün konfiqurasiya etmək, sertifikat zəncirini başa düşmək, HSTS qurmaq, OCSP stapling aktiv etmək bilavasitə məsuliyyət dairənizdədir. mTLS isə microservice-lər arası autentifikasiyanın əsasıdır.
+
+## Əsas Anlayışlar
 
 ### TLS 1.2 Handshake
 
@@ -54,7 +58,7 @@ Client                                Server
 Total: 2 RTT (Round-Trip Time)
 ```
 
-### TLS 1.3 Handshake (Daha suretli)
+### TLS 1.3 Handshake (Daha sürətli)
 
 ```
 Client                                Server
@@ -81,11 +85,11 @@ Client                                Server
 Total: 1 RTT (vs TLS 1.2-nin 2 RTT)
 
 0-RTT Resumption (PSK):
-Client daha evvel connect olubsa, ilk mesajla birlikde data gondermek olar.
-Amma replay attack riski var, yalniz idempotent request-ler ucun istifade edin.
+Client daha əvvəl connect olubsa, ilk məsajla birlikdə data göndərmək olar.
+Amma replay attack riski var, yalnız idempotent request-lər üçün istifadə edin.
 ```
 
-### TLS 1.3 vs 1.2 Ferqleri
+### TLS 1.3 vs 1.2 Fərqləri
 
 ```
 +---------------------+------------------+------------------+
@@ -106,17 +110,17 @@ Amma replay attack riski var, yalniz idempotent request-ler ucun istifade edin.
 ```
 Root CA Certificate (Self-signed, browser-da built-in)
   |
-  +--> Intermediate CA Certificate (Root CA imzalayib)
+  +--> Intermediate CA Certificate (Root CA imzalayıb)
          |
-         +--> Server Certificate (Intermediate CA imzalayib)
+         +--> Server Certificate (Intermediate CA imzalayıb)
                 (example.com)
 
 Verification process:
-1. Server oz certificate + intermediate certificate-i gonderir
-2. Browser server cert-in intermediate CA terefinden imzalandigini yoxlayir
-3. Browser intermediate cert-in Root CA terefinden imzalandigini yoxlayir
-4. Root CA browser-in trust store-undadir
-5. Certificate chain valid -> HTTPS lock icon gosteriir
+1. Server öz certificate + intermediate certificate-i göndərir
+2. Browser server cert-in intermediate CA tərəfindən imzalandığını yoxlayır
+3. Browser intermediate cert-in Root CA tərəfindən imzalandığını yoxlayır
+4. Root CA browser-in trust store-undadır
+5. Certificate chain valid -> HTTPS lock icon göstərir
 
 Chain of Trust:
 [Browser Trust Store] --> [Root CA] --> [Intermediate CA] --> [Server Cert]
@@ -150,31 +154,28 @@ Extensions:
 
 ```
 DV (Domain Validation):
-  - Domain sahibliyini yoxlayir
+  - Domain sahibliyini yoxlayır
   - Automated, ucuz/pulsuz (Let's Encrypt)
-  - Adi web sitelar ucun
+  - Adi web saytlar üçün
 
 OV (Organization Validation):
-  - Shirket melumatlari yoxlanir
-  - 1-3 gun
-  - Biznes sitelari
+  - Şirkət məlumatları yoxlanır
+  - 1-3 gün
+  - Biznes saytları
 
 EV (Extended Validation):
-  - En ciddi yoxlama
-  - Shirketin hüquqi statusu yoxlanir
-  - Bank, maliyye sitelari
-  - Browser-da yesil bar (artiq cogu browser gostermir)
+  - Ən ciddi yoxlama
+  - Şirkətin hüquqi statusu yoxlanır
+  - Bank, maliyyə saytları
 
-Wildcard: *.example.com (butun subdomain-ler)
-Multi-domain (SAN): Bir cert-de bir nece domain
+Wildcard: *.example.com (bütün subdomain-lər)
+Multi-domain (SAN): Bir cert-də bir neçə domain
 ```
-
-## Əsas Konseptlər (Key Concepts)
 
 ### Cipher Suites
 
 ```
-TLS 1.2 cipher suite numunesi:
+TLS 1.2 cipher suite nümunəsi:
 TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
  |     |     |        |    |       |
  |     |     |        |    |       +-- MAC algorithm
@@ -191,7 +192,7 @@ TLS 1.3 cipher suites (only 5):
   TLS_AES_128_CCM_SHA256
   TLS_AES_128_CCM_8_SHA256
 
-Key exchange TLS 1.3-de hemise ECDHE (forward secrecy mecburi)
+Key exchange TLS 1.3-də həmişə ECDHE (forward secrecy məcburi)
 ```
 
 ### Perfect Forward Secrecy (PFS)
@@ -199,19 +200,19 @@ Key exchange TLS 1.3-de hemise ECDHE (forward secrecy mecburi)
 ```
 PFS olmadan (RSA key exchange):
   Server-in private key-i compromise olsa,
-  BUTUN evvelki traffic decrypt oluna biler!
-  (Cunki session key-ler server private key ile encrypt olunub)
+  BÜTÜN əvvəlki traffic decrypt oluna bilər!
+  (Çünki session key-lər server private key ilə encrypt olunub)
 
-PFS ile (DHE/ECDHE):
-  Her session ucun yeni ephemeral key pair yaranir.
-  Server private key compromise olsa bele,
-  evvelki session-larin key-leri tapila bilmir.
+PFS ilə (DHE/ECDHE):
+  Hər session üçün yeni ephemeral key pair yaranır.
+  Server private key compromise olsa belə,
+  əvvəlki session-ların key-ləri tapıla bilmir.
 
   Session 1: Ephemeral key A -> session key 1 -> discard A
   Session 2: Ephemeral key B -> session key 2 -> discard B
   Session 3: Ephemeral key C -> session key 3 -> discard C
 
-  Server private key leaked -> Session 1,2,3 hele de secure
+  Server private key leaked -> Session 1,2,3 hələ də secure
 ```
 
 ### HSTS (HTTP Strict Transport Security)
@@ -220,59 +221,89 @@ PFS ile (DHE/ECDHE):
 Response header:
 Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 
-Bu ne edir?
-1. Browser bu domain-e yalniz HTTPS ile connect edir
-2. HTTP -> HTTPS redirect-i browser ozü edir (301 gozlemeden)
-3. User http://example.com yazsa, browser avtomatik https://example.com acir
-4. Invalid certificate olsa, user bypass ede bilmir
+Bu nə edir?
+1. Browser bu domain-ə yalnız HTTPS ilə connect edir
+2. HTTP -> HTTPS redirect-i browser özü edir (301 gözləmədən)
+3. User http://example.com yazsa, browser avtomatik https://example.com açır
+4. Invalid certificate olsa, user bypass edə bilmir
 
 HSTS Preload List:
-  - Browser-da built-in HTTPS-only domain siyahisi
+  - Browser-da built-in HTTPS-only domain siyahısı
   - hstspreload.org-da qeydiyyat
-  - Chrome, Firefox, Safari, Edge istifade edir
+  - Chrome, Firefox, Safari, Edge istifadə edir
 ```
 
 ### Certificate Pinning
 
 ```
-Nedir?
-  Application yalniz specific certificate ve ya public key-i qebul edir.
-  CA compromise olsa bele, yanlis cert qebul olunmaz.
+Nədir?
+  Application yalnız specific certificate və ya public key-i qəbul edir.
+  CA compromise olsa belə, yanlış cert qəbul olunmaz.
 
 Types:
-1. Pin to leaf certificate - cert deyisende app update lazim
+1. Pin to leaf certificate - cert dəyişəndə app update lazım
 2. Pin to intermediate CA - daha flexible
-3. Pin to public key (SPKI) - cert renew olsa bele key eyni qala biler
+3. Pin to public key (SPKI) - cert renew olsa belə key eyni qala bilər
 
-HTTP Public Key Pinning (HPKP) - DEPRECATED (coxdiqqetlidir)
-  Browser-lar artiq desteklemir
-  Evezinde Certificate Transparency istifade olunur
+HTTP Public Key Pinning (HPKP) - DEPRECATED
+  Browser-lar artıq dəstəkləmir
+  Əvəzinə Certificate Transparency istifadə olunur
 
-Mobile apps-da certificate pinning hele de populyardir.
+Mobile apps-da certificate pinning hələ də populyardır.
 ```
 
-### OCSP ve CRL
+### OCSP və CRL
 
 ```
 Certificate revocation check:
 
 CRL (Certificate Revocation List):
-  - CA butun revoke olunmus cert-lerin siyahisini publish edir
-  - Problem: siyahi boyuye biler, yavas yuklenir
+  - CA bütün revoke olunmuş cert-lərin siyahısını publish edir
+  - Problem: siyahı böyüyə bilər, yavaş yüklənir
 
 OCSP (Online Certificate Status Protocol):
-  - Real-time tək cert ucun status sorgusu
-  - Daha suretli, amma privacy concern (CA her visit-i gorur)
+  - Real-time tək cert üçün status sorğusu
+  - Daha sürətli, amma privacy concern (CA hər visit-i görür)
 
 OCSP Stapling:
-  - Server ozü OCSP response-u alir ve TLS handshake-de gonderir
-  - Client ayrica OCSP sorgusu etmir
+  - Server özü OCSP response-u alır və TLS handshake-də göndərir
+  - Client ayrıca OCSP sorğusu etmir
   - Best practice: OCSP stapling aktiv edin
 ```
 
-## PHP/Laravel ilə İstifadə
+## Praktik Baxış
 
-### Laravel HTTPS Setup
+**Real layihələrdə istifadəsi:**
+- Let's Encrypt + Certbot Laravel production-da standart seçimdir — 90 günlük sertifikat + auto-renew
+- Nginx-də `ssl_protocols TLSv1.2 TLSv1.3;` konfiqurasiyası TLS 1.0/1.1-i disable edir
+- mTLS (mutual TLS) service-to-service autentifikasiyası üçün: hər microservice client certificate göndərir
+
+**Trade-off-lar:**
+- TLS 1.3: 1 RTT (daha sürətli) amma köhnə client-lər dəstəkləmir (iOS 10-, Android 7-)
+- 0-RTT (PSK): ən sürətli, amma replay attack riski — yalnız GET/idempotent üçün
+- Wildcard cert: rahat idarəetmə amma privkey leak bütün subdomain-ləri təsir edir
+
+**Common mistakes:**
+- `CURLOPT_SSL_VERIFYPEER = false` dev-də "tez həll" üçün istifadə etmək — prod-a da keçir (man-in-the-middle riskini bağışlayır)
+- Expired sertifikat — monitoring olmadan xəbər olmadan site down olur
+- TLS 1.0/1.1-i aktiv saxlamaq — PCI DSS compliance itirilir, brauzerlər xəbərdarlıq göstərir
+- Intermediate cert-i göndərməmək — bəzi client-lər chain-i tamamlaya bilmir, TLS xətası alır
+
+**Anti-pattern:** Self-signed cert production-da — brauzerlər blok edir, SDK-lar xəta verir; Let's Encrypt pulsuzdur.
+
+## Nümunələr
+
+### Ümumi Nümunə
+
+TLS 1.3 handshake real dünyada:
+1. Client: `ClientHello` göndərir (key_share daxil) — TCP SYN ilə birlikdə gedə bilər
+2. Server: `ServerHello` + certificate + `Finished` (hamısı eyni uçuşda) — 1 RTT
+3. Client: `Finished` — encrypted data başlayır
+4. Reconnect zamanı 0-RTT: client 1-ci mesajda application data göndərir — 0 RTT
+
+### Kod Nümunəsi
+
+Laravel HTTPS Setup:
 
 ```php
 // Force HTTPS in production
@@ -296,14 +327,11 @@ class ForceHttps
         return $next($request);
     }
 }
+```
 
-// .env
-APP_URL=https://example.com
+HSTS header middleware:
 
-// HSTS Header in Nginx
-# add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
-
-// Or via Laravel middleware
+```php
 class SecurityHeaders
 {
     public function handle(Request $request, Closure $next)
@@ -320,7 +348,7 @@ class SecurityHeaders
 }
 ```
 
-### Nginx SSL Configuration
+Nginx SSL Configuration:
 
 ```nginx
 server {
@@ -350,9 +378,6 @@ server {
 
     # HSTS
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
-
-    # Redirect HTTP to HTTPS
-    # (in separate server block)
 }
 
 server {
@@ -362,7 +387,7 @@ server {
 }
 ```
 
-### Let's Encrypt with Certbot
+Let's Encrypt with Certbot:
 
 ```bash
 # Install
@@ -380,7 +405,7 @@ sudo certbot --nginx -d example.com -d www.example.com
 /etc/letsencrypt/live/example.com/chain.pem       # intermediate only
 ```
 
-### PHP cURL with TLS
+PHP cURL with TLS:
 
 ```php
 $ch = curl_init('https://api.example.com/data');
@@ -402,49 +427,76 @@ echo "TLS version: " . $info['ssl_version'];  // TLSv1.3
 curl_close($ch);
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-### Q1: TLS handshake-i izah edin.
-**A:** TLS 1.2: 2 RTT - ClientHello (versions, ciphers), ServerHello (chosen cipher + certificate), client key exchange, both sides derive session keys. TLS 1.3: 1 RTT - client ilk mesajda key share gonderir, server certificate + key share ile cavab verir, derhal encrypted communication baslar.
+**Tapşırıq 1: TLS konfiqurasiyasını yoxlayın**
 
-### Q2: Perfect Forward Secrecy nedir?
-**A:** PFS her session ucun yeni ephemeral key-ler istifade edir (ECDHE). Server-in private key-i compromise olsa bele, evvelki session-larin decrypt olunmasi mumkun deyil, cunki session key-ler ayri yaranib ve silinib. TLS 1.3-de PFS mecburidir.
+```bash
+# TLS versiyasını və cipher suite-ı görün
+openssl s_client -connect example.com:443 -tls1_3
 
-### Q3: Certificate chain nece isleyir?
-**A:** Server cert Intermediate CA terefinden imzalanir, Intermediate Root CA terefinden. Browser Root CA-ni oz trust store-unda yoxlayir. Eger chain valid ise, connection trusted-dir. Server hemise intermediate cert-i de gondermalidir.
+# SSL Labs testi (A+ reytinq hədəf)
+# https://www.ssllabs.com/ssltest/
 
-### Q4: HSTS nedir ve niye lazimdir?
-**A:** Browser-a bu domain-e hemise HTTPS ile connect et deyen header. SSL stripping attack-larin qarsisini alir (attacker HTTP-ye downgrade edir). Preload list ile ilk visitde bele HTTPS mecbur edilir.
+# Sertifikat expire tarixini yoxlayın
+echo | openssl s_client -connect example.com:443 2>/dev/null \
+  | openssl x509 -noout -dates
 
-### Q5: TLS 1.2 ve TLS 1.3 arasinda ferqler?
-**A:** TLS 1.3: 1 RTT (vs 2), 0-RTT resumption, yalniz 5 guclu cipher suite (zeif olanlar silindi), mecburi PFS (RSA key exchange yoxdur), renegotiation silindi, compression silindi.
+# HSTS header-ini yoxlayın
+curl -I https://example.com | grep -i strict
+```
 
-### Q6: Self-signed certificate ile CA-signed cert arasinda ferq?
-**A:** Self-signed cert ozunu oz imzalayir - browser trust etmir (warning gosterir). CA-signed cert trusted CA terefinden imzalanir - browser qebul edir. Development ucun self-signed, production ucun CA-signed (Let's Encrypt pulsuz) istifade edin.
+**Tapşırıq 2: Let's Encrypt quraşdırması**
 
-### Q7: mTLS (Mutual TLS) nedir?
-**A:** Normal TLS-de yalniz server authenticate olunur. mTLS-de client de certificate gonderir ve server client-i verify edir. Microservice-ler arasi communication, API security ucun istifade olunur. Her iki teref birbirini verify edir.
+Laravel production serverda addım-addım:
 
-## Best Practices
+```bash
+# 1. Certbot quraşdır
+sudo apt install certbot python3-certbot-nginx
 
-1. **Minimum TLS 1.2 istifade edin:** TLS 1.0, 1.1, SSL hamisini disable edin. Ideal olaraq TLS 1.3.
+# 2. Nginx üçün sertifikat al
+sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
 
-2. **Strong cipher suites secin:** ECDHE key exchange (PFS ucun), AES-GCM ve ya ChaCha20-Poly1305 encryption.
+# 3. Auto-renew test et
+sudo certbot renew --dry-run
 
-3. **HSTS aktiv edin:** `max-age=31536000; includeSubDomains; preload`. Preload list-e elave edin.
+# 4. Crontab əlavə et
+(crontab -l 2>/dev/null; echo "0 3 * * * certbot renew --quiet") | crontab -
+```
 
-4. **OCSP Stapling aktiv edin:** Performance ve privacy ucun.
+**Tapşırıq 3: Security headers əlavə edin**
 
-5. **Certificate auto-renewal:** Let's Encrypt ile 90 gunluk cert + auto-renew. Expired cert = site down.
+Laravel middleware ilə aşağıdakı security header-lərini əlavə edin:
 
-6. **SSL_VERIFYPEER hemise true:** PHP/cURL-da certificate verification-i sondurmeyin (`CURLOPT_SSL_VERIFYPEER = false` etmeyin). Development ucun bele self-signed cert install edin.
+```php
+class SecurityHeaders
+{
+    public function handle(Request $request, Closure $next)
+    {
+        $response = $next($request);
 
-7. **Security headers elave edin:**
-   ```
-   Strict-Transport-Security: max-age=31536000; includeSubDomains
-   X-Content-Type-Options: nosniff
-   X-Frame-Options: DENY
-   Content-Security-Policy: default-src 'self'
-   ```
+        $headers = [
+            'Strict-Transport-Security' => 'max-age=31536000; includeSubDomains; preload',
+            'X-Content-Type-Options' => 'nosniff',
+            'X-Frame-Options' => 'DENY',
+            'Referrer-Policy' => 'strict-origin-when-cross-origin',
+        ];
 
-8. **Certificate monitoring:** Cert expire tarixini monitor edin. Alerting qurun.
+        foreach ($headers as $key => $value) {
+            $response->headers->set($key, $value);
+        }
+
+        return $response;
+    }
+}
+```
+
+Test: `curl -I https://yourdomain.com` ilə header-ləri yoxlayın.
+
+## Əlaqəli Mövzular
+
+- [HTTP Protocol](05-http-protocol.md)
+- [Network Security](26-network-security.md)
+- [mTLS Deep Dive](35-mtls-deep-dive.md)
+- [Zero Trust](33-zero-trust.md)
+- [API Security](17-api-security.md)

@@ -1,8 +1,8 @@
-# Network Security
+# Network Security (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
-Network security şəbəkə infrastrukturunu və məlumatları icazəsiz girişlərdən, istifadədən, dəyişdirilmədən və dağıdılmadan qorumağa yönəlmiş texnologiya, process və kontrol-lar toplusudur. Defense in depth (layered security) prinsipinə əsaslanır - bir layer break olsa, digəri qoruyur.
+Network security şəbəkə infrastrukturunu və məlumatları icazəsiz girişlərdən, istifadədən, dəyişdirilmədən və dağıdılmadan qorumağa yönəlmiş texnologiya, process və kontrol-lar toplusudur. Defense in depth (layered security) prinsipinə əsaslanır — bir layer break olsa, digəri qoruyur.
 
 ```
 Layers of Network Security:
@@ -16,12 +16,16 @@ Layers of Network Security:
   [Identity & Access]       -- Authentication, authorization
 ```
 
-## Necə İşləyir? (How does it work?)
+## Niyə Vacibdir
+
+Backend developer kimi network security-ni bilmək əsas infrastruktur qərarlarında iştirak etmək üçün lazımdır: WAF qoymaq, HTTPS enforce etmək, security header-lər əlavə etmək, IP whitelisting. Bunlar yalnız DevOps-un məsuliyyəti deyil — hər developer öz tətbiqini qorumaq üçün bu konseptləri başa düşməlidir. Həmçinin, pentest tapıntılarını anlamaq üçün bu biliklər vacibdir.
+
+## Əsas Anlayışlar
 
 ### 1. Firewall
 
 ```
-Firewall: Network trafik-i rule-lara gore allow/deny edir.
+Firewall: Network trafik-i rule-lara görə allow/deny edir.
 
 Internet                Firewall              Internal Network
    |                       |                        |
@@ -36,12 +40,12 @@ Firewall types:
 
 1. Packet Filtering Firewall (Layer 3-4)
    - Checks IP, port, protocol
-   - Stateless - her packet-e ayri baxir
+   - Stateless — hər packet-ə ayrı baxır
    - Fast, amma limited
 
 2. Stateful Firewall (Layer 3-4)
    - Connection state track edir
-   - Related traffic-ə icaze verir (ex: outbound response)
+   - Related traffic-ə icazə verir (ex: outbound response)
    - Modern standart
 
 3. Application Firewall / Proxy (Layer 7)
@@ -58,7 +62,7 @@ Firewall types:
 ### 2. VPN (Virtual Private Network)
 
 ```
-VPN: Public network (internet) uzerinde secure, encrypted tunnel yaradir.
+VPN: Public network (internet) üzərində secure, encrypted tunnel yaradır.
 
 User                Internet               Company Network
   |                     |                        |
@@ -66,7 +70,6 @@ User                Internet               Company Network
   |---- Encrypted ----->|                        |
   |     Tunnel          |-- [VPN Gateway] -----> |
   |                     |   (decrypt)            |
-  |                     |                        |
 
 Benefits:
   - Encryption (man-in-middle protection)
@@ -78,14 +81,14 @@ Benefits:
 ### 3. IPSec (Internet Protocol Security)
 
 ```
-IPSec: Layer 3-də IP packet-leri encrypt və authenticate edir.
+IPSec: Layer 3-də IP packet-ləri encrypt və authenticate edir.
 
 Two modes:
 
-1. Transport Mode - Yalniz payload encrypt olunur
+1. Transport Mode — Yalnız payload encrypt olunur
    [IP Header][ESP Header][Encrypted TCP+Data][ESP Trailer]
 
-2. Tunnel Mode - Butun IP packet encrypt olunur (VPN üçün)
+2. Tunnel Mode — Bütün IP packet encrypt olunur (VPN üçün)
    [New IP Header][ESP Header][Encrypted Original IP Packet][ESP Trailer]
 
 Protocols:
@@ -102,18 +105,18 @@ Use cases:
 ### 4. DDoS Protection
 
 ```
-DDoS (Distributed Denial of Service): Coxlu compromised device (botnet) target-i basir.
+DDoS (Distributed Denial of Service): Çoxlu compromised device (botnet) target-i basır.
 
 Attack types:
 
 1. Volumetric (Layer 3-4)
    - UDP flood, ICMP flood
-   - Bandwidth-i dolduru
+   - Bandwidth-i doldurur
    - Mitigation: CDN, scrubbing centers
 
 2. Protocol (Layer 3-4)
    - SYN flood, Ping of Death
-   - Server resources tuketir
+   - Server resources tükədir
    - Mitigation: SYN cookies, rate limiting
 
 3. Application (Layer 7)
@@ -137,9 +140,9 @@ Protection layers:
 ### 5. WAF (Web Application Firewall)
 
 ```
-WAF: HTTP trafiki inspect edir, web attack-larini bloklayir.
+WAF: HTTP trafiki inspect edir, web attack-larını bloqlayır.
 
-Typical attacks WAF bloklayir:
+Tipik attacks WAF bloqlayır:
   - SQL Injection
   - XSS (Cross-Site Scripting)
   - CSRF
@@ -192,9 +195,9 @@ Detection methods:
 ```
 Flat network (pis):
   [Internet] --> [All servers together]
-  Bir server hack olsa, butun network acilir!
+  Bir server hack olsa, bütün network açılır!
 
-Segmented network (yaxsi):
+Segmented network (yaxşı):
 
   Internet
      |
@@ -213,10 +216,10 @@ Segmented network (yaxsi):
             - Monitoring
 
 VLAN (Virtual LAN):
-  Physical switch-i logical olaraq ayirmaq
+  Physical switch-i logical olaraq ayırmaq
   VLAN 10: Finance department
   VLAN 20: Engineering
-  Inter-VLAN routing yalniz icazeli
+  Inter-VLAN routing yalnız icazəli
 ```
 
 ### 8. Zero Trust Architecture
@@ -228,7 +231,7 @@ Traditional (perimeter-based):
 
 Zero Trust:
   "Never trust, always verify"
-  Her request auth/authz keçir, hətta internal network-dən də.
+  Hər request auth/authz keçir, hətta internal network-dən də.
 
 Principles:
   1. Verify explicitly (MFA, device check)
@@ -240,8 +243,6 @@ Implementation:
   - Micro-segmentation
   - Continuous verification
 ```
-
-## Əsas Konseptlər (Key Concepts)
 
 ### CIA Triad
 
@@ -256,16 +257,6 @@ A - Availability (əlçatanlıq)
     - Redundancy, DDoS protection
 ```
 
-### Defense in Depth
-
-```
-Multiple layers of security:
-
-[Perimeter] -> [Network] -> [Host] -> [App] -> [Data]
-
-Bir layer fail olsa, digerleri qoruyur.
-```
-
 ### Security Groups vs NACLs (AWS)
 
 ```
@@ -275,36 +266,37 @@ Security Group:
   - Only allow rules
 
 Network ACL:
-  - Stateless (response üçün de rule lazim)
+  - Stateless (response üçün də rule lazım)
   - Subnet level
   - Allow AND deny rules
 ```
 
-### SSL/TLS Inspection
+## Praktik Baxış
 
-```
-Problem: Encrypted traffic WAF, IDS gormur.
+**Trade-off-lar:**
+- WAF false positive legitimate trafiki bloqlaya bilər — production-a qoymadan əvvəl test lazım
+- SSL termination WAF-də privacy concern yaradır — compliance tələblərini yoxlayın (PCI-DSS, HIPAA)
+- IPS false positive legitimate trafiki drop edə bilər — IDS-dən başlamaq daha safe
 
-Solution: SSL termination at WAF/proxy:
-  Client -->HTTPS--> [Proxy decrypt] --> Inspect --> [Re-encrypt] --> Server
+**Nə vaxt istifadə edilməməlidir:**
+- Internal service-to-service trafikdə WAF overhead yaradır
+- Development mühitdə strict firewall rule-lar inkişafı yavaşladır
 
-Trade-off: Privacy concerns, certificate management.
-```
+**Anti-pattern-lər:**
+- "Security through obscurity" — yalnız port gizlətmək kafi deyil
+- Firewall rule-larını audit etməmək — köhnəlmiş, artıq lazım olmayan rule-lar risk yaradır
+- Bütün trafiki trust etmək — internal network-dən gələn sorğular da verify edilməlidir (Zero Trust)
+- Secrets-i kodda saxlamaq — `.env` ilə belə yox, Vault, AWS Secrets Manager istifadə edin
 
-### Honeypots
+## Nümunələr
 
-```
-Intentionally vulnerable system to attract attackers:
+### Ümumi Nümunə
 
-  [Real systems]  <-- protected
-  [Honeypot]      <-- decoy, monitored
+Defense in depth: Cloudflare (DDoS + WAF birinci xətt) → Load Balancer (rate limiting) → Nginx (security headers, IP filter) → Laravel (HTTPS enforce, CSRF, encryption at rest). Hər layer bir əvvəlkinin sınmasına qarşı qoruyur.
 
-Attacker honeypot-u hack edir, admin notification alir, tactic-lari oyrenir.
-```
+### Kod Nümunəsi
 
-## PHP/Laravel ilə İstifadə
-
-### HTTPS Enforcement
+**HTTPS Enforcement:**
 
 ```php
 // app/Providers/AppServiceProvider.php
@@ -330,7 +322,7 @@ class ForceHttps
 }
 ```
 
-### Security Headers Middleware
+**Security Headers Middleware:**
 
 ```php
 namespace App\Http\Middleware;
@@ -357,10 +349,9 @@ class SecurityHeaders
 }
 ```
 
-### IP Whitelisting / Blacklisting
+**IP Whitelisting / Blacklisting:**
 
 ```php
-// app/Http/Middleware/IpFilter.php
 class IpFilter
 {
     protected array $whitelist = [
@@ -396,29 +387,27 @@ class IpFilter
         }
 
         list($subnet, $bits) = explode('/', $range);
-        $ipLong = ip2long($ip);
+        $ipLong     = ip2long($ip);
         $subnetLong = ip2long($subnet);
-        $mask = -1 << (32 - $bits);
+        $mask       = -1 << (32 - $bits);
 
         return ($ipLong & $mask) === ($subnetLong & $mask);
     }
 }
 
-// Route
 Route::middleware(IpFilter::class)->group(function () {
     Route::get('/admin', [AdminController::class, 'index']);
 });
 ```
 
-### Request Validation (CSRF Protection)
+**CSRF Protection:**
 
 ```php
-// Laravel default has CSRF protection via middleware
+// Laravel default-da CSRF middleware var
 // app/Http/Kernel.php
 protected $middlewareGroups = [
     'web' => [
         \App\Http\Middleware\VerifyCsrfToken::class,
-        // ...
     ],
 ];
 
@@ -428,50 +417,49 @@ protected $middlewareGroups = [
     <!-- ... -->
 </form>
 
-// API-ler üçün Sanctum SPA authentication:
+// API-lər üçün Sanctum SPA authentication:
 Route::middleware('auth:sanctum')->group(function () {
     // Protected routes
 });
 ```
 
-### Rate Limiting (DDoS Mitigation)
+**DDoS Mitigation (Rate Limiting):**
 
 ```php
-// app/Providers/RouteServiceProvider.php
 use Illuminate\Cache\RateLimiting\Limit;
 
 RateLimiter::for('global', function ($request) {
     return Limit::perMinute(1000)->by($request->ip());
 });
 
-// Aggressive for auth endpoints
+// Auth endpoint-lər üçün aggressiv limit
 RateLimiter::for('login', function ($request) {
     return Limit::perMinute(5)->by($request->ip());
 });
 ```
 
-### Cloudflare Integration
+**Cloudflare Integration:**
 
 ```php
-// config/trustedproxy.php - Laravel trusts Cloudflare's IP ranges
+// config/trustedproxy.php
 return [
     'proxies' => '*', // Trust Cloudflare
     'headers' => Request::HEADER_X_FORWARDED_ALL,
 ];
 
-// Get real IP behind Cloudflare
+// Real IP arxadan Cloudflare
 $ip = $request->header('CF-Connecting-IP') ?: $request->ip();
 
-// Country code from Cloudflare
+// Country code
 $country = $request->header('CF-IPCountry');
 
-// Block specific countries
+// Müəyyən ölkələri bloqlamaq
 if (in_array($country, ['XX', 'YY'])) {
     abort(403, 'Not available in your region');
 }
 ```
 
-### Encryption at Rest
+**Encryption at Rest:**
 
 ```php
 use Illuminate\Support\Facades\Crypt;
@@ -486,16 +474,16 @@ $decrypted = Crypt::decryptString($encrypted);
 class User extends Model
 {
     protected $casts = [
-        'ssn' => 'encrypted',
+        'ssn'         => 'encrypted',
         'credit_card' => 'encrypted:array',
     ];
 }
 
-$user->ssn = '123-45-6789'; // automatically encrypted
-echo $user->ssn;            // automatically decrypted
+$user->ssn = '123-45-6789'; // avtomatik encrypt olunur
+echo $user->ssn;            // avtomatik decrypt olunur
 ```
 
-### Audit Logging
+**Audit Logging:**
 
 ```php
 class AuditLog extends Model
@@ -503,7 +491,6 @@ class AuditLog extends Model
     protected $fillable = ['user_id', 'action', 'ip', 'user_agent', 'metadata'];
 }
 
-// Middleware
 class AuditMiddleware
 {
     public function handle($request, Closure $next)
@@ -512,11 +499,11 @@ class AuditMiddleware
 
         if (auth()->check() && in_array($request->method(), ['POST', 'PUT', 'DELETE'])) {
             AuditLog::create([
-                'user_id' => auth()->id(),
-                'action' => $request->method() . ' ' . $request->path(),
-                'ip' => $request->ip(),
+                'user_id'    => auth()->id(),
+                'action'     => $request->method() . ' ' . $request->path(),
+                'ip'         => $request->ip(),
                 'user_agent' => $request->userAgent(),
-                'metadata' => json_encode([
+                'metadata'   => json_encode([
                     'params' => $request->except(['password']),
                     'status' => $response->status(),
                 ]),
@@ -528,144 +515,22 @@ class AuditMiddleware
 }
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
-**Q1: Firewall-in stateful və stateless fərqi nədir?**
+1. **Security headers audit:** `curl -I https://your-app.com` ilə response header-lərini yoxlayın. `securityheaders.com` saytında analiz edin. `SecurityHeaders` middleware-i əlavə edib A+ rating alın.
 
-**Stateless**: Hər packet-ə ayri baxır, connection context yoxdur. Məsələn, outbound request-in response-unu allow etmir əgər explicit rule yoxdursa. Sadə və sürətlidir.
+2. **IP whitelist üçün admin panel:** `/admin` qovluğunu yalnız müəyyən IP-lərdən əlçatan edin. Nginx-də `allow 192.168.1.0/24; deny all;` ilə Nginx-level bloklama edin. PHP middleware ilə eyni şeyi edin — iki layerli qoruma.
 
-**Stateful**: Active connection-lari track edir. Outbound request açıq-aşkar icazəlidirsə, return traffic də avtomatik icazəlidir. Modern firewall-lar əsasən stateful-dur.
+3. **HTTPS enforce etmək:** `URL::forceScheme('https')` əlavə edin. `ForceHttps` middleware-ini global middleware list-ə qoşun. `HSTS` header-i əlavə edin. `http://` ilə giriş etdikdə avtomatik `https://`-ə yönləndirildiyini yoxlayın.
 
-**Q2: DDoS vs DoS fərqi?**
+4. **Audit logging:** `AuditMiddleware`-i `POST`, `PUT`, `DELETE` metodlarına tətbiq edin. `audit_logs` cədvəlini yaradın. `password` sahəsinin log-a düşmədiyini yoxlayın.
 
-**DoS** (Denial of Service): Tək bir source-dan attack. Adəten bir server, bir IP.
+5. **Cloudflare setup:** Layihəni Cloudflare arxasına keçirin. `CF-Connecting-IP` header-indən real IP-ni alın. `$request->ip()` ilə müqayisə edin — Cloudflare olmadan düzgün IP göstərmədiyi görünəcək.
 
-**DDoS** (Distributed DoS): Çoxlu compromised device-dən (botnet) simultaneously attack. Blok etmək çətindir çünki trafik legitimate traffic kimi dağılmış olur.
+## Əlaqəli Mövzular
 
-Müdafiə: Anycast routing, CDN scrubbing (Cloudflare, Akamai), rate limiting, SYN cookies.
-
-**Q3: IDS ve IPS arasındaki fərq?**
-
-**IDS** (Intrusion **Detection** System): Passive. Trafik-i monitor edir, anomaly-lərdə alert verir. Out-of-band (network-ə paralel).
-
-**IPS** (Intrusion **Prevention** System): Active. Inline, packet-ləri drop edə bilər. Prevention həm alert həm block.
-
-Trade-off: IPS false positive legitimate traffic-i blok edə bilər. IDS safer amma reactive.
-
-**Q4: WAF nədir və hansi attack-lardan qoruyur?**
-
-WAF (Web Application Firewall) HTTP-level inspection edir. OWASP Top 10:
-- SQL Injection
-- XSS (Cross-Site Scripting)
-- CSRF
-- File inclusion
-- Command injection
-- Insecure deserialization
-
-Nümunə WAF-lar: Cloudflare, AWS WAF, ModSecurity.
-
-**Q5: VPN necə işləyir və niyə lazimdir?**
-
-VPN public network (internet) üstündə encrypted tunnel yaradır. İşləmə:
-1. Client authenticate olunur (cert, password, MFA)
-2. Encrypted tunnel qurulur (IPSec, OpenVPN, WireGuard)
-3. Butun trafik tunnel-dən keçir
-4. VPN server-də decrypt olur və internal network-ə forward
-
-İstifadə:
-- Remote work (home-to-office)
-- Site-to-site (branch offices)
-- Privacy (ISP, tracking)
-- Geographic bypass
-
-**Q6: Network segmentation və zero trust fərqi?**
-
-**Network segmentation**: Network-u hissələrə (VLAN, subnet) bölür. Inter-segment trafic firewall-dan keçir. "Inside trusted" assumption hələ də var.
-
-**Zero Trust**: "Never trust, always verify". Hətta internal network-də də hər request auth/authz yoxlanir. Identity-based, device-based verification. BeyondCorp (Google), BeyondProd model-ləri.
-
-Zero Trust segmentation-in təkamülüdür - micro-segmentation + continuous verification.
-
-**Q7: Security Group vs NACL (AWS)?**
-
-**Security Group**: Stateful, instance-level, only allow rules. Response traffic avtomatik allowed. Virtual firewall per-instance.
-
-**NACL** (Network ACL): Stateless, subnet-level, allow AND deny rules. Rule-lar numbered (priority). Both inbound and outbound explicit.
-
-Birlikdə: NACL perimeter üçün, SG instance-level fine-grained.
-
-**Q8: TLS/SSL termination WAF-də niye lazimdir?**
-
-Encrypted traffic (HTTPS) WAF deep inspection edə bilmir. Həll: WAF-də SSL termination.
-
-1. Client --HTTPS--> WAF (decrypt)
-2. WAF inspection edir (WAF rule-larini tətbiq edir)
-3. WAF --HTTP/HTTPS--> Backend server
-
-Trade-off:
-- WAF-də cert management
-- Privacy (compliance - PCI-DSS, HIPAA)
-- Performance overhead
-
-Alternativ: Pass-through mode (limited inspection).
-
-**Q9: SYN flood attack-a qarşı müdafiə?**
-
-**SYN flood**: TCP handshake-in SYN step-ini abuse edir. Attacker SYN göndərir, SYN-ACK alir, amma ACK göndərmir. Server half-open connection-lari saxlayir, table dolur.
-
-**Müdafiə**:
-1. **SYN cookies**: Server state saxlamir, cookies-də info encode olunur
-2. **SYN proxy**: Load balancer complete handshake edir, sonra server-ə forward
-3. **Rate limiting**: SYN-lar üçün limit
-4. **Firewall drop**: Anomaly detection
-
-**Q10: Defense in depth prinsipi nədir?**
-
-Tək bir security layer-a güvənməmək prinsipi. Multiple layers:
-1. Physical (data center security)
-2. Perimeter (firewall, DDoS)
-3. Network (segmentation, VLAN)
-4. Host (OS hardening, antivirus)
-5. Application (WAF, secure coding)
-6. Data (encryption at rest/in transit)
-7. Identity (MFA, RBAC)
-
-Məntiq: Bir layer compromise olsa, attacker hələ də digərlərini keçməli. Redundancy defeating single point of failure.
-
-## Best Practices
-
-1. **Layered security** tətbiq et - hər layer-də kontrol, heç biri tam güvən deyil.
-
-2. **Principle of least privilege** - user/service minimum lazim olan icazəyə malik olsun.
-
-3. **Network segmentation** - DMZ, internal, management network ayri.
-
-4. **Firewall rules audit** - reqular review, unused rules sil, shadow rules yoxla.
-
-5. **Patch management** - OS, firmware, software regular update.
-
-6. **Strong authentication** - MFA hər yerde, SSH key-based.
-
-7. **Log və monitor** - SIEM (Security Information Event Management), anomaly detection.
-
-8. **Incident response plan** - breach zamanı nə etmək lazim olduğunu dokumentlə.
-
-9. **Regular penetration testing** - annual pen test, bug bounty program.
-
-10. **Encrypted communications** - TLS 1.3, VPN, IPSec butun traffic üçün.
-
-11. **DDoS protection layered** - Cloudflare/Akamai + rate limiting + WAF.
-
-12. **WAF rule tuning** - default rule-ları production-a atmazdan əvvəl test et (false positives).
-
-13. **Zero Trust principles** - internal network-ə də güvənmə, hər request verify et.
-
-14. **Security training** - staff phishing awareness, secure coding.
-
-15. **Backup & recovery** - ransomware attack-a qarşı offline backup-lar, tested restore process.
-
-16. **Certificate management** - TLS cert-lər auto-renewal (Let's Encrypt), expiry monitoring.
-
-17. **Secrets management** - Vault, AWS Secrets Manager. Kod-da secret YAZMAMAQ.
-
-18. **Compliance** - GDPR, PCI-DSS, HIPAA requirements-i bil, audit-ə hazır ol.
+- [HTTPS / SSL / TLS](06-https-ssl-tls.md)
+- [API Security](17-api-security.md)
+- [API Rate Limiting](25-api-rate-limiting.md)
+- [Zero Trust](33-zero-trust.md)
+- [mTLS Deep Dive](35-mtls-deep-dive.md)
