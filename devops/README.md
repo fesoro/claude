@@ -1,91 +1,79 @@
-# DevOps Interview Hazirliqi (Interview Preparation)
+# DevOps (Backend Developer üçün)
 
-Bu qovluq DevOps movzularini ehtiva edir. Her fayl musahibe hazirligi ucun etrafli izahlar, praktiki numuneler ve interview suallari ile yazilmisdir.
+Bu qovluq backend developer-in (PHP/Laravel) bilməli olduğu DevOps mövzularını əhatə edir. Linux-dan başlayaraq cloud, CI/CD, monitoring, IaC, reliability mövzularına qədər Junior→Architect sıralaması ilə qurulub.
 
-## Movzular (Topics)
+## Mövzular
 
-### CI/CD & Version Control
-| # | Fayl | Movzu |
+### ⭐ Junior
+
+| # | Fayl | Mövzu |
 |---|------|-------|
-| 01 | [01-cicd-concepts.md](01-cicd-concepts.md) | CI vs CD vs CD, pipeline stages, trunk-based development, feature flags |
-| 02 | [02-github-actions.md](02-github-actions.md) | Workflow syntax, triggers, jobs, Laravel CI/CD with GitHub Actions |
-| 03 | [03-jenkins.md](03-jenkins.md) | Jenkins architecture, Jenkinsfile, pipelines, Laravel Jenkins pipeline |
-| 04 | [04-gitlab-ci.md](04-gitlab-ci.md) | .gitlab-ci.yml, stages, environments, Laravel GitLab CI |
-| 22 | [22-git-advanced.md](22-git-advanced.md) | Branching strategies, rebase vs merge, hooks, monorepo |
+| 01 | [01-linux-basics.md](01-linux-basics.md) | Linux Əsasları — fayl sistemi, icazələr, əsas komandalar |
+| 02 | [02-networking-basics.md](02-networking-basics.md) | Şəbəkə Əsasları — OSI, TCP/IP, DNS, HTTP/HTTPS, subnet |
+| 03 | [03-cicd-concepts.md](03-cicd-concepts.md) | CI/CD Konseptləri — pipeline stages, trunk-based, feature flags |
 
-### Linux Administration
-| # | Fayl | Movzu |
-|---|------|-------|
-| 05 | [05-linux-basics.md](05-linux-basics.md) | File system, permissions, users/groups, pipes |
-| 06 | [06-linux-process-management.md](06-linux-process-management.md) | Processes, systemd, cron, PHP-FPM process management |
-| 07 | [07-linux-networking.md](07-linux-networking.md) | Networking commands, DNS, firewall, Laravel server setup |
-| 08 | [08-linux-disk-storage.md](08-linux-disk-storage.md) | Disk management, LVM, RAID, filesystem types |
-| 09 | [09-linux-shell-scripting.md](09-linux-shell-scripting.md) | Bash scripting, sed, awk, grep, Laravel deployment scripts |
+### ⭐⭐ Middle
 
-### Web Servers & SSL
-| # | Fayl | Movzu |
+| # | Fayl | Mövzu |
 |---|------|-------|
-| 10 | [10-nginx.md](10-nginx.md) | Nginx configuration, reverse proxy, load balancing, PHP-FPM |
-| 11 | [11-apache.md](11-apache.md) | Apache configuration, virtual hosts, mod_rewrite, Laravel setup |
-| 12 | [12-ssl-tls.md](12-ssl-tls.md) | SSL/TLS, certificates, Let's Encrypt, HTTPS setup |
+| 04 | [04-github-actions.md](04-github-actions.md) | GitHub Actions — workflow syntax, triggers, Laravel CI/CD |
+| 05 | [05-gitlab-ci.md](05-gitlab-ci.md) | GitLab CI/CD — .gitlab-ci.yml, stages, Laravel pipeline |
+| 06 | [06-jenkins.md](06-jenkins.md) | Jenkins — Jenkinsfile, pipeline, Laravel deploy |
+| 07 | [07-linux-process-management.md](07-linux-process-management.md) | Linux Proses İdarəetmə — systemd, cron, PHP-FPM |
+| 08 | [08-linux-networking.md](08-linux-networking.md) | Linux Şəbəkə — firewall, DNS, server setup |
+| 09 | [09-linux-disk-storage.md](09-linux-disk-storage.md) | Linux Disk & Yaddaş — LVM, RAID, filesystem |
+| 10 | [10-linux-shell-scripting.md](10-linux-shell-scripting.md) | Shell Scripting — bash, sed, awk, deployment scripts |
+| 11 | [11-nginx.md](11-nginx.md) | Nginx — reverse proxy, load balancing, PHP-FPM |
+| 12 | [12-apache.md](12-apache.md) | Apache — virtual hosts, mod_rewrite, Laravel setup |
+| 13 | [13-ssl-tls.md](13-ssl-tls.md) | SSL/TLS — certificates, Let's Encrypt, HTTPS |
+| 14 | [14-aws-basics.md](14-aws-basics.md) | AWS Əsasları — EC2, S3, RDS, VPC, IAM |
+| 15 | [15-gcp-basics.md](15-gcp-basics.md) | GCP Əsasları — Compute, GKE, Cloud SQL, IAM |
+| 16 | [16-azure-basics.md](16-azure-basics.md) | Azure Əsasları — VM, AKS, App Service, Entra ID |
+| 17 | [17-backup-strategies.md](17-backup-strategies.md) | Backup Strategiyaları — DB/fayl backup, disaster recovery |
 
-### Monitoring & Logging
-| # | Fayl | Movzu |
-|---|------|-------|
-| 13 | [13-monitoring-prometheus.md](13-monitoring-prometheus.md) | Prometheus metrics, PromQL, exporters, alerting |
-| 14 | [14-monitoring-grafana.md](14-monitoring-grafana.md) | Grafana dashboards, panels, alerting, Laravel monitoring |
-| 15 | [15-elk-stack.md](15-elk-stack.md) | Elasticsearch, Logstash, Kibana, Laravel log shipping |
+### ⭐⭐⭐ Senior
 
-### Infrastructure as Code
-| # | Fayl | Movzu |
+| # | Fayl | Mövzu |
 |---|------|-------|
-| 16 | [16-terraform-basics.md](16-terraform-basics.md) | IaC, providers, resources, state management |
-| 17 | [17-terraform-advanced.md](17-terraform-advanced.md) | Modules, workspaces, remote state, lifecycle rules |
-| 18 | [18-ansible.md](18-ansible.md) | Playbooks, roles, tasks, Laravel server provisioning |
+| 18 | [18-monitoring-prometheus.md](18-monitoring-prometheus.md) | Prometheus — metrics, PromQL, exporters, alerting |
+| 19 | [19-monitoring-grafana.md](19-monitoring-grafana.md) | Grafana — dashboards, panels, Laravel monitoring |
+| 20 | [20-elk-stack.md](20-elk-stack.md) | ELK Stack — Elasticsearch, Logstash, Kibana, log shipping |
+| 21 | [21-opentelemetry.md](21-opentelemetry.md) | OpenTelemetry — traces/metrics/logs, OTel Collector, Laravel SDK |
+| 22 | [22-distributed-tracing.md](22-distributed-tracing.md) | Distributed Tracing — Jaeger, Tempo, spans, context propagation |
+| 23 | [23-terraform-basics.md](23-terraform-basics.md) | Terraform Əsasları — IaC, providers, resources, state |
+| 24 | [24-terraform-advanced.md](24-terraform-advanced.md) | Terraform Advanced — modules, workspaces, remote state |
+| 25 | [25-ansible.md](25-ansible.md) | Ansible — playbooks, roles, Laravel server provisioning |
+| 26 | [26-aws-advanced.md](26-aws-advanced.md) | AWS Advanced — ECS, Lambda, SQS, CloudWatch, serverless |
+| 27 | [27-infrastructure-patterns.md](27-infrastructure-patterns.md) | Deployment Patterns — blue-green, canary, rolling update |
+| 28 | [28-secrets-management.md](28-secrets-management.md) | Secrets Management — Vault, Secrets Manager, encryption |
+| 29 | [29-container-security.md](29-container-security.md) | Container Security — image scanning, pod security, RBAC |
+| 30 | [30-performance-tuning.md](30-performance-tuning.md) | Performance Tuning — Linux, PHP-FPM, OPcache, MySQL |
+| 31 | [31-incident-response.md](31-incident-response.md) | Incident Response — on-call, SEV1-4, runbook, postmortem |
 
-### Cloud & AWS
-| # | Fayl | Movzu |
-|---|------|-------|
-| 19 | [19-aws-basics.md](19-aws-basics.md) | EC2, S3, RDS, VPC, IAM, Laravel on AWS |
-| 20 | [20-aws-advanced.md](20-aws-advanced.md) | ECS, Lambda, SQS, CloudWatch, Laravel serverless |
+### ⭐⭐⭐⭐ Lead
 
-### Networking & Security
-| # | Fayl | Movzu |
+| # | Fayl | Mövzu |
 |---|------|-------|
-| 21 | [21-networking-basics.md](21-networking-basics.md) | OSI model, TCP/IP, DNS, HTTP/HTTPS, subnets |
-| 24 | [24-secrets-management.md](24-secrets-management.md) | Vault, Secrets Manager, .env files, encryption |
-| 25 | [25-container-security.md](25-container-security.md) | Image scanning, pod security, RBAC, network policies |
+| 32 | [32-service-mesh.md](32-service-mesh.md) | Service Mesh — Istio, Envoy, sidecar, mTLS, traffic mgmt |
+| 33 | [33-chaos-engineering.md](33-chaos-engineering.md) | Chaos Engineering — Chaos Monkey, failure injection, game days |
+| 34 | [34-site-reliability.md](34-site-reliability.md) | Site Reliability Engineering — SLI/SLO/SLA, error budgets |
+| 35 | [35-gitops.md](35-gitops.md) | GitOps — Argo CD, Flux CD, progressive delivery |
+| 36 | [36-finops.md](36-finops.md) | FinOps — cloud cost, RI/SP, spot, right-sizing, Kubecost |
+| 37 | [37-multi-cloud.md](37-multi-cloud.md) | Multi-Cloud — active-active, DR, Crossplane, hybrid |
 
-### Deployment & Reliability
-| # | Fayl | Movzu |
-|---|------|-------|
-| 23 | [23-infrastructure-patterns.md](23-infrastructure-patterns.md) | Blue-green, canary, rolling update, Laravel Envoyer |
-| 26 | [26-performance-tuning.md](26-performance-tuning.md) | Linux tuning, PHP-FPM, OPcache, MySQL tuning |
-| 27 | [27-backup-strategies.md](27-backup-strategies.md) | Database/file backups, disaster recovery, Spatie Backup |
-| 28 | [28-service-mesh.md](28-service-mesh.md) | Istio, Envoy, sidecar pattern, traffic management |
-| 29 | [29-chaos-engineering.md](29-chaos-engineering.md) | Chaos Monkey, failure injection, game days |
-| 30 | [30-site-reliability.md](30-site-reliability.md) | SRE principles, SLI/SLO/SLA, error budgets, incident management |
-| 39 | [39-incident-response.md](39-incident-response.md) | On-call, PagerDuty/Opsgenie, SEV1-4, runbook, blameless postmortem |
+## Reading Paths
 
-### GitOps & Observability
-| # | Fayl | Movzu |
-|---|------|-------|
-| 31 | [31-gitops.md](31-gitops.md) | GitOps principles, Argo CD, Flux CD, progressive delivery |
-| 32 | [32-opentelemetry.md](32-opentelemetry.md) | OpenTelemetry traces/metrics/logs, OTel Collector, Laravel OTel SDK |
-| 33 | [33-distributed-tracing.md](33-distributed-tracing.md) | Distributed tracing, Jaeger, Tempo, spans, context propagation |
+### Backend Dev (PHP/Laravel) — DevOps Əsasları
+01 → 02 → 03 → 04 → 07 → 08 → 11 → 13 → 14 → 17 → 18 → 19 → 27 → 28 → 31
 
-### Cloud Providers
-| # | Fayl | Movzu |
-|---|------|-------|
-| 34 | [34-gcp-basics.md](34-gcp-basics.md) | GCP – Compute, GKE, Cloud SQL, Cloud Storage, IAM |
-| 35 | [35-azure-basics.md](35-azure-basics.md) | Azure – VM, AKS, App Service, Entra ID, Key Vault |
-| 41 | [41-multi-cloud.md](41-multi-cloud.md) | Active-active, DR, vendor lock-in, Crossplane, hybrid cloud |
+### CI/CD Mütəxəssisi
+03 → 04 → 05 → 06 → 23 → 24 → 25 → 35
 
-### Advanced Topics
-| # | Fayl | Movzu |
-|---|------|-------|
-| 36 | [36-packer.md](36-packer.md) | HashiCorp Packer, AMI/Docker image build, multi-provider, CI integration |
-| 37 | [37-policy-as-code.md](37-policy-as-code.md) | OPA, Rego, Gatekeeper, Conftest, Sentinel, K8s admission |
-| 38 | [38-finops.md](38-finops.md) | Cloud cost optimization, RI/SP, spot, right-sizing, tagging, Kubecost |
-| 40 | [40-ebpf.md](40-ebpf.md) | eBPF, Cilium, Pixie, Falco, Tetragon, XDP, kernel observability |
-| 42 | [42-kubernetes-operators.md](42-kubernetes-operators.md) | Operator pattern, CRDs, kubebuilder, Prometheus/cert-manager/Strimzi |
+### Monitoring & Observability
+18 → 19 → 20 → 21 → 22 → 31 → 34
+
+### Cloud & Infrastructure
+02 → 14 → 15 → 16 → 23 → 24 → 25 → 26 → 37
+
+### SRE / Reliability
+27 → 28 → 30 → 31 → 33 → 34 → 35 → 36
