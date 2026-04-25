@@ -53,7 +53,7 @@ Yaradılan kontent:
 
 ## Səviyyə Sistemi (Levels)
 
-Hər mövzu aşağıdakı 5 səviyyədən biri ilə qeyd olunmalıdır:
+Hər mövzu aşağıdakı 5 səviyyədən **məhz bu adlarla** qeyd olunmalıdır (Beginner/Intermediate/Advanced/Expert kimi alternativ adlar **qəbul edilmir**):
 
 | Level | Star Label |
 |-------|------------|
@@ -102,21 +102,13 @@ Nümunə:
 
 ## Qovluq Strukturu (Folder Structure)
 
-Mövzular domain-lərə bölünməlidir:
-
-* docker/
-* git/
-* sql/
-* system-design/
-* design-patterns/
-* php/
-* laravel/
-* java/
-* golang/
+Mövzular domain-lərə bölünməlidir. Hər yeni domain üçün ayrı folder yaradılır.
 
 ### Hər qovluqda:
 
-* Mövzular **`01-NN` prefix** ilə nömrələnir
+* Mövzular **`NN-` prefix** ilə nömrələnir. Format folder-dəki fayl sayına görə seçilir:
+  * **100-dən az fayl** → `01-`, `02-`, ... `99-`
+  * **100 və ya daha çox fayl** → `001-`, `002-`, ... `099-`, `100-`, `101-`, ...
 * Sıralama **easy → hard** (Junior → Architect) prinsipi ilə qurulur
 * Hər folder-də **`README.md`** olmalıdır:
 
@@ -131,44 +123,44 @@ Mövzular domain-lərə bölünməlidir:
 ```
 # <Movzu adi> (<Level>)
 
-## Overview
+## İcmal
 Mövzunun qısa və aydın izahı
 
-## Why It Matters
+## Niyə Vacibdir
 Bu mövzu real layihələrdə niyə vacibdir
 
-## Core Concepts
+## Əsas Anlayışlar
 - Əsas anlayışlar
 - Terminlər
 - Vacib texniki məqamlar
 
-## Practical Perspective
+## Praktik Baxış
 - Real project-lərdə istifadəsi
 - Trade-off-lar
 - Hansı hallarda istifadə olunmamalıdır
 - Common mistakes
 
-## Examples
+## Nümunələr
 
-### General Example
+### Ümumi Nümunə
 Texnologiyadan asılı olmayan izah (əgər mümkündürsə)
 
-### Code Example
+### Kod Nümunəsi
 Kod nümunəsi — folder-in domain dilində:
 - php/, laravel/ → PHP/Laravel
 - java/ → Java/Spring
 - golang/ → Go
 - digər (docker/, sql/, system-design/) → default PHP/Laravel
 
-## Practical Tasks
+## Praktik Tapşırıqlar
 - Real tapşırıqlar
 - Step-by-step nümunələr
 - Real project simulyasiyası
 
-## Advanced Notes (optional)
+## Ətraflı Qeydlər (optional)
 Daha dərin texniki izahlar
 
-## Related Topics
+## Əlaqəli Mövzular
 - Əlaqəli mövzular (eyni folder daxilində)
 ```
 
@@ -205,7 +197,9 @@ Bu mövzular:
 
 1. **Eksik mövzuları əlavə edir** — vacib mövzu yoxdursa
 2. **Mövcud kontenti yaxşılaşdırır** — izah/practical hissə zəifdirsə genişləndirir
-3. **Uyğunsuz mövzuları silir** — auditoriyaya uyğun deyilsə
+3. **Uyğunsuz mövzuları silir** — iki kateqoriya:
+   * **Açıq-aşkar uyğunsuz** (backend devlə heç əlaqəsi yoxdur, məs: pure DevOps/DBA mövzusu) → birbaşa silir, təsdiq gözləmədən
+   * **Borderline** (backend dev nadir istifadə edir, amma faydalı ola bilər) → istifadəçidən təsdiq alır
 4. **Struktur və level-i düzəldir** — sıralama/level səhvdirsə korrektə edir
 
 ---
