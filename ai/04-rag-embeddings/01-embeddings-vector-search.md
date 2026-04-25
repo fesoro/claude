@@ -1,4 +1,4 @@
-# Embeddings və Vector Search: Dərin Araşdırma
+# Embeddings və Vector Search: Dərin Araşdırma (Junior)
 
 ## Embedding Riyazi Olaraq Nədir?
 

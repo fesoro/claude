@@ -1,4 +1,4 @@
-# 40 — AI Çağırışları üçün Idempotency və Circuit Breaker
+# AI Çağırışları üçün Idempotency və Circuit Breaker (Senior)
 
 > **Oxucu:** Senior Laravel developerlər, etibarlı sistem qurucular
 > **Ön şərtlər:** Redis, middleware, event pattern, Laravel cache

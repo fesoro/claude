@@ -1,4 +1,4 @@
-# Claude / Anthropic API — Tam Developer İstinadı
+# Claude / Anthropic API — Tam Developer İstinadı (Junior)
 
 > Autentifikasiya, modellər, sürət limitləri, xəta emalı və produksiyaya hazır Laravel müştərisini əhatə edən Anthropic Messages API üçün tam istinad.
 

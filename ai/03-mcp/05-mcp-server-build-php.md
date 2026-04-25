@@ -1,4 +1,4 @@
-# Laravel/PHP-da Tam MCP Server Qurmaq
+# Laravel/PHP-da Tam MCP Server Qurmaq (Middle)
 
 ## PHP-da MCP Server Niyə Qurmaq Lazımdır?
 

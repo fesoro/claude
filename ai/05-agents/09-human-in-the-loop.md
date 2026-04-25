@@ -1,4 +1,4 @@
-# 35 — Human-in-the-Loop Agent-lar: Approval Gates, Async Handoff və Escalation
+# Human-in-the-Loop Agent-lar: Approval Gates, Async Handoff və Escalation (Lead)
 
 > **Oxucu:** Senior PHP/Laravel tərtibatçılar, production agent sistemlərində safety quran arxitektlər
 > **Ön şərtlər:** Agent dövrü (24), multi-agent (25), memory (27), Claude Agent SDK (31), tool dizayn (32), reasoning (33), orchestration (34), Laravel queues, Filament, Slack webhook

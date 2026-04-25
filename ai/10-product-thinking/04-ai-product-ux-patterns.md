@@ -1,4 +1,4 @@
-# AI Product UX Patterns — İstifadəçi Təcrübəsinin Yeni Qrammatikası
+# AI Product UX Patterns — İstifadəçi Təcrübəsinin Yeni Qrammatikası (Senior)
 
 > Hədəf auditoriyası: AI məhsullarını real istifadəçilərə gətirən senior developer-lər, product designer-lər və product manager-lər. "Niyə chat-im boş hiss verir?", "İstifadəçi niyə ilk cəhddən sonra gedir?" suallarına cavab axtaranlar.
 

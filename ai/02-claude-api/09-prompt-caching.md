@@ -1,4 +1,4 @@
-# Prompt Caching
+# Prompt Caching (Senior)
 
 ## Problem: Eyni Tokenləri Dəfələrlə Ödəmək
 

@@ -1,4 +1,4 @@
-# AI MVP Playbook — 1 Həftədə Gerçək AI Feature Shippe Et
+# AI MVP Playbook — 1 Həftədə Gerçək AI Feature Shippe Et (Middle)
 
 > **Kontekst**: sən senior PHP dev-sən, CEO dedi "biz də AI etməliyik". 1 həftən var. Nə edəsən? Bu playbook günbəgün real addımları verir — fine-tune yox, custom RAG framework yox, sadəcə **prompt + integration + feedback loop**.
 

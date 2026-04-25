@@ -1,4 +1,4 @@
-# Claude Vision və PDF Dəstəyi: Image, Document Understanding və Production Patterns
+# Claude Vision və PDF Dəstəyi: Image, Document Understanding və Production Patterns (Senior)
 
 > Hədəf auditoriyası: Laravel tətbiqinə image/PDF upload + Claude ilə analiz əlavə edən senior developerlər. OCR, invoice extraction, document QA, multimodal chat kimi use-case-lər. Vision-un ümumi konsepti üçün 07-multimodal-ai.md-ə bax; bu fayl Claude-spesifik API detalları, production patterns və Laravel inteqrasiyasına fokuslanır.
 

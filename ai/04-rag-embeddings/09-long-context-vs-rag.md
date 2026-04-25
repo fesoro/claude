@@ -1,4 +1,4 @@
-# Long Context vs RAG: 1M Token Window-da Nə Vaxt RAG-a Ehtiyac Yoxdur
+# Long Context vs RAG: 1M Token Window-da Nə Vaxt RAG-a Ehtiyac Yoxdur (Senior)
 
 > **Oxucu kütləsi:** Senior backend developerlər və arxitektorlar — bir informasiya sistemi üçün "RAG qurum, yoxsa bütün məzmunu prompt-a yığım?" qərarını verməlidirlər.
 > **Bu faylın qonşu fayllarla fərqi:**

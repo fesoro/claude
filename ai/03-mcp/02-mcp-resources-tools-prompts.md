@@ -1,4 +1,4 @@
-# MCP Primitives — Resources vs Tools vs Prompts
+# MCP Primitives — Resources vs Tools vs Prompts (Middle)
 
 ## Mündəricat
 

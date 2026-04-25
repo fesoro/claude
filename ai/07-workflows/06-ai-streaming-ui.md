@@ -1,4 +1,4 @@
-# 38 — AI Streaming UI: SSE, Laravel, Livewire, Next.js RSC
+# AI Streaming UI: SSE, Laravel, Livewire, Next.js RSC (Senior)
 
 > **Oxucu kütləsi:** Senior developerlər, full-stack engineer-lər
 > **Əhatə dairəsi:** Anthropic SDK streaming, SSE (Server-Sent Events), Laravel streaming response, Livewire və Inertia integrasiyası, Next.js App Router + AI SDK, UI pattern-ləri (typing indicator, stop, retry), backpressure, error recovery, reconnect.

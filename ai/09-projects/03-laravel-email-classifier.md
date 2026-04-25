@@ -1,4 +1,4 @@
-# Email Classifier və Auto-Responder
+# Email Classifier və Auto-Responder (Middle)
 
 Şirkət poçt qutusuna (`support@`, `info@`, `sales@`) gələn hər məktubu AI klassifikasiya edir (support/sales/billing/spam/urgent) və avtomatik FAQ cavabı göndərir və ya müvafiq komandaya routinq edir. Ucuz klassifikasiya Haiku-da, cavab generasiyası Sonnet-də. Human-in-the-loop: bütün auto-reply göndərilmədən əvvəl Filament dashboard-da operator təsdiqinə düşür (və ya yüksək confidence-də avtomatik göndərilir). Tam trace: hər mesajın klassifikasiya pəncərəsi, KB axtarışı, cavab draft-i, kimin təsdiqlədiyi.
 

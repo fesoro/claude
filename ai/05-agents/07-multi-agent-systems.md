@@ -1,4 +1,4 @@
-# Çox Agentli Sistemlər
+# Çox Agentli Sistemlər (Lead)
 
 ## Niyə Bir Neçə Agent?
 

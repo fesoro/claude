@@ -1,4 +1,4 @@
-# Daxili HR / Knowledge Bot — Laravel + Slack + MCP
+# Daxili HR / Knowledge Bot — Laravel + Slack + MCP (Senior)
 
 Şirkətdaxili istifadə üçün HR/IT köməkçisi. İşçilər Slack-də `/hr` slash komandası və ya birbaşa mesajla sual verir: PTO balansı, məzuniyyət müraciəti, bayram təqvimi, IT access, onboarding sənədləri. Bot həm RAG ilə (Confluence/Notion/Drive) cavab verir, həm də MCP tool-ları ilə real hərəkət edir (HRIS-dən balans çəkir, Jira-da access ticket açır). Hər şey SSO ilə autentifikasiya olunur, audit log saxlanılır, manager/əməkdaş rolu fərqləndirilir.
 

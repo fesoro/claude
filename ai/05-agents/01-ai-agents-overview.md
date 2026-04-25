@@ -1,4 +1,4 @@
-# AI Agentləri: Dərindən Baxış
+# AI Agentləri: Dərindən Baxış (Junior)
 
 ## Agent Nədir?
 

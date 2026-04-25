@@ -1,4 +1,4 @@
-# Agentic RAG: Retrieval-i Tool Kimi — ReAct, Self-Query və Adaptive Retrieval
+# Agentic RAG: Retrieval-i Tool Kimi — ReAct, Self-Query və Adaptive Retrieval (Lead)
 
 > **Oxucu kütləsi:** Senior backend developerlər və arxitektorlar — Claude Agent SDK və ya oxşar agentic framework-lərlə RAG sistemi qurur.
 > **Bu faylın qonşu fayllarla fərqi:**

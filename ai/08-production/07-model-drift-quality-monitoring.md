@@ -1,4 +1,4 @@
-# 59 — Model Drift və Quality Monitoring: Silent Degradation-u Necə Aşkarlamaq
+# Model Drift və Quality Monitoring: Silent Degradation-u Necə Aşkarlamaq (Lead)
 
 > **Oxucu kütləsi:** Senior developerlər, ML/AI platform engineer-lər, SRE-lər
 > **Bu faylın 03 və 06-dan fərqi:** 03 — ümumi observability (tracing, cost, eval-in-prod). 06 — testing strategiyaları. Bu fayl — **drift-in özünə** fokuslanır: niyə LLM drift klassik ML-dən fərqlidir, hansı siqnallar sakit deqradasiyanı göstərir, canary eval pipeline, provider model-version pinning, quality SLO-lar və "keyfiyyət yavaş-yavaş pisləşib" incident-inin runbook-u.

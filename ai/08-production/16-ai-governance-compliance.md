@@ -1,4 +1,4 @@
-# 63 — AI Governance və Compliance: EU AI Act, GDPR, SOC 2 və ISO 42001
+# AI Governance və Compliance: EU AI Act, GDPR, SOC 2 və ISO 42001 (Architect)
 
 > **Oxucu kütləsi:** Senior developerlər, engineering lead-ləri, compliance/security officer-lər, legal tərəfdaşlar
 > **Bu faylın 09, 11, 13-dən fərqi:** 09 — ümumi AI security (OWASP). 11 — PII redaction. 13 — content moderation. Bu fayl — **regulatory/governance layer**: EU AI Act risk tiers və obligations, GDPR intersection, US landscape (Colorado, NYC LL144, California), ISO 42001, NIST AI RMF, SOC 2 AI scope, model cards, AIBOM, DPIA template, vendor management, internal AI policy, ethics committee, Laravel-specific compliance checklist.

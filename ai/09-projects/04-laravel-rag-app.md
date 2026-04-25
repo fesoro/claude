@@ -1,4 +1,4 @@
-# Laravel-də Tam RAG Tətbiqi Qurulması
+# Laravel-də Tam RAG Tətbiqi Qurulması (Senior)
 
 "Sənədlərinizlə söhbət edin" — hibrid axtarış, istinad izləmə və təmiz UI ilə istehsal səviyyəli Retrieval-Augmented Generation sistemi.
 

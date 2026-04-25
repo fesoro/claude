@@ -1,4 +1,4 @@
-# Produksiya Sistemləri üçün Ətraflı Prompt Engineering
+# Produksiya Sistemləri üçün Ətraflı Prompt Engineering (Middle)
 
 > Prompt dizaynına sistemli, mühəndis-birinci yanaşma. Nəzəriyyə, nümunələr, anti-nümunələr, versiyalaşdırma və miqyasda prompt-ları idarə etmək üçün produksiya Laravel infrastrukturunu əhatə edir.
 

@@ -1,4 +1,4 @@
-# 42 — AI ilə Gücləndirilmiş Tətbiqlərin Test Edilməsi
+# AI ilə Gücləndirilmiş Tətbiqlərin Test Edilməsi (Senior)
 
 > **Oxucu kütləsi:** Senior developerlər və arxitektlər  
 > **Əsas Çətinlik:** LLM-lər qeyri-deterministikdir. Eyni prompt fərqli cavablar qaytara bilər. Ənənəvi assert-lər işləmir.

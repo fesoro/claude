@@ -1,4 +1,4 @@
-# 44 — AI Təhlükəsizliyi: Prompt Injection-dan Kənara
+# AI Təhlükəsizliyi: Prompt Injection-dan Kənara (Lead)
 
 > **Oxucu kütləsi:** Senior developerlər və arxitektlər  
 > **Əhatə dairəsi:** AI tətbiqləri üçün sistem səviyyəsində təhlükəsizlik — məlumat sızması, çox kiracılı izolyasiya, API təhlükəsizliyi, uyğunluq

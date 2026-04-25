@@ -1,4 +1,4 @@
-# Claude Agent SDK — Production Agent Qurmaq
+# Claude Agent SDK — Production Agent Qurmaq (Lead)
 
 > Hədəf auditoriyası: Production-da AI agent-lər qurmaq istəyən senior developerlər. Bu sənəd Claude Agent SDK-nın əsas anlayışlarını izah edir və PHP rəsmi SDK olmadığından, Laravel-də eyni pattern-ın necə qurulacağını göstərir.
 

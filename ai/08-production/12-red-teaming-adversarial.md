@@ -1,4 +1,4 @@
-# 60 — Red Teaming və Adversarial Testing: LLM Tətbiqinizi Necə Sındırmaq
+# Red Teaming və Adversarial Testing: LLM Tətbiqinizi Necə Sındırmaq (Architect)
 
 > **Oxucu kütləsi:** Senior developerlər, security engineer-lər, AI platform team lead-ləri
 > **Bu faylın 10 və 09-dan fərqi:** 10 — prompt injection üçün **müdafiə** patternləri (Dual-LLM, allow-list, output filtering). 09 — ümumi AI security. Bu fayl — **hücum edənin tərəfində durub** sistemi sındırmağa fokuslanır: strukturlaşdırılmış red team proqramı, advanced jailbreak taksonomiyası, avtomatlaşdırılmış saldırı pipeline-ı, metriklər (ASR, time-to-jailbreak), OWASP LLM Top 10, EU AI Act red-team tələbləri, incident case study-lər.

@@ -1,4 +1,4 @@
-# Reasoning Models: Extended Thinking, o1/o3, DeepSeek R1 və Test-Time Compute
+# Reasoning Models: Extended Thinking, o1/o3, DeepSeek R1 və Test-Time Compute (Senior)
 
 > Hədəf auditoriyası: Kompleks tapşırıqlar (coding, planning, math, multi-step analysis) üçün model seçimi edən senior developerlər və tech lead-lər. Bu fayl 01-how-ai-works.md-in davranış nəticəsini — niyə bəzi modellərin "düşünmə" addımı daxil etdiyini — izah edir. Claude-spesifik API detalları üçün 07-extended-thinking.md-ə bax; provayder müqayisəsi üçün 09-llm-provider-comparison.md.
 

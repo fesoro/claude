@@ -1,4 +1,4 @@
-# 39 — AI Xərclərinin Optimallaşdırılması: Praktiki Strategiyalar
+# AI Xərclərinin Optimallaşdırılması: Praktiki Strategiyalar (Senior)
 
 > **Oxucu:** Baş tərtibatçılar və arxitektlər  
 > **Məqsəd:** Keyfiyyətdən güzəştə getmədən AI API xərclərini 60–90% azaltmaq

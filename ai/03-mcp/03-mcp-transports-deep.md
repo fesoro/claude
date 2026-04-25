@@ -1,4 +1,4 @@
-# MCP Transports Deep Dive — stdio vs SSE vs Streamable HTTP
+# MCP Transports Deep Dive — stdio vs SSE vs Streamable HTTP (Senior)
 
 ## Məzmun
 

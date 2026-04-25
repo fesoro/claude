@@ -1,4 +1,4 @@
-# Node.js / TypeScript ilə MCP Server Qurmaq
+# Node.js / TypeScript ilə MCP Server Qurmaq (Middle)
 
 ## Ön Tələblər
 

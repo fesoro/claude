@@ -1,4 +1,4 @@
-# Model Seçmə — Qərar Çərçivəsi (Opus vs Sonnet vs Haiku)
+# Model Seçmə — Qərar Çərçivəsi (Opus vs Sonnet vs Haiku) (Senior)
 
 > Hədəf auditoriyası: Produksiyada LLM infrastrukturu qurmalı olan senior PHP/Laravel developerlər. Hər tapşırıq üçün doğru model seçmək — həm keyfiyyəti, həm gecikməni, həm də xərcləri eyni anda optimallaşdırmaq mənasına gəlir.
 

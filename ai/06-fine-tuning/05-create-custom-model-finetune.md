@@ -1,4 +1,4 @@
-# Addım-Addım Bələdçi: Öz Modelinizi İncə Tənzimləmək
+# Addım-Addım Bələdçi: Öz Modelinizi İncə Tənzimləmək (Lead)
 
 ## Məqsəd: Azərbaycanca Müştəri Dəstəyi Modeli
 

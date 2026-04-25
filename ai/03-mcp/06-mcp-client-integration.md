@@ -1,4 +1,4 @@
-# MCP Client İnteqrasiyası
+# MCP Client İnteqrasiyası (Middle)
 
 ## İcmal
 

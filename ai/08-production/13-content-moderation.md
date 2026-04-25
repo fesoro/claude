@@ -1,4 +1,4 @@
-# 62 — Content Moderation: Toxic, CSAM, PII və NSFW Filtering
+# Content Moderation: Toxic, CSAM, PII və NSFW Filtering (Lead)
 
 > **Oxucu kütləsi:** Senior developerlər, Trust & Safety engineer-lər, legal/compliance tərəfdaşlar
 > **Bu faylın 08 və 11-dən fərqi:** 08 — safety guardrails ümumi çərçivə (refusal, policy). 11 — PII redaction spesifik (Azerbaycan-specific patterns, reversible tokenization). Bu fayl — **end-to-end moderation stack**: harmful content taxonomy, provider comparison, stacked approach (regex → classifier → LLM judge), latency budget, CSAM legal path (PhotoDNA, NCMEC), regional fərqlər, Laravel middleware pattern, human review queue, appeals, transparency reports.

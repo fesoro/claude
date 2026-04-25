@@ -1,4 +1,4 @@
-# LLM-lər Necə İşləyir — Transformer Arxitekturası, Attention Mexanizmi və Inference
+# LLM-lər Necə İşləyir — Transformer Arxitekturası, Attention Mexanizmi və Inference (Junior)
 
 > Hədəf auditoriyası: Böyük dil modellərinin necə işlədiyini — sadəcə "növbəti token-i proqnozlaşdırır" deyil, *nə üçün* və *necə* işlədiyini dərindən başa düşmək istəyən senior developerlər və arxitektorlar.
 

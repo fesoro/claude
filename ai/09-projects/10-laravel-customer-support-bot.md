@@ -1,4 +1,4 @@
-# Şirkət üçün Customer Support Chatbot — Laravel + RAG + Tool Use
+# Şirkət üçün Customer Support Chatbot — Laravel + RAG + Tool Use (Lead)
 
 İstehsal səviyyəli müştəri dəstəyi chatbot. İstifadəçi sualına həm KB (knowledge base) üzərindən cavab verir, həm də real hərəkətlər edir: sifarişi yoxlayır, ticket açır, çatdırılma məlumatı verir, aşağı confidence halında canlı operatora ötürür. Çoxtenantlı, axın (SSE) cavablı, alət istifadəli, maliyyə nəzarəti ilə.
 

@@ -1,4 +1,4 @@
-# LLM-lərin İncə Tənzimlənməsi: Tam Bələdçi
+# LLM-lərin İncə Tənzimlənməsi: Tam Bələdçi (Middle)
 
 ## İncə Tənzimləmə Nədir?
 

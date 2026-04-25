@@ -1,4 +1,4 @@
-# 34 — Laravel-da Güclü AI Emal Pipeline-ları Qurmaq
+# Laravel-da Güclü AI Emal Pipeline-ları Qurmaq (Middle)
 
 > **Oxucu:** Baş tərtibatçılar və arxitektlər  
 > **Ön şərtlər:** Laravel növbələri (queues), Redis, əsas Claude API istifadəsi

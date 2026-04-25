@@ -1,4 +1,4 @@
-# PII və Həssas Məlumat Redaction — LLM-ə Göndərməzdən Əvvəl
+# PII və Həssas Məlumat Redaction — LLM-ə Göndərməzdən Əvvəl (Lead)
 
 > **Problem**: istifadəçi support ticket-ini Claude-a göndərirsən, ticket-də email, telefon, credit card, VOEN, passport number var. Bu data provayderin serverinə keçir, logs-da görünür, potensial olaraq sonrakı training-ə daxil olur. Redaction **məcburi qat**dır — option yox.
 

@@ -1,4 +1,4 @@
-# Tool Use (Funksiya Çağırma) — Dərin Baxış
+# Tool Use (Funksiya Çağırma) — Dərin Baxış (Middle)
 
 > Claude-un tool use mexanizmi pərdə arxasında necə işləyir: paralel və çox mərhələli tool çağırmaları, agentik döngülər və tam hazır Laravel implementasiyası.
 

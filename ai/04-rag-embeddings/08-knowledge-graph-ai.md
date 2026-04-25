@@ -1,4 +1,4 @@
-# GraphRAG: Bilik Qrafları + Vektor Axtarışı
+# GraphRAG: Bilik Qrafları + Vektor Axtarışı (Lead)
 
 ## Niyə Yalnız Vektor Axtarışı Kifayətsizdir
 

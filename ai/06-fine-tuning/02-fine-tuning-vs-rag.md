@@ -1,4 +1,4 @@
-# İncə Tənzimləmə vs RAG vs Prompt Mühəndisliyi: Qərar Çərçivəsi
+# İncə Tənzimləmə vs RAG vs Prompt Mühəndisliyi: Qərar Çərçivəsi (Middle)
 
 ## Əsas Sual
 

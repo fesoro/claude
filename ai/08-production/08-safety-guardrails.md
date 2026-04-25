@@ -1,4 +1,4 @@
-# 43 — Produksiyada AI Təhlükəsizliyi
+# Produksiyada AI Təhlükəsizliyi (Lead)
 
 > **Oxucu kütləsi:** Senior developerlər və arxitektlər  
 > **Məqsəd:** Tətbiq qatında etibarlı, təhlükəsiz və sui-istifadəyə davamlı AI sistemləri qurmaq

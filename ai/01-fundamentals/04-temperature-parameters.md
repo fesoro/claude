@@ -1,4 +1,4 @@
-# LLM Sampling Parametrləri — Temperature, Top-p, Top-k və Digərləri
+# LLM Sampling Parametrləri — Temperature, Top-p, Top-k və Digərləri (Middle)
 
 > Dil modellərinin mətn yaratma prosesini idarə edən hər bir parametr üçün tam bələdçi. Riyaziyyat, intuisiya, tapşırıq növünə görə praktiki tənzimləmələr və Laravel-də konfiqurasiya əsaslı parametr seçici daxildir.
 

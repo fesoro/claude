@@ -1,4 +1,4 @@
-# Claude Vision ilə Sənəd Məlumatlarının Çıxarılması Sistemi
+# Claude Vision ilə Sənəd Məlumatlarının Çıxarılması Sistemi (Middle)
 
 Claude-un vision (görüntü tanıma) imkanlarından istifadə edərək fakturalar, CV-lər, şəxsiyyət sənədləri və formalardan strukturlaşdırılmış məlumatları çıxarın. Əminlik (confidence) hesablaması, manual nəzərdən keçirmə növbəsi və webhook callback-ləri daxildir.
 

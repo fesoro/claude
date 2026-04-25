@@ -1,4 +1,4 @@
-# LoRA, QLoRA və PEFT: Parameter-Efficient Fine-Tuning Dərin Bələdçi
+# LoRA, QLoRA və PEFT: Parameter-Efficient Fine-Tuning Dərin Bələdçi (Senior)
 
 > **Kim üçündür**: Laravel/PHP arxa plan üzərində işləyən senior mühəndislər ki, komandaları açıq mənbə modeli incə tənzimləmək istəyir. 29-cu fayl (ümumi icmal) və 32-ci fayl (addım-addım bələdçi) LoRA-nın nə olduğunu yüzəyi şəkildə toxunur. Bu fayl həmin yuxarıdan baxışa girməyən riyaziyyat, hiperparametr seçimi, real GPU büdcələri, DoRA/ReFT kimi yeni variantlar və vLLM ilə multi-adapter serving haqqındadır. Burada Python kodu var — bu qovluq Python-a icazə verilən yeganə yerdir, çünki training Python-dadır.
 

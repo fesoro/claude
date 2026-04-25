@@ -1,4 +1,4 @@
-# Claude Files API və Citations: Document Upload, Reuse və Attributed Answers
+# Claude Files API və Citations: Document Upload, Reuse və Attributed Answers (Senior)
 
 > Hədəf auditoriyası: Laravel production-da document-based workflow-lar (HR chatbot, legal review, customer support KB) quran senior developerlər. Bu sənəd Files API-in lifecycle idarəsini, Citations feature-u ilə verifiable cavabların necə veriliyini və hər ikisinin RAG ilə münasibətini əhatə edir. Vision üçün bax 06-vision-pdf-support.md; RAG folder-i: 04-rag.
 

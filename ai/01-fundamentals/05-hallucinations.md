@@ -1,4 +1,4 @@
-# LLM Hallucinations: Səbəblər, Taksonomiya, Aşkarlanma və Azaldılma
+# LLM Hallucinations: Səbəblər, Taksonomiya, Aşkarlanma və Azaldılma (Middle)
 
 > Hədəf auditoriyası: Produksiya LLM sistemləri qurub istifadəçilərə cavabların doğruluğuna görə cavabdeh olan senior backend developerlər. Bu fayl 01-how-ai-works.md-dəki generasiya mexanizmini (növbəti-token proqnozu) hallüsinasiyanın **səbəbi** kimi açıqlayır və 10-prompt-injection-defenses.md-dən fərqli olaraq **düşmənçi** deyil, **statistik** uğursuzluqlara fokuslanır. RAG həllərinin dərin detalları 04-rag folderində, citations isə 08-files-api-citations.md-də.
 

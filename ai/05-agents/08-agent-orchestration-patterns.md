@@ -1,4 +1,4 @@
-# 34 — Agent Orchestration Pattern-ləri: Supervisor, Hierarchical, Swarm və Blackboard
+# Agent Orchestration Pattern-ləri: Supervisor, Hierarchical, Swarm və Blackboard (Lead)
 
 > **Oxucu:** Senior PHP/Laravel tərtibatçılar, multi-agent sistem quran arxitektlər
 > **Ön şərtlər:** Agent dövrü (24), multi-agent sistemlər (25), agent memory (27), Claude Agent SDK (31), tool dizaynı (32), reasoning pattern-lər (33)

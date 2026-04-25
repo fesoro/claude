@@ -1,4 +1,4 @@
-# MCP Client-lər Müqayisə — Claude Desktop vs Code vs Cursor vs ChatGPT vs Xüsusi Agent
+# MCP Client-lər Müqayisə — Claude Desktop vs Code vs Cursor vs ChatGPT vs Xüsusi Agent (Middle)
 
 > Bir MCP server yazdın. İndi hansı istemci ona qoşulacaq? Hər birinin transport dəstəyi, autentifikasiya modeli, primitives dəstəyi (tools/resources/prompts), debugging UX, quraşdırma zəhməti fərqlidir.
 

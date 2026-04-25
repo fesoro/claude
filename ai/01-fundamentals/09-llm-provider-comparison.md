@@ -1,4 +1,4 @@
-# LLM Provayder Müqayisəsi — Claude vs GPT vs Gemini vs Open-Source
+# LLM Provayder Müqayisəsi — Claude vs GPT vs Gemini vs Open-Source (Senior)
 
 > Hədəf auditoriyası: PHP/Laravel arxa tərəfi olan məhsullar üçün hansı LLM provayderini seçməli — sadəcə "Claude ən yaxşısıdır" və ya "GPT məşhurdur" demədən, arxitektor kimi düşünərək real texniki və kommersiya meyarları əsasında qərar verməli olan senior developerlər.
 

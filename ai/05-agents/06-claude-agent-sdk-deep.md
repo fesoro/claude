@@ -1,4 +1,4 @@
-# 31 — Claude Agent SDK Dərindən: Production Agent Qurmaq (TS + Laravel Eşdəyər)
+# Claude Agent SDK Dərindən: Production Agent Qurmaq (TS + Laravel Eşdəyər) (Lead)
 
 > **Oxucu:** Senior PHP/Laravel tərtibatçılar
 > **Ön şərtlər:** Agent dövrü (24-ci fayl), tool calling, Laravel queues, əsas TypeScript

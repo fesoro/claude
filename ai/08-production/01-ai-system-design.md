@@ -1,4 +1,4 @@
-# 38 — İstehsal AI Sistem Dizaynı: Arxitekt Perspektivi
+# İstehsal AI Sistem Dizaynı: Arxitekt Perspektivi (Senior)
 
 > **Oxucu:** Baş arxitektlər  
 > **Məqsəd:** Miqyasda istehsal AI sistemləri üçün dizayn qərarlarını, mübadilələri və komponent seçimlərini başa düşmək.

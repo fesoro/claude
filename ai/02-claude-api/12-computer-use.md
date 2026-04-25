@@ -1,4 +1,4 @@
-# Claude Computer Use: Screen Vision, Mouse/Keyboard Tool və Production Sandbox
+# Claude Computer Use: Screen Vision, Mouse/Keyboard Tool və Production Sandbox (Lead)
 
 > Hədəf auditoriyası: Legacy UI automation, browser scraping, QA workflows və ya RPA-tipli use-case-lər quran senior developerlər. Bu sənəd Claude Computer Use feature-unun API mexanikasını, sandbox arxitekturasını, güvənlik modelini və production-da necə məsul şəkildə istifadə edilməsini əhatə edir. Agentic konseptlər üçün 05-agents folder-inə, tool use için 04-tool-use.md-ə bax.
 

@@ -1,4 +1,4 @@
-# LLM Pricing və Unit Economics
+# LLM Pricing və Unit Economics (Senior)
 
 > Hədəf auditoriyası: LLM xüsusiyyətləri qoşulmuş məhsul yaratan və bu xüsusiyyətlərin maliyyə sağlamlığını başa düşməli olan senior developerlər və texniki məhsul rəhbərləri. Bu sənəd "çağırış başına dolar" hesablamasını keçir — real unit economics qurur.
 

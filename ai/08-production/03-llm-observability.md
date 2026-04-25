@@ -1,4 +1,4 @@
-# 51 — LLM Müşahidəlilik (Observability): Tracing, Xərc və Eval-in-Prod
+# LLM Müşahidəlilik (Observability): Tracing, Xərc və Eval-in-Prod (Senior)
 
 > **Oxucu kütləsi:** Senior developerlər və arxitektlər
 > **Bu faylın 02-dən fərqi:** 02 — ümumi observability prinsipləri. Bu fayl — **konkret tracing backendləri** (Langfuse, Helicone, LangSmith, Phoenix), OpenTelemetry semantic conventions, TTFT/tokens-per-sec breakdown, production-a eval inteqrasiyası və Anthropic SDK-nı Laravel-də instrumentasiya etmək.

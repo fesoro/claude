@@ -1,4 +1,4 @@
-# 37 — AI Sistemləri üçün A/B Testinq
+# AI Sistemləri üçün A/B Testinq (Lead)
 
 > **Oxucu:** Baş tərtibatçılar və arxitektlər  
 > **Niyə Bu Veb A/B Testindən Daha Çətindir:** AI çıxışları qeyri-deterministikdir, keyfiyyət metriklər subyektivdir və "qalib" yalnız müəyyən giriş paylayışları üçün qalibə çevrilə bilər.

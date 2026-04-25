@@ -1,4 +1,4 @@
-# Build vs Buy — AI Component-lərini Özün Quraşdır, yoxsa Əldə Al?
+# Build vs Buy — AI Component-lərini Özün Quraşdır, yoxsa Əldə Al? (Middle)
 
 > **Qərar**: hər AI komponent üçün — LLM, embeddings, vector DB, observability, fine-tuning, agent framework, moderation — **öz quraşdırmalı, yoxsa provayder-dən almalısan?** Senior PHP dev kimi bu qərarı həftədə bir dəfə verirsən. Bu sənəd həmişə istifadə etdiyin framework-dür.
 

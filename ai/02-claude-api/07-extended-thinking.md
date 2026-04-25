@@ -1,4 +1,4 @@
-# Claude Extended Thinking: API, Budget, Streaming və Production Patterns
+# Claude Extended Thinking: API, Budget, Streaming və Production Patterns (Senior)
 
 > Hədəf auditoriyası: Claude API-ni Laravel production-da istifadə edən senior developerlər. Bu sənəd extended thinking feature-unun API səviyyəsində necə işlədiyini, budget idarəsini, streaming davranışını və real production nümunələrini əhatə edir. Reasoning modellərin konseptual izahı üçün 08-reasoning-models.md-ə bax; agentic tool use ilə interleaved thinking detalları 05-agents folderində.
 

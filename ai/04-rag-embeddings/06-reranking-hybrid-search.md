@@ -1,4 +1,4 @@
-# Reranking və Hibrid Axtarış: Sadə Vektor Axtarışından Kənara Çıxmaq
+# Reranking və Hibrid Axtarış: Sadə Vektor Axtarışından Kənara Çıxmaq (Senior)
 
 ## Saf Vektor Axtarışının Problemi
 

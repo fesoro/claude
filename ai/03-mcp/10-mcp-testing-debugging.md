@@ -1,4 +1,4 @@
-# MCP Server Testing və Debugging
+# MCP Server Testing və Debugging (Senior)
 
 ## Mündəricat
 

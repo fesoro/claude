@@ -1,4 +1,4 @@
-# Əsas AI Modelləri — Müqayisə, Qərar Matrisi və Arxitektor Bələdçisi
+# Əsas AI Modelləri — Müqayisə, Qərar Matrisi və Arxitektor Bələdçisi (Junior)
 
 > Hədəf auditoriyası: İstehsal sistemləri üçün düzgün modeli seçməli, mübadilələri dərindən başa düşməli və model-agnostik infrastruktur qurmalı olan arxitektorlar və senior developerlər.
 

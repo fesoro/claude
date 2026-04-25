@@ -1,4 +1,4 @@
-# 41 — AI Sistemləri üçün Müşahidəlilik (Observability)
+# AI Sistemləri üçün Müşahidəlilik (Observability) (Senior)
 
 > **Oxucu kütləsi:** Senior developerlər və arxitektlər  
 > **AI müşahidəliliyinin fərqi nədir:** Qeyri-deterministik çıxışlar, prompt-cavab cütləri əsas artefakt kimi, xərc birinci dərəcəli metrik, keyfiyyətin geriləməsinin aşkarlanması.

@@ -1,4 +1,4 @@
-# Claude-dan Strukturlu JSON Output — Miqyasda Etibarlı Çıxarma
+# Claude-dan Strukturlu JSON Output — Miqyasda Etibarlı Çıxarma (Middle)
 
 > Strukturlu outputun üç yanaşması, schema tətbiqetməsi, deformasiyaya uğramış cavabların idarə edilməsi və tipli DTO-larla istehsala hazır çıxarıcı. Real dünya nümunəsi: faktura məlumatlarının çıxarılması.
 

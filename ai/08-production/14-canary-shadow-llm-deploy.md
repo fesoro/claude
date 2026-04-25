@@ -1,4 +1,4 @@
-# 61 — LLM Deployment Strategies: Canary, Shadow, Blue-Green və A/B Testing
+# LLM Deployment Strategies: Canary, Shadow, Blue-Green və A/B Testing (Lead)
 
 > **Oxucu kütləsi:** Senior developerlər, platform/DevOps engineer-lər, AI product owner-lər
 > **Bu faylın 07-workflows/07 və 06-dan fərqi:** 07-workflows/07 — AI A/B testing metodologiyası (experimentation, statistical significance). 06 — ümumi testing strategiyaları. Bu fayl — **deployment rollout**-a fokuslanır: prompt / model version / RAG config / tool schema dəyişikliklərini prod-a necə təhlükəsiz şəkildə çatdırmaq, auto-rollback trigger-ları, config-as-code, correlation ID propagation, regression suite CI-də, shadow mode-un cost tradeoff-u.

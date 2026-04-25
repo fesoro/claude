@@ -1,4 +1,4 @@
-# Laravel MCP Server Qurulması
+# Laravel MCP Server Qurulması (Lead)
 
 Laravel tətbiqinizi Model Context Protocol serveri kimi ifşa edin ki, Claude Code və Claude Desktop birbaşa verilənlər bazanızı, marşrutlarınızı, loglarınızı və modellərini yoxlaya bilsin.
 

@@ -1,4 +1,4 @@
-# Contextual Retrieval: Anthropic Texnikası ilə RAG Dəqiqliyini 49% Artırmaq
+# Contextual Retrieval: Anthropic Texnikası ilə RAG Dəqiqliyini 49% Artırmaq (Senior)
 
 > **Oxucu kütləsi:** Senior backend developerlər (PHP/Laravel), production RAG sistemi qurmuş və ya qurmaq üzrə olanlar.
 > **Bu faylın qonşu fayllarla fərqi:**

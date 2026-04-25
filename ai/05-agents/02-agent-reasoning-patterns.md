@@ -1,4 +1,4 @@
-# 33 — Agent Reasoning Pattern-ləri: ReAct, Reflexion, Tree-of-Thoughts və Plan-and-Execute
+# Agent Reasoning Pattern-ləri: ReAct, Reflexion, Tree-of-Thoughts və Plan-and-Execute (Senior)
 
 > **Oxucu:** Senior PHP/Laravel tərtibatçılar, production agent quran arxitektlər
 > **Ön şərtlər:** Agent dövrü (24), multi-agent (25), agent memory (27), Claude Agent SDK (31), tool dizaynı (32)

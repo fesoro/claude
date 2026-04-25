@@ -1,4 +1,4 @@
-# Token-lər və Context Window-lar — Dərin Araşdırma
+# Token-lər və Context Window-lar — Dərin Araşdırma (Junior)
 
 > Hədəf auditoriyası: Tokenizasiyanı dərin səviyyədə başa düşməli və context-i ağıllı idarə edən istehsal sistemləri qurmalı olan senior developerlər və arxitektorlar.
 

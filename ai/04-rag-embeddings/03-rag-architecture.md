@@ -1,4 +1,4 @@
-# RAG Arxitekturası: Tam Bələdçi
+# RAG Arxitekturası: Tam Bələdçi (Middle)
 
 ## RAG Niyə Mövcuddur
 

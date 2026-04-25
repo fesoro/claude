@@ -1,4 +1,4 @@
-# 36 — Asinxron AI Pattern-ləri: Webhook-lar, Polling və SSE
+# Asinxron AI Pattern-ləri: Webhook-lar, Polling və SSE (Senior)
 
 > **Oxucu:** Baş tərtibatçılar və arxitektlər  
 > **Problem:** AI əməliyyatları adətən 5–120 saniyə çəkir. Sinxron HTTP sorğuları bunu idarə edə bilmir.

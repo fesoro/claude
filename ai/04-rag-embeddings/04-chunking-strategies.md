@@ -1,4 +1,4 @@
-# Sənəd Chunking Strategiyaları: RAG-ın Ən Az Qiymətləndirilən Hissəsi
+# Sənəd Chunking Strategiyaları: RAG-ın Ən Az Qiymətləndirilən Hissəsi (Middle)
 
 ## Niyə Chunking Əsasdır
 

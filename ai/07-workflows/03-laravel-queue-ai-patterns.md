@@ -1,4 +1,4 @@
-# 39 — Laravel Queue + AI: Background AI İşləri Patterns
+# Laravel Queue + AI: Background AI İşləri Patterns (Senior)
 
 > **Oxucu:** Senior Laravel developerlər, platform mühəndisləri
 > **Ön şərtlər:** Laravel Queue, Horizon, Redis, əsas Claude API

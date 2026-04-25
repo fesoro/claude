@@ -1,4 +1,4 @@
-# Laravel üçün Avtomatlaşdırılmış AI Kod İcmal Sistemi
+# Laravel üçün Avtomatlaşdırılmış AI Kod İcmal Sistemi (Senior)
 
 Pull request-ləri Claude ilə analiz edən və strukturlaşdırılmış şərhlər yerləşdirən tam GitHub inteqrasiyalı kod icmal botu.
 

@@ -1,4 +1,4 @@
-# Vector Verilənlər Bazaları: Arxitektura və Seçim Bələdçisi
+# Vector Verilənlər Bazaları: Arxitektura və Seçim Bələdçisi (Middle)
 
 ## Niyə İxtisaslaşmış Vector Saxlama Önəm Kəsb Edir
 

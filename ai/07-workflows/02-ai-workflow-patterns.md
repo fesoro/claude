@@ -1,4 +1,4 @@
-# 35 — AI Workflow və Zəncir Pattern-ləri
+# AI Workflow və Zəncir Pattern-ləri (Middle)
 
 > **Mənbə:** Anthropic-in rəsmi agent sənədləri və tədqiqatları  
 > **Oxucu:** Baş tərtibatçılar və arxitektlər  

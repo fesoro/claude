@@ -1,4 +1,4 @@
-# 29 — Claude Code Skills və Hooks: Harness Avtomatlaşdırması
+# Claude Code Skills və Hooks: Harness Avtomatlaşdırması (Senior)
 
 > **Oxucu kütləsi:** Senior developerlər, platform engineer-lər
 > **Əhatə dairəsi:** Claude Code CLI-da **skill** (slash-command) sistemi, **hook** lifecycle, `settings.json` sxemi, `PermissionDecision` qaytarma, real avtomatlaşdırma nümunələri (auto-format, dangerous command block, long-running notify).

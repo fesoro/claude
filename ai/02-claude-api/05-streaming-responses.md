@@ -1,4 +1,4 @@
-# Claude API ilə Streaming Cavablar
+# Claude API ilə Streaming Cavablar (Middle)
 
 ## Streaming Nədir və Niyə Vacibdir
 

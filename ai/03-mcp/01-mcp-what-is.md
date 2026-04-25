@@ -1,4 +1,4 @@
-# Model Context Protocol (MCP) — Tam Dərinlikli Araşdırma
+# Model Context Protocol (MCP) — Tam Dərinlikli Araşdırma (Junior)
 
 ## MCP-nin Həll Etdiyi Problem
 

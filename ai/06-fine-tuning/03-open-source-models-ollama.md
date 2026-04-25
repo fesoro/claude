@@ -1,4 +1,4 @@
-# Ollama ilə Açıq Mənbəli LLM-ləri Yerli Olaraq İşlətmək
+# Ollama ilə Açıq Mənbəli LLM-ləri Yerli Olaraq İşlətmək (Middle)
 
 ## Niyə Modelləri Yerli Olaraq İşlətməli?
 

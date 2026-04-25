@@ -1,4 +1,4 @@
-# MCP OAuth 2.0 Autentifikasiyası
+# MCP OAuth 2.0 Autentifikasiyası (Senior)
 
 ## MCP üçün OAuth Niyə?
 

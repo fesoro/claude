@@ -88,8 +88,6 @@ Müxtəlif məqsədlər üçün müxtəlif ardıcıllıqlar. Sıradakı rəqəml
 4. [06-fine-tuning/04-lora-qlora-peft.md](06-fine-tuning/04-lora-qlora-peft.md) — LoRA, QLoRA, PEFT dərin
 5. [06-fine-tuning/05-create-custom-model-finetune.md](06-fine-tuning/05-create-custom-model-finetune.md) — praktik fine-tune
 6. [06-fine-tuning/06-distillation-small-models.md](06-fine-tuning/06-distillation-small-models.md) — distillation, kiçik sürətli modellər
-7. [06-fine-tuning/07-dpo-orpo-kto.md](06-fine-tuning/07-dpo-orpo-kto.md) — müasir alignment (DPO/ORPO/KTO)
-8. [06-fine-tuning/08-rlhf-constitutional-ai.md](06-fine-tuning/08-rlhf-constitutional-ai.md) — RLHF + Constitutional AI
 
 ### Yol 6 — Workflows və Integration (1 həftə)
 
@@ -137,29 +135,31 @@ Hər faylı real, işlək Laravel tətbiq skeleti — migration, controller, que
 
 ### Yol 9 — Product Thinking (1 gün, manager-lə söhbət üçün)
 
-1. [10-product-thinking/01-ai-feature-economics.md](10-product-thinking/01-ai-feature-economics.md) — unit economics, margin
-2. [10-product-thinking/02-ai-mvp-playbook.md](10-product-thinking/02-ai-mvp-playbook.md) — MVP addımları
-3. [10-product-thinking/03-build-vs-buy-ai.md](10-product-thinking/03-build-vs-buy-ai.md) — build/buy qərarı
+1. [10-product-thinking/01-ai-mvp-playbook.md](10-product-thinking/01-ai-mvp-playbook.md) — MVP addımları
+2. [10-product-thinking/02-build-vs-buy-ai.md](10-product-thinking/02-build-vs-buy-ai.md) — build/buy qərarı
+3. [10-product-thinking/03-ai-feature-economics.md](10-product-thinking/03-ai-feature-economics.md) — unit economics, margin
 4. [10-product-thinking/04-ai-product-ux-patterns.md](10-product-thinking/04-ai-product-ux-patterns.md) — UX pattern kataloqu
 
 ---
 
 ## Folder baxışı
 
-| Folder | Fayl sayı | Məzmun |
-|---|---|---|
-| [01-fundamentals/](01-fundamentals/) | 11 | LLM necə işləyir, token, hallucination, reasoning modellər, provider müqayisəsi, pricing |
-| [02-claude-api/](02-claude-api/) | 13 | Messages API, prompt eng, tool use, structured out, streaming, vision/PDF, extended thinking, Files+citations, prompt caching, batch, computer use, rate limits |
-| [03-mcp/](03-mcp/) | 11 | Model Context Protocol tam — server (Node+PHP), client, OAuth, security, testing, transports, company Laravel |
-| [04-rag-embeddings/](04-rag-embeddings/) | 11 | Embedding, vektor DB, RAG arxitektura, chunking, query transform (HyDE), reranking, contextual retrieval, knowledge graph, long-context vs RAG, agentic RAG, eval |
-| [05-agents/](05-agents/) | 12 | Agent tərif, reasoning pattern (ReAct/Reflexion/ToT), tool dizayn, memory, multi-agent, orchestration, HITL, Claude SDK dərin, Claude Code skills, eval |
-| [06-fine-tuning/](06-fine-tuning/) | 8 | FT overview, FT vs RAG, open-source/Ollama, LoRA/QLoRA, custom FT, distillation, DPO/ORPO/KTO, RLHF |
-| [07-workflows/](07-workflows/) | 7 | Pipeline, workflow pattern, queue, idempotency+CB, webhook, streaming UI, A/B |
-| [08-production/](08-production/) | 16 | System design, observability (ümumi + LLM), cost/latency, testing, drift, guardrail, security, prompt injection, PII, red team, content moderation, canary/shadow, multi-provider failover, governance (EU AI Act/ISO 42001) |
-| [09-projects/](09-projects/) | 10 | 10 işlək Laravel AI tətbiqi — chatbot, RAG, MCP, code review, extractor, voice, CS bot, HR bot, email classifier, SQL assistant |
-| [10-product-thinking/](10-product-thinking/) | 4 | Feature economics, UX pattern, MVP playbook, build-vs-buy |
+| Folder | Fayl sayı | Səviyyələr | Məzmun |
+|---|---|---|---|
+| [01-fundamentals/](01-fundamentals/) | 11 | ⭐×3 ⭐⭐×4 ⭐⭐⭐×4 | LLM necə işləyir, token, hallucination, reasoning modellər, provider müqayisəsi, pricing |
+| [02-claude-api/](02-claude-api/) | 13 | ⭐×1 ⭐⭐×4 ⭐⭐⭐×6 ⭐⭐⭐⭐×2 | Messages API, prompt eng, tool use, structured out, streaming, vision/PDF, extended thinking, Files+citations, prompt caching, batch, computer use, rate limits |
+| [03-mcp/](03-mcp/) | 11 | ⭐×1 ⭐⭐×5 ⭐⭐⭐×4 ⭐⭐⭐⭐×1 | Model Context Protocol tam — server (Node+PHP), client, OAuth, security, testing, transports, company Laravel |
+| [04-rag-embeddings/](04-rag-embeddings/) | 11 | ⭐×1 ⭐⭐×3 ⭐⭐⭐×4 ⭐⭐⭐⭐×3 | Embedding, vektor DB, RAG arxitektura, chunking, query transform (HyDE), reranking, contextual retrieval, knowledge graph, long-context vs RAG, agentic RAG, eval |
+| [05-agents/](05-agents/) | 12 | ⭐×1 ⭐⭐⭐×5 ⭐⭐⭐⭐×6 | Agent tərif, reasoning pattern (ReAct/Reflexion/ToT), tool dizayn, memory, multi-agent, orchestration, HITL, Claude SDK dərin, Claude Code skills, eval |
+| [06-fine-tuning/](06-fine-tuning/) | 6 | ⭐⭐×3 ⭐⭐⭐×1 ⭐⭐⭐⭐×2 | FT overview, FT vs RAG, open-source/Ollama, LoRA/QLoRA, custom FT, distillation |
+| [07-workflows/](07-workflows/) | 7 | ⭐⭐×2 ⭐⭐⭐×4 ⭐⭐⭐⭐×1 | Pipeline, workflow pattern, queue, idempotency+CB, webhook, streaming UI, A/B |
+| [08-production/](08-production/) | 16 | ⭐⭐⭐×7 ⭐⭐⭐⭐×6 ⭐⭐⭐⭐⭐×3 | System design, observability (ümumi + LLM), cost/latency, testing, drift, guardrail, security, prompt injection, PII, red team, content moderation, canary/shadow, multi-provider failover, governance (EU AI Act/ISO 42001) |
+| [09-projects/](09-projects/) | 10 | ⭐⭐×3 ⭐⭐⭐×4 ⭐⭐⭐⭐×3 | 10 işlək Laravel AI tətbiqi — chatbot, RAG, MCP, code review, extractor, voice, CS bot, HR bot, email classifier, SQL assistant |
+| [10-product-thinking/](10-product-thinking/) | 4 | ⭐⭐×2 ⭐⭐⭐×2 | Feature economics, UX pattern, MVP playbook, build-vs-buy |
 
-Toplam: **103 fayl, ~97,000+ sətir** (README daxil deyil).
+Toplam: **101 fayl, ~95,000+ sətir** (README daxil deyil).
+
+**Səviyyə işarələri:** ⭐ Junior · ⭐⭐ Middle · ⭐⭐⭐ Senior · ⭐⭐⭐⭐ Lead · ⭐⭐⭐⭐⭐ Architect
 
 ---
 

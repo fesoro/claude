@@ -1,4 +1,4 @@
-# AI Feature-in Economics — Vahid İqtisadiyyat və Qiymət Qoyma
+# AI Feature-in Economics — Vahid İqtisadiyyat və Qiymət Qoyma (Senior)
 
 > Hədəf auditoriyası: AI feature-ləri qurub satan senior PHP/Laravel developer-lər, product manager-lər və founder-lər. "Nə qədər başa gəlir?", "Neçə manata satım?", "Kim qazanc gətirir, kim batırır?" suallarına cavab axtaranlar.
 

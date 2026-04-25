@@ -1,4 +1,4 @@
-# Natural Language → SQL — Business User DB Asistanı (Laravel)
+# Natural Language → SQL — Business User DB Asistanı (Laravel) (Senior)
 
 > **Use-case**: marketinq, ops, maliyyə komandası SQL bilmir, amma "Bakı-dan son həftə neçə sifariş gəldi?" kimi sualı cavablandırmaq istəyir. BA-lar hər soruşduqlarında backend dev vaxt itirir. Bu proyekt **Laravel + Claude + read-replica** ilə güvənli natural-language-to-SQL assistant qurur.
 

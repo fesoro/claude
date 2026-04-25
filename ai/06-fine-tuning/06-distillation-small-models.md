@@ -1,4 +1,4 @@
-# Model Distillation: Böyük Modellərdən Kiçik, Sürətli Modellər Çıxarmaq
+# Model Distillation: Böyük Modellərdən Kiçik, Sürətli Modellər Çıxarmaq (Lead)
 
 > **Kim üçündür**: Laravel/PHP arxa plan mühəndisləri ki, komandası böyük model API xərclərindən şikayət edir və ya latency tələbləri ilə qarşılaşır. 29-cu fayl ümumi fine-tuning-dən, 30-cu fayl RAG vs FT seçimindən, 34-cü fayl LoRA/QLoRA-dan bəhs edir. Bu fayl isə fərqli sualı cavablandırır: **"Claude Sonnet bizim use case-də əla işləyir, amma ayda $30K kəsir. Onun "beynindən" daha kiçik və ucuz model çıxara bilərikmi?"** Bəli, edə bilərsiniz — texnika distillation adlanır. Burada Python kodu və real training workflow-ları var.
 

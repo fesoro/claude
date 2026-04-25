@@ -1,4 +1,4 @@
-# Laravel üçün İstehsal Səviyyəli Chatbot (Claude ilə)
+# Laravel üçün İstehsal Səviyyəli Chatbot (Claude ilə) (Middle)
 
 Laravel tətbiqləri üçün tam, hazır chatbot tətbiqi. Multi-tenant dəstəyi, axınlı cavablar (streaming), alət istifadəsi (tool use) və ağıllı kontekst idarəetməsi daxildir.
 

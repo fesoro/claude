@@ -1,4 +1,4 @@
-# Agent Yaddaş Sistemləri
+# Agent Yaddaş Sistemləri (Senior)
 
 ## Yaddaş Niyə Vacibdir
 

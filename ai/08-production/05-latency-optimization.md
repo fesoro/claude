@@ -1,4 +1,4 @@
-# 40 — AI Sistemləri üçün Gecikmə Optimallaşdırması
+# AI Sistemləri üçün Gecikmə Optimallaşdırması (Senior)
 
 > **Auditoriya:** Baş tərtibatçılar və memarlar  
 > **Məqsəd:** AI ilə işləyən funksiyalar üçün P50 < 1s qəbul edilmiş gecikmə və P99 < 10s əldə etmək

@@ -1,4 +1,4 @@
-# Şirkətin üçün MCP Server — Laravel Model/DB/Service-lərini Aç
+# Şirkətin üçün MCP Server — Laravel Model/DB/Service-lərini Aç (Lead)
 
 > **Senaryo**: Şirkətinin Laravel monolitidir. İçində `customers`, `orders`, `support_tickets`, `invoices` cədvəlləri, business logic service-ləri, S3-də PDF-lər var. İstəyin: Claude Desktop, Cursor və ya öz daxili AI agent-in bu məlumatları sorğulaya və üzərində hərəkət edə bilsin — SQL yazmadan, REST endpoint-lər qurmadan. **MCP bunun üçündür**.
 

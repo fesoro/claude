@@ -1,4 +1,4 @@
-# Laravel-da İstehsalata Hazır AI Agent Qurmaq
+# Laravel-da İstehsalata Hazır AI Agent Qurmaq (Senior)
 
 ## Memarlığa Ümumi Baxış
 

@@ -1,4 +1,4 @@
-# 30 — AI Agent Evaluation Pattern-ləri: Trajectory, End-State, Benchmark
+# AI Agent Evaluation Pattern-ləri: Trajectory, End-State, Benchmark (Lead)
 
 > **Oxucu kütləsi:** Senior developerlər, ML engineer-lər
 > **Bu faylın 11-dən fərqi:** 11 — agent eval ümumi giriş. Bu fayl — **konkret eval pattern-ləri**: reference-based vs LLM-as-judge vs human, trajectory match vs end-state correctness, SWE-bench / AgentBench / Terminal-Bench, Braintrust/Promptfoo dataset inteqrasiyası, CI pipeline, Laravel test setup.

@@ -1,4 +1,4 @@
-# Laravel-də Səs AI Pipeline-i
+# Laravel-də Səs AI Pipeline-i (Lead)
 
 Tam səs söhbəti sistemi: brauzer səsi yazır → Whisper transkripsiya edir → Claude cavab verir → TTS nitqə çevirir.
 

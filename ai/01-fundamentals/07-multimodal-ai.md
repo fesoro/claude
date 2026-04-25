@@ -1,4 +1,4 @@
-# Multimodal AI — Vizyon, Sənədlər və Daha Çox
+# Multimodal AI — Vizyon, Sənədlər və Daha Çox (Middle)
 
 > AI modellərinin şəkilləri və sənədləri necə emal etdiyini, Claude-un vizyon imkanlarının praktikada necə göründüyünü və real dünya istifadə halları üçün produksiyaya hazır Laravel kodunu dərinlemesine araşdırma.
 

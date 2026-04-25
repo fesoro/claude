@@ -1,4 +1,4 @@
-# Multi-Provider Failover — Claude, GPT, Gemini Arasında Sığorta
+# Multi-Provider Failover — Claude, GPT, Gemini Arasında Sığorta (Senior)
 
 > **Problem**: Anthropic API bütün bölgədə 30 dəqiqə down oldu. Prod chatbot-un istifadəçilər üçün dayandı. SLA pozuldu. **Multi-provider failover** — bir provayder düşəndə digərinə avtomatik keçid.
 

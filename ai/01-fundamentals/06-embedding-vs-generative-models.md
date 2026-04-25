@@ -1,4 +1,4 @@
-# Embedding Modelləri vs Generativ Modellər: Arxitektura, İstifadə və Trade-off-lar
+# Embedding Modelləri vs Generativ Modellər: Arxitektura, İstifadə və Trade-off-lar (Middle)
 
 > Hədəf auditoriyası: RAG, semantic search, clustering və ya hybrid sistemlər quran senior backend developerlər. Bu fayl 01-how-ai-works.md-də izah olunan transformer arxitekturasını genişləndirir — encoder-only vs decoder-only ayrımını, embedding-lərin semantik dual-unu və hansı modelin hansı iş üçün istifadə olunduğunu əhatə edir. Rerankerlər 04-rag folderindəki 06 nömrəli sənəddə; vector DB-lər isə sql/51-vector-databases.md-də.
 

@@ -1,4 +1,4 @@
-# Query Transformation: HyDE, Multi-Query, Step-Back və Sub-Query Decomposition
+# Query Transformation: HyDE, Multi-Query, Step-Back və Sub-Query Decomposition (Senior)
 
 > **Oxucu kütləsi:** Senior backend developerlər (PHP/Laravel), production RAG-da retrieval keyfiyyətini yaxşılaşdırmaq istəyənlər.
 > **Bu faylın qonşu fayllarla fərqi:**

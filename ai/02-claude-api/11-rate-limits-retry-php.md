@@ -1,4 +1,4 @@
-# Rate Limits, Retries və Backoff — Laravel Production
+# Rate Limits, Retries və Backoff — Laravel Production (Senior)
 
 > Hədəf auditoriyası: Production-da Anthropic API istifadə edən Laravel developerlər. Bu sənəd rate limit-lərin nə olduğunu, 429 xətalarının necə idarə edildiyini və production-ready resilient servis qurmağın tam planını təqdim edir.
 

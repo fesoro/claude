@@ -1,4 +1,4 @@
-# 32 — Agent Tool Dizayn Prinsipləri
+# Agent Tool Dizayn Prinsipləri (Senior)
 
 > **Oxucu:** Baş Laravel/PHP developerlər, agent sistemləri quran arxitektlər
 > **Ön şərtlər:** Claude tool-use API, JSON Schema, Laravel service container
