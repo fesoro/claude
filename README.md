@@ -1,96 +1,121 @@
-# Senior Developer Interview & Öyrənmə Bələdçisi
+# Senior Developer Öyrənmə Bələdçisi
 
-Bu repo senior backend developer müsahibələrinə (PHP/Laravel, Java/Spring, Go) və gündəlik mühəndislik işinə tam hazırlıq üçün strukturlaşdırılmış bilik bazasıdır. Hər folder müstəqil mövzudur — amma hamısı bir-biri ilə əlaqəlidir (məs. `comparison` → `app` → `case-studies` → `system-design`).
+Backend developer kimi bilikləri dərinləşdirmək, sistem dizaynını mənimsəmək və yeni texnologiyalara (Java, Go) keçid etmək üçün strukturlaşdırılmış bilik bazası. Hər folder müstəqil mövzudur, amma hamısı bir-birilə əlaqəlidir.
 
-> Toplam: **2000+ markdown fayl, ~20 böyük mövzu folderi**. Əksəriyyəti Azerbaycanca izahla + İngilis texniki terminlərlə yazılıb.
+> **Toplam: ~2200+ markdown fayl, 20 folder.** Azərbaycan dilində izah + ingilis texniki terminlər.
 
-## İstifadə marşrutları
+---
 
-- **Müsahibəyə 4 həftə qalıb** → [english/4-week-interview-prep-plan.md](english/4-week-interview-prep-plan.md) + [java/PROGRESS-NEW.md](java/PROGRESS-NEW.md) + `system-design/` ilk 20 fayl.
-- **Laravel-dən Spring-ə keçid** → `comparison/` (dil + framework yan-yana), sonra `app/laravel` vs `app/spring` (eyni CRUD, hər iki dildə).
-- **System design sualı gəldi** → `system-design/` (94 ssenari) + `case-studies/` (kimin necə etdiyinə bax).
-- **Prod-da incident** → `troubleshooting/` (playbook) + `devops/` (Linux/CI/CD) + `lists/` (command cheatsheet).
-- **İngilis dili müsahibəsi** → `english/` (A2/B1 vocab, speaking, interview Q&A, STAR method).
-- **AI/LLM layihəsi** → `ai/` (Claude API, RAG, agents, observability).
+## İstifadə Marşrutları
 
-## Əsas folderlər
+| Məqsəd | Marşrut |
+|--------|---------|
+| **Müsahibəyə 4 həftə qalıb** | [english/4-week-interview-prep-plan.md](english/4-week-interview-prep-plan.md) → `system-design/` ilk 20 → `java/comparison/` |
+| **Laravel-dən Java/Spring-ə keçid** | `java/comparison/` (dil + framework yan-yana) → `java/core/` → `java/spring/` → `app/spring/` |
+| **Laravel-dən Go-ya keçid** | `go/` (01-dən 74-ə qədər, PHP analogiyaları ilə) → `app/golang/` |
+| **System design sualı** | `system-design/` (95 ssenari) → `case-studies/` (real şirkətlər) |
+| **Prod-da incident** | `troubleshooting/` → `devops/` → `lists/` cheatsheet |
+| **İngilis dili müsahibəsi** | `english/` (vocab, speaking, STAR method, top-50 sual) |
+| **AI/LLM layihəsi** | `ai/` (Claude API, RAG, agents, production) |
 
-### Öyrənmə və müqayisə
+---
 
-| Folder | Fayl sayı | Nə üçün |
-|--------|-----------|---------|
-| [comparison/](comparison/README.md) | 114 | **Java/Spring vs PHP/Laravel** yan-yana — dil səviyyəsi (35 mövzu) + framework səviyyəsi (78 mövzu). Laravel developer üçün Spring-ə körpü. |
-| [java/](java/README.md) | 182 | Java core + Spring Boot 3.3+ dərin mövzular. `PROGRESS-NEW.md` ilə roadmap. |
-| [php/](php/) | 329 | 200+ topik + 35 müsahibə ssenarisi + 60 use-case + DB dizaynları. PHP 8.3/8.4, Laravel 11, Octane, modern async. |
-| [app/](app/) | 254 | Eyni CRUD tətbiqi **Laravel + Spring + Golang** ilə. Hər biri Docker, test, migrasiya ilə işlək. |
+## Folderlər
 
-### System design & arxitektura
+### Proqramlaşdırma dilləri
 
-| Folder | Fayl sayı | Nə üçün |
-|--------|-----------|---------|
-| [system-design/](system-design/README.md) | 95 | 94 klassik ssenari (URL shortener → live auction, Raft, multi-region, vector DB). Hər faylda diaqram + trade-off. |
-| [case-studies/](case-studies/README.md) | 34 | Meta, Netflix, Uber, Stripe, Discord, Shopify və s. şirkətlərin arxitektura seçimləri və **NİYƏ** belə seçdikləri. |
+| Folder | Fayl | Nə üçün |
+|--------|------|---------|
+| [php/](php/) | 329 | PHP 8.3/8.4, Laravel 11, Octane, modern async. 200+ topik + 35 müsahibə ssenarisi + 60 use-case. |
+| [java/](java/README.md) | 352 | Java core, Spring Boot 3.3+, Cloud, mikroservislər. Alt qovluqlar: `core/`, `spring/`, `advanced/`, `comparison/`. |
+| [go/](go/README.md) | 75 | Go dilini sıfırdan professional arxitektura səviyyəsinə qədər. 74 mövzu, PHP/Laravel analogiyaları ilə. |
+
+### Müqayisə və Öyrənmə
+
+| Folder | Fayl | Nə üçün |
+|--------|------|---------|
+| [java/comparison/](java/comparison/) | 140 | **Java/Spring vs PHP/Laravel** yan-yana — 45 dil + 88 framework mövzusu. Hər mövzuda iki dilin fərqi izah edilir. |
+| [app/](app/) | 254 | Eyni CRUD tətbiqi **Laravel + Spring + Golang** ilə. Docker, test, migrasiya daxil. Müqayisəli öyrənmək üçün ideal. |
+
+### System Design və Arxitektura
+
+| Folder | Fayl | Nə üçün |
+|--------|------|---------|
+| [system-design/](system-design/README.md) | 95 | 94 klassik ssenari (URL shortener → live auction, Raft, multi-region, vector DB). Diaqram + trade-off. |
+| [case-studies/](case-studies/README.md) | 34 | Meta, Netflix, Uber, Stripe, Discord, Shopify — arxitektura seçimləri və **niyə** belə seçdikləri. |
 | [structure/](structure/) | 20 | Clean Architecture, DDD, CQRS, Event Sourcing, Hexagonal, Event-Driven. |
-| [comparison/frameworks/](comparison/frameworks/) | 78 | Spring vs Laravel: Security, JPA, WebFlux, Kafka, gRPC, Modulith, AOT Native və s. |
 
-### İnfrastruktur və əməliyyat
+### İnfrastruktur və Əməliyyat
 
-| Folder | Fayl sayı | Nə üçün |
-|--------|-----------|---------|
-| [docker/](docker/README.md) | 35 | Docker + Kubernetes (RBAC, HPA/VPA, CNI, service mesh, jobs, observability). |
-| [devops/](devops/) | 43 | CI/CD (GitHub Actions, Jenkins, GitLab), Linux dərin (process/network/disk/shell), Nginx. |
+| Folder | Fayl | Nə üçün |
+|--------|------|---------|
+| [docker/](docker/README.md) | 52 | Docker, Docker Compose, Kubernetes. Laravel containerization, prod Dockerfile, FPM tuning, CI/CD. |
+| [devops/](devops/) | 38 | CI/CD (GitHub Actions, Jenkins, GitLab), Linux dərin (process/network/disk/shell), Nginx. |
 | [networking/](networking/) | 41 | TCP/IP, DNS, TLS, HTTP/2/3, WebSocket, load balancing, proxy. |
 | [troubleshooting/](troubleshooting/) | 33 | Prod incident playbook-ları — cache stampede, 5 whys, binary-search debugging, postmortem. |
 
-### Əsas texnologiyalar
+### Texniki Mövzular
 
-| Folder | Fayl sayı | Nə üçün |
-|--------|-----------|---------|
-| [sql/](sql/) | 36 | Joinlər, indekslər, N+1, explain plan, window funksiyaları, transaction izolyasiya. |
+| Folder | Fayl | Nə üçün |
+|--------|------|---------|
+| [sql/](sql/) | 80 | SELECT/JOIN/DML-dən window functions, MVCC, partitioning, pgvector-ə qədər. 78 mövzu, easy→hard. |
 | [git/](git/) | 33 | Rebase vs merge, cherry-pick, reflog, bisect, hooks, monorepo strategiyaları. |
 | [testing/](testing/) | 42 | Unit/integration/e2e, TDD, test doubles, Pest, JUnit 5, Testcontainers, mutation testing. |
 | [dsa/](dsa/) | 46 | Alqoritm və data strukturları — Big-O, array/string/graph problem pattern-ləri. |
-| [lists/](lists/) | 23 | Cheatsheet-lər: docker/git/linux/nginx/kafka/k8s/postgres/bash/vim + dil topik siyahıları. |
+| [lists/](lists/) | 23 | Cheatsheet-lər: docker/git/linux/nginx/kafka/k8s/postgres/bash/vim. |
 
-### Ixtisas və soft skills
+### Bacarıq və Soft Skills
 
-| Folder | Fayl sayı | Nə üçün |
-|--------|-----------|---------|
-| [ai/](ai/) | 56 | Claude API, MCP, RAG, agents, fine-tuning, production observability, prompt injection müdafiəsi. |
-| [soft-skills/](soft-skills/) | 21 | Code review, conflict resolution, design review, async communication — B1 ingiliscə cümlə şablonları ilə. |
-| [english/](english/README.md) | 556 | A2/B1 leksika, qrammatika, speaking/writing/listening/reading. 196+ comparison (to/for, its/your/their, əsasən azəri dilində qrup izahı). |
+| Folder | Fayl | Nə üçün |
+|--------|------|---------|
+| [ai/](ai/) | 102 | Claude API, MCP, RAG, agents, fine-tuning, red teaming, production observability. |
+| [soft-skills/](soft-skills/) | 21 | Code review, conflict resolution, design review, async communication — B1 ingiliscə şablonlar. |
+| [english/](english/README.md) | 556 | A2/B1 leksika, qrammatika, speaking/writing. 196+ comparison fayl (to/for, its/your/their və s.). |
 
-## Müsahibəyə hazırlıq kombinasiyaları
+---
 
-### Laravel Senior → Spring junior-mid keçid (12 həftə)
-1. `comparison/languages/` (35 fayl, 1 həftə)
-2. `comparison/frameworks/` (78 fayl, 3 həftə)
-3. `java/topics/` + `app/spring/` işlə (4 həftə)
-4. `system-design/` + `case-studies/netflix.md` (2 həftə)
+## Müsahibəyə Hazırlıq
+
+### Laravel Senior → Java/Spring keçid (12 həftə)
+
+1. `java/comparison/languages/` — Java sintaksis fərqləri (1 həftə)
+2. `java/comparison/frameworks/` — Spring vs Laravel (3 həftə)
+3. `java/core/` + `java/spring/` + `app/spring/` (4 həftə)
+4. `system-design/` + `case-studies/` (2 həftə)
 5. `english/skills/speaking/` + STAR method (2 həftə)
 
-### Müsahibə 1 həftəsi qalıb (sprint)
-- Gün 1-2: `lists/` cheatsheet-ləri + `comparison/README.md`
-- Gün 3: `system-design/` ilk 10 ssenari
-- Gün 4: `troubleshooting/` + `devops/05-09` Linux
-- Gün 5: `soft-skills/` + `english/roadmap-interview.md`
-- Gün 6: Mock interview — `english/skills/speaking/top-50-interview-questions.md`
-- Gün 7: Dincəl. Həddindən artıq oxuma gecə.
+### Laravel Senior → Go keçid (8 həftə)
 
-### Production mühəndisi gündəlik reference
+1. `go/` 01-15 — sintaksis əsasları (1 həftə)
+2. `go/` 16-40 — OOP, HTTP, database (2 həftə)
+3. `go/` 41-60 — concurrency, goroutines, patterns (2 həftə)
+4. `go/` 61-74 — mikroservislər, gRPC, deploy (2 həftə)
+5. `app/golang/` — tam işlək tətbiq (1 həftə)
+
+### Müsahibə 1 həftə qalıb (sprint)
+
+- **Gün 1-2**: `lists/` cheatsheet + `java/comparison/README.md`
+- **Gün 3**: `system-design/` ilk 10 ssenari
+- **Gün 4**: `troubleshooting/` + `devops/` Linux əsasları
+- **Gün 5**: `soft-skills/` + `english/roadmap-interview.md`
+- **Gün 6**: Mock — `english/skills/speaking/top-50-interview-questions.md`
+- **Gün 7**: Dincəl.
+
+### Production Mühəndisi Gündəlik Reference
+
 - Command lazımdı → `lists/`
 - Bug var → `troubleshooting/`
 - Dizayn qərarı → `structure/` + `case-studies/`
 - Code review yazıram → `soft-skills/code-review.md` + `english/skills/writing/`
+- AI layihəsi qururam → `ai/`
 
-## Repo konvensiyaları
+---
 
-- **Dil**: izah azəricə, kod və texniki terminlər ingiliscə. Kod nümunələri işlək və copy-paste hazır.
-- **Nömrələnmə**: `01-xxx.md`, `02-xxx.md` — oxu sırası. Nömrə olmayanlar reference fayllardır.
-- **README.md folder başına**: hər folderin öz oxşar indeksi var (case-studies, comparison, docker, english, java, system-design).
-- **`lists/` vs folder**: `lists/` cheatsheet (qısa), folderin özü dərin izah.
-- **`app/`**: eyni biznes məntiqinin 3 dildə implementasiyası — müqayisəli öyrənmək üçün.
+## Repo Konvensiyaları
 
-## Qeyd
-
-Bu repo interview prep + real iş üçün birgə bilik bazasıdır, nəşr olunacaq bir kitab yox. Fayllar vaxtaşırı yenilənir, bəzi yerlər hələ draft ola bilər. Xəta görsən yoxla və düzəlt — commit history kontekst verir.
+- **Dil**: izah azəricə, kod və texniki terminlər ingiliscə.
+- **Nömrələnmə**: `01-xxx.md`, `02-xxx.md` — oxu sırası (easy → hard). Nömrəsizlər reference fayllardır.
+- **Səviyyələr**: ⭐ Junior · ⭐⭐ Middle · ⭐⭐⭐ Senior · ⭐⭐⭐⭐ Lead · ⭐⭐⭐⭐⭐ Architect
+- **README.md**: hər folderin öz indeksi var — mövzuları səviyyəyə görə qruplaşdırır, reading path verir.
+- **`lists/`**: qısa cheatsheet. Folderin özü dərin izah.
+- **`app/`**: eyni biznes məntiqinin 3 dildə (PHP/Laravel, Java/Spring, Go) implementasiyası.
