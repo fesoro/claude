@@ -5,7 +5,7 @@
 PHP/Laravel developer üçün Go dilini sıfırdan professional arxitektura səviyyəsinə qədər öyrənmə yolu. Hər mövzu real layihə təcrübəsindən gələn praktik biliklər, trade-off analizi və kod nümunələri ilə çatdırılır.
 
 **Hədəf auditoriya:** 5+ il PHP/Laravel təcrübəsi olan developer, Go-ya keçid etmək istəyir  
-**Ümumi fayl sayı:** 74 mövzu + README  
+**Ümumi fayl sayı:** 88 mövzu + README  
 **Proqramlaşdırma dili:** Go (Golang), kod nümunələri `go` bloklarında
 
 ---
@@ -59,10 +59,11 @@ Interface, error handling, concurrency əsasları, test yazma, Go-ya xas pattern
 | 30 | [30-io-reader-writer.md](30-io-reader-writer.md) | io.Reader/Writer — streaming, pipe, bufio |
 | 31 | [31-go-embed.md](31-go-embed.md) | go:embed — statik faylları binary-ə daxil etmək |
 | 32 | [32-go-workspace.md](32-go-workspace.md) | Go Workspace — `go.work`, multi-module development |
+| 75 | [75-errgroup.md](75-errgroup.md) | errgroup — paralel goroutine, xəta propagasiya, fan-out |
 
 ---
 
-### ⭐⭐⭐ Senior (33-55) — Real layihə inkişafı
+### ⭐⭐⭐ Senior (33-55, 76-78, 80, 82, 85-87) — Real layihə inkişafı
 
 HTTP server/client, database, test, layihə strukturu, production patterns.
 
@@ -91,10 +92,18 @@ HTTP server/client, database, test, layihə strukturu, production patterns.
 | 53 | [53-graceful-shutdown.md](53-graceful-shutdown.md) | Graceful shutdown — signal, context, in-flight request tamamlama |
 | 54 | [54-project-structure.md](54-project-structure.md) | Layihə strukturu — `cmd/`, `internal/`, `pkg/`, Standard Go Layout |
 | 55 | [55-repository-pattern.md](55-repository-pattern.md) | Repository pattern — interface, implementation, test double |
+| 76 | [76-input-validation.md](76-input-validation.md) | Input Validation — validator/v10, struct tags, custom validator |
+| 77 | [77-database-migrations.md](77-database-migrations.md) | Database Migrations — goose, golang-migrate, go:embed, CI/CD |
+| 78 | [78-file-upload.md](78-file-upload.md) | File Upload — multipart, streaming, S3, MinIO, güvənlik |
+| 80 | [80-cron-scheduler.md](80-cron-scheduler.md) | Cron Scheduler — robfig/cron, panic recovery, distributed lock |
+| 82 | [82-api-versioning.md](82-api-versioning.md) | API Versioning — URL path, header, deprecation, Sunset header |
+| 85 | [85-email-smtp.md](85-email-smtp.md) | Email / SMTP — gomail, HTML şablon, async göndərmə, MailHog |
+| 86 | [86-webhook.md](86-webhook.md) | Webhook — qəbul etmək, imza yoxlama, retry, idempotency |
+| 87 | [87-go-generate.md](87-go-generate.md) | go generate — stringer, mockery, sqlc, kod generasiyası |
 
 ---
 
-### ⭐⭐⭐⭐ Lead (56-67) — İleri mövzular
+### ⭐⭐⭐⭐ Lead (56-67, 79, 81, 83, 84, 88) — İleri mövzular
 
 Advanced concurrency, design patterns, WebSocket, gRPC, security, caching, JWT.
 
@@ -112,6 +121,11 @@ Advanced concurrency, design patterns, WebSocket, gRPC, security, caching, JWT.
 | 65 | [65-jwt-and-auth.md](65-jwt-and-auth.md) | JWT, Auth — token yaratma/yoxlama, middleware, refresh token |
 | 66 | 66-build-tags.md | Build tags — `//go:build`, platform-specific code, test tags |
 | 67 | 67-grpc.md | gRPC — protobuf, unary, streaming, interceptor, status codes |
+| 79 | [79-singleflight.md](79-singleflight.md) | Singleflight — thundering herd, cache stampede, request dedup |
+| 81 | [81-oauth2.md](81-oauth2.md) | OAuth2 / OIDC — authorization code, PKCE, Google/GitHub login |
+| 83 | [83-event-bus.md](83-event-bus.md) | Event Bus — domain events, pub-sub, sinxron/asinxron |
+| 84 | [84-testcontainers.md](84-testcontainers.md) | Testcontainers — real PostgreSQL/Redis ilə inteqrasiya testi |
+| 88 | [88-fuzz-testing.md](88-fuzz-testing.md) | Fuzz Testing — go test -fuzz, corpus, parser/validator testi |
 
 ---
 
