@@ -1,6 +1,6 @@
 # 40 — Spring Data Specifications
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

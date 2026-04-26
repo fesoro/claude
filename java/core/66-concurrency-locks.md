@@ -1,6 +1,6 @@
 # 66 — Concurrency: Locks (ReentrantLock, ReadWriteLock, StampedLock)
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

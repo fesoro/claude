@@ -1,6 +1,6 @@
 # 17 — Spring Profiles
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

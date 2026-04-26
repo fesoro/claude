@@ -1,6 +1,6 @@
 # 36 — Spring Data Fetch Strategies
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

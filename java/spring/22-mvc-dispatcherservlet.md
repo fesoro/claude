@@ -1,6 +1,6 @@
 # 22 — Spring MVC — DispatcherServlet
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

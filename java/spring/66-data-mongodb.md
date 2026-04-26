@@ -1,6 +1,6 @@
 # 66 — Spring Data MongoDB — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

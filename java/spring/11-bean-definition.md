@@ -1,6 +1,6 @@
 # 11 — Spring Bean Definition və Stereotype Annotasiyalar
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

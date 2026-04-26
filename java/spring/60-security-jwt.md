@@ -1,6 +1,6 @@
 # 60 — Spring Security JWT
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

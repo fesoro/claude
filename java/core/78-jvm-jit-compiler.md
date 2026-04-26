@@ -1,6 +1,6 @@
 # 78 — JVM JIT Compiler
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

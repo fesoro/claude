@@ -1,6 +1,6 @@
 # 21 — Java-da Miras (Inheritance)
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

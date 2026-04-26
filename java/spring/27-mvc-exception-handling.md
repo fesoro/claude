@@ -1,6 +1,6 @@
 # 27 — Spring MVC — Exception Handling
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

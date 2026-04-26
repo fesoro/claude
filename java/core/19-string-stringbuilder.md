@@ -1,6 +1,6 @@
 # 19 — `String`, `StringBuilder` və `StringBuffer`
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

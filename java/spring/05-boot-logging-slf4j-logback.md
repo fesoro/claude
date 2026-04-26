@@ -1,6 +1,6 @@
 # 05 — Logging (SLF4J + Logback)
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

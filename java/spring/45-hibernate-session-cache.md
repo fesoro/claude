@@ -1,6 +1,6 @@
 # 45 — Hibernate Session Cache (1st/2nd Level) — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 58 — Java NIO (Non-blocking I/O)
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

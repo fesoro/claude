@@ -1,6 +1,6 @@
 # 32 — JDBC Əsasları və JdbcTemplate
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

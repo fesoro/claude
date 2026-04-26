@@ -1,6 +1,6 @@
 # 29 — Spring Custom Validation — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

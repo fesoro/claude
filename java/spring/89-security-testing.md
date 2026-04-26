@@ -1,6 +1,6 @@
 # 89 — Spring Security Testing
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

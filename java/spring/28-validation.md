@@ -1,6 +1,6 @@
 # 28 — Spring Validation — Geniş İzah
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 84 — Java Sequenced Collections — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

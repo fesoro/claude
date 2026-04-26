@@ -1,6 +1,6 @@
 # 31 — ArrayList və LinkedList — Daxili Quruluş və Müqayisə
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 01 — İlk Spring Boot Tətbiqi (Spring Initializr ilə)
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

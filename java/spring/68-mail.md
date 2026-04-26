@@ -1,6 +1,6 @@
 # 68 — Spring Mail — Geniş İzah
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

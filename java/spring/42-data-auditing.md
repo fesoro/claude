@@ -1,6 +1,6 @@
 # 42 — Spring Data Auditing — Geniş İzah
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

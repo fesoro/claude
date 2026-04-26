@@ -1,6 +1,6 @@
 # 14 — Java-da Siniflər və Obyektlər (Classes & Objects)
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 65 — Spring Data Redis — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

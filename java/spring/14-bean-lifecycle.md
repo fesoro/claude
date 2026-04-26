@@ -1,6 +1,6 @@
 # 14 — Spring Bean Lifecycle
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

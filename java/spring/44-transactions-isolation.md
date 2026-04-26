@@ -1,6 +1,6 @@
 # 44 — Spring Transaction Isolation Levels — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

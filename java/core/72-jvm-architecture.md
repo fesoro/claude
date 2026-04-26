@@ -1,6 +1,6 @@
 # 72 — JVM Arxitekturası
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

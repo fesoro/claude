@@ -1,6 +1,6 @@
 # 70 — Spring @Async — Geniş İzah
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

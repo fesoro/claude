@@ -1,6 +1,6 @@
 # 84 — Spring WebFlux (Reactive) — Geniş İzah
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

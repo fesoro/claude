@@ -1,6 +1,6 @@
 # 04 — application.properties və application.yml (Detallı)
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

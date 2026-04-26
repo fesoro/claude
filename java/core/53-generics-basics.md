@@ -1,6 +1,6 @@
 # 53 — Generics — Əsaslar
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

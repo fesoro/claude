@@ -1,6 +1,6 @@
 # 79 — JVM Profiling Tools — Geniş İzah
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

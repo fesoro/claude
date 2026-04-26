@@ -1,6 +1,6 @@
 # 15 — `this`, `super` və Konstruktorlar
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

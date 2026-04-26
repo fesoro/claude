@@ -1,6 +1,6 @@
 # 63 — Spring Session
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Nə üçün lazımdır?

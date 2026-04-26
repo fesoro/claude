@@ -1,6 +1,6 @@
 # 06 — Spring Boot Embedded Server
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

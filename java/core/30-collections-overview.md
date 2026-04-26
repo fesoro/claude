@@ -1,6 +1,6 @@
 # 30 — Java Collections Framework — Ümumi Baxış
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

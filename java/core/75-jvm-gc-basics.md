@@ -1,6 +1,6 @@
 # 75 — JVM Garbage Collection — Əsaslar
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

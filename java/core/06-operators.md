@@ -1,6 +1,6 @@
 # 06 — Java Operatorları
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

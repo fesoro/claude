@@ -1,6 +1,6 @@
 # 41 — Spring Data Pagination və Sorting — Geniş İzah
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

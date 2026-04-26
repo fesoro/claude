@@ -1,6 +1,6 @@
 # 16 — Paketlər, Import və Access Modifier-lər
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

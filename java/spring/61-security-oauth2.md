@@ -1,6 +1,6 @@
 # 61 — Spring Security OAuth2 — Geniş İzah
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

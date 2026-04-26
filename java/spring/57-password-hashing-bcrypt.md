@@ -1,6 +1,6 @@
 # 57 — Password Hashing & BCrypt — Geniş İzah
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

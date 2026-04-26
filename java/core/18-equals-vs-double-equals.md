@@ -1,6 +1,6 @@
 # 18 — `==` vs `.equals()` və Wrapper Classes
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

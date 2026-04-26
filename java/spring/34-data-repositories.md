@@ -1,6 +1,6 @@
 # 34 — Spring Data Repositories
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

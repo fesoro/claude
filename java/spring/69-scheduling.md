@@ -1,6 +1,6 @@
 # 69 — Spring Scheduling — Geniş İzah
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

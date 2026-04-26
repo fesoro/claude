@@ -1,6 +1,6 @@
 # 32 — HashMap — Daxili Quruluş və Mexanizmi
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 58 — Spring Security CORS — Geniş İzah
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

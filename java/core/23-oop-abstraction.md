@@ -1,6 +1,6 @@
 # 23 — Java-da Abstraksiya (Abstraction)
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

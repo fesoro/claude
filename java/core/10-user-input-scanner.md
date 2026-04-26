@@ -1,6 +1,6 @@
 # 10 — Java-da İstifadəçi Girişi (Scanner, BufferedReader, Console)
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

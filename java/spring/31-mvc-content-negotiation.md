@@ -1,6 +1,6 @@
 # 31 — Spring MVC Content Negotiation — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 73 — JVM Yaddaş Sahələri
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

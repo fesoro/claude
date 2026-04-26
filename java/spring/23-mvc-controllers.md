@@ -1,6 +1,6 @@
 # 23 — Spring MVC — Controllers
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

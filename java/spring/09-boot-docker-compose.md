@@ -1,6 +1,6 @@
 # 09 — Spring Boot Docker Compose Support — Geniş İzah
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

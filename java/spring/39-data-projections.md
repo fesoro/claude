@@ -1,6 +1,6 @@
 # 39 — Spring Data Projections
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

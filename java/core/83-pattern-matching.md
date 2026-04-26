@@ -1,6 +1,6 @@
 # 83 — Java Pattern Matching — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

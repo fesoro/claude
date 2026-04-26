@@ -1,6 +1,6 @@
 # 13 — Spring Bean Scopes
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

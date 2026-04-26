@@ -1,6 +1,6 @@
 # 19 — Spring BeanPostProcessor — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

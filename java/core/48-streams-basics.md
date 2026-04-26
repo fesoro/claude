@@ -1,6 +1,6 @@
 # 48 — Streams — Əsaslar
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

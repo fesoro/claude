@@ -1,6 +1,6 @@
 # 79 — Spring RabbitMQ — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

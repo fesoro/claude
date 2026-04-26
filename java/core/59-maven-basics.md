@@ -1,6 +1,6 @@
 # 59 — Maven Əsasları
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

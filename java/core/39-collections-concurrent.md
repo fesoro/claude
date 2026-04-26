@@ -1,6 +1,6 @@
 # 39 — Concurrent Collections — Paralel Mühit üçün Kolleksiyalar
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 92 — JUnit 5 Advanced — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

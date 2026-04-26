@@ -1,6 +1,6 @@
 # 12 — Type Casting və `instanceof`
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

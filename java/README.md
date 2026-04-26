@@ -6,13 +6,13 @@ Bu folder Java dili, Spring Framework və distributed sistemlər üçün lazım 
 
 ```
 java/
-├── core/        — Java dili, JVM, Collections, Concurrency (95 fayl)
-├── spring/      — Spring Boot, MVC, Data/JPA, Security, Testing (89 fayl)
+├── core/        — Java dili, JVM, Collections, Concurrency (97 fayl)
+├── spring/      — Spring Boot, MVC, Data/JPA, Security, Modern Java (99 fayl)
 ├── advanced/    — Spring Cloud, Architecture, Deployment (24 fayl)
 └── comparison/  — Java/Spring vs PHP/Laravel müqayisəsi (139 fayl)
 ```
 
-**Cəmi: 347 fayl** — sıfırdan expert səviyyəyə qədər.
+**Cəmi: 359 fayl** — sıfırdan expert səviyyəyə qədər.
 
 ---
 

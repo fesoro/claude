@@ -1,6 +1,6 @@
 # 46 — Functional Interfaces (Funksional İnterfeyslər)
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

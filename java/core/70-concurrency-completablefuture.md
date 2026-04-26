@@ -1,6 +1,6 @@
 # 70 — Concurrency: CompletableFuture
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

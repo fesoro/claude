@@ -1,6 +1,6 @@
 # 27 — Java-da Daxili Siniflər (Inner Classes)
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

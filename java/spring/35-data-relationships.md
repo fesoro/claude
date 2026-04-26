@@ -1,6 +1,6 @@
 # 35 — Spring Data Relationships (Əlaqələr)
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

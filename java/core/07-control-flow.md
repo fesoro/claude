@@ -1,6 +1,6 @@
 # 07 — Şərtli İfadələr (if / else / switch)
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

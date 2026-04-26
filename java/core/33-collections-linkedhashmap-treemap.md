@@ -1,6 +1,6 @@
 # 33 — LinkedHashMap və TreeMap — Sıralı Map-lər
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

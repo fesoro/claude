@@ -1,6 +1,6 @@
 # 11 — Java Metodları (Methods)
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

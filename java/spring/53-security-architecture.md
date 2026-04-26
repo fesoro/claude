@@ -1,6 +1,6 @@
 # 53 — Spring Security Arxitekturası
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 45 — Lambda və Method Reference Əsasları (Başlanğıc)
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

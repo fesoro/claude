@@ -1,6 +1,6 @@
 # 55 — Generics — Bounded Types (Məhdud Tiplər)
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

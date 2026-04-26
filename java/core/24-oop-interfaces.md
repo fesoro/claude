@@ -1,6 +1,6 @@
 # 24 — Java-da İnterfeyslər (Interfaces)
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 49 — Spring AOP Pointcuts — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 28 — Java-da Records (Java 16+)
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

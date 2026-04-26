@@ -1,6 +1,6 @@
 # 22 — Java-da Polimorfizm (Polymorphism)
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

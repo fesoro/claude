@@ -1,6 +1,6 @@
 # 10 — Spring IoC Container
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

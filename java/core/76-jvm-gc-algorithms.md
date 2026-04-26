@@ -1,6 +1,6 @@
 # 76 — JVM GC Alqoritmləri
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

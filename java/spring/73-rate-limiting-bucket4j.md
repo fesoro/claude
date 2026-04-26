@@ -1,6 +1,6 @@
 # 73 — Rate Limiting & Bucket4j — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

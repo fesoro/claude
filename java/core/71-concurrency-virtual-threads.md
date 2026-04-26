@@ -1,6 +1,6 @@
 # 71 — Concurrency: Virtual Threads (Java 21)
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

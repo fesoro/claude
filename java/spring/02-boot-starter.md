@@ -1,6 +1,6 @@
 # 02 — Spring Boot Starter
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

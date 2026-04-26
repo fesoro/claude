@@ -1,6 +1,6 @@
 # 61 — Debugging Əsasları
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

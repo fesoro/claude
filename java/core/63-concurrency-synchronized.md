@@ -1,6 +1,6 @@
 # 63 — Concurrency: Synchronized və Deadlock
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

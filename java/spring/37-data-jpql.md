@@ -1,6 +1,6 @@
 # 37 — Spring Data JPQL
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

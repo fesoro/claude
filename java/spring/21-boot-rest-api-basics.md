@@ -1,6 +1,6 @@
 # 21 — REST API Əsasları (HTTP, Metodlar, Status Kodları)
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

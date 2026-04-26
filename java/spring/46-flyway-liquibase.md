@@ -1,6 +1,6 @@
 # 46 — Flyway & Liquibase — Geniş İzah
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

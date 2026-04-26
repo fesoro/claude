@@ -1,6 +1,6 @@
 # 77 — Spring Kafka Producer — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 71 — Spring File Upload — Geniş İzah
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 36 — Comparable və Comparator — Sıralama İnterfeyslərı
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 87 — Spring @DataJpaTest — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

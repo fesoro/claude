@@ -1,6 +1,6 @@
 # 91 — JUnit 5 Basics — Geniş İzah
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

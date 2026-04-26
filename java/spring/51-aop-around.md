@@ -1,6 +1,6 @@
 # 51 — Spring AOP @Around — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

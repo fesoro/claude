@@ -1,6 +1,6 @@
 # 60 — Gradle Əsasları
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

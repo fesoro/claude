@@ -1,6 +1,6 @@
 # 20 — Java-da İnkapsulyasiya (Encapsulation)
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

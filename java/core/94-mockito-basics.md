@@ -1,6 +1,6 @@
 # 94 — Mockito Basics — Geniş İzah
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

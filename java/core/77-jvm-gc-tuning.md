@@ -1,6 +1,6 @@
 # 77 — JVM GC Tuning
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

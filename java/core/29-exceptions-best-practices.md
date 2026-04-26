@@ -1,6 +1,6 @@
 # 29 — Exception Best Practices
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

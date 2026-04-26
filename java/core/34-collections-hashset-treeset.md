@@ -1,6 +1,6 @@
 # 34 — HashSet, TreeSet və LinkedHashSet
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

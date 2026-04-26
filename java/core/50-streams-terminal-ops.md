@@ -1,6 +1,6 @@
 # 50 — Streams — Terminal Əməliyyatlar (Terminal Operations)
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

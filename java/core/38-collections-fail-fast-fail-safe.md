@@ -1,6 +1,6 @@
 # 38 — Fail-Fast və Fail-Safe İteratorlar
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

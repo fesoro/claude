@@ -1,6 +1,6 @@
 # 30 — Spring MVC Filters və Interceptors — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 47 — HikariCP Connection Pool — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 09 — Massivlər (1D, 2D, Arrays utility)
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

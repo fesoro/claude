@@ -1,6 +1,6 @@
 # 41 — Java Date/Time API — Geniş İzah
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

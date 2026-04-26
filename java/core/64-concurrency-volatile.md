@@ -1,6 +1,6 @@
 # 64 — Concurrency: volatile Açar Sözü və Java Memory Model
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 67 — Concurrency: Atomic Variables
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

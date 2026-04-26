@@ -1,6 +1,6 @@
 # 38 — Spring Data Native Queries
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

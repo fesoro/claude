@@ -1,6 +1,6 @@
 # 74 — JVM ClassLoading
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

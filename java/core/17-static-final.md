@@ -1,6 +1,6 @@
 # 17 — `static` və `final` Açar Sözləri
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

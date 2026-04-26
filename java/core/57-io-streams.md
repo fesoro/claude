@@ -1,6 +1,6 @@
 # 57 — Java I/O Streams
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

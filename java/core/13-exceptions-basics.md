@@ -1,6 +1,6 @@
 # 13 — Exception-lar — Əsaslar
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

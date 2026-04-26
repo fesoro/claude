@@ -1,6 +1,6 @@
 # 07 — Spring Boot DevTools
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

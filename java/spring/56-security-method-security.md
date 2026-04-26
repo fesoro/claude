@@ -1,6 +1,6 @@
 # 56 — Spring Security Method Security — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 15 — Spring @Configuration
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

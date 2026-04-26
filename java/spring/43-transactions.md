@@ -1,6 +1,6 @@
 # 43 — Spring Transactions (@Transactional) — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

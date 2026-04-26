@@ -1,6 +1,6 @@
 # 08 — Dövrlər (for / while / do-while / for-each)
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

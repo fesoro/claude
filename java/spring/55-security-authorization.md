@@ -1,6 +1,6 @@
 # 55 — Spring Security Avtorizasiya
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

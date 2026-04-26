@@ -1,6 +1,6 @@
 # 82 — Java Sealed Classes — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

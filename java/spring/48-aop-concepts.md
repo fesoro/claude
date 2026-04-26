@@ -1,6 +1,6 @@
 # 48 — Spring AOP — Əsas Konseptlər
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

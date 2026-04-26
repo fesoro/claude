@@ -1,6 +1,6 @@
 # 78 — Spring Kafka Consumer — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

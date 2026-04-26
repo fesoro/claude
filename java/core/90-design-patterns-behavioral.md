@@ -1,6 +1,6 @@
 # 90 — Design Patterns — Behavioral (Davranış)
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

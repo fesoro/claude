@@ -1,6 +1,6 @@
 # 86 — Java Foreign Memory & Function API — Geniş İzah
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

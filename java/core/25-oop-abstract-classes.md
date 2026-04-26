@@ -1,6 +1,6 @@
 # 25 — Java-da Abstract Siniflər (Abstract Classes)
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

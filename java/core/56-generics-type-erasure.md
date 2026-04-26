@@ -1,6 +1,6 @@
 # 56 — Generics — Type Erasure (Tip Silinməsi)
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

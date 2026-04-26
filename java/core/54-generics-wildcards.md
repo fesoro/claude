@@ -1,6 +1,6 @@
 # 54 — Generics — Wildcard-lar
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

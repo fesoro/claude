@@ -1,6 +1,6 @@
 # 03 — Spring Boot Auto-Configuration
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

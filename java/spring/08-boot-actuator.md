@@ -1,6 +1,6 @@
 # 08 — Spring Boot Actuator
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

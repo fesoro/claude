@@ -1,6 +1,6 @@
 # 25 — Jackson JSON Serializasiya və Deserializasiya
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

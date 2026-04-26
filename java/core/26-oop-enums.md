@@ -1,6 +1,6 @@
 # 26 — Java-da Enum Tipi (Enumerations)
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

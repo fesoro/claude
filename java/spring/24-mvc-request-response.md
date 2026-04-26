@@ -1,6 +1,6 @@
 # 24 — Spring MVC — Request və Response
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

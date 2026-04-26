@@ -1,6 +1,6 @@
 # 64 — Spring Cache
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

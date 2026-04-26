@@ -1,6 +1,6 @@
 # 35 — Queue və Deque — Növbə Strukturları
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

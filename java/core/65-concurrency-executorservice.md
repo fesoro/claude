@@ -1,6 +1,6 @@
 # 65 — Concurrency: ExecutorService
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

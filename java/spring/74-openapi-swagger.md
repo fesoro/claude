@@ -1,6 +1,6 @@
 # 74 — OpenAPI & Swagger — Geniş İzah
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

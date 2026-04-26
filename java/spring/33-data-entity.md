@@ -1,6 +1,6 @@
 # 33 — Spring Data Entity Annotasiyaları
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 62 — Concurrency: Thread Basics
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

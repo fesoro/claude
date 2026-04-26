@@ -1,6 +1,6 @@
 # 51 — Streams — Collectors
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

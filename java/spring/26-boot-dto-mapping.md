@@ -1,6 +1,6 @@
 # 26 — DTO Pattern və Mapping (MapStruct, ModelMapper)
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

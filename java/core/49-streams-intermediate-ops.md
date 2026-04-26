@@ -1,6 +1,6 @@
 # 49 — Streams — Ara Əməliyyatlar (Intermediate Operations)
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

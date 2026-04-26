@@ -1,6 +1,6 @@
 # 88 — Design Patterns — Creational (Yaradıcı)
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

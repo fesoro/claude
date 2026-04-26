@@ -1,6 +1,6 @@
 # 67 — Spring Data Elasticsearch — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

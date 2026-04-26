@@ -1,6 +1,6 @@
 # 04 — Java Naming Conventions və Kod Stili
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 68 — Concurrency: Semaphore, CountDownLatch, CyclicBarrier, Phaser, Exchanger
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

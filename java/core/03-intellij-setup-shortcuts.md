@@ -1,6 +1,6 @@
 # 03 — IntelliJ IDEA Quraşdırma və Qısayollar
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

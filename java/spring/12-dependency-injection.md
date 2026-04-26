@@ -1,6 +1,6 @@
 # 12 — Spring Dependency Injection
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

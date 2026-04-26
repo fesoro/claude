@@ -1,6 +1,6 @@
 # 86 — Spring @WebMvcTest — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

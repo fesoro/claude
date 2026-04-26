@@ -1,6 +1,6 @@
 # 81 — Annotations və Custom Annotations
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

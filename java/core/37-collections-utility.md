@@ -1,6 +1,6 @@
 # 37 — Collections və Arrays Utility Sinifləri
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

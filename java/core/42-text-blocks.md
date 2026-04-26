@@ -1,6 +1,6 @@
 # 42 — Java Text Blocks — Geniş İzah
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

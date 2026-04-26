@@ -1,6 +1,6 @@
 # 01 — Java Qurulması və JDK/JRE/JVM Fərqi
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

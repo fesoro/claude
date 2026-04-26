@@ -1,6 +1,6 @@
 # 43 — Java `var` — Type Inference — Geniş İzah
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

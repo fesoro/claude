@@ -1,6 +1,6 @@
 # 50 — Spring AOP Advices — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

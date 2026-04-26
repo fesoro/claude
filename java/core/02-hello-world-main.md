@@ -1,6 +1,6 @@
 # 02 — İlk Java Proqramı və main() Metodu
 
-> **Seviyye:** Beginner ⭐
+> **Seviyye:** Junior ⭐
 
 
 ## Mündəricat

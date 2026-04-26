@@ -1,6 +1,6 @@
 # 44 — Java Switch Expressions — Geniş İzah
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

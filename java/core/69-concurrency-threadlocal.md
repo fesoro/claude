@@ -1,6 +1,6 @@
 # 69 — Concurrency: ThreadLocal
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 62 — Spring Authorization Server — Geniş İzah
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
 # 54 — Spring Security Autentifikasiya
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

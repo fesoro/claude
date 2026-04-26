@@ -1,6 +1,6 @@
 # 59 — Spring Security CSRF — Geniş İzah
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

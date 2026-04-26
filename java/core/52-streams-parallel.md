@@ -1,6 +1,6 @@
 # 52 — Streams — Parallel Streams
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

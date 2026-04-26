@@ -1,6 +1,6 @@
 # 76 — Idempotency Pattern — Geniş İzah
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

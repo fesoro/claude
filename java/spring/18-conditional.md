@@ -1,6 +1,6 @@
 # 18 — Spring @Conditional
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

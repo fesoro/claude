@@ -1,6 +1,6 @@
 # 52 — Spring AOP Proxy Mexanizmi — Geniş İzah
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

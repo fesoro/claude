@@ -1,6 +1,6 @@
 # 16 — Spring @Value və @ConfigurationProperties
 
-> **Seviyye:** Intermediate ⭐⭐
+> **Seviyye:** Middle ⭐⭐
 
 
 ## Mündəricat

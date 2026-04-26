@@ -1,6 +1,6 @@
 # 89 — Design Patterns — Structural (Struktur)
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat
