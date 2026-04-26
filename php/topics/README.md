@@ -2,7 +2,7 @@
 
 PHP backend developer üçün vacib bütün mövzular — dil əsaslarından enterprise arxitekturasına qədər.
 
-**Toplam: 200 mövzu** — Junior-dan Architect-ə, sadədən mürəkkəbə.
+**Toplam: 211 mövzu** — Junior-dan Architect-ə, sadədən mürəkkəbə.
 
 ---
 
@@ -11,9 +11,9 @@ PHP backend developer üçün vacib bütün mövzular — dil əsaslarından ent
 | Göstərici | Kimə uyğundur |
 |-----------|--------------|
 | ⭐ **Junior** | PHP ilə yeni tanış / 0-2 illik (001–022) |
-| ⭐⭐ **Middle** | Design patterns, Laravel / 2-4 il (023–083) |
-| ⭐⭐⭐ **Senior** | Arxitektura, distributed systems / 4-6+ il (084–173) |
-| ⭐⭐⭐⭐ **Lead** | Mürəkkəb sistem dizaynı / 7+ il (174–196) |
+| ⭐⭐ **Middle** | Design patterns, Laravel / 2-4 il (023–083, 201–204, 207, 211) |
+| ⭐⭐⭐ **Senior** | Arxitektura, distributed systems / 4-6+ il (084–173, 205–206) |
+| ⭐⭐⭐⭐ **Lead** | Mürəkkəb sistem dizaynı / 7+ il (174–196, 208–210) |
 | ⭐⭐⭐⭐⭐ **Architect** | Enterprise arxitekturası (197–200) |
 
 ---
@@ -281,6 +281,39 @@ PHP backend developer üçün vacib bütün mövzular — dil əsaslarından ent
 
 ---
 
+## ⭐⭐ Middle — Əlavə Mövzular (201–204, 207, 211)
+
+### Laravel Ecosystem — Çatışmayan Mövzular
+201. [Laravel Notifications & Kanallar — mail, SMS, Slack, database](201-laravel-notifications-channels.md)
+202. [Laravel Task Scheduler — cron, overlap, multi-server](202-laravel-task-scheduler.md)
+203. [Email Delivery Deep Dive — Mailable, SPF/DKIM, Mailpit](203-email-delivery-deep-dive.md)
+207. [Internationalization & Localization — i18n, L10n, Laravel lang](207-internationalization-localization.md)
+211. [Laravel Model Factories & Seeders](211-laravel-model-factories-seeders.md)
+
+### Testing
+204. [Testing Doubles Patterns — Mock, Stub, Fake, Spy](204-testing-doubles-patterns.md)
+
+---
+
+## ⭐⭐⭐ Senior — Əlavə Mövzular (205–206)
+
+### Code Quality
+205. [PHP Static Analysis — PHPStan, Larastan, Psalm](205-php-static-analysis.md)
+206. [Mutation Testing — Infection PHP, MSI](206-mutation-testing-infection.md)
+
+---
+
+## ⭐⭐⭐⭐ Lead — Əlavə Mövzular (208–210)
+
+### Engineering Effectiveness
+208. [Architecture Decision Records — ADR, MADR](208-architecture-decision-records.md)
+209. [DORA Metrics & Engineering Effectiveness](209-dora-metrics-engineering-effectiveness.md)
+
+### Advanced Orchestration
+210. [Temporal Workflow Orchestration — PHP SDK, Signal, Query](210-temporal-workflow-orchestration.md)
+
+---
+
 ## Reading Paths
 
 ### PHP/Laravel Interview Hazırlığı (2-3 həftə)
@@ -297,3 +330,9 @@ PHP backend developer üçün vacib bütün mövzular — dil əsaslarından ent
 
 ### Performance & Scalability
 054–055 → 062 → 065 → 122 → 128 → 129 → 139–141 → 142 → 132 → 156 → 159
+
+### Testing Mastery (Junior → Senior)
+021 (Pest) → 022 (Xdebug) → 052 (DB testing) → 211 (Factories) → 204 (Doubles) → 079 (Integration) → 086 (TDD) → 205 (Static analysis) → 206 (Mutation testing)
+
+### Laravel Core Features
+033–034 → 043 → 201 (Notifications) → 202 (Scheduler) → 203 (Email) → 207 (i18n) → 041 → 057–058

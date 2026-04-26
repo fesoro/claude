@@ -10,7 +10,7 @@ Bu folder PHP backend developer üçün strukturlaşdırılmış öyrənmə mate
 
 | Folder | Fayl | Nə öyrənirsən |
 |--------|------|----------------|
-| [topics/](topics/) | 200 | PHP dili, Laravel ekosistemi, arxitektura, distributed systems |
+| [topics/](topics/) | 211 | PHP dili, Laravel ekosistemi, arxitektura, distributed systems |
 | [use-cases/](use-cases/) | 60 | Real Laravel layihəsindəki konkret problem-həll ssenariləri |
 | [interview/](interview/) | 34 | Senior PHP developer interview hazırlığı (Junior → Architect) |
 | [db-designs/](db-designs/) | 33 | Real şirkətlər və tipik tətbiqlər üçün database dizaynı |
