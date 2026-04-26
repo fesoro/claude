@@ -1,6 +1,6 @@
-# Data Lake, Warehouse, Lakehouse & Mesh
+# Data Lake, Warehouse, Lakehouse & Mesh (Lead)
 
-## Nədir? (What is it?)
+## İcmal
 
 Müasir data arxitekturası sadəcə "data warehouse-a ETL" deyil. OLTP sistemindən gələn data BI dashboard, ML training, real-time analytics, data science notebook və ML feature store üçün istifadə olunur. Hər workload-un fərqli tələbi var — schema-on-write vs schema-on-read, SQL vs Python, columnar vs raw file, hot vs cold storage.
 
@@ -14,6 +14,11 @@ Dörd əsas paradiqma:
 | Data Mesh | decentralized (any of above) | domain-owned products | organizational | Zalando, Netflix, JPMorgan |
 
 Hər biri fərqli problemi həll edir və çox vaxt birlikdə istifadə olunur (məs. Iceberg lakehouse + Mesh organizational layer).
+
+
+## Niyə Vacibdir
+
+Analytics data-sının arxitekturası OLTP-dən tamamilə fərqlidir. Lakehouse (Iceberg/Delta/Hudi), medallion arxitekturası, data mesh — modern data engineering-in standartlarıdır. Backend developer-in data team ilə ünsiyyəti üçün bu anlayışları bilmək vacibdir.
 
 ## Data Warehouse
 
@@ -348,7 +353,7 @@ Lakehouse warehouse-dan xeyli ucuzdur — S3 + Spark compute scale-down edilə b
 | Real-time + historical | Lakehouse + streaming (file 54) |
 | Regulated industry | Warehouse + Unity Catalog governance |
 
-## Interview Sualları (Interview Questions)
+## Praktik Tapşırıqlar
 
 **1. Data lake və data warehouse arasında əsas fərqlər nələrdir?**
 Warehouse structured, schema-on-write, proprietary columnar, SQL-first, storage bahalı, ACID hazır (Snowflake, BigQuery). Lake raw files (Parquet/Avro) ucuz object storage-də, schema-on-read, istənilən format, ACID yox, ML-friendly. Warehouse BI üçün, lake data science + ML üçün optimize edilib. Lakehouse ikisini birləşdirir.
@@ -374,7 +379,7 @@ Laravel OLTP service-dir, lakehouse-a birbaşa yazmaq antipattern olar. Düzgün
 **8. Data governance lakehouse-də necə təmin olunur?**
 Unity Catalog (Databricks), Lake Formation (AWS), və ya OpenMetadata + Ranger. Əsas: table/row/column-level access control, column masking PII üçün (`redact(email)` query-də avtomatik mask), audit log (kim nə oxudu), data lineage (gold metric source-ə qədər), data quality test (dbt tests, Great Expectations). Mesh-də federated — global policy (PII tag məcburi) + domain autonomy (öz schema). Policy-as-code (OPA) ilə enforce.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Bronze immutable** — raw data heç vaxt overwrite etmə, append-only
 2. **Partition düzgün seç** — event_date istifadə et, user_id yox (skew)

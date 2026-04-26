@@ -1,6 +1,6 @@
-# Distributed Key-Value Store Design (Dynamo-style)
+# Distributed Key-Value Store Design (Lead)
 
-## Nədir? (What is it?)
+## İcmal
 
 Distributed key-value store — sadə `get(key)` və `put(key, value)` API-si təqdim edən, yüzlərlə node arasında horizontal scale olunan paylanmış storage sistemidir. Amazon-un 2007-ci ildəki **Dynamo paper**-i bu dizaynın əsasını qoydu. Real sistemlər: **DynamoDB** (AWS managed), **Apache Cassandra** (open source), **Riak** (Erlang ilə), **Voldemort** (LinkedIn).
 
@@ -16,7 +16,12 @@ strong consistency         tunable consistency (AP by default)
 single master              masterless, peer-to-peer
 ```
 
-## Requirementlər (Requirements)
+
+## Niyə Vacibdir
+
+Dynamo paper distributed systems-in bibliyasıdır — consistent hashing, vector clock, quorum read/write, sloppy quorum hamısı bu paperdən gəlir. DynamoDB, Cassandra, Riak — hamısı Dynamo ilhamla dizayn edilib. Bu paperi başa düşmək distributed engineering üçün fundamentaldır.
+
+## Tələblər
 
 **Functional:**
 - `put(key, value)` — value yaz (opsional: context/version)
@@ -32,7 +37,7 @@ single master              masterless, peer-to-peer
 
 **CAP theorem:** Dynamo **AP** seçir — partition zamanı availability-ni consistency-yə qurban vermir. Eventual consistency default-dur.
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ```
                    ┌──────────────────────────────────┐
@@ -59,7 +64,7 @@ single master              masterless, peer-to-peer
 
 Hər node **eyni rolu oynayır** — master yoxdur. Hər biri həm coordinator, həm storage, həm membership manager ola bilər.
 
-## Əsas Komponentlər (Core Components)
+## Əsas Anlayışlar
 
 ### 1. Consistent Hashing Ring
 
@@ -213,7 +218,7 @@ Compare Node A's root with Node B's root
 - **BerkeleyDB, Riak-default:** B-tree — read-optimized.
 - **Write-ahead log (WAL):** hər write əvvəlcə commit log-a yazılır → crash recovery üçün.
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Capacity Estimation
 
@@ -302,7 +307,7 @@ CONSISTENCY ONE;     -- fast, eventual
 SELECT * FROM cart WHERE user_id = 'u42';
 ```
 
-## Interview Sualları (Interview Questions)
+## Praktik Tapşırıqlar
 
 **Q1: Consistent hashing vs modulo hashing — niyə?**
 Modulo-da (`hash % N`) node əlavə/silinəndə **bütün key-lər yenidən paylanır** → massive data migration. Consistent hashing-də yalnız **1/N key** hərəkət edir (yeni node öz segment-ini götürür). Virtual node-lar hardware heterogeneity və balanced rebalancing üçündür.
@@ -328,7 +333,7 @@ Writes sequential append-a çevrilir (memtable → WAL → SSTable flush). B-tre
 **Q8: Hash ring-də virtual node sayını necə seçəsən?**
 Çox az (e.g., 10) → unbalanced load. Çox çox (e.g., 10,000) → metadata overhead (ring state gossip edilməlidir). Cassandra default **256 tokens per node**. Production-da 128-512 interval-ında. Heterogeneous cluster-də güclü node-a daha çox token verilir.
 
-## Best Practices
+## Praktik Baxış
 
 - **N=3 default** — fault tolerance və cost arasında balans. N=5 critical production üçün
 - **W=2, R=2 strong** — lazım olanda; **W=1, R=1 fast** — cache kimi use case üçün
@@ -342,3 +347,12 @@ Writes sequential append-a çevrilir (memtable → WAL → SSTable flush). B-tre
 - **DynamoDB transactions** — item-level `TransactWriteItems` var (25 item limit) — lazımdırsa istifadə et, amma scale cost-u bil
 - **Hot partition mitigation** — write-sharding (`user_id#random(0-9)`); adaptive capacity DynamoDB-də avtomatik
 - **TTL** — expired data-nı avtomatik sil (session, cache) — manual delete-dən ucuz
+
+
+## Əlaqəli Mövzular
+
+- [Data Partitioning](26-data-partitioning.md) — consistent hashing praktikası
+- [Database Replication](43-database-replication.md) — quorum-based replication
+- [Anti-Entropy](92-anti-entropy-merkle-trees.md) — Dynamo-da replica sinxronizasiyası
+- [Consistency](32-consistency-patterns.md) — sloppy quorum trade-off
+- [Distributed Cache](49-distributed-cache-design.md) — KV store-un cache variantı

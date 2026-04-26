@@ -1,6 +1,6 @@
-# Chaos Engineering
+# Chaos Engineering (Lead)
 
-## Nədir? (What is it?)
+## İcmal
 
 Chaos Engineering - production sistemləri üzərində məqsədli şəkildə eksperimentlər aparmaq discipline-dır. Məqsəd: sistemin turbulent şərtlərə (instance crash, network latency, dependency failure) davamlılığını qabaqcadan yoxlamaq və confidence yaratmaq.
 
@@ -17,6 +17,11 @@ Netflix-in rəsmi principlesofchaos.org-da 5 əsas prinsip var:
 3. **Run experiments in production** - stage environment real trafikin, config-in, data-nın tam replikası deyil. Production-da (kontrollu) yoxlamaq lazımdır.
 4. **Automate experiments continuously** - manual game day-lər yaxşıdır, amma daimi avtomatlaşdırılmış eksperimentlər regression aşkar edir.
 5. **Minimize blast radius** - eksperiment zərər vursa belə, ən kiçik sahəyə (1 pod, 1 AZ, 1% traffic) dəysin.
+
+
+## Niyə Vacibdir
+
+'Sistem resilient-dir' demək yetmez — sübut etmək lazımdır. Netflix Chaos Monkey kimi fault injection production-da gizli zəiflikləri üzə çıxarır. Resilience-i yalnız chaos testi ilə sübut etmək mümkündür; GameDay planlanmış xaos tədbirlərini komandaya öyrədir.
 
 ## Niyə Lazımdır? (Why)
 
@@ -332,7 +337,7 @@ Bu, retry və circuit breaker logic-ini real-istic test edir.
 7. **No chaos during incidents** - aktiv incident varkən yeni chaos başlamır
 8. **Audit trail** - kim nə vaxt hansı eksperiment etdi, qeyd olunur
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **Q1: Chaos engineering və klassik testing arasında fərq nədir?**
 Klassik testing funksional davranışı yoxlayır (unit, integration, E2E) - "kod düzgün nəticə verirmi?". Chaos engineering resilience-i yoxlayır - "kod nasazlığa necə reaksiya verir?". Unit test tək funksiyanı isolated test edir, chaos experiment distributed sistemin emergent davranışını turbulent şəraitdə yoxlayır. Chaos hypothesis-driven-dir: steady-state metric təyin edirsən, fault inject edirsən, metric-in qorunduğunu yoxlayırsan. Həmçinin chaos çox vaxt production-da aparılır, testing isə environments-də.
@@ -364,7 +369,7 @@ Dəyərlidir, amma fərqli fault-lara fokuslan. Microservices-də əsas chaos de
 **Q10: Chaos engineering nə vaxt başlatmaq ERKƏNDİR?**
 Bu şərtlərdə hələ başlama: (1) **Observability yoxdur** - əvvəl Prometheus/Grafana qur; (2) **Rollback test edilməyib** - rollback özü chaos zamanı fail edə bilər; (3) **MTTR yüksəkdir** - incident-lər 4+ saat çəkir, əvvəl on-call process düzəldilməli; (4) **Culture blaming-dir** - hər incident-də kimi günahlandırırsan, chaos-dan heç kim qorxmayacaq; (5) **Single point of failure kritikdir** - əvvəl redundancy qur; (6) **Tək bir eng-lik komanda** - incident olsa kim response edəcək? Chaos engineering əlavə maturity tələb edir, foundational reliability practices olmadan xərc çox olur.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Observability əvvəldir** - chaos başlamazdan əvvəl metrics, tracing, logging tam olmalıdır
 2. **Start in staging** - first experiment staging-də keç, sonra production-a
@@ -384,3 +389,12 @@ Bu şərtlərdə hələ başlama: (1) **Observability yoxdur** - əvvəl Prometh
 16. **Runbook hər failure mode üçün** - yeni failure mode tapsan dərhal runbook yaz
 17. **Practice rollback** - rollback path-ını aktiv işlət, muscle memory yarat
 18. **Gradual adoption** - infra → network → application → data faults
+
+
+## Əlaqəli Mövzular
+
+- [SLA/SLO](44-sla-slo-sli.md) — error budget xərclənməsi
+- [Circuit Breaker](07-circuit-breaker.md) — chaos-da resilience mexanizmi
+- [Disaster Recovery](30-disaster-recovery.md) — DR planını sınaqdan keçirmək
+- [Backpressure](57-backpressure-load-shedding.md) — yük altında sistem davranışı
+- [Multi-Region](85-multi-region-active-active.md) — regional failover sınaqları

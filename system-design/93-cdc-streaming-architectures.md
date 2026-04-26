@@ -1,6 +1,11 @@
-# 93. CDC Streaming Architectures — Debezium, Schema Registry, DLQ
+# CDC Streaming Architectures (Architect)
 
 Change Data Capture (CDC) — DB-dən **real-time change stream**-lər çıxarmaq üçün platformadır. File 46 CDC + outbox pattern-inə toxunur; bu fayl full streaming pipeline arxitekturasını (Debezium → Kafka → sinks), schema evolution-u, delivery semantics və production pitfall-larını dərinliklə araşdırır.
+
+
+## Niyə Vacibdir
+
+Database log-un event stream-ə çevrilməsi real-time data pipeline-ların əsasıdır. Schema registry, DLQ, exactly-once semantics, slot retention — production Debezium deployment-inin qarşısına çıxan real problemlərdir. Mikroservis inteqrasiyasının ən reliable yolu CDC-dir.
 
 ## CDC növləri — müqayisə
 
@@ -517,6 +522,15 @@ Alert:
 - Kafka cluster ~20 brokers (3x replication)
 - Snapshot time for new connector on 10 TB table → 4-12 hours
 
-## Yekun
+## Ətraflı Qeydlər
 
 CDC streaming arxitektura modern data platform-larının damarı. Log-based CDC (Debezium) eldə edilən production-sensitive solution-dur. Ən kritik risk — Postgres replication slot monitoring (unattended slot → DB ölümü). Kafka Schema Registry schema evolution-u emniyyətli edir. DLQ + idempotent sink-lər retry-leri qorxmadan icazə verir. Exactly-once yalnız Kafka boyunca mümkündür — sink-ə end-to-end exactly-once üçün idempotent upsert lazımdır. Outbox pattern + CDC birlikdə domain event-ləri DB consistency-si ilə birlikdə emit etmək üçün ən etibarlı tandem-dir.
+
+
+## Əlaqəli Mövzular
+
+- [CDC & Outbox](46-cdc-outbox-pattern.md) — CDC-nin application pattern ilə kombinasiyası
+- [Stream Processing](54-stream-processing.md) — CDC stream-i işləmək
+- [Pub/Sub](81-pubsub-system-design.md) — CDC event delivery platform
+- [Elasticsearch Internals](90-elasticsearch-internals.md) — DB-dən ES-ə CDC sync
+- [Event-Driven Architecture](11-event-driven-architecture.md) — CDC event-driven pattern

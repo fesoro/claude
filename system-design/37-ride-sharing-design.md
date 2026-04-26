@@ -1,6 +1,6 @@
-# Ride-Sharing System Design (Uber/Lyft)
+# Ride-Sharing System Design (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Ride-sharing sistem** — real-time olaraq sərnişinləri sərbəst sürücülərlə tapan, mövqe izləyən, qiymətləndirən və ödəniş idarə edən paylanmış sistem. Uber, Lyft, Bolt, Didi kimi xidmətlər belə işləyir.
 
@@ -9,7 +9,12 @@
 - **Non-functional**: low latency (<200ms matching), high availability (99.99%), scalability (milyardlarla trip/il)
 - **Geospatial queries** çox sürətli olmalıdır — "5km radiusda sərbəst sürücülər"
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Uber/Lyft arxitekturası real-time geospatial matching, surge pricing, driver-rider pairing kimi mürəkkəb problemi əhatə edir. Geohash indexing, WebSocket-based location update, dispatch algorithm — sistem dizayn müsahibəsinin ən sevimli mövzularından biridir.
+
+## Əsas Anlayışlar
 
 ### Sistem Tələbləri (funksional)
 
@@ -200,7 +205,7 @@ GPS: WebSocket / gRPC streaming
 - **Rating Service** — hər iki tərəf
 - **Driver Service** — onboarding, documents
 
-## PHP/Laravel ilə Tətbiq
+## Nümunələr
 
 ### Geohash ilə Driver Location
 
@@ -528,7 +533,7 @@ class TripService
 - **Google Maps API** — routing, ETA (çox şirkət istifadə edir)
 - **Valhalla** — open-source routing (Mapbox)
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **1. Milyonlarla driver mövqeyini necə efficient saxlayarsan?**
 Redis GEO (sorted set + geohash internally). `GEOADD` mövqeyi yazır, `GEORADIUS` N km radius-da sorğu verir. Million+ drivers üçün sharding — hər region ayrı Redis cluster. Uber H3 hexagonal grid istifadə edir.
@@ -597,7 +602,7 @@ Driver bir neçə request-i eyni anda alırsa:
 - Real-time scoring (Kafka Streams)
 - Rate limiting (gündə max trip)
 
-## Best Practices
+## Praktik Baxış
 
 1. **Geospatial index** — Redis GEO, H3, yaxud S2 — manual geohash yazma
 2. **Real-time streaming** — Kafka + Flink/Spark, DB-ə hər location yazma
@@ -614,3 +619,12 @@ Driver bir neçə request-i eyni anda alırsa:
 13. **PII məlumatlarını şifrələ** — GDPR, local regulations
 14. **Driver onboarding avtomatlaşdır** — document verification
 15. **Real-time dashboards** — demand/supply, surge areas, SLA
+
+
+## Əlaqəli Mövzular
+
+- [Geospatial Design](71-geospatial-system-design.md) — geohash, quadtree, H3 indexing
+- [Real-Time Systems](17-real-time-systems.md) — driver location update
+- [Matchmaking](60-matchmaking-system-design.md) — driver-rider eşləşdirmə
+- [Food Delivery](64-food-delivery-design.md) — oxşar dispatch arxitekturası
+- [Distributed Locks](83-distributed-locks-deep-dive.md) — driver assignment lock

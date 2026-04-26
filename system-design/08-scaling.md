@@ -1,6 +1,6 @@
-# Scaling
+# Scaling (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Scaling sistemin artan yükü idarə etmək qabiliyyətidir. İstifadəçi sayı artdıqca,
 daha çox trafik, daha çox data, daha çox hesablama lazım olur. İki əsas yanaşma var:
@@ -13,7 +13,12 @@ Vertical Scaling:          Horizontal Scaling:
   (daha güclü maşın)         (daha çox maşın)
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+İstənilən sistem bir nöqtədə resurs limitinə çatır. Vertical scale baha və limitlidir; horizontal scale production standartıdır. Stateful vs stateless fərqi scale strategiyasını müəyyən edir — session, cache, upload — hamısı bu seçimlə bağlıdır.
+
+## Əsas Anlayışlar
 
 ### Vertical vs Horizontal Scaling
 
@@ -125,7 +130,7 @@ Reuse existing connections, azaldır overhead
 
 **Sharding** (bax: 26-data-partitioning.md)
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Scaling Laravel Arxitekturası
 
@@ -188,7 +193,7 @@ spec:
       stabilizationWindowSeconds: 300
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Stateless Laravel Configuration
 
@@ -354,7 +359,7 @@ sticky, amma HTTP request-lər stateless. Auto-scaling traffic pattern-ə görə
 **Shopify (Ruby/Rails):** Multi-tenant architecture, tenant-per-shard database.
 Pod architecture - hər pod independent cluster. Black Friday üçün pre-scaling.
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S: Vertical vs horizontal scaling fərqi?**
 C: Vertical: daha güclü server, sadə amma limitli, single point of failure.
@@ -376,7 +381,7 @@ C: 1) Query optimization + indexing, 2) Read replicas (read heavy workload),
 3) Connection pooling, 4) Caching layer (Redis), 5) Vertical scaling (bigger instance),
 6) Sharding (horizontal partitioning), 7) Denormalization, 8) Different DB for different needs.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Stateless dizayn edin** - İlk gündən state externalize edin
 2. **Cache everything** - DB-yə gələn hər request-i azaldın
@@ -388,3 +393,12 @@ C: 1) Query optimization + indexing, 2) Read replicas (read heavy workload),
 8. **Load test** - Production-a qədər scale test edin
 9. **Cost optimize** - Reserved instances, spot instances istifadə edin
 10. **Start simple** - Premature optimization etməyin, bottleneck olduqda scale edin
+
+
+## Əlaqəli Mövzular
+
+- [Load Balancing](01-load-balancing.md) — horizontal scale-in şərti
+- [Data Partitioning](26-data-partitioning.md) — DB scale strategiyası
+- [Caching](03-caching-strategies.md) — scale-ı gecikdirən ən effektiv yol
+- [Database Design](09-database-design.md) — scale-ı mümkün edən dizayn
+- [Multi-Tenancy](35-multi-tenancy.md) — SaaS-da çox müştərini miqyaslandırmaq

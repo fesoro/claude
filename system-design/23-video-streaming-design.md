@@ -1,6 +1,6 @@
-# Video Streaming Design
+# Video Streaming Design (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Video streaming sistemi video contentini istifadəçilərə real-time çatdıran arxitekturadır.
 Upload, transcoding (format çevirmə), adaptive bitrate streaming, və CDN delivery əhatə
@@ -29,7 +29,12 @@ Original Video (4K, 10GB)
 └──────────────┘     └──────┘     └──────┘
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Video ən böyük bandwidth istehlakçısıdır; HLS/DASH adaptive bitrate istifadəçinin şəbəkəsinə uyğun keyfiyyət seçir. CDN olmadan qlobal video streaming mümkün deyil. YouTube/Netflix-in arxitekturası — transcoding pipeline, chunked storage, adaptive player — texniki dərinliyin klassik nümunəsidir.
+
+## Əsas Anlayışlar
 
 ### HLS vs DASH
 
@@ -125,7 +130,7 @@ YouTube: 500 hours uploaded per minute
   = 10.44 PB per day
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Video Platform Architecture
 
@@ -170,7 +175,7 @@ YouTube: 500 hours uploaded per minute
 └─────────────────────────────────────────────────────┘
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Video Upload Service
 
@@ -406,7 +411,7 @@ class VideoController extends Controller
 4. **TikTok** - Short-form video, aggressive transcoding, global CDN
 5. **Disney+** - Premium content, DRM protection, 4K HDR
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S1: HLS vs DASH fərqi nədir?**
 C: HLS Apple tərəfindən yaradılıb, .m3u8 playlist, .ts segments, geniş browser support.
@@ -438,7 +443,7 @@ C: Spot/preemptible instances ilə transcoding (70% qənaət). Per-title encodin
 (content complexity-ə görə bitrate). Lazy transcoding (istifadə olunmayan
 quality-ləri sonradan encode). Parallel processing ilə sürət artırma.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Chunked Upload** - Böyük video faylları parçalayıb yükləyin
 2. **Async Transcoding** - Queue-da background processing
@@ -450,3 +455,12 @@ quality-ləri sonradan encode). Parallel processing ilə sürət artırma.
 8. **Cost Optimization** - Spot instances, S3 storage classes
 9. **Content Moderation** - Upload olunan videoları auto-review edin
 10. **Resumable Upload** - Upload kəsildikdə davam etmək imkanı
+
+
+## Əlaqəli Mövzular
+
+- [CDN](04-cdn.md) — video chunk-larını edge-dən serv etmək
+- [File Storage](15-file-storage.md) — video origin saxlaması
+- [Live Streaming](58-live-streaming-design.md) — real-time video ingest və delivery
+- [Video Conferencing](80-video-conferencing-design.md) — iki tərəfli video
+- [Stream Processing](54-stream-processing.md) — video analitika pipeline

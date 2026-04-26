@@ -1,10 +1,15 @@
-# Live Auction System Design (eBay-like)
+# Live Auction System Design (Lead)
 
 Real-time bidding sistemi — istifadəçilər məhsullara canlı təklif verir, qalib son təklifə görə müəyyən edilir. eBay, Sotheby's, Catawiki kimi platformalar.
 
 ---
 
-## Tələblər (Requirements)
+
+## Niyə Vacibdir
+
+eBay-in live auction sistemi bid concurrency — eyni anda minlərlə bid — real-time broadcast, anti-sniping mexanizmi kimi mürəkkəb problemlər toplusudur. Ticketing sistemi ilə oxşar, lakin auction closing məntiqi, proxy bidding əlavə edir. Finansal sistemlə real-time-ı birləşdirir.
+
+## Tələblər
 
 ### Funksional (Functional)
 
@@ -79,7 +84,7 @@ Max məbləği heç kəsə göstərmə — rəqiblər yalnız current_price gör
 
 ---
 
-## Data model
+## Data Model
 
 ```sql
 CREATE TABLE auctions (
@@ -114,7 +119,7 @@ CREATE TABLE bids (
 
 ---
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ```
   [Browser/Mobile]
@@ -398,7 +403,7 @@ Real-time top bidder list O(log N).
 
 ---
 
-## Interview Q&A
+## Praktik Tapşırıqlar
 
 ### Q1: Eyni millisecond-da iki eyni məbləğdə bid gəlsə?
 
@@ -434,7 +439,7 @@ Bütün server UTC işləyir, NTP sync məcburi (max drift 50ms). Client time-a 
 
 ---
 
-## Best Practices
+## Praktik Baxış
 
 - **Idempotency** hər bid endpoint-də (`client_bid_id`) — double-submit problem həll olur
 - **Server time authoritative** — client countdown display only
@@ -453,7 +458,7 @@ Bütün server UTC işləyir, NTP sync məcburi (max drift 50ms). Client time-a 
 
 ---
 
-## Əlaqəli mövzular
+## Əlaqəli Mövzular
 
 - [Flash Sale Design](86-flash-sale-design.md) — hot product, similar concurrency problem
 - [Payment Systems](54-payment-systems.md) — escrow, hold, capture

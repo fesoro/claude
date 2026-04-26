@@ -1,6 +1,6 @@
-# Typeahead / Autocomplete Design
+# Typeahead / Autocomplete Design (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Typeahead / autocomplete** — istifadəçi axtarış qutusuna simvol yazdıqca, real-time
 olaraq ən populyar tamamlanma variantlarını göstərən sistemdir. Google, Amazon,
@@ -10,7 +10,12 @@ istifadə edir.
 Sadə dillə: istifadəçi "doc" yazır, sistem "docker", "docker compose", "documentation"
 kimi top-N suggestion qaytarır — 50-100ms içində, hər tuş basılışında.
 
-## Tələblər (Requirements)
+
+## Niyə Vacibdir
+
+Hər axtarış qutusu real-time suggestion tələb edir; sorğu başa çatmadan nəticə göstərməli. Trie data structure, top-K per prefix, typo tolerance, personalization — Google/Amazon axtarışının arxitektura nümunəsidir. Latency < 100ms tələb edir; cache olmadan mümkün deyil.
+
+## Tələblər
 
 ### Funksional
 
@@ -317,7 +322,7 @@ user history 90 gündən sonra anonymize; profanity blacklist.
 (500M+ catalog, personalized by purchase), Twitter @mention (user graph +
 follower count), VS Code (symbol table + ML ranking, IntelliCode/Copilot).
 
-## Müsahibə Sualları (Interview Q&A)
+## Praktik Tapşırıqlar
 
 **S1: Niyə trie, hash map deyil?**
 C: Hash map yalnız exact key match verir. Trie prefix-based lookup üçün
@@ -361,7 +366,7 @@ Flink / Redis counter → hourly trending top. Serve zamanı
 `merge(trie_result, trending_overlay)` — trending-ə boost. Yeni event
 (məs. "Olimpiya 2026") dəqiqələr içində görünür.
 
-## Best Practices
+## Praktik Baxış
 
 1. **In-memory index** — Typeahead disk-dən oxumamalıdır, hər şey RAM-da
 2. **Pre-computed top-K** — Runtime-da sort etmə, build time-da hazır olsun
@@ -375,3 +380,12 @@ Flink / Redis counter → hourly trending top. Serve zamanı
 10. **Monitoring** — p50/p95/p99 latency, cache hit ratio, trending lag
 11. **Fuzzy fallback** — Yalnız 0 nəticədə, default slow path-dır
 12. **Personalization opt-in** — Privacy üçün istifadəçiyə seçim ver
+
+
+## Əlaqəli Mövzular
+
+- [Search Systems](12-search-systems.md) — full-text search əsasları
+- [Document Search](76-document-search-design.md) — Algolia instant search
+- [Caching](03-caching-strategies.md) — popular prefix cache
+- [Probabilistic Data Structures](33-probabilistic-data-structures.md) — trending query tracking
+- [Database Design](09-database-design.md) — prefix index strategiyası

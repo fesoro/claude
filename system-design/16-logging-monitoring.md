@@ -1,6 +1,6 @@
-# Logging & Monitoring
+# Logging & Monitoring (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Logging və monitoring sistemləri tətbiqin sağlamlığını, performansını və davranışını
 izləmək üçün istifadə olunur. Logging - hadisələri qeydə almaq, Monitoring - metriklər
@@ -15,7 +15,12 @@ Application → Logs → Centralized Storage → Search & Analysis
            → Alerts → Notification Channels
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Production-da problem aşkar etmək üçün observability olmadan 'blind fly' etmiş olursunuz. Centralized logging, metrics, distributed tracing — üç pillar olmadan MTTR (mean time to repair) yüksək olur. ELK stack, Prometheus, Grafana — real şirkətlərin standart observability tool-larıdır.
+
+## Əsas Anlayışlar
 
 ### Three Pillars of Observability
 
@@ -138,7 +143,7 @@ Total: 200ms
 Tools: Jaeger, Zipkin, AWS X-Ray, Datadog APM
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Complete Observability Stack
 
@@ -174,7 +179,7 @@ Tools: Jaeger, Zipkin, AWS X-Ray, Datadog APM
                        └─────────────┘
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Laravel Logging Configuration
 
@@ -473,7 +478,7 @@ class HealthCheckController extends Controller
 4. **Datadog** - SaaS observability platform (logs + metrics + traces)
 5. **Grafana Labs** - Grafana + Loki (logs) + Tempo (traces) + Mimir (metrics)
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S1: Centralized logging niyə lazımdır?**
 C: Microservices-də hər service öz log-unu yazır. Problem araşdırmaq üçün bütün
@@ -505,7 +510,7 @@ C: Hot storage (Elasticsearch) - son 7-30 gün, warm storage - 3 ay, cold/archiv
 (S3 Glacier) - 1+ il. Compliance tələblərinə görə dəyişir. Log rotation və
 lifecycle policy ilə avtomatlaşdırın.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Structured Logging** - JSON format istifadə edin
 2. **Correlation ID** - Hər request-ə unique ID verin
@@ -517,3 +522,12 @@ lifecycle policy ilə avtomatlaşdırın.
 8. **Health Checks** - /health endpoint hər service-də olsun
 9. **SLI/SLO** - Service Level Indicators və Objectives təyin edin
 10. **Runbooks** - Hər alert üçün həll yolu sənədləşdirin
+
+
+## Əlaqəli Mövzular
+
+- [SLA/SLO/SLI](44-sla-slo-sli.md) — observability ilə SLA-nı ölçmək
+- [Metrics System Design](53-metrics-monitoring-design.md) — custom monitoring arxitekturası
+- [Distributed Tracing](91-distributed-tracing-deep-dive.md) — mikroservis sorğu izləmə
+- [Chaos Engineering](56-chaos-engineering.md) — monitoring ilə xaos sınaqları
+- [Disaster Recovery](30-disaster-recovery.md) — incident zamanı observability

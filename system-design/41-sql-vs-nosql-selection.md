@@ -1,6 +1,6 @@
-# SQL vs NoSQL Selection
+# SQL vs NoSQL Selection (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 **SQL (Relational)** və **NoSQL (Non-Relational)** database-lər fərqli use case-lər üçün optimallaşdırılmış məlumat saxlama sistemləridir. Doğru seçim sistemin **performans**ına, **scalability**-sinə, **konsistensiyasına** və **geliştirmə sürətinə** birbaşa təsir edir.
 
@@ -12,7 +12,12 @@
 - **SQL**: "Mənə konsistent, struktur, transaksiyalı sistem lazımdır" (bank, ERP).
 - **NoSQL**: "Mənə böyük miqyaslı, elastik, sürətli oxuma/yazma lazımdır" (feed, analytics, cache).
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Yanlış DB seçimi migration-ı çox baha edir. PostgreSQL vs MongoDB vs Cassandra vs Redis — hər birinin özünəməxsus güclü tərəfləri var; problem-ə uyğun seçim 1-2 il sonrakı performance-ı müəyyən edir. 'NoSQL daha sürətli' kimi mif-ləri aradan qaldırır.
+
+## Əsas Anlayışlar
 
 ### SQL xüsusiyyətləri
 
@@ -57,7 +62,7 @@
 - **Cassandra**: AP (eventual consistency, tunable).
 - **DynamoDB**: AP (configurable strong/eventual).
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Decision Tree
 
@@ -80,7 +85,7 @@
 | **Write speed** | Orta | Yüksək | Ən yüksək | Ən yüksək | Orta |
 | **Example** | MySQL, PostgreSQL | MongoDB | Redis, DynamoDB | Cassandra | Neo4j |
 
-## PHP/Laravel ilə Tətbiq
+## Nümunələr
 
 ### 1. SQL (Eloquent + MySQL) - Financial Transaction
 
@@ -273,7 +278,7 @@ class EcommerceSystem {
 - Özlərinin **Espresso** document store-nu yaratdılar (MySQL üzərində).
 - Səbəb: Strong consistency + document semantics + horizontal scale.
 
-## Interview Sualları (Q&A)
+## Praktik Tapşırıqlar
 
 ### 1. ACID və BASE arasındakı fərq nədir?
 
@@ -374,7 +379,7 @@ class EcommerceSystem {
 - Trade-off: Latency bir az artır (cross-region writes), amma consistency və scale birlikdə gəlir.
 - **Kim istifadə edir**: Uber, Bytedance, Alibaba (mission-critical transactional systems).
 
-## Best Practices
+## Praktik Baxış
 
 1. **Start with SQL** - PostgreSQL 99% layihə üçün kifayətdir. Bottleneck hiss etməyincə NoSQL-ə keçmə.
 2. **YAGNI prinsipi** - "Biz bir gün milyon TPS istərik" - indi polyglot quruma.
@@ -391,3 +396,12 @@ class EcommerceSystem {
 13. **Data locality** - User-ə yaxın region-da DB yerləşdir (multi-region replication).
 14. **Cost modelini anla** - DynamoDB on-demand vs provisioned, MongoDB Atlas tier-ləri.
 15. **Test with production-like load** - Benchmark kiçik dataset-də yanıldıcı ola bilər.
+
+
+## Əlaqəli Mövzular
+
+- [Database Design](09-database-design.md) — DB daxilindəki dizayn qərarları
+- [Database Replication](43-database-replication.md) — SQL vs NoSQL replication fərqi
+- [CAP & PACELC](42-cap-pacelc.md) — DB-nin consistency zəmanəti
+- [KV Store](50-key-value-store-design.md) — NoSQL-in ən sadə forması
+- [Data Partitioning](26-data-partitioning.md) — NoSQL-də sharding strategiyası

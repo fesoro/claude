@@ -1,6 +1,6 @@
-# Change Data Capture (CDC) & Outbox Pattern
+# Change Data Capture (CDC) & Outbox Pattern (Lead)
 
-## Nədir? (What is it?)
+## İcmal
 
 Microservices və event-driven sistemlərdə tez-tez rast gəlinən problem — **dual-write problem**. Service bir əməliyyatda həm DB-yə yazmalı, həm də Kafka/RabbitMQ-ya event publish etməlidir. Bu iki yazını **atomik** etmək mümkün deyil — biri uğurlu, digəri fail ola bilər. Nəticə: data inconsistency.
 
@@ -9,6 +9,11 @@ Microservices və event-driven sistemlərdə tez-tez rast gəlinən problem — 
 - **Outbox Pattern** — domain data və event-i eyni DB transaction-da yazmaq, sonra ayrı relay prosesi ilə broker-ə ötürmək
 
 Bu iki texnika reliability və eventual consistency-ni təmin edir.
+
+
+## Niyə Vacibdir
+
+'DB-ni yenilə və Kafka-ya event göndər' — bunları bir transaction-da etmək mümkün deyilsə outbox pattern həll yoludur. CDC (Debezium) DB log-u oxuyaraq event stream yaradır; data pipeline-ların əsasıdır. Microservice event-driven inteqrasiya üçün kritik pattern-dir.
 
 ## Dual-Write Problem
 
@@ -27,7 +32,7 @@ Ssenarilər:
 
 **DB transaction Kafka-nı əhatə etmir.** İki fərqli sistem arasında 2PC (two-phase commit) çox bahalıdır və production-da qaçırılır.
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Anlayışlar
 
 ### 1. Change Data Capture (CDC)
 
@@ -146,7 +151,7 @@ CREATE TABLE inbox_events (
 );
 ```
 
-## PHP/Laravel ilə Tətbiq
+## Nümunələr
 
 ### Outbox Migration
 
@@ -350,7 +355,7 @@ Event schema zamanla dəyişəcək. Vacib qaydalar:
 - **LinkedIn** — Databus (ilk log-based CDC sistemlərindən)
 - **Stripe** — Outbox pattern ödəniş event-ləri üçün
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **1. Dual-write problem nədir və necə həll olunur?**
 DB və message broker arasında atomik yazı mümkün olmadığından biri uğurlu, digəri fail ola bilər. Həll: Outbox pattern (eyni DB transaction-da event yazmaq) və ya CDC (DB log-dan oxu).
@@ -376,7 +381,7 @@ Periodic cleanup job — `sent_at` köhnə olanları sil (7-30 gün arxivlə). P
 **8. Schema evolution zamanı consumer-lər necə qorunur?**
 Event-ə `version` sahəsi əlavə et, Schema Registry ilə backward-compatible dəyişiklik et (yalnız nullable sahə əlavə, sahə silmək qadağan). Köhnə və yeni consumer paralel işləsin, traffic tədricən yeni versiyaya keçsin. Parse error-lar üçün DLQ (dead letter queue) saxla.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Outbox-u eyni transaction-da yaz** — ayrı DB connection istifadə etmə, eyni transaction olmalıdır
 2. **Idempotent consumer** — hər event ən azı bir dəfə çatacaq, handler duplicate-ə hazır olsun
@@ -390,3 +395,12 @@ Event-ə `version` sahəsi əlavə et, Schema Registry ilə backward-compatible 
 10. **CDC üçün read replica** — binlog replication traffic master-dən gəlsin, production-a təsir etməsin
 11. **Outbox + CDC hybrid** — domain event-lər üçün ən güclü variant
 12. **Kafka retention** — topic-lər ən azı 7 gün saxlansın ki consumer recovery edə bilsin
+
+
+## Əlaqəli Mövzular
+
+- [Distributed Transactions](45-distributed-transactions-saga.md) — saga event reliable delivery
+- [Event-Driven Architecture](11-event-driven-architecture.md) — outbox pattern konteksti
+- [Stream Processing](54-stream-processing.md) — CDC stream-ini işləmək
+- [CDC Streaming](93-cdc-streaming-architectures.md) — Debezium dərin arxitekturası
+- [Message Queues](05-message-queues.md) — outbox-un çatdırdığı yer

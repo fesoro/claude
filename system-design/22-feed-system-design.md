@@ -1,6 +1,6 @@
-# Feed System Design
+# Feed System Design (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Feed system istifadəçilərə personalized content axını göstərən sistemdir. Social media
 news feed, Twitter timeline, Instagram feed kimi. İstifadəçinin izlədiyi insanların
@@ -20,7 +20,12 @@ C posts: "New blog post"        │              │      1. C: "New blog post"
                                 └──────────────┘
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Social feed milyonlarla istifadəçiyə real-time personalized content göstərməlidir. Fan-out-on-write vs fan-out-on-read seçimi sistemi əsaslı şəkildə dəyişdirir; celebrity user problemi ayrıca həll tələb edir. Twitter/Instagram feed — sistem dizayn müsahibəsinin sevimli suallarından biridir.
+
+## Əsas Anlayışlar
 
 ### Fan-out on Write vs Fan-out on Read
 
@@ -139,7 +144,7 @@ Cursor-based (recommended):
   Advantage: Stable pagination, no duplicates
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Feed System Architecture
 
@@ -182,7 +187,7 @@ Cursor-based (recommended):
     └─────────────────────────┘
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Post Creation with Fan-out
 
@@ -458,7 +463,7 @@ class BackfillFeed implements ShouldQueue
 4. **LinkedIn** - Professional feed with engagement-based ranking
 5. **TikTok** - "For You" page, content-based recommendation (not follow-based)
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S1: Fan-out on Write vs Read fərqi nədir?**
 C: Write: post yarananda bütün follower-ların feed-inə push. Sürətli read amma
@@ -490,7 +495,7 @@ C: Cold start problem. Həll: popular/trending posts göstərin, onboarding-də
 maraq kateqoriyaları seçdirin, suggested accounts, editorial curated content
 göstərin ilk günlərdə.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Hybrid Fan-out** - Push for regular users, pull for celebrities
 2. **Cursor Pagination** - Offset əvəzinə cursor istifadə edin
@@ -502,3 +507,12 @@ göstərin ilk günlərdə.
 8. **Denormalized Data** - Feed item-da lazımi data embed edin
 9. **Real-time Updates** - WebSocket ilə yeni postları push edin
 10. **Content Diversity** - Eyni authordan ardıcıl çox post göstərməyin
+
+
+## Əlaqəli Mövzular
+
+- [Social Graph](61-social-graph-design.md) — kimin kimi izlədiyini bilmək
+- [Recommendation System](36-recommendation-system.md) — feed ranklaşdırma
+- [Caching](03-caching-strategies.md) — precomputed feed cache
+- [Message Queues](05-message-queues.md) — yeni post fan-out
+- [Data Partitioning](26-data-partitioning.md) — feed-i şardlamaq

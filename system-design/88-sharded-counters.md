@@ -1,6 +1,11 @@
-# 88. Sharded Counters & Probabilistic Counting
+# Sharded Counters & Probabilistic Counting (Lead)
 
 Distributed sistemdə "neçə like?", "neçə view?", "neçə istifadəçi online?" suallarına saniyədə milyonlarla event axınında cavab vermək — single-row `UPDATE counter SET n=n+1` ilə mümkün deyil. Bu fayl hot-row contention problemini, **sharded counter** həllini və approximate counting (HyperLogLog, Morris counter) texnikalarını araşdırır. File 33 ümumi probabilistic DS-ə toxunur — bu fayl counter-specific deep dive-dır.
+
+
+## Niyə Vacibdir
+
+Instagram 'like' sayacı single row UPDATE-dir — yüksək yazı trafiki row lock contentionuna gətirir. Sharded counter, Redis INCR + flush, Morris approximate algorithm — hot row probleminin praktik həlləridir. YouTube view count, Reddit karma — hamısı bu pattern-i istifadə edir.
 
 ## Problem — Single-row UPDATE contention
 
@@ -339,7 +344,7 @@ UPDATE post_stats SET likes = likes + 1 WHERE post_id = ?;
 - 500M tweets × 10 shards × 24 bytes = 120 GB (all time)
 - Read: 10 rows per SELECT, well within index
 
-## Best practices
+## Praktik Baxış
 
 1. **Write-heavy counter → shard** — hot row öldürən enemy
 2. **Exact-unique → HLL** olmasa, impossible memory-wise
@@ -371,6 +376,15 @@ UPDATE post_stats SET likes = likes + 1 WHERE post_id = ?;
 - PFMERGE for multi-day / multi-product
 - Exact count possible via Spark batch (hourly)
 
-## Yekun
+## Ətraflı Qeydlər
 
 Sharded counter sadə ideyadır amma hot-row bottleneck-in ən effektiv həllidir. Ən vacib suallar: **exact sayı doğrudan lazımdır?** (pul: ha, likes: yox), **write QPS necədir?** (decide shard count), **cost / storage constraint?** (HLL dramatic save). Modern sistemlər (Instagram, Twitter, YouTube) bu texnikaların kombinasiyasını işlədir — tək-tək deyil.
+
+
+## Əlaqəli Mövzular
+
+- [Data Partitioning](26-data-partitioning.md) — sharding prinsipləri
+- [Caching](03-caching-strategies.md) — Redis-də counter cache
+- [Distributed Locks](83-distributed-locks-deep-dive.md) — counter atomicity
+- [Probabilistic Data Structures](33-probabilistic-data-structures.md) — HLL approximate count
+- [Pub/Sub](81-pubsub-system-design.md) — counter event streaming

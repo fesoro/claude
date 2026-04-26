@@ -1,6 +1,6 @@
-# Distributed File System Design (HDFS / GFS)
+# Distributed File System Design (Lead)
 
-## Nədir? (What is it?)
+## İcmal
 
 Distributed file system minlərlə commodity server üzərində petabyte-larla məlumatı
 saxlayan, fault-tolerant, yüksək throughput-lu storage sistemidir. Klassik nümunələr:
@@ -18,7 +18,12 @@ File (1 TB video.mp4)
       └─ Chunk 3 (128 MB) → DataNode A, C, F
 ```
 
-## Tələblər (Requirements)
+
+## Niyə Vacibdir
+
+HDFS/GFS Google-un MapReduce infrastrukturunun əsasıdır. NameNode bottleneck, write pipeline, rack-aware replication — petabyte-lar saxlayan sistemin arxitektura seçimləridir. Hadoop ekosistemini başa düşmək data engineering ilə kəsişən backend developer üçün vacibdir.
+
+## Tələblər
 
 - İstənilən ölçüdə fayl (GB-dan TB-a), write-once-read-many workload
 - Append əməliyyatı (streaming), high aggregate throughput
@@ -234,7 +239,7 @@ HDFS hər fayl ~150 B metadata. 100M kiçik fayl = 15 GB NN heap. Həllər:
 | GCS       | Object      | Strong            | BigQuery, Dataflow       |
 | MinIO     | Object (S3) | Strong            | Self-hosted S3           |
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 PHP-də birbaşa HDFS client nadirdir. Tipik yanaşmalar: **S3/MinIO** (object store),
 **WebHDFS** REST API.
@@ -329,7 +334,7 @@ class WebHdfsClient
 }
 ```
 
-## Interview Sualları (Interview Questions)
+## Praktik Tapşırıqlar
 
 **S1: Niyə chunk size 64-128 MB, 4 KB yox?**
 C: Master metadata in-memory saxlanır, hər entry ~150 B. Kiçik chunk → milyardlarla
@@ -383,7 +388,7 @@ upstream batching. Ən yaxşı: birinci növbədə kiçik fayl yaratmamaq.
 4. **Amazon S3** — Netflix, Airbnb
 5. **Facebook Haystack / f4** — photo storage, warm/cold tiers
 
-## Best Practices
+## Praktik Baxış
 
 1. **Chunk size uyğunlaşdır** — sequential workload 128 MB+, mixed 64 MB
 2. **Rack-aware placement** — replica-lar fərqli rack-lərdə
@@ -396,3 +401,12 @@ upstream batching. Ən yaxşı: birinci növbədə kiçik fayl yaratmamaq.
 9. **Backup + DR** — distcp cross-cluster, snapshot
 10. **Quota və permissions** — namespace/space quota, HDFS ACL
 11. **Hybrid pattern** — S3 + Spark/Trino indi standard, pure on-prem HDFS azalır
+
+
+## Əlaqəli Mövzular
+
+- [File Storage](15-file-storage.md) — object storage əsasları
+- [Dropbox Design](52-dropbox-design.md) — user-facing distributed storage
+- [Data Lake/Warehouse](67-data-lake-warehouse-mesh.md) — DFS üzərindəki analitika qatı
+- [Stream Processing](54-stream-processing.md) — DFS-dən data oxumaq
+- [Database Replication](43-database-replication.md) — DFS replication mexanizmi

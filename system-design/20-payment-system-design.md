@@ -1,6 +1,6 @@
-# Payment System Design
+# Payment System Design (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Payment system istifadəçilərdən pul qəbul etmək, emal etmək və köçürmək üçün
 arxitekturadır. Ödəniş gateway-ləri (Stripe, PayPal), idempotency, double-spending
@@ -18,7 +18,12 @@ Customer → [Checkout] → [Payment Service] → [Stripe/PayPal]
                     [Order Service] → [Notification]
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Maliyyə əməliyyatları idempotent, consistent, audit edilə bilən olmalıdır. Bir ödənişin iki dəfə işlənməsi və ya çatmaması böyük biznes ziyanı yaradır. Stripe, PayPal arxitekturası — webhook retry, idempotency key, reconciliation — real fintech-in əsasıdır.
+
+## Əsas Anlayışlar
 
 ### Payment Flow
 
@@ -125,7 +130,7 @@ Solutions:
                                 └───────────┘
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Payment System Architecture
 
@@ -167,7 +172,7 @@ Solutions:
                  └─────────────┘
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Laravel Cashier (Stripe)
 
@@ -489,7 +494,7 @@ class LedgerService
 4. **Shopify Payments** - E-commerce integrated payments
 5. **Adyen** - Enterprise payment platform (Netflix, Uber istifadə edir)
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S1: Idempotency payment system-də niyə kritikdir?**
 C: Network failure zamanı client retry edə bilər. Idempotency olmasa eyni ödəniş
@@ -521,7 +526,7 @@ C: Exponential backoff ilə retry (1s, 2s, 4s, 8s). Idempotency key ilə safe
 retry. Max retry count (3-5). Fərqli failure type-lar: card declined (retry
 etmə), network error (retry et), rate limit (gözlə və retry et).
 
-## Best Practices
+## Praktik Baxış
 
 1. **Never Store Card Data** - Tokenization istifadə edin (Stripe.js)
 2. **Idempotency Keys** - Hər payment operation-a unique key
@@ -533,3 +538,12 @@ etmə), network error (retry et), rate limit (gözlə və retry et).
 8. **Error Handling** - Graceful degradation, user-friendly error messages
 9. **Testing** - Stripe test mode, mock webhooks
 10. **Monitoring** - Payment success rate, latency, failure reasons track edin
+
+
+## Əlaqəli Mövzular
+
+- [Idempotency](28-idempotency.md) — ödənişi təkrar etmədən retry
+- [Distributed Transactions](45-distributed-transactions-saga.md) — çox servis əməliyyatı
+- [Digital Wallet](77-digital-wallet-design.md) — double-entry ledger dizaynı
+- [Consistency](32-consistency-patterns.md) — maliyyə əməliyyatında consistency
+- [Webhook Delivery](82-webhook-delivery-system.md) — Stripe kimi webhook arxitekturası

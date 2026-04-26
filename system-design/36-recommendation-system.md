@@ -1,6 +1,6 @@
-# Recommendation System Design
+# Recommendation System Design (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Recommendation System (Tövsiyə Sistemi)** — istifadəçilərə onların maraqlarına, davranışlarına və başqa istifadəçilərin davranışlarına əsasən məhsul, kontent və ya xidmət təklif edən sistemdir.
 
@@ -10,7 +10,12 @@
 - **Content discovery** — uzun quyruq (long tail) kontentini çatdırmaq
 - **Personalization** — hər istifadəçiyə unikal təcrübə
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+E-commerce, streaming, social media — hamısı recommendation ilə revenue artırır. Collaborative filtering, content-based, hybrid yanaşmalar arasındakı fərqi bilmək data-driven ürün qərarları üçün vacibdir. Matrix factorization, embedding similarity — modern ML recommendation-ın özəyidir.
+
+## Əsas Anlayışlar
 
 ### 1. Collaborative Filtering (CF)
 
@@ -161,7 +166,7 @@ Populyar items həmişə rec olunur, long tail itir. Həll: diversity, novelty m
 2. **Ranking** — minlərdən 10-lara ranklay (dəqiq, model-heavy)
 3. **Re-ranking** — diversity, business rules (promoted, fresh content)
 
-## PHP/Laravel ilə Tətbiq
+## Nümunələr
 
 ### Item-based Collaborative Filtering
 
@@ -494,7 +499,7 @@ $schedule->command('rec:train')->dailyAt('02:00');
 - **Pinterest** — PinSage (graph neural network)
 - **Instagram Explore** — two-stage, billions of candidates
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **1. Collaborative filtering vs content-based — fərqi və nə vaxt hansı?**
 - **CF**: istifadəçi davranışına əsaslanır, serendipity yüksək, cold start problemi var
@@ -566,7 +571,7 @@ User tower user features-ini embedding-ə çevirir. Item tower item features-ini
 - **CDN** for static lists
 - **Lambda architecture**: batch + streaming
 
-## Best Practices
+## Praktik Baxış
 
 1. **Başla sadə modelələrdən** — popularity, simple CF-dən başla, deep learning sonra
 2. **Hybrid seç** — CF + content + context ən yaxşı nəticə
@@ -582,3 +587,12 @@ User tower user features-ini embedding-ə çevirir. Item tower item features-ini
 12. **Monitoring**: CTR drift, coverage, latency, model staleness
 13. **Ethical considerations** — filter bubble, echo chamber, bias auditing
 14. **Fallback strategy** — ML service fail olsa popular/trending göstər
+
+
+## Əlaqəli Mövzular
+
+- [Feed System](22-feed-system-design.md) — personalized content sıralaması
+- [Vector Database](69-vector-database-design.md) — embedding-based similarity axtarışı
+- [Feature Store](70-feature-store-design.md) — recommendation feature-ləri
+- [Social Graph](61-social-graph-design.md) — social signal-lar
+- [Caching](03-caching-strategies.md) — precomputed recommendation cache

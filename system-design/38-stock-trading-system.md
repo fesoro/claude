@@ -1,6 +1,6 @@
-# Stock Trading System Design
+# Stock Trading System Design (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Stock Trading System** — investorların real-time olaraq sərvət qiymətli kağızlarını (səhmlər, istiqrazlar, kripto) alıb-satdığı sistem. Nasdaq, NYSE, NSE, Binance kimi borsalar belə işləyir.
 
@@ -11,7 +11,12 @@
 - **Fault tolerance** — hər əməliyyat qeyd edilmiş olmalıdır
 - **Regulatory compliance** — audit trail, MiFID II, SEC
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Low-latency sistemlər microsecond-lar əhəmiyyət kəsb etdiyi yerdə fərqli arxitektura tələb edir. Order matching engine, market data feed, FIFO queue — fintech sistemlərinin əsasını başa düşmək peşəkarlıq nişanəsidir. Lock-free data structure, kernel bypass (DPDK) — extreme performance üçün lazım olan texnikalar buradadır.
+
+## Əsas Anlayışlar
 
 ### Order Types (Sifariş Növləri)
 
@@ -166,7 +171,7 @@ Persistence: Kafka/Aeron → Cassandra/ClickHouse (trade history)
 Audit: WAL, immutable log, replay capability
 ```
 
-## PHP/Laravel ilə Tətbiq
+## Nümunələr
 
 > Qeyd: PHP ultra-low latency matching engine üçün uyğun DEYİL. Production-da C++/Rust/Java istifadə olunur. Aşağıdakı kodlar konsepti göstərmək üçündür, retail broker backend-i üçün PHP məqbuldur.
 
@@ -506,7 +511,7 @@ class OrderController extends Controller
 - **Aeron** — ultra-low latency messaging (Martin Thompson)
 - **Chronicle Queue** — Java persistent queue, <1 microsecond latency
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **1. Order matching engine niyə single-threaded olmalıdır?**
 Race condition qarşısı üçün. Birdən çox thread eyni order book-a dəyişiklik etsə data corruption olar. Hər symbol öz thread-i (sharding) — AAPL bir thread, MSFT başqa. Thread-safe concurrent data structure deyil, deterministic behavior üçün single-threaded optimal.
@@ -559,7 +564,7 @@ Bir symbol-un order book-u tam-konsistent olmalıdır. İki symbol-un tamamilə 
 **11. Dark pool nədir, normal exchange-dən necə fərqlənir?**
 Dark pool — order book publik göstərilmir. Böyük institutional trader-lər marketə impact etmədən alış-veriş edir. Normal exchange "lit pool" — hər şey şəffaf.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Single-threaded matching per symbol** — race condition yoxdur
 2. **In-memory order book** — disk çox yavaşdır
@@ -578,3 +583,12 @@ Dark pool — order book publik göstərilmir. Böyük institutional trader-lər
 15. **Monitoring** — latency histogram, p99/p99.9 tracking
 16. **Chaos testing** — network partition, GC pause simulation
 17. **Hardware timestamping** — NIC-də nanosecond dəqiqlik
+
+
+## Əlaqəli Mövzular
+
+- [Payment System](20-payment-system-design.md) — maliyyə əməliyyatı reliability
+- [Idempotency](28-idempotency.md) — order deduplication
+- [Consistency](32-consistency-patterns.md) — strong consistency tələbi
+- [Distributed Locks](83-distributed-locks-deep-dive.md) — order matching lock
+- [Sharded Counters](88-sharded-counters.md) — position tracking

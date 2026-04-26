@@ -1,6 +1,6 @@
-# Webhook Delivery System Design
+# Webhook Delivery System Design (Lead)
 
-## Giriş (Introduction)
+## İcmal
 
 **Webhook** — server-in müəyyən event baş verəndə üçüncü tərəfin URL-inə HTTP POST göndərərək xəbər verməsidir. Bu "inverted API" modelidir: client server-i soruşmur (polling), server özü client-ə xəbər verir (push).
 
@@ -10,7 +10,12 @@ Böyük webhook sistemləri: **Stripe**, **GitHub**, **Slack**, **Twilio**, **Sh
 
 ---
 
-## Tələblər (Requirements)
+
+## Niyə Vacibdir
+
+Webhook-lar async event notification üçün sadə görünür, lakin retry, ordering, HMAC signature, SSRF qorunma, dead letter queue — production-ready sistem üçün tələb olunan kompleksliyi gizlədir. Stripe, GitHub, Shopify webhook-ları bu arxitekturanın real nümunəsidir.
+
+## Tələblər
 
 ### Funksional (Functional)
 
@@ -29,7 +34,7 @@ Böyük webhook sistemləri: **Stripe**, **GitHub**, **Slack**, **Twilio**, **Sh
 
 ---
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ```
 +----------+      +-----------+      +--------+      +------------+
@@ -436,7 +441,7 @@ Hibrid: webhook xəbər verir, receiver sonra API-dən full state çəkir.
 
 ---
 
-## Interview Q&A
+## Praktik Tapşırıqlar
 
 **Q1: Bir event minlərlə endpoint-ə getməlidir. Necə fan-out edəcəksən?**
 Dispatcher event-i oxuyur, endpoint registry-dən subscriberləri çəkir (event type ilə indexed), hər biri üçün `deliveries` cədvəlinə row insert edir və per-endpoint queue-ya job atır. Partition by endpoint_id — bir yavaş endpoint digərini blok etmir.
@@ -464,7 +469,7 @@ Push — real-time lazım olanda (ödəniş bildirişi, chat mesajı); receiver 
 
 ---
 
-## Best Practices
+## Praktik Baxış
 
 - **Retry with exponential backoff** — 5xx və timeout-larda; 4xx-ə retry etmə
 - **Sign every webhook** — HMAC-SHA256 + timestamp, replay protection 5 dəqiqə
@@ -480,3 +485,12 @@ Push — real-time lazım olanda (ödəniş bildirişi, chat mesajı); receiver 
 - **Timeout 10-30 saniyə** — asylı qalma, receiver uzun işi async etməlidir
 - **CloudEvents format** — standart event schema istifadə et (long-term yaxşıdır)
 - **Horizon + Laravel Queue** — delivery worker-lər üçün, retry backoff ilə
+
+
+## Əlaqəli Mövzular
+
+- [Idempotency](28-idempotency.md) — webhook retry deduplication
+- [Message Queues](05-message-queues.md) — webhook delivery queue
+- [Circuit Breaker](07-circuit-breaker.md) — endpoint xəta circuit break
+- [Notification System](13-notification-system.md) — external notification delivery
+- [Rate Limiting](06-rate-limiting.md) — outbound webhook rate limit

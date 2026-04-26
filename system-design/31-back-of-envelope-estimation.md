@@ -1,12 +1,17 @@
-# Back-of-the-Envelope Estimation (Təxmini Hesablamalar)
+# Back-of-the-Envelope Estimation (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Back-of-the-envelope estimation** — sistem dizayn müsahibələrində və real dünya planlaşdırmasında cari/gələcək sistem tələblərini (QPS, storage, bandwidth, memory) tez hesablamaqdır. Dəqiq rəqəmlər yox, sıra-böyüklüyü (order of magnitude) əsasdır.
 
 Bu bacarıq interview-larda çox yüksək qiymətləndirilir — gerçək system design sualının mərkəzində yer alır.
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Interview-da sistem dizaynına başlamazdan əvvəl QPS, storage, bandwidth hesablamaq lazımdır — əks halda düzgün component seçimi mümkün olmur. Real layihələrdə capacity planning, hardware seçimi, cost estimation üçün bu bacarıq birbaşa lazımdır.
+
+## Əsas Anlayışlar
 
 ### 1. Əzbərləmək Lazım Olan Rəqəmlər
 
@@ -82,7 +87,7 @@ Database server:
 - Cassandra: 10-50K writes/sec per node
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Nümunə 1: Twitter tipli sistem
 
@@ -230,7 +235,7 @@ Redis cache: 1-2 server kifayətdir (100K QPS/Redis)
 MySQL: read replica + sharding 3-5 master
 ```
 
-## PHP/Laravel ilə Tətbiq
+## PHP/Laravel Nümunələri
 
 ### Laravel Sistem Dizayn Hesablaması
 
@@ -371,7 +376,7 @@ Array (
 - 200M subscriber
 - AWS: 100K+ VM instance
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **1. Back-of-the-envelope estimation niyə vacibdir?**
 System design-ın fundamentidir. Rəqəmlər olmadan arxitektura qərarı vermək mümkün deyil (1 server və ya 1000 server? SQL və ya NoSQL?). Scale səviyyəsini müəyyən edir.
@@ -405,7 +410,7 @@ Per user ortalama data (metadata, content): 10 KB - 1 MB
 **8. WebSocket connection limitini necə hesablayırıq?**
 Server başına ~100K WebSocket connection (memory, file descriptor). 1M concurrent user → 10 server. Sticky session və ya pub/sub backend lazım.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Powers of 2 və 10 əzbərlə** — müsahibədə tez hesablamalar üçün
 2. **Latency rəqəmlərini bil** — disk 10ms, memory 100ns, network 500μs
@@ -417,3 +422,12 @@ Server başına ~100K WebSocket connection (memory, file descriptor). 1M concurr
 8. **Sanity check** — rəqəmlər məntiqli görünür?
 9. **Assumptions de** — "Assuming 100M DAU..." deyərək başla
 10. **Iterativ yanaşma** — əvvəl rough estimate, sonra refine
+
+
+## Əlaqəli Mövzular
+
+- [Scaling](08-scaling.md) — capacity əsasında miqyaslandırma
+- [Data Partitioning](26-data-partitioning.md) — neçə shard lazımdır
+- [Database Design](09-database-design.md) — storage hesabı
+- [Caching](03-caching-strategies.md) — cache hit rate hesabı
+- [Load Balancing](01-load-balancing.md) — QPS əsasında server sayı

@@ -1,6 +1,6 @@
-# API Gateway
+# API Gateway (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
 API Gateway bütün API request-lərinin keçdiyi tək giriş nöqtəsidir (single entry point).
 Client-lər birbaşa microservice-lərə müraciət etmir, əvəzinə API Gateway vasitəsilə keçir.
@@ -17,7 +17,12 @@ Web App ─────┤──> [API Gateway] ──┬──> User Service
                   - Transform
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Mikroservis mühitində hər servisin ayrı-ayrılıqda auth, rate limiting, logging yazması code duplication yaradır. API Gateway bu cross-cutting concern-ləri mərkəzləşdirir; client-side service discovery-ni aradan qaldırır. Kong, AWS API Gateway, Nginx — real layihələrdə seçim bu mövzuya bağlıdır.
+
+## Əsas Anlayışlar
 
 ### API Gateway-in Funksiyaları
 
@@ -98,7 +103,7 @@ Web App     -> [Web BFF Gateway]     -> Services
 Partner API -> [Partner Gateway]     -> Services
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Kong API Gateway
 
@@ -248,7 +253,7 @@ Features:
 - WAF integration
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Laravel API Gateway Pattern
 
@@ -434,7 +439,7 @@ Request aggregation ilə bir mobile request-ə bir neçə service cavab verir.
 **Stripe:** API versioning üçün öz gateway-lərini istifadə edirlər. Hər API version
 ayrı transformation layer-dən keçir. Backward compatibility illərlə saxlanılır.
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S: API Gateway niyə lazımdır?**
 C: Cross-cutting concerns-ları (auth, rate limiting, logging) bir yerdə idarə etmək üçün.
@@ -456,7 +461,7 @@ C: URL-based (/api/v1/), Header-based (API-Version: 2), Query param (?version=2)
 URL-based ən sadə və geniş yayılmışdır. Gateway transformation layer ilə köhnə
 version-ları yeni service-lərdə map edə bilər.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Gateway-i thin saxlayın** - Business logic gateway-ə qoymayın, yalnız routing və cross-cutting concerns
 2. **Timeout-ları düzgün tənzimləyin** - Backend service-lərin response time-ına uyğun timeout
@@ -468,3 +473,12 @@ version-ları yeni service-lərdə map edə bilər.
 8. **Health check endpoint** - Gateway-in özü və backend service-lər üçün ayrı health check
 9. **Correlation ID** - Hər request-ə unique ID verin, bütün service-lər arasında izləyin
 10. **Managed service düşünün** - Öz gateway-inizi yazmaq yerinə Kong, AWS API GW istifadə edin
+
+
+## Əlaqəli Mövzular
+
+- [Load Balancing](01-load-balancing.md) — gateway arxasındakı server yükü
+- [Rate Limiting](06-rate-limiting.md) — gateway səviyyəsində limit
+- [Microservices](10-microservices.md) — gateway-in əsas müştərisi
+- [Auth](14-authentication-authorization.md) — gateway-dən mərkəzləşmiş doğrulama
+- [Service Mesh](47-service-mesh.md) — gateway ilə rəqib/tamamlayıcı yanaşma

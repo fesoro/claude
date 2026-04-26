@@ -1,6 +1,6 @@
-# Authentication & Authorization
+# Authentication & Authorization (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Authentication (AuthN)** - istifadəçinin kim olduğunu təsdiq etmək ("Sən kimsən?").
 **Authorization (AuthZ)** - istifadəçinin nə edə biləcəyini müəyyən etmək ("Sən bunu edə bilərsən?").
@@ -17,7 +17,12 @@ authorization isə giriş icazəsidir (bu otağa daxil ola bilərsən?).
 └───────────┘     └──────────────┘     └───────────────┘
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Hər API endpoint qorunmalıdır. OAuth2 third-party login üçün sənaye standartıdır; JWT stateless auth imkanı verir; RBAC/ABAC mürəkkəb permission modellərini həll edir. Sanctum vs Passport seçimi, token revocation, refresh token rotation — real layihənin gündəlik problemləridir.
+
+## Əsas Anlayışlar
 
 ### Session-Based Authentication
 
@@ -149,7 +154,7 @@ Policy: "User can edit article IF user.department == article.department
 More flexible, more complex
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Complete Auth System
 
@@ -171,7 +176,7 @@ More flexible, more complex
                                       └───────────┘
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Laravel Sanctum (SPA + Mobile API)
 
@@ -484,7 +489,7 @@ class TokenService
 4. **GitHub** - OAuth2 for third-party apps, fine-grained PATs
 5. **AWS IAM** - ABAC + RBAC hybrid, policy-based access control
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S1: JWT-nin dezavantajları nədir?**
 C: Token revocation çətindir (expire olana qədər valid qalır), token size böyük ola bilər,
@@ -516,7 +521,7 @@ C: bcrypt/argon2 ilə hash, salt avtomatik əlavə olunur. Heç vaxt plain text,
 MD5 və ya SHA istifadə etməyin. Laravel Hash::make() default olaraq bcrypt
 istifadə edir. Password brute-force üçün rate limiting tətbiq edin.
 
-## Best Practices
+## Praktik Baxış
 
 1. **HTTPS Always** - Token/session heç vaxt HTTP üzərindən göndərməyin
 2. **Password Hashing** - bcrypt/argon2 istifadə edin, MD5/SHA yox
@@ -528,3 +533,12 @@ istifadə edir. Password brute-force üçün rate limiting tətbiq edin.
 8. **Secure Cookies** - HttpOnly, Secure, SameSite flags
 9. **Least Privilege** - Minimum lazımi icazələri verin
 10. **Audit Logging** - Auth event-lərini log edin
+
+
+## Əlaqəli Mövzular
+
+- [API Gateway](02-api-gateway.md) — mərkəzləşdirilmiş auth qatı
+- [Rate Limiting](06-rate-limiting.md) — kim nə qədər sorğu edə bilər
+- [Multi-Tenancy](35-multi-tenancy.md) — tenant-based access control
+- [Digital Wallet](77-digital-wallet-design.md) — fintech auth tələbləri
+- [GitHub-like Platform](74-github-like-design.md) — repo access control

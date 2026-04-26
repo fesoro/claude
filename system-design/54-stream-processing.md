@@ -1,6 +1,6 @@
-# Stream Processing (Lambda & Kappa Architecture)
+# Stream Processing (Lead)
 
-## Nədir? (What is it?)
+## İcmal
 
 Stream processing — davamlı gələn **unbounded** event axınını (clickstream, IoT sensor, transaction, log) **near-real-time** emal etməkdir. Batch processing isə **bounded** sabit data üzərində işləyir (gecə ETL job-u, saatlıq aggregation).
 
@@ -14,6 +14,11 @@ Stream processing — davamlı gələn **unbounded** event axınını (clickstre
 | Reprocessing | rerun job | event log replay |
 
 Stream processing müasir data-intensive sistemlərin əsasıdır — real-time dashboard, fraud detection, alerting, ML feature pipeline.
+
+
+## Niyə Vacibdir
+
+Batch processing saatlarla gözlətdirir; stream processing real-time insight verir. Lambda vs Kappa arxitekturası seçimi infra kompleksliyini müəyyən edir; exactly-once semantics guarantee etmək çətin, lakin kritikdir. Flink, Kafka Streams — real-time analitikanın standart alətlərdir.
 
 ## Use Case-lər (Use Cases)
 
@@ -100,7 +105,7 @@ Kappa — Jay Kreps (LinkedIn, Kafka) təklif etdi. **Yalnız streaming layer**.
 
 Müasir sistemlərdə Kappa default seçimdir; Lambda yalnız dəqiqlik çox kritik olan finance/compliance sahəsində.
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Anlayışlar
 
 ### 1. Event Time vs Processing Time
 
@@ -237,7 +242,7 @@ Transaction → Kafka → Flink CEP(pattern: 5 tx/10s, >$1000)
 App logs → Fluentd → Kafka → Flink(parse + GeoIP + UA) → Elasticsearch → Kibana
 ```
 
-## PHP/Laravel ilə Tətbiq
+## Nümunələr
 
 PHP "true" stream processor deyil (Flink/Kafka Streams JVM-dir), lakin **Kafka consumer** kimi işləyə bilər. `rdkafka` extension + Laravel queue ilə event-driven mikroservis qura bilərik.
 
@@ -385,7 +390,7 @@ public function consumeBatch(KafkaConsumer $consumer): void
 - **Lag monitoring** — Burrow/Kafka exporter + Grafana alert (lag > 10k)
 - **Supervisor** — `numprocs=4`, autorestart, graceful SIGTERM
 
-## Interview Sualları (Interview Questions)
+## Praktik Tapşırıqlar
 
 **1. Lambda və Kappa arxitekturası arasında fərq nədir?**
 Lambda paralel batch + speed layer saxlayır, reprocessing batch-dən gəlir — iki kod bazası, operational overhead. Kappa yalnız streaming saxlayır, reprocessing event log-u replay etməklə olur — bir kod bazası, daha sadə. Müasir sistemlərdə Kappa default.
@@ -411,7 +416,7 @@ Local state RocksDB-də (task-a embedded). Vaxtaşırı checkpoint DFS-ə (S3/HD
 **8. PHP-də stream processing-in məhdudiyyətləri hansılardır?**
 PHP single-threaded, shared-nothing, JVM-dəki RocksDB + checkpointing ekosistemi yoxdur. Windowed state üçün external store (Redis/DB) lazımdır — latency artır. Exactly-once çətin, əsasən at-least-once + idempotent consumer istifadə olunur. Real stream processing üçün Flink/Kafka Streams JVM servisi yazılır, PHP sadəcə producer və sadə consumer olaraq qalır.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Event-time first** — timestamp-ı event-in özündə saxla
 2. **Watermark explicit** — max lateness business requirement ilə uzlaşsın

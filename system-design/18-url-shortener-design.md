@@ -1,6 +1,6 @@
-# URL Shortener Design
+# URL Shortener Design (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 URL shortener uzun URL-ləri qısa, unikal linklərə çevirən sistemdir. bit.ly, tinyurl.com
 kimi xidmətlər buna nümunədir. İstifadəçi qısa linki kliklədikdə orijinal URL-ə
@@ -16,7 +16,12 @@ Output: https://short.ly/aB3x7K
 User clicks short.ly/aB3x7K → 301 Redirect → original URL
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+URL shortener klassik system design interview sualıdır — Base62, hashing, redirect mexanizmi, analitika, cache strategiyası hamısını bir problem üzərindən öyrənmək mümkündür. Görünüşcə sadə, amma scale-da maraqlı distributed problem ortaya çıxır.
+
+## Əsas Anlayışlar
 
 ### Requirements
 
@@ -127,7 +132,7 @@ Approach 3: Pre-generated keys (Key Generation Service)
 Recommendation: 302 for analytics, 301 for performance
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### System Architecture
 
@@ -193,7 +198,7 @@ CREATE TABLE url_clicks (
 );
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### URL Shortener Service
 
@@ -446,7 +451,7 @@ class KeyGenerationService
 4. **goo.gl** - Google-un shortener-i (artıq bağlanıb, Firebase Dynamic Links)
 5. **Rebrandly** - Custom domain branded short links
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S1: Base62 encoding niyə istifadə olunur?**
 C: URL-safe character set (a-z, A-Z, 0-9). 7 simvol ilə 3.5 trillion unikal URL
@@ -482,7 +487,7 @@ C: Lazy deletion - redirect zamanı expiry yoxla, expired isə 404 qaytar.
 Active cleanup - scheduled job ilə expired URL-ləri batch delete et.
 Cache TTL ilə expired URL-lər cache-dən avtomatik silinir.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Cache Ağırlıqlı** - Redirect-lər cache-dən serve olunmalıdır
 2. **Async Analytics** - Click tracking queue-da async edin
@@ -494,3 +499,12 @@ Cache TTL ilə expired URL-lər cache-dən avtomatik silinir.
 8. **Monitoring** - Redirect latency, error rate, cache hit ratio track edin
 9. **Abuse Prevention** - Spam, phishing URL-ləri detect edin
 10. **Backup** - Regular database backup, disaster recovery plan
+
+
+## Əlaqəli Mövzular
+
+- [Caching](03-caching-strategies.md) — redirect-i cache etmək
+- [Data Partitioning](26-data-partitioning.md) — milyardlarla URL saxlamaq
+- [Database Design](09-database-design.md) — index strategiyası
+- [Probabilistic Data Structures](33-probabilistic-data-structures.md) — Bloom filter ilə collision
+- [Distributed ID Generation](68-distributed-id-generation.md) — unikal short code yaratmaq

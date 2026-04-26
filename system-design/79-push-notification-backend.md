@@ -1,11 +1,16 @@
-# Push Notification Backend (APNs / FCM)
+# Push Notification Backend (Senior)
 
 > Interview hazırlığı — mobile push notification backend (APNs, FCM, Web Push).
 > 13 nömrəli fayla (notification system) tamamlayıcıdır — burada fokus mobile push-dur.
 
 ---
 
-## Tələblər (Requirements)
+
+## Niyə Vacibdir
+
+APNs/FCM üzərindən milyonlarla cihaza notification göndərmək fan-out, priority queue, delivery tracking tələb edir. Silent push, notification grouping, user preference idarəsi — real app-in production problemidir. Laravel Notification-ın arxasındakı infra belə işləyir.
+
+## Tələblər
 
 ### Funksional (Functional)
 
@@ -412,7 +417,7 @@ CREATE TABLE push_jobs (
 
 ---
 
-## Interview Q&A
+## Praktik Tapşırıqlar
 
 ### Q1: Niyə APNs üçün HTTP/1.1 əvəzinə HTTP/2?
 
@@ -470,7 +475,7 @@ Mobile app məhsulu üçün native FCM/APNs istifadə et. Web Push website re-en
 
 ---
 
-## Best Practices
+## Praktik Baxış
 
 - **Token gigiyenası** — etibarsızları dərhal sil; 90 gündən artıq qeyri-aktivləri təmizlə.
 - **HTTP/2 connection pool** — connection-ları yenidən istifadə et, hər göndərişdə təkrar qoşulma.
@@ -486,3 +491,12 @@ Mobile app məhsulu üçün native FCM/APNs istifadə et. Web Push website re-en
 - **Ayrı FCM project-lər** — multi-tenant və ya çox yüksək həcm üçün, 600k/dəq limitini keç.
 - **Həssas payload şifrələnməsi** — cihazda APNs Notification Service Extension istifadə et.
 - **Real cihazda test** — emulator-lar real push almır; TestFlight / Firebase Test Lab istifadə et.
+
+
+## Əlaqəli Mövzular
+
+- [Notification System](13-notification-system.md) — multi-channel notification
+- [Message Queues](05-message-queues.md) — push delivery queue
+- [Pub/Sub](81-pubsub-system-design.md) — fan-out delivery modeli
+- [Webhook Delivery](82-webhook-delivery-system.md) — external delivery retry
+- [Real-Time Systems](17-real-time-systems.md) — WebSocket alternativ

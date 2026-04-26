@@ -1,12 +1,17 @@
-# Edge Computing (Cloudflare Workers, Lambda@Edge)
+# Edge Computing (Lead)
 
-## Giriş (Introduction)
+## İcmal
 
 Edge computing — kodu istifadəçiyə yaxın olan POP (Point of Presence) nöqtələrində işlətmək deməkdir. Ənənəvi arxitekturada bütün sorğular mərkəzi datacenter-ə gedir (məsələn, Frankfurt). Edge-də kod 200+ şəhərdə paralel deploy olunur — Bakıdan sorğu ən yaxın POP-a gedir (Istanbul/Warsaw/Frankfurt).
 
 **Latency fərqi (Latency difference):**
 - Origin-only: 100-300ms RTT (Baku -> US datacenter)
 - Edge: 10-50ms RTT (Baku -> Istanbul POP)
+
+
+## Niyə Vacibdir
+
+Cloudflare Workers, Lambda@Edge — sorğunu istifadəçiyə ən yaxın edge node-da işlədir. SSR, A/B test, auth middleware edge-də çalışdıqda latency kəskin azalır. D1/KV edge-də data saxlamağa imkan verir. AI trafik artımı ilə edge inferencing real use-case oldu.
 
 ## 1. Sadə Arxitektura (Simple Architecture)
 
@@ -465,7 +470,7 @@ export default {
 - **Netlify Edge Functions** — Deno-backed
 - **AWS** — Lambda@Edge + CloudFront Functions
 
-## Müsahibə Sualları (Interview Questions)
+## Praktik Tapşırıqlar
 
 ### Sual 1: Edge computing CDN-dən nə ilə fərqlənir? (How is edge computing different from CDN?)
 
@@ -499,7 +504,7 @@ Edge: auth check, routing, cache, header manipulation, HTML rewrite, image optim
 
 Web-interoperable Runtime Community Group. Cloudflare, Vercel, Deno, Node.js birlikdə standart API müəyyən edir (fetch, Request, Response). Məqsəd — bir edge platforma-da yazılan kod başqasında da işləsin. Vendor lock-in azalır, portability artır.
 
-## Best Practices
+## Praktik Baxış
 
 - Static kontenti həmişə edge-də cache et (Cache-Control header ilə)
 - Auth JWT-ni edge-də verify et, origin-ə tokensiz sorğu buraxma
@@ -517,3 +522,12 @@ Web-interoperable Runtime Community Group. Cloudflare, Vercel, Deno, Node.js bir
 - Fallback strategy hazırla — edge fail olarsa origin birbaşa işləsin
 - Cost monitoring qur — request count və CPU time track et
 - Vendor lock-in-i azalt — abstraction layer yaz, runtime dəyişkən olsun
+
+
+## Əlaqəli Mövzular
+
+- [CDN](04-cdn.md) — edge computing-in əsası
+- [Feature Flags](94-feature-flags-progressive-delivery.md) — edge-də flag evaluation
+- [API Gateway](02-api-gateway.md) — edge-də API proxy
+- [Caching](03-caching-strategies.md) — edge cache
+- [Deployment Strategies](72-deployment-strategies.md) — edge rollout

@@ -1,6 +1,6 @@
-# CAP & PACELC Theorem
+# CAP & PACELC Theorem (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **CAP Theorem** (Eric Brewer, 2000) — distributed sistemdə eyni anda yalnız **2 xüsusiyyət** təmin oluna bilər: **Consistency**, **Availability**, **Partition tolerance**. Network partition baş verdikdə sistem C və A arasında seçim etməyə məcbur olur.
 
@@ -11,7 +11,12 @@
 - **CAP**: "Network bölünəndə availability-ni mi, consistency-ni mi saxlayım?"
 - **PACELC**: "Normal işləyəndə belə, sürət üçün consistency-dən nə qədər güzəştə getməliyəm?"
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+'Consistency yoxsa Availability?' — bu sualı cavablamadan verilənlər bazası seçimi mümkün deyil. CAP teoremi interview-da mütləq soruşulur; PACELC onu normal iş rejiminə genişləndirir. Cassandra (AP), HBase (CP), PostgreSQL (CA partition olmadan) — real DB-ləri bu çərçivədə oxumaq lazımdır.
+
+## Əsas Anlayışlar
 
 ### 1. CAP-ın 3 komponenti
 
@@ -88,7 +93,7 @@ Else (normal):          L (latency)     ⟷ C (consistency)
 | **etcd / Zookeeper** | CP | Raft/Zab consensus — quorum olmasa yazı yoxdur |
 | **HBase** | CP | Region server ölsə partition-da oxu/yazı yoxdur |
 
-## Praktiki Nümunələr
+## Nümunələr
 
 ### CP System — Bank Transaction
 
@@ -340,7 +345,7 @@ TrueTime API (atom saat + GPS) ilə **həm CP həm low-latency** iddia edir. Ger
 | Chat messages | AP + causal | Mesaj sırası önəmli |
 | Leaderboard | AP | Real-time approximation kifayətdir |
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 ### Q: CAP teoremində "2-ni seç" niyə yanlış sadələşdirmədir?
 
@@ -379,7 +384,7 @@ Amazon Dynamo paper-da bu şəkildə işləyirdi. Trade-off: bəzən silinmiş i
 
 **A:** Redis Cluster async replication istifadə edir — master acknowledgement göndərir **replica yazmamış**. Master partition zamanı ölsə, promote olan replica son yazıları itirir. Həm də minority partition-da master hələ yazı qəbul edir (müvəqqəti, `cluster-node-timeout`-a qədər) — data split yaradır. Həll: **WAIT** komandası (sync replication simulyasiya) və ya kritik data üçün Redis istifadə etmə (PostgreSQL seç).
 
-## Best Practices
+## Praktik Baxış
 
 - **CAP-ı absolut qayda kimi qəbul etmə** — PACELC daha dəqiqdir, normal rejim trade-off-larını göstərir.
 - **Partition tolerance məcburidir** — real sistemlərdə CA sadəcə "indi partition görməyən" sistemdir.
@@ -396,3 +401,12 @@ Amazon Dynamo paper-da bu şəkildə işləyirdi. Trade-off: bəzən silinmiş i
 - **Business trade-off-u aydın et** — "1 saniyə stale data qəbul edilirmi?" product owner ilə müzakirə.
 - **Vendor default-larını bilmə** — MongoDB `w: 1` default-dur (primary ack), `w: "majority"` strong; DynamoDB default eventual-dir.
 - **Interview-da "asılıdır" de** — use case-i soruşmadan CP/AP seçmə; data kritikliyi, latency budget, multi-region tələbini öyrən.
+
+
+## Əlaqəli Mövzular
+
+- [Consistency Patterns](32-consistency-patterns.md) — consistency modellər spektri
+- [Database Replication](43-database-replication.md) — replication consistency tipleri
+- [Distributed Systems](25-distributed-systems.md) — distributed sistem fundamentalları
+- [SQL vs NoSQL](41-sql-vs-nosql-selection.md) — CAP çərçivəsində DB seçimi
+- [Raft/Paxos](84-raft-paxos-consensus.md) — CP sistem implementation

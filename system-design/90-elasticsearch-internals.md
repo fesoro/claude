@@ -1,6 +1,11 @@
-# 90. Elasticsearch Internals — Lucene, Shards, Cluster State
+# Elasticsearch Internals (Architect)
 
 Elasticsearch — Apache Lucene üzərində qurulmuş distributed search engine. File 12 search systems ümumi baxışı verir; bu fayl Elasticsearch-in daxili işinə (segment mərhələləri, translog, cluster state, split-brain qoruması, ILM, rolling upgrade) dərindən baxır.
+
+
+## Niyə Vacibdir
+
+Elasticsearch-i production-da istifadə edən amma Lucene segment-ni, translog-u, ILM-ni bilməyən engineer cluster-i yavaşladaraq nasazlığa uğradır. Shard count seçimi, mapping explosion, hot-warm-cold arxitekturası — real deployment üçün vacib biliklərdir.
 
 ## Arxitektura
 
@@ -543,6 +548,15 @@ Key metrics:
 - 5 shards × 100 GB each, 6 nodes (2 zones × 3)
 - 10k QPS search → ~500 QPS/shard, OK on modern hardware
 
-## Yekun
+## Ətraflı Qeydlər
 
 Elasticsearch scale etmək — Lucene segment cycle, shard placement və cluster state-i başa düşmək deməkdir. Ən tez-tez qarşılaşılan problemlər: yanlış shard sayı, mapping explosion, deep pagination və inadequate retention. Hot-warm-cold ILM cost-u dramatik azaldır. 8.x-dən başlayaraq frozen tier searchable snapshots S3-də saxlanan sense etdirir — dəqiqliklə latency trade-off. Modern replacement-lər (OpenSearch, Quickwit, Loki) niche-lərdə rəqabət aparır, amma general-purpose search üçün ES hələ də dominant platformadır.
+
+
+## Əlaqəli Mövzular
+
+- [Search Systems](12-search-systems.md) — Elasticsearch-in istifadə yeri
+- [Document Search](76-document-search-design.md) — Algolia vs Elasticsearch
+- [Hot/Cold Storage Tiering](89-hot-cold-storage-tiering.md) — ILM lifecycle
+- [Metrics System](53-metrics-monitoring-design.md) — ELK monitoring stack
+- [Time-Series DB](66-time-series-database.md) — Elasticsearch time-series use-case

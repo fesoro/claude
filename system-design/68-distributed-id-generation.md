@@ -1,6 +1,6 @@
-# Distributed ID Generation (Snowflake, ULID, UUIDv7)
+# Distributed ID Generation (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Distributed ID generation — bir-biri ilə koordinasiya etmədən çoxsaylı server, shard
 və ya mikroservisdə unikal, (çox vaxt) sıralana bilən identifikatorlar istehsal etmək
@@ -20,6 +20,11 @@ Node-3:  id = 1524376218933112849    Node-4:  id = 1524376218933245104
                           amma hamısı unikal və time-ordered
 ```
 
+
+## Niyə Vacibdir
+
+Auto-increment ID distributed mühitdə işləmir — koordinasiya tələb edir. Snowflake, ULID, UUIDv7 — hər biri sortability, uniqueness, performance baxımından fərqli trade-off-lar təklif edir. Laravel-də UUID vs int seçimi bu mövzuya bağlıdır. Primary key strategiyası DB indeks performansına bilavasitə təsir edir.
+
 ## Niyə auto-increment yetmir? (Why not auto-increment?)
 
 - **DB-level bottleneck** — hər insert üçün sequence/counter latch, write master-a sıxıştırır
@@ -31,7 +36,7 @@ Node-3:  id = 1524376218933112849    Node-4:  id = 1524376218933245104
 - **Shard-lara paylananda çətinlik** — global unique counter shard-a necə bölünsün?
 - **Cross-service reference** — mikroservislər arasında ID keçərkən collision riski
 
-## Tələblər (Requirements)
+## Tələblər
 
 - **Globally unique** — toqquşma ehtimalı praktik olaraq 0
 - **Roughly sortable** — zaman sırasına yaxın (B-tree index locality üçün vacib)
@@ -309,7 +314,7 @@ $order = Order::create([
 - Snowflake time bit-ləri açıq saxlayır → rəqib "bu ID 2025-03-14 14:22-də yaranmışdır"
   deyə bilir. Kritik hallarda UUIDv7 + pepper hash istifadə et
 
-## Best Practices
+## Praktik Baxış
 
 - **Yeni layihədə UUIDv7 və ya ULID default seçim et** — UUIDv4 köhnəlmişdir
 - **Binary storage** (`BINARY(16)` MySQL, native `uuid` PostgreSQL) — 3× storage qənaəti
@@ -323,7 +328,7 @@ $order = Order::create([
 - **Test clock-backward scenario** — CI-də saatı geri qur, exception atılırmı yoxla
 - **Migration strategy** — köhnə auto-increment-dən UUIDv7-yə keçəndə dual-write dövrü et
 
-## Interview Questions
+## Praktik Tapşırıqlar
 
 **Q1: UUIDv4 niyə MySQL clustered PK üçün pis seçimdir?**
 InnoDB PK clustered-dır — data fiziki olaraq PK sırasına saxlanır. UUIDv4 random →
@@ -369,3 +374,12 @@ B: 512-1023). UUIDv7/ULID üçün problem yoxdur — 74-bit random hər DC-də u
 Timestamp açıq (user qeydiyyat vaxtı leak), worker_id infra topology açır, sequence
 business metric leak edir ("saniyədə X qeydiyyat"). Həll: public ID kimi UUIDv7
 göstər, daxildə Snowflake saxla; və ya Snowflake-i AES encrypt et.
+
+
+## Əlaqəli Mövzular
+
+- [Database Design](09-database-design.md) — primary key strategiyası
+- [Data Partitioning](26-data-partitioning.md) — shard-dostu ID
+- [Distributed Systems](25-distributed-systems.md) — clock skew problemi
+- [KV Store](50-key-value-store-design.md) — key generation
+- [Booking System](39-booking-system.md) — unique booking ID

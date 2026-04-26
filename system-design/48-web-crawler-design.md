@@ -1,6 +1,6 @@
-# Web Crawler Design
+# Web Crawler Design (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Web crawler internetdəki səhifələri avtomatik ziyarət edən, məzmunu yükləyən və linkləri
 çıxararaq yeni səhifələrə keçən sistemdir. Google, Bing kimi axtarış motorlarının
@@ -14,7 +14,12 @@ Seed URLs → Frontier → Fetcher → Parser → Storage
               └────── Extract links
 ```
 
-## Tələblər (Requirements)
+
+## Niyə Vacibdir
+
+Search engine indexing, price monitoring, AI training data toplama — hamısı web crawler-ə əsaslanır. URL frontier idarəetməsi, politeness, deduplication — large-scale distributed sistemin real nümunəsidir. Scrapy, Colly — real tool-larla bu mövzunu əlaqələndirmək vacibdir.
+
+## Tələblər
 
 ### Funksional Tələblər (Functional)
 
@@ -53,7 +58,7 @@ Bloom filter:        1B × 10 bits, 1% FP ≈ 1.2 GB RAM
 Worker count:        800 / (10 URL/s per worker) = 80 worker
 ```
 
-## Yüksək Səviyyəli Arxitektura (High-Level Architecture)
+## Arxitektura
 
 ```
 ┌──────────┐
@@ -95,7 +100,7 @@ Worker count:        800 / (10 URL/s per worker) = 80 worker
               └──────────────────────┘   └───────────────────┘
 ```
 
-## Əsas Komponentlər (Core Components)
+## Əsas Anlayışlar
 
 **1. Seed URL Set** — başlanğıc nöqtəsi. Manually curated top domains (Wikipedia, news,
 DMOZ archive), sitemap.xml, user-submitted URL-lər.
@@ -371,7 +376,7 @@ public function crawlBatch(array $urls): void
 - **Spider traps** (intentional infinite loop) → per-host URL limit (max 100k per domain)
 - **Honeypots** (gizli bot-detect link-lər) → robots.txt, `rel=nofollow`, CSS `display:none` atla
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S1: URL frontier niyə priority + politeness ikisini birləşdirməlidir?**
 C: Tək priority queue news-portal-ı 1000 dəfə ardıcıl fetch edər, DOS olar. Tək
@@ -407,7 +412,7 @@ C: 1) gzip (3-5x azalma), 2) yalnız extracted text saxla, raw HTML 90 gündən 
 sil, 3) S3 Intelligent-Tiering (nadir → Glacier), 4) content dedup (eyni məzmun bir
 dəfə, URL-lər content hash-a reference).
 
-## Best Practices
+## Praktik Baxış
 
 1. **User-Agent açıq yaz** — "MyCrawler/1.0 (+contact-url)"
 2. **robots.txt həmişə** — fetch-dən əvvəl yoxla, Crawl-Delay-ə əməl et
@@ -419,3 +424,12 @@ dəfə, URL-lər content hash-a reference).
 8. **Consistent hashing** — domain → worker mapping stabil
 9. **Depth limit** — calendar və spider trap-dan qoruyur
 10. **Monitoring** — pages/sec, error rate, queue depth, unique hosts
+
+
+## Əlaqəli Mövzular
+
+- [Probabilistic Data Structures](33-probabilistic-data-structures.md) — URL Bloom filter
+- [Message Queues](05-message-queues.md) — URL frontier queue
+- [Document Search](76-document-search-design.md) — crawl edilmiş kontentin indexlənməsi
+- [Caching](03-caching-strategies.md) — robots.txt, crawl delay cache
+- [Distributed Systems](25-distributed-systems.md) — distributed crawler koordinasiyası

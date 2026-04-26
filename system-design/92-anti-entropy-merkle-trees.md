@@ -1,6 +1,11 @@
-# 92. Anti-Entropy & Merkle Trees — Replica Sync
+# Anti-Entropy & Merkle Trees (Architect)
 
 Distributed store-larda replica-lar zamanla divergence edir — yaddan çıxan yazı, partition, crash. **Anti-entropy** — replica-lar arasında fərqləri aşkarlayıb düzəltmə mexanizmidir. **Merkle tree** isə bu fərqləri O(log n) məlumat mübadiləsi ilə tapmaq üçün ağıllı data struktur-dur. Dynamo, Cassandra, Riak, DynamoDB hamısı bu konseptləri istifadə edir.
+
+
+## Niyə Vacibdir
+
+Replica divergence-i aşkar etmək üçün Merkle tree hash comparison O(log n) müqayisə ilə fərqləri tapır. Hinted handoff, read repair, AAE — Cassandra/DynamoDB-nin eventual consistency-ni necə maintain etdiyi bu mexanizmlər üzərindədir. Distributed storage sistemini düzgün istifadə etmək üçün vacibdir.
 
 ## Problem — replica divergence
 
@@ -448,6 +453,15 @@ Critical ops practice: schedule repair < `gc_grace_seconds`.
 5. **Merkle tree not incremental** — rebuild from scratch every time (CPU waste)
 6. **Relying on read repair alone** — cold data stays divergent
 
-## Yekun
+## Ətraflı Qeydlər
 
 Merkle trees anti-entropy-nin əsasıdır — eventual consistency vəd edən sistemləri həqiqətən convergent edən mexanizm. Ən önemli başa düşmək: üç katmanlı strategiya (hinted handoff + read repair + active AAE) üçün də lazımdır, tək başına heç biri kifayət etmir. Modern managed sistem-lər (DynamoDB, Cosmos DB) bu detalları gizlədir, amma on-prem Cassandra/Riak idarəçiliyi üçün `nodetool repair` və `gc_grace_seconds` arasındakı əlaqəni anlamaq kritikdir.
+
+
+## Əlaqəli Mövzular
+
+- [Database Replication](43-database-replication.md) — replica sinxronizasiyası
+- [Distributed Systems](25-distributed-systems.md) — eventual consistency
+- [Consistency Patterns](32-consistency-patterns.md) — read repair mexanizmi
+- [KV Store](50-key-value-store-design.md) — Dynamo-da anti-entropy
+- [Raft/Paxos](84-raft-paxos-consensus.md) — strong vs eventual consistency müqayisəsi

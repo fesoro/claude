@@ -1,6 +1,6 @@
-# Proxy Patterns
+# Proxy Patterns (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Proxy - client və server arasında dayanan aralıq serverdir. Client-in sorğularını qəbul edir, lazım olduqda dəyişdirir, sonra target server-ə göndərir. Response də proxy üzərindən keçir. Proxy-lər bir çox məqsəd üçün istifadə olunur: security, caching, load balancing, logging, SSL termination.
 
@@ -8,7 +8,12 @@ Proxy - client və server arasında dayanan aralıq serverdir. Client-in sorğul
 - **Forward Proxy** - client tərəfdə, client-lərin internetə çıxışını idarə edir
 - **Reverse Proxy** - server tərəfdə, server-lərə daxil olan trafiki idarə edir
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Nginx reverse proxy, PHP-FPM, SSL termination, static file serving — backend developer-in gündəlik işidir. Forward proxy korporativ şəbəkələrdə, sidecar proxy mikroservislərdə istifadə olunur. Bu pattern-ləri bilmək infrastructure debugging-i kəskin sürətləndirir.
+
+## Əsas Anlayışlar
 
 ### 1. Forward Proxy
 
@@ -83,7 +88,7 @@ API Gateway reverse proxy-nin xüsusi formasıdır. Fərqlər:
 - API Gateway - API-spesifik features (rate limiting, auth, API versioning, transformation)
 - API Gateway adətən reverse proxy üzərində qurulur (Kong, Nginx-based)
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 Laravel üçün tipik arxitektura:
 ```
@@ -102,7 +107,7 @@ Laravel Application
 MySQL / Redis
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Nginx + PHP-FPM Setup for Laravel
 
@@ -406,7 +411,7 @@ volumes:
 - **AWS ALB/CloudFront** - Managed reverse proxy, CDN
 - **Squid** - Popyular forward proxy
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **Q1: Forward proxy və reverse proxy fərqi?**
 Forward proxy - client tərəfdə, client adından server-lərə sorğu göndərir. Məqsəd: client identity gizlətmək, content filtering, caching. Reverse proxy - server tərəfdə, server-lər adından client sorğularını qəbul edir. Məqsəd: load balancing, SSL termination, security. Forward proxy client-i, reverse proxy server-i qoruyur.
@@ -474,7 +479,7 @@ Deploy zamanı:
 4. `nginx -s reload` (zero-downtime)
 5. Problem olsa, blue-ya geri dön
 
-## Best Practices
+## Praktik Baxış
 
 1. **Always terminate SSL at edge** - Mərkəzləşdirilmiş cert management
 2. **Use HTTP/2** - Multiplexing, header compression
@@ -491,3 +496,12 @@ Deploy zamanı:
 13. **Tune worker processes** - CPU və load-a görə
 14. **Security headers** - X-Frame-Options, CSP, HSTS
 15. **Zero-downtime reload** - `nginx -s reload` istifadə et
+
+
+## Əlaqəli Mövzular
+
+- [Load Balancing](01-load-balancing.md) — L4/L7 proxy
+- [API Gateway](02-api-gateway.md) — application-layer reverse proxy
+- [Service Mesh](47-service-mesh.md) — sidecar proxy pattern
+- [CDN](04-cdn.md) — global reverse proxy şəbəkəsi
+- [Microservices](10-microservices.md) — proxy-based routing

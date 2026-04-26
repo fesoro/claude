@@ -1,6 +1,6 @@
-# Real-Time Systems
+# Real-Time Systems (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Real-time systems data-nı dərhal (milliseconds-seconds) istifadəçiyə çatdıran
 sistemlərdir. Traditional HTTP request-response model-indən fərqli olaraq, server
@@ -17,7 +17,12 @@ Client ← Server             (bidirectional, persistent)
 (request-response)          (server can push anytime)
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Chat, live dashboard, collaboration tool — bunlar polling ilə mümkündür, lakin WebSocket onları 10x daha effektiv edir. SSE server-push üçün HTTP üzərindəki sadə həlldir. Laravel Reverb, Pusher — seçim scale, cost, latency tələbinə görə dəyişir.
+
+## Əsas Anlayışlar
 
 ### Communication Methods
 
@@ -151,7 +156,7 @@ User A on Server 1 sends message to User B on Server 3:
 4. Server 3 forwards to User B
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Complete Real-Time Architecture
 
@@ -183,7 +188,7 @@ User A on Server 1 sends message to User B on Server 3:
            └─────────────┘
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Laravel Reverb (Native WebSocket Server)
 
@@ -475,7 +480,7 @@ class PresenceService
 4. **Binance** - WebSocket for real-time price tickers
 5. **Google Docs** - Operational Transformation over WebSocket
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S1: WebSocket vs SSE - nə vaxt hansını istifadə etmək lazımdır?**
 C: WebSocket - bidirectional communication lazım olanda (chat, gaming). SSE -
@@ -507,7 +512,7 @@ C: Timestamp + sequence number ilə hər mesaja sıra nömrəsi verin. Client
 tərəfində reordering buffer saxlayın. Out-of-order mesajları düzgün
 pozisiyaya qoyun. Server-side ordering üçün single-threaded processing.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Heartbeat** - Connection canlılığını yoxlayın (ping/pong)
 2. **Auto-Reconnect** - Exponential backoff ilə avtomatik reconnect
@@ -519,3 +524,12 @@ pozisiyaya qoyun. Server-side ordering üçün single-threaded processing.
 8. **Binary Protocol** - Yüksək throughput üçün JSON əvəzinə binary
 9. **Connection Limits** - Per-user connection limit qoyun
 10. **Monitoring** - Connection count, message rate, latency track edin
+
+
+## Əlaqəli Mövzular
+
+- [Chat System](19-chat-system-design.md) — real-time messaging arxitekturası
+- [Notification System](13-notification-system.md) — anlıq bildiriş
+- [Message Queues](05-message-queues.md) — real-time event arxası
+- [Pub/Sub](81-pubsub-system-design.md) — real-time event delivery
+- [Video Conferencing](80-video-conferencing-design.md) — ən mürəkkəb real-time sistem

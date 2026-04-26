@@ -1,6 +1,6 @@
-# Service Mesh
+# Service Mesh (Lead)
 
-## Nədir? (What is it?)
+## İcmal
 
 Service Mesh - microservices arasındakı şəbəkə əlaqələrini idarə edən xüsusi infrastructure layer-dir. Application kodu dəyişdirmədən retries, timeouts, mTLS, observability, traffic splitting kimi cross-cutting concerns-i təmin edir.
 
@@ -35,7 +35,12 @@ Sonra (Service Mesh ilə):
      (sadə HTTP)                                                    (sadə HTTP)
 ```
 
-## Arxitektura (Architecture)
+
+## Niyə Vacibdir
+
+Mikroservis sayı artdıqca mTLS, retry, circuit breaker, observability hər servisdə ayrı-ayrılıqda implement etmək mümkün olmur. Service mesh (Istio/Linkerd) bu cross-cutting concern-ləri infra-ya köçürür. K8s-da Envoy sidecar — real şirkətlərin standart yanaşmasıdır.
+
+## Arxitektura
 
 ### Data Plane
 
@@ -287,7 +292,7 @@ spec:
             methods: ["GET", "POST"]
 ```
 
-## Trade-offs (Ödənişlər)
+## Trade-offs
 
 ### Üstünlüklər
 
@@ -351,7 +356,7 @@ Internet → [API Gateway] → [Service Mesh (internal)] → Services
 - **gRPC built-in** - retry, deadline, load balancing, TLS daşıyır; yalnız gRPC servisləri üçün.
 - **Proxyless Service Mesh (gRPC xDS)** - gRPC library birbaşa xDS-dən config alır, sidecar yoxdur. Google yanaşması, yalnız gRPC.
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **Q1: Service Mesh olmadan mikroservislərdə cross-cutting concerns-i necə həll edərdin?**
 Library-based yanaşma: Spring Cloud (Java), Laravel package-ləri (PHP), go-kit (Go). Problem: hər dildə ayrıca implementation, upgrade bütün servisləri deploy etməyi tələb edir, polyglot environment-də uyğunsuzluq. Service Mesh bu funksiyaları infrastructure layer-ə çıxarır - application kodu toxunulmaz qalır.
@@ -397,7 +402,7 @@ Laravel container-ında heç bir mesh-specific kod yoxdur - adi Kubernetes Deplo
 
 Bu hallarda: Laravel `guzzlehttp/guzzle` + retry middleware + Sentry tracing kifayətdir.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Start small** - namespace-by-namespace rollout et, bütün cluster-i bir anda çevirmə
 2. **Linkerd ilə başla** - sadəlik və performans; lazım olsa Istio-ya keç
@@ -415,3 +420,12 @@ Bu hallarda: Laravel `guzzlehttp/guzzle` + retry middleware + Sentry tracing kif
 14. **Chaos testing** - fault injection ilə retry/timeout-u test et
 15. **Exclude non-HTTP services** - database connection-lar mesh-dən kənar saxla
 16. **GitOps ilə idarə et** - VirtualService/DestinationRule-lər git-də, audit trail üçün
+
+
+## Əlaqəli Mövzular
+
+- [Microservices](10-microservices.md) — service mesh-in əsas müştərisi
+- [Service Discovery](29-service-discovery.md) — mesh-də service registry
+- [API Gateway](02-api-gateway.md) — north-south vs east-west traffic
+- [Distributed Tracing](91-distributed-tracing-deep-dive.md) — mesh observability
+- [Circuit Breaker](07-circuit-breaker.md) — mesh-də sidecar circuit breaker

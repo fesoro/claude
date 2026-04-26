@@ -1,10 +1,15 @@
-# Raft, Paxos, ZAB — Consensus Deep Dive
+# Raft, Paxos, ZAB — Consensus Deep Dive (Architect)
 
 > Distributed sistemlərdə N replikanın bir dəyər (və ya ardıcıl log)
 > üzərində razılığa gəlməsi üçün alqoritmlər. File 25 ümumi baxış verir;
 > bu fayl Raft, Paxos, ZAB-ın daxili mexanizmlərinə dərindən baxır.
 
 ---
+
+
+## Niyə Vacibdir
+
+etcd, ZooKeeper, CockroachDB, TiDB — hamısı consensus algoritmindən istifadə edir. Raft-ı başa düşmədən bu sistemləri production-da düzgün konfiqurasiya etmək mümkün deyil. FLP impossibility theorem distributed sistemin fundamental limitini müəyyən edir. Distributed systems mühəndisliyin zirvəsidir.
 
 ## Konsensus nəyi həll edir? (What consensus solves)
 
@@ -579,7 +584,7 @@ işləyir, ya crash olub. Byzantine failure — node **yalan** danışa bilər
 
 ---
 
-## Interview Q&A
+## Praktik Tapşırıqlar
 
 **Q1: Nə üçün Raft yaradıldı, Paxos kifayət deyildi?**
 A: Paxos safety və liveness cəhətdən düzgündür, amma anlaşıqlı deyil —
@@ -637,7 +642,7 @@ overhead tələb edir — lazımsız yerdə istifadə etmə.
 
 ---
 
-## Best Practices
+## Praktik Baxış
 
 1. **Özün Raft implement etmə** — `etcd/raft`, `hashicorp/raft`,
    `tikv/raft-rs` kimi sınanmış kitabxanalardan istifadə et
@@ -688,3 +693,12 @@ overhead tələb edir — lazımsız yerdə istifadə etmə.
 
 File 25 konsensusun ümumi baxışıdır — bu fayl alqoritmlərin daxili
 mexanizmini dərindən açıqlayır.
+
+
+## Əlaqəli Mövzular
+
+- [Distributed Systems](25-distributed-systems.md) — consensus-un əsas konteksti
+- [Distributed Locks](83-distributed-locks-deep-dive.md) — consensus əsasında lock
+- [Service Discovery](29-service-discovery.md) — etcd/ZooKeeper istifadəsi
+- [Multi-Region](85-multi-region-active-active.md) — geo-distributed consensus
+- [CAP & PACELC](42-cap-pacelc.md) — CP sistem implementation

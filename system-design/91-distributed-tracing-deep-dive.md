@@ -1,6 +1,11 @@
-# 91. Distributed Tracing Deep Dive — OpenTelemetry, Sampling, Context Propagation
+# Distributed Tracing Deep Dive (Architect)
 
 Microservices arasında bir user request 20+ servisdən keçə bilər. Logs fragmentlidir, metrics aggregated-dir — yalnız **trace** bir request-in full journey-ini göstərir. File 16 logging/monitoring ümumi baxışı verir; bu fayl distributed tracing-in daxili işinə (W3C Trace Context, sampling, cardinality, storage) dərindən baxır.
+
+
+## Niyə Vacibdir
+
+Mikroservislar arasında sorğunu izləmək log correlation olmadan mümkün deyil. OpenTelemetry standartı vendor-neutral instrumentation təmin edir; sampling strategiyası trace volume-u idarə edir. Production debug-u üçün tracing olmadan problemi tapmaq dəfələrlə uzun çəkir.
 
 ## Trace model
 
@@ -496,7 +501,7 @@ Cost (S3 Intelligent-Tiering): ~$300/month
 
 Jaeger/ES üçün 10-20x daha bahalı (indexed storage).
 
-## Best practices
+## Praktik Baxış
 
 1. **Propagate everywhere** — tək servis müstəqnayı bütün chain-i qırır
 2. **Low-cardinality attributes index edilir, high-cardinality saxlanır**
@@ -534,6 +539,15 @@ Jaeger/ES üçün 10-20x daha bahalı (indexed storage).
 - Custom internal; Kraken/ODS integration
 - Full request trace for every interaction (sub-sampling only for hot paths)
 
-## Yekun
+## Ətraflı Qeydlər
 
 Distributed tracing microservices debug-ı üçün vazgeçilməzdir. W3C Trace Context həqiqi standart olub vendor lock-in-i sındırır. OpenTelemetry SDK + Collector model-i — vendor-neutral, future-proof. Ən böyük əməliyyat problemləri: **sampling strategy seçimi** (head vs tail), **cardinality control** və **cost**. Bir trace-in dəyəri yalnız komanda onu istifadə etməyi bilirsə var — dashboard və alertlə inteqrasiyası olmadan trace-lər sadəcə disk tutur.
+
+
+## Əlaqəli Mövzular
+
+- [Logging & Monitoring](16-logging-monitoring.md) — observability üç pilları
+- [Metrics System](53-metrics-monitoring-design.md) — metrics ilə tracing birlikdə
+- [SLA/SLO](44-sla-slo-sli.md) — latency SLI ölçmə
+- [Service Mesh](47-service-mesh.md) — mesh-dən avtomatik trace
+- [Microservices](10-microservices.md) — tracing-in əsas konteksti

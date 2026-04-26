@@ -1,6 +1,6 @@
-# Email System Design (Gmail)
+# Email System Design (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Email system Gmail/Outlook kimi tam mailbox platformasıdır — internetdən mail
 qəbul etmək, göndərmək, milyardlarla mesajı illərlə saxlamaq, bütün mailbox-da
@@ -24,7 +24,12 @@ Internet MX              Gmail Infrastructure              User
                           └──────────────────────┘
 ```
 
-## Requirements (Tələblər)
+
+## Niyə Vacibdir
+
+Email delivery SMTP, SPF/DKIM/DMARC, spam filtering, threading, search kimi bir çox mürəkkəb problemi əhatə edir. Hər SaaS məhsulu email göndərir; delivery reliability biznes üçün kritikdir. SendGrid, Mailgun — bu sistemlərin daxili işini bilmək inteqrasiya qərarlarını yaxşılaşdırır.
+
+## Tələblər
 
 ### Functional
 - Send / receive email (SMTP), IMAP / POP3 client sync
@@ -47,7 +52,7 @@ Durability:      11 nine, multi-region replication
 Latency:         Send < 5s görünən, receive < 30s
 ```
 
-## Əsas Komponentlər (Core Components)
+## Əsas Anlayışlar
 
 ### 1. SMTP Ingress
 
@@ -222,7 +227,7 @@ Internet MX                        Gmail Users
 └───────────────┘   └───────────────┘
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation)
+## Nümunələr
 
 ### Outbound Service (dedup + queue)
 
@@ -359,7 +364,7 @@ Retention: 30d Trash/Spam auto-delete
 4. **FastMail** — Cyrus IMAP, JMAP pioneer
 5. **AWS SES** — API-only sending, no mailbox
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S1: 1.5B user üçün metadata-nı necə partition edirsən?**
 C: user_id ilə shard (consistent hashing). Hər mailbox eyni shard-da —
@@ -404,7 +409,7 @@ ML model retrain (Bayesian + gradient boost). Per-user model + global model
 birləşir. Blocklist-lər external feed (Spamhaus). Sender reputation IP +
 domain + DKIM identity səviyyəsində.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Content-addressed storage** — body/attachment SHA-256 ilə dedup
 2. **User-level sharding** — mailbox single shard-da, cross-user minimal
@@ -418,3 +423,12 @@ domain + DKIM identity səviyyəsində.
 10. **Rate limit outbound** — per-user + per-domain, abuse prevention
 11. **Retry with backoff** — 4xx exp backoff, 30d cap, sonra bounce
 12. **Archive compliance** — WORM storage finance/medical, immutable
+
+
+## Əlaqəli Mövzular
+
+- [Notification System](13-notification-system.md) — email notification channel
+- [Message Queues](05-message-queues.md) — email delivery queue
+- [Idempotency](28-idempotency.md) — email deduplication
+- [Webhook Delivery](82-webhook-delivery-system.md) — email event webhook-ları
+- [Push Notification](79-push-notification-backend.md) — digər notification kanalı

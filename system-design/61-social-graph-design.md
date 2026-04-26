@@ -1,6 +1,6 @@
-# Social Graph Design
+# Social Graph Design (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Social graph istifadəçilər arasındakı əlaqələri (follow, friend, connection) saxlayan və
 sorğulayan sistemdir. Twitter-də "follow", Instagram-da "follow", Facebook-da "friend",
@@ -19,7 +19,12 @@ graph-ın üstündə oturur.
                        Eve
 ```
 
-## Tələblər (Requirements)
+
+## Niyə Vacibdir
+
+Facebook, LinkedIn, Twitter-in graph-ı milyardlarla node/edge saxlayır. Graph storage strategiyası, Friend-of-Friend sorğusu, celebrity shard problemi — sosial şəbəkə arxitekturasının özəyidir. Feed, recommendation, notification — hamısı social graph üzərindədir.
+
+## Tələblər
 
 ### Funksional Tələblər (Functional)
 
@@ -119,7 +124,7 @@ Row per user, PRIMARY KEY (user_id, follower_id). Celebrity row 100M column → 
 partition. Çözüm: user_id + bucket (0..15) shard daxilində də partition. Write
 optimized, amma read-before-write lazımdır.
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ```
                     ┌────────────────────┐
@@ -244,7 +249,7 @@ Read:
   get_followers:    ZRANGEBYSCORE followers_ts cursor +inf LIMIT 50
 ```
 
-## Laravel Implementation
+## Nümunələr
 
 ### Eloquent Many-to-Many
 
@@ -332,7 +337,7 @@ GDPR delete: cascade bütün edge-ləri sil, 30 gün grace
 - **Pinterest Zen** — HBase edge store
 - **Dgraph, Neo4j Aura** — managed graph DB
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S1: Niyə sadəcə edge table yetmir, həm də denormalized Redis set saxlayırsan?**
 C: `SELECT * FROM follows WHERE followee_id = 999` celebrity üçün 100M sətir
@@ -386,7 +391,7 @@ shortest path 3-hop:      p99 < 100ms (bidir BFS, cached)
 follow write:             p99 < 30ms  (DB commit + async fan-out)
 ```
 
-## Best Practices
+## Praktik Baxış
 
 1. **Denormalize both sides** — followers və following ayrı-ayrı saxla, read O(1)
 2. **Celebrity tier ayrı** — > 1M follower üçün xüsusi logic (mirror, pull fanout)
@@ -398,3 +403,12 @@ follow write:             p99 < 30ms  (DB commit + async fan-out)
 8. **Rate limit follow action** — bot / spam-a qarşı (10 follow/minute)
 9. **Soft-delete grace period** — unfollow / delete-ləri 7 gün geri qaytarılabilən saxla
 10. **Monitoring** — edge write rate, hot shard QPS, FoF latency, cache hit ratio
+
+
+## Əlaqəli Mövzular
+
+- [Feed System](22-feed-system-design.md) — graph əsasında feed hesablaması
+- [Recommendation System](36-recommendation-system.md) — social signal-lar
+- [Data Partitioning](26-data-partitioning.md) — graph sharding
+- [Caching](03-caching-strategies.md) — FoF cache strategiyası
+- [Vector Database](69-vector-database-design.md) — graph embedding similarity

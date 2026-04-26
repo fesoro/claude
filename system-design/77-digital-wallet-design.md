@@ -1,4 +1,4 @@
-# Digital Wallet Design (PayPal / Revolut)
+# Digital Wallet Design (Senior)
 
 Bu fayl rəqəmsal pul kisəsi (digital wallet / e-money) sistemlərinin dizaynını
 əhatə edir — PayPal, Revolut, Venmo, Wise, Cash App kimi məhsullar. Fayl 20
@@ -7,7 +7,12 @@ transfer, multi-currency və compliance** üzərindədir.
 
 ---
 
-## 1. Tələblər (Requirements)
+
+## Niyə Vacibdir
+
+Double-entry bookkeeping fintech-in fundamental konseptidir — hər əməliyyat iki entry yaradır, balans heç vaxt 'itmir'. Multi-currency, KYC/AML, fraud detection — real ödəniş sistemi üçün tələb olunan kompleksliyə hazırlaşdırır. Stripe, Revolut, PayPal arxitekturasının özəyidir.
+
+## Tələblər
 
 ### 1.1 Funksional (Functional)
 
@@ -655,7 +660,7 @@ yuyulmasını qarşısı.
 
 ---
 
-## Əlaqəli fayllar
+## Əlaqəli Mövzular
 
 - `20-payment-system.md` — ümumi payment system (Stripe-style)
 - `28-idempotency-exactly-once.md` — idempotency dərin

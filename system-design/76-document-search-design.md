@@ -1,10 +1,15 @@
-# Document Search Design (Algolia-like)
+# Document Search Design (Senior)
 
 Sənəd axtarış sistemi dizaynı. Algolia, Meilisearch, Typesense kimi məhsulların necə işlədiyini öyrənirik. Bu fayl `12-search-systems.md`-ı tamamlayır — orada ümumi axtarış sistemləri (Elasticsearch), burada isə instant search, UI-yönəlik "search-as-a-service" məhsulu var.
 
 ---
 
-## Tələblər (Requirements)
+
+## Niyə Vacibdir
+
+Algolia kimi instant search — inverted index, faceted search, synonyms, ranking tuning — full-text search-in production-ready versiyasıdır. Elasticsearch ilə müqayisə real layihə qərarları üçün vacibdir. E-commerce product search, SaaS help center — hər yerdə lazım olan pattern-dir.
+
+## Tələblər
 
 ### Funksional (Functional)
 - Müştərinin sənədlərində (product catalog, help articles, dashboard) axtarış
@@ -450,7 +455,7 @@ Meilisearch driver:
 
 ---
 
-## Müsahibə sualları (Interview Q&A)
+## Praktik Tapşırıqlar
 
 **S1: Inverted index nədir və niyə axtarışda istifadə olunur?**
 C: Inverted index — term → postings list (o termi olan sənədlərin siyahısı) mapping-dir. Forward index-in əksi (doc → terms). Axtarışda O(1) term lookup + postings merge edərək uyğun sənədləri tapırıq. Full table scan-dan milyon dəfə sürətli.
@@ -478,7 +483,7 @@ C: (a) `php artisan scout:import` batch-lə (default 500). (b) Queue işçiləri
 
 ---
 
-## Best practices (Best practices)
+## Praktik Baxış
 
 1. **Kiçik index** — yalnız axtarılan field-ləri index et, body-ni snippet üçün forward index-də saxla
 2. **Searchable attributes sırası** önəmlidir — title > description > tags
@@ -503,3 +508,12 @@ C: (a) `php artisan scout:import` batch-lə (default 500). (b) Queue işçiləri
 - `12-search-systems.md` — ümumi search system dizaynı (Elasticsearch-focused)
 - `71-proximity-service-design.md` — geo-search (yaxınlıq)
 - `case-studies/` — Shopify, Booking kimi axtarış istifadə edən şirkətlər
+
+
+## Əlaqəli Mövzular
+
+- [Search Systems](12-search-systems.md) — search əsasları
+- [Typeahead](75-typeahead-autocomplete.md) — search-dən öncəki sürətli suggestion
+- [Elasticsearch Internals](90-elasticsearch-internals.md) — dərin search engine mühərriki
+- [Caching](03-caching-strategies.md) — search nəticə cache
+- [Database Design](09-database-design.md) — full-text index trade-off

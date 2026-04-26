@@ -1,6 +1,6 @@
-# Chat System Design
+# Chat System Design (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Chat system real-time mesajlaşma platformasıdır - istifadəçilər arasında anlıq mesaj
 mübadiləsini təmin edir. 1-1 chat, group chat, media sharing, read receipts, typing
@@ -24,7 +24,12 @@ User A                          User B
   │◀──────────────────────────────│
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Real-time messaging WebSocket connection idarəetməsi, message persistence, delivery guarantee, group messaging kimi mürəkkəb problemləri əhatə edir. WhatsApp-in arxitekturası — Erlang, XMPP, end-to-end encryption — texniki kəşf üçün klassik nümunədir.
+
+## Əsas Anlayışlar
 
 ### Message Flow
 
@@ -148,7 +153,7 @@ Snowflake ID structure:
   = time-ordered, unique across servers
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### System Architecture
 
@@ -190,7 +195,7 @@ Snowflake ID structure:
 └──────────┘
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Chat Service
 
@@ -486,7 +491,7 @@ class OfflineMessageService
 4. **Discord** - Real-time voice + text, millions of concurrent users
 5. **Facebook Messenger** - Cross-platform, rich media, chatbots
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S1: 1-1 chat vs group chat arxitektura fərqi nədir?**
 C: 1-1 sadədir - mesaj bir nəfərə göndərilir. Group chat-da fan-out problemi
@@ -523,7 +528,7 @@ C: Server-da saxlanan mesajlar bütün device-lara sync olunur. Hər device son
 sync timestamp saxlayır, yeni device connect olduqda delta sync olur.
 End-to-end encryption olduqda key sharing protocol lazımdır.
 
-## Best Practices
+## Praktik Baxış
 
 1. **WebSocket** - Real-time messaging üçün əsas transport
 2. **Message Queue** - Offline users üçün mesaj queue-lama
@@ -535,3 +540,12 @@ End-to-end encryption olduqda key sharing protocol lazımdır.
 8. **Push Notifications** - Offline users üçün FCM/APNs
 9. **Message Retention** - Storage policy, archive old messages
 10. **Rate Limiting** - Spam prevention, per-user message limits
+
+
+## Əlaqəli Mövzular
+
+- [Real-Time Systems](17-real-time-systems.md) — WebSocket/SSE əsasları
+- [Message Queues](05-message-queues.md) — message delivery reliability
+- [Social Graph](61-social-graph-design.md) — kimin kiminlə chat edə biləcəyi
+- [Notification System](13-notification-system.md) — offline user bildirişi
+- [Push Notification](79-push-notification-backend.md) — mobil push delivery

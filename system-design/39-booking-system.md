@@ -1,6 +1,6 @@
-# Booking System Design (Airbnb/Hotel)
+# Booking System Design (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Booking System** — istifadəçilərə məkan, otel otağı, uçuş, restoran və ya xidmət rezervasiyası etmə imkanı verən sistem. Airbnb, Booking.com, OpenTable, Expedia kimi platformalar belə işləyir.
 
@@ -12,7 +12,12 @@
 - **Cancellation policies** — tam/qismən refund, strict/flexible
 - **Reviews & ratings** — hər iki tərəf
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Eyni otaq/seat/resurs üçün eyni anda iki sifarişin qəbul olunması overbooking yaradır. Optimistic/pessimistic locking, distributed lock, temporary hold pattern — concurrency problemlərinin real nümunəsidir. Airbnb, hotel booking sistemi bu trade-off-ların klassik nümunəsidir.
+
+## Əsas Anlayışlar
 
 ### Inventory Management
 
@@ -188,7 +193,7 @@ Kafka: booking.created, booking.cancelled, payment.* events
 Notification Service → email/SMS/push
 ```
 
-## PHP/Laravel ilə Tətbiq
+## Nümunələr
 
 ### Database Schema
 
@@ -582,7 +587,7 @@ class SearchService
 - **KAYAK** — meta-search, birdən çox provider-dan aqreqasiya
 - **Hotel PMS (Property Management System)** — Opera, Oracle Hospitality
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **1. Double-booking necə qarşısı alınır?**
 - Unique constraint (listing_id, date)
@@ -658,7 +663,7 @@ class SearchService
 - Hər 30 dəq sync
 - Two-way sync mürəkkəb — event mapping
 
-## Best Practices
+## Praktik Baxış
 
 1. **Hold + confirm pattern** istifadə et — ödəniş prosesində inventory bloklu olsun
 2. **Unique constraint** database səviyyəsində — safety net
@@ -677,3 +682,12 @@ class SearchService
 15. **A/B test** — search ranking, pricing, UX
 16. **Overbooking hesablamaları** (hotel) — historical no-show rate
 17. **Load test** peak seasons üçün — yay, Black Friday
+
+
+## Əlaqəli Mövzular
+
+- [Idempotency](28-idempotency.md) — booking deduplication
+- [Distributed Locks](83-distributed-locks-deep-dive.md) — resource lock
+- [Distributed Transactions](45-distributed-transactions-saga.md) — multi-step booking saga
+- [Payment System](20-payment-system-design.md) — booking + ödəniş birlikdə
+- [Live Auction](87-live-auction-design.md) — oxşar concurrency problemi

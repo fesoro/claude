@@ -1,6 +1,11 @@
-# 94. Feature Flags & Progressive Delivery
+# Feature Flags & Progressive Delivery (Lead)
 
 Feature flag (toggle) — kod deployment-i ilə feature release-ini ayıran runtime switch. Deploy fərqlidir, release fərqlidir. Bu fayl flag növlərini, architecture variant-larını (local vs server-side evaluation), consistency problem-lərini (sticky bucketing), progressive delivery pattern-lərini və LaunchDarkly/Unleash/Flagsmith/OpenFeature ekosistemini araşdırır.
+
+
+## Niyə Vacibdir
+
+Feature branch long-lived olduqda merge conflict artır; feature flag isə kodu deploy edib release-i ayrı idarə etməyə imkan verir. Canary release, A/B test, kill switch — production riski minimizasiya etmək üçün vacib alətlərdir. LaunchDarkly, Unleash, OpenFeature — bu sahənin standart tool-larıdır.
 
 ## Niyə feature flag?
 
@@ -500,7 +505,7 @@ if (Feature::active('new-api')) {
 // Driver options: array (test), database, custom
 ```
 
-## Best practices
+## Praktik Baxış
 
 1. **Every flag has an owner + expiry**
 2. **Start with 1% canary, not 100%**
@@ -560,6 +565,15 @@ if (Feature::active('new-api')) {
 - Postgres + small app container
 - ~$50/month infra
 
-## Yekun
+## Ətraflı Qeydlər
 
 Feature flags sadə ideyadır amma production stability-də transformativ. Deploy ilə release arasındakı ayırım continuous deployment-i mümkün edir — bütün code production-a getsin, release decision runtime-də. Local evaluation SDK-ları latency probleminin həllidir. Sticky bucketing A/B-də user experience stabiliyini təmin edir. Ən böyük təhlükə — **flag debt**: temporary flag permanent olur, 500 flag-dan sonra codebase-i idarə olunmaz edir. Progressive delivery (flag + canary + automated rollback) modern SRE practice-in əsasıdır.
+
+
+## Əlaqəli Mövzular
+
+- [Deployment Strategies](72-deployment-strategies.md) — progressive delivery konteksti
+- [Chaos Engineering](56-chaos-engineering.md) — kill switch pattern
+- [Recommendation System](36-recommendation-system.md) — A/B test altyapısı
+- [Edge Computing](86-edge-computing.md) — edge-də flag evaluation
+- [SLA/SLO](44-sla-slo-sli.md) — canary error budget

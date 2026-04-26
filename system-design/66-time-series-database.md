@@ -1,6 +1,6 @@
-# Time-Series Database Design
+# Time-Series Database Design (Lead)
 
-## Nədir? (What is it?)
+## İcmal
 
 Time-Series Database (TSDB) zaman üzrə sıralanmış ölçülərin (metric, sensor
 reading, stock tick) yüksək tezlikli yazılması, sıxılması və zaman pəncərəsinə
@@ -25,6 +25,11 @@ Gorilla, downsampling. Toplama/alerting pipeline üçün bax:
       ▲               │               ▲
       └─ WAL replay ──┘               │
 ```
+
+
+## Niyə Vacibdir
+
+Metrics (CPU, memory, latency) yazılış intensive, zaman əsaslı sorğulara optimizasiya tələb edir. Gorilla compression, downsampling, retention policy — InfluxDB/Prometheus/TimescaleDB-nin daxili işini başa düşmək monitoring infrastrukturunu düzgün konfigurasiya etmək üçün vacibdir.
 
 ## Time-Series Özəllikləri (Characteristics)
 
@@ -315,7 +320,7 @@ Drayverlər: cardinality (ən təhlükəli) > retention > replication > rate.
 
 ---
 
-## Trade-offs (Trade-offs)
+## Trade-offs
 
 | Yanaşma                 | Üstünlük                  | Çatışmazlıq             |
 |-------------------------|---------------------------|-------------------------|
@@ -330,7 +335,7 @@ Drayverlər: cardinality (ən təhlükəli) > retention > replication > rate.
 
 ---
 
-## Interview Q&A (Interview Q&A)
+## Praktik Tapşırıqlar
 
 **1. Niyə LSM-tree TSDB üçün B-tree-dən yaxşıdır?**
 Yazılar append-only və timestamp sıralı gəlir. LSM-də skip list + sıralı block
@@ -372,7 +377,7 @@ Fərqli `replica="A"/"B"` label-ı ilə scrape. Thanos Query fan-out sonra
 
 ---
 
-## Best Practices (Best Practices)
+## Praktik Baxış
 
 - **Cardinality budget** — tətbiq başına < 10M series; alert on `_head_series`
 - **Label bounded saxlayın** — `user_id`, `trace_id` log/trace-ə, metric YOX
@@ -392,7 +397,7 @@ Fərqli `replica="A"/"B"` label-ı ilə scrape. Thanos Query fan-out sonra
 
 ---
 
-## Əlaqəli mövzular (Related topics)
+## Əlaqəli Mövzular
 
 - [53 — Metrics & Monitoring](53-metrics-monitoring-design.md)
 - [16 — Logging & Monitoring](16-logging-monitoring.md)

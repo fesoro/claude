@@ -1,10 +1,15 @@
-# Matchmaking System Design (Online Gaming)
+# Matchmaking System Design (Senior)
 
 Skill-based, low-latency matchmaking sistemi — oyunçuları MMR, region, mode və party-yə görə qruplaşdırıb dedicated game server-ə yönləndirir. Bu sənəd interview üçün Elo/Glicko-2/TrueSkill müqayisəsi, adaptive bucketing alqoritmi və Laravel/Redis sketch ilə hazırlanıb.
 
 ---
 
-## Tələblər (Requirements)
+
+## Niyə Vacibdir
+
+Online game-lərdə fair match tapma — Elo/TrueSkill rating, skill-based bucketing, latency consideration — distributed queue üzərindən idarə olunan real-time prosesdir. Gaming şirkətlərindəki backend arxitekturasını başa düşmək üçün vacibdir.
+
+## Tələblər
 
 ### Funksional (Functional)
 - N oyunçudan ibarət match yaratmaq (məs: 5v5, 1v1, battle royale 100-lük)
@@ -66,7 +71,7 @@ Microsoft Research (Xbox Live, Halo 3). Bayesian model:
 
 ---
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ```
 [Game client]
@@ -355,7 +360,7 @@ class MatchFoundEvent implements ShouldBroadcast
 
 ---
 
-## Trade-offs (Trade-offs)
+## Trade-offs
 
 | Yanaşma | Üstünlük | Çatışmazlıq |
 |---------|----------|-------------|
@@ -369,7 +374,7 @@ class MatchFoundEvent implements ShouldBroadcast
 
 ---
 
-## Interview Q&A (Interview Q&A)
+## Praktik Tapşırıqlar
 
 **1. Niyə Redis sorted set queue üçün uyğundur?**
 ZADD/ZRANGEBYSCORE O(log N), MMR score kimi ideal. Range scan ±window içində player tapmaq üçün çox sürətli.
@@ -397,7 +402,7 @@ Adaptive window genişlənir (±100 → ±500 → cross-region). 120s-dən sonra
 
 ---
 
-## Best Practices (Best Practices)
+## Praktik Baxış
 
 - **Hidden MMR saxlayın** — visible rank ilə real skill ayrı; smurf və placement üçün lazım
 - **Adaptive window** — strict başlayın, vaxt keçdikcə boşaldın
@@ -414,7 +419,7 @@ Adaptive window genişlənir (±100 → ±500 → cross-region). 120s-dən sonra
 
 ---
 
-## Əlaqəli mövzular (Related topics)
+## Əlaqəli Mövzular
 
 - [Session token / JWT](../security/)
 - [WebSocket real-time push](../case-studies/discord-architecture.md)

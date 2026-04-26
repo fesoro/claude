@@ -1,6 +1,6 @@
-# Backpressure & Load Shedding
+# Backpressure & Load Shedding (Lead)
 
-## Nədir? (What is it?)
+## İcmal
 
 Overload altında service naive şəkildə hər request-i qəbul edərsə, queue şişir, latency
 partlayır, timeout-lar artır və cascading failure başlayır. **Backpressure** upstream-ə
@@ -19,7 +19,12 @@ With load shedding:
   Queue stable, p99 low, sistem sağ qalır
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Consumer işləyə biləcəyindən sürətli producer-ə tab gətirə bilmir; unbounded queue out-of-memory yaradır. Backpressure mexanizmi producer-ə yavaşlamaq siqnalı verir; priority-based shedding kritik trafikə üstünlük tanıyır. Bu olmadan spike zamanı sistem çökür.
+
+## Əsas Anlayışlar
 
 ### Little's Law — Niyə Atmalıyıq
 
@@ -153,7 +158,7 @@ Heavy load:    /feed → popular items, 20, 1min cache
 Emergency:     /feed → static "top stories"
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Admission Control Layers
 
@@ -175,7 +180,7 @@ Emergency:     /feed → static "top stories"
 
 Ən yaxşı kənarda (gateway) shed etmək - daxili resource xərclənmir.
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Admission Middleware — 503 on Overload
 
@@ -330,7 +335,7 @@ Prometheus alert:
     summary: "Shedding 5+ dəqiqə davam edir — capacity investigate et"
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S: Niyə sadəcə hər request-i qəbul etmək əvəzinə atmalıyıq?**
 C: Little's law (L = λW): arrival rate service rate-dən yüksəkdirsə queue və latency
@@ -378,7 +383,7 @@ capacity və ya incident siqnalıdır. Per-priority shed rate izlə (critical sh
 böyük problem). Inflight requests, queue depth, p99 latency, CPU ilə birlikdə
 dashboard qur - root cause analiz üçün.
 
-## Best Practices
+## Praktik Baxış
 
 - **Bounded queue-lar istifadə et** — hər queue-nun limit olmalıdır; sonsuz queue OOM və gizli latency deməkdir.
 - **Priority classification** — request-lərə kritik/normal/low tipi ver (header, auth context, path əsasında); overload-da low əvvəl atılır.
@@ -395,3 +400,12 @@ dashboard qur - root cause analiz üçün.
 - **LIFO-nu overload-da sına** — p99 tail latency kritikdirsə; normal vaxtda FIFO, shed mode-da LIFO.
 - **Backpressure chain-də işləsin** — LB → API gateway → service → DB hər layer-də limit; bottleneck upstream-ə siqnal versin.
 - **Playbook runbook** — shed başlayanda nə yoxlamalı (capacity, downstream, hot key), kimə eskalasiya. Hər incident-dən sonra yenilə.
+
+
+## Əlaqəli Mövzular
+
+- [Message Queues](05-message-queues.md) — queue dolduğunda nə baş verir
+- [Rate Limiting](06-rate-limiting.md) — upstream limit
+- [Stream Processing](54-stream-processing.md) — stream backpressure
+- [Circuit Breaker](07-circuit-breaker.md) — fail-fast tamamlayıcısı
+- [Pub/Sub](81-pubsub-system-design.md) — backlog management

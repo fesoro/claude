@@ -1,6 +1,6 @@
-# CDN (Content Delivery Network)
+# CDN (Content Delivery Network) (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
 CDN dünya üzərində paylanmış server şəbəkəsidir. Static content-i (şəkillər, CSS, JS, video)
 istifadəçiyə ən yaxın serverdən (edge location) təqdim edir. Bu latency-ni azaldır və
@@ -12,7 +12,12 @@ origin server yükünü yüngülləşdirir.
   CDN ilə:     Bakı -> İstanbul (edge) -> Bakı       (~20ms)
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Statik asset-lər (image, JS, CSS) origin serverə yük yaradır; CDN edge node-dan serv etməklə latency-ni 70–90% azaldır. Qlobal istifadəçilər üçün coğrafi gecikməni CDN olmadan aradan qaldırmaq mümkün deyil. Video streaming, large file download — CDN olmadan real miqyas yoxdur.
+
+## Əsas Anlayışlar
 
 ### Push vs Pull CDN
 
@@ -112,7 +117,7 @@ Vary: Accept-Encoding, Accept-Language
 - 4000+ PoP
 - Video streaming üçün güclü
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### CDN Request Flow
 
@@ -161,7 +166,7 @@ Cache Rules:
   If URI path starts with /wp-content/uploads -> Cache, Edge TTL 7 days
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Laravel Mix/Vite Asset Versioning
 
@@ -324,7 +329,7 @@ cache edir. Popular mahnılar hər edge-də, nadir mahnılar origin-dən.
 **Shopify:** Cloudflare ilə bütün merchant mağazalarını qoruyur. Static asset-lər
 aggressive cache, API-lər bypass. Black Friday trafikini CDN absorb edir.
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S: CDN necə işləyir?**
 C: DNS anycast routing ilə istifadəçini ən yaxın edge server-ə yönləndirir.
@@ -346,7 +351,7 @@ C: Sensitive data cache oluna bilər (private content). Origin IP expose ola bil
 SSL/TLS düzgün konfiqurasiya olunmalı. Cache poisoning attack mümkündür. Həll:
 Cache-Control headers, signed URLs, WAF integration.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Versioned file names** - Cache busting üçün hash istifadə edin, manual purge lazım olmur
 2. **Long TTL for static** - JS, CSS, images üçün 1 il TTL, filename hash ilə
@@ -356,3 +361,12 @@ Cache-Control headers, signed URLs, WAF integration.
 6. **Custom error pages** - Origin down olduqda CDN stale content və ya custom 503 göstərsin
 7. **Origin shield** - Bir neçə edge-dən origin-ə gələn traffic-i azaltmaq üçün mid-tier cache
 8. **Monitor CDN metrics** - Hit ratio, bandwidth, latency, error rate izləyin
+
+
+## Əlaqəli Mövzular
+
+- [Load Balancing](01-load-balancing.md) — origin server yük idarəsi
+- [Caching Strategies](03-caching-strategies.md) — edge cache prinsipləri
+- [File Storage](15-file-storage.md) — S3 origin + CDN distribution
+- [Edge Computing](86-edge-computing.md) — CDN-in kod icrasına genişlənməsi
+- [Video Streaming](23-video-streaming-design.md) — CDN-in ən intensiv use-case-i

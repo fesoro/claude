@@ -1,6 +1,6 @@
-# Search Systems
+# Search Systems (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Search system istifadəçilərə böyük həcmli data içindən sürətli və relevantlı nəticələr
 tapmağa imkan verən sistemdir. Full-text search, filtrlər, facets, autocomplete kimi
@@ -26,7 +26,12 @@ User Query: "php laravel tutorial"
 └──────────────────┘
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+LIKE sorğuları böyük cədvəllərdə yavaş işləyir; tam mətn axtarışı üçün dedicated search engine lazımdır. E-commerce, SaaS, content platform — axtarış olmadan istifadəçi məhsulu tapa bilmir. Inverted index, tokenization, relevance scoring — search-in özəyi bunlardır.
+
+## Əsas Anlayışlar
 
 ### Inverted Index
 
@@ -108,7 +113,7 @@ Facets:
   Rating:    4+ stars (90), 3+ stars (130)
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Search System Architecture
 
@@ -130,7 +135,7 @@ Facets:
 └─────────┘     └──────────┘     └───────────────┘
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Laravel Scout with Elasticsearch
 
@@ -390,7 +395,7 @@ class SearchController extends Controller
 4. **Wikipedia** - Full-text search across millions of articles
 5. **GitHub** - Code search across billions of lines of code
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S1: Inverted index nədir və necə işləyir?**
 C: Hər unique term-in hansı document-lərdə olduğunu göstərən data structure-dur.
@@ -423,7 +428,7 @@ C: Proper shard sayı seçmək, field data type-larını optimize etmək, cachin
 (query cache, request cache), filter context istifadə etmək (scoring lazım
 deyilsə), doc_values, routing ilə targeted search.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Index Mapping Design** - Field type-larını düzgün seçin (keyword vs text)
 2. **Analyzer Seçimi** - Language-specific analyzers istifadə edin
@@ -435,3 +440,12 @@ deyilsə), doc_values, routing ilə targeted search.
 8. **Filter vs Query** - Scoring lazım deyilsə filter context istifadə edin
 9. **Pagination** - Deep pagination üçün search_after istifadə edin
 10. **Mapping Explosion** - Dynamic mapping-dən qaçının, explicit mapping yazın
+
+
+## Əlaqəli Mövzular
+
+- [Typeahead](75-typeahead-autocomplete.md) — real-time axtarış sözündən öncə
+- [Document Search](76-document-search-design.md) — Algolia kimi instant search
+- [Caching](03-caching-strategies.md) — search nəticələrini cache etmək
+- [Database Design](09-database-design.md) — full-text index strategiyası
+- [Elasticsearch Internals](90-elasticsearch-internals.md) — dərin search engine mühərriki

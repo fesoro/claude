@@ -1,6 +1,11 @@
-# 89. Hot / Warm / Cold Storage Tiering
+# Hot / Warm / Cold Storage Tiering (Lead)
 
 Bütün məlumat eyni dərəcədə dəyərli deyil və eyni tezlikdə oxunmur. **Tiered storage** — access pattern-ə əsaslanaraq məlumatı fərqli qiymət/performans səviyyələrinə yerləşdirir. Bu fayl hot/warm/cold/frozen yerləşdirmələrini, S3 lifecycle policy-lərini, Cassandra/Elasticsearch tiered compaction-ı və cost optimization texnikalarını araşdırır.
+
+
+## Niyə Vacibdir
+
+Bütün məlumatı SSD-də saxlamaq baha başa gəlir; köhnə data-nı avtomatik olaraq ucuz tiera köçürmək əhəmiyyətli xərc azaldır. S3 lifecycle, Cassandra TWCS, Elasticsearch ILM — tiering hər storage texnologiyasında mövcuddur. Cost optimization senior engineer-in məsuliyyətidir.
 
 ## Niyə tiering lazımdır?
 
@@ -450,7 +455,7 @@ Alert:
 - Hot tier growth > warm tier → transition lag
 - Restore requests > baseline 2x → investigate (attack? bug?)
 
-## Best practices
+## Praktik Baxış
 
 1. **Access pattern ölç** — assumption əvəzinə heatmap qur
 2. **Lifecycle policy declarative** — Terraform / CloudFormation
@@ -460,6 +465,15 @@ Alert:
 6. **Versioning + lifecycle together** — köhnə versiyaları ayrıca tier-lə
 7. **Delete marker ilə expiration** — permanent delete vs soft delete
 
-## Yekun
+## Ətraflı Qeydlər
 
 Storage tiering modern data platforms-in əsasıdır. 10x-100x cost saving mümkündür — amma access pattern yanlış başa düşülərsə, restore latency və cost SLA-nı öldürə bilər. Ən vacib addım: əvvəl **ölç** (last-accessed-at, query frequency), sonra policy yaz. S3 Intelligent-Tiering və ClickHouse/Elasticsearch ILM son illərdə əməliyyat yükünü əhəmiyyətli dərəcədə azaldıb, amma hər storage profili üçün özünəməxsus tuning lazımdır.
+
+
+## Əlaqəli Mövzular
+
+- [File Storage](15-file-storage.md) — S3 storage class-ları
+- [Time-Series DB](66-time-series-database.md) — metrics retention policy
+- [Elasticsearch Internals](90-elasticsearch-internals.md) — ILM hot-warm-cold
+- [Data Lake/Warehouse](67-data-lake-warehouse-mesh.md) — archival storage
+- [Caching](03-caching-strategies.md) — hot data üçün in-memory tier

@@ -1,6 +1,6 @@
-# Multi-Tenancy Architecture
+# Multi-Tenancy Architecture (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Multi-tenancy** — bir proqram tətbiqi bir neçə müştərini (tenant) bir infrastruktur üzərində, hər müştərinin dataları izolasiyalı şəkildə xidmət etmə arxitekturasıdır. SaaS (Software as a Service) tətbiqlərində əsas model budur.
 
@@ -12,7 +12,12 @@
 - **Data isolation** — bir müştərinin datası başqasına görünməməlidir
 - **Customization** — hər tenant öz tənzimləmələrini ala bilər
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+SaaS məhsulları bir infrastruktur üzərində onlarla müştəriyə xidmət edir. Tenant isolation — data leakage qarşısı, performance noisy neighbor, schema strategiyası — SaaS arxitekturasının əsasıdır. Laravel-də Sanctum, row-level security, separate DB — trade-off-ları bilmək lazımdır.
+
+## Əsas Anlayışlar
 
 ### 3 Əsas Pattern
 
@@ -132,7 +137,7 @@ Hər tenantin öz DB-si var.
     └───────────┘      └───────────┘      └───────────┘
 ```
 
-## PHP/Laravel ilə Tətbiq
+## Nümunələr
 
 ### Yanaşma 1: Manual Implementation (Shared Schema)
 
@@ -339,7 +344,7 @@ Cache::tags(['tenant:' . tenant('id')])->put('stats', $data, 3600);
 - **AWS** — Cognito User Pools (multi-tenant auth)
 - **Microsoft 365** — hər tenant öz Azure AD-sində izolasiyalı
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **1. Shared schema vs separate DB — hansını seçərsən?**
 - **Shared schema**: çox sayda kiçik müştəri (SaaS), maliyyət vacib, sürətli onboarding
@@ -396,7 +401,7 @@ Job payload-a tenant_id əlavə et. Handler execute edəndə tenant context-i sw
 - **Path** (`app.com/acme`): sadə SSL, sadə routing, amma daha az peşəkar görünür
 - **Custom domain** (`acme.com`): enterprise plan, DNS/SSL tenant-specific
 
-## Best Practices
+## Praktik Baxış
 
 1. **Tenant context-i middleware-də erkən təyin et** — bütün tətbiqə yayılsın
 2. **Global scope-lar istifadə et** — tenant_id filter unudulmasın
@@ -410,3 +415,12 @@ Job payload-a tenant_id əlavə et. Handler execute edəndə tenant context-i sw
 10. **Tenant onboarding avtomatlaşdır** — DB create, migration, seeding bir əmrə
 11. **Landlord DB-dən lazımsız query etmə** — hər request-də tenant lookup cache et
 12. **Regionlar üzrə deploy** — GDPR data residency üçün (EU müştəriləri EU DB-də)
+
+
+## Əlaqəli Mövzular
+
+- [Database Design](09-database-design.md) — schema-per-tenant vs shared DB
+- [Data Partitioning](26-data-partitioning.md) — tenant-based sharding
+- [Auth](14-authentication-authorization.md) — tenant-scoped access control
+- [Caching](03-caching-strategies.md) — tenant cache isolation
+- [E-Commerce Design](24-e-commerce-design.md) — multi-vendor marketplace

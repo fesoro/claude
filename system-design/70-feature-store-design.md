@@ -1,10 +1,15 @@
-# Feature Store Design (ML Features)
+# Feature Store Design (Lead)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Feature store** — ML modelləri üçün feature-lərin (model input-ları) yaradılması, saxlanılması, versiyalanması və həm training, həm də inference zamanı consistent şəkildə təqdim edilməsi üçün mərkəzləşdirilmiş sistemdir. Feast, Tecton, Hopsworks, Uber Michelangelo, Airbnb Zipline, Netflix Axion belə platformalardır.
 
 Əsas məsələ — **training-serving skew**: training kodu (Python, Spark, offline) feature-ləri bir cür hesablayır, production inference (Java, Go, online) başqa cür. Nəticədə model training-də 0.95 AUC göstərir, canlıda 0.70-ə enir. Feature store bu fərqi aradan qaldırır.
+
+
+## Niyə Vacibdir
+
+ML modeli training-də istifadə etdiyi feature-lərin real-time serving-də eyni dəyərləri alması point-in-time correctness tələb edir. Feast/Tecton kimi feature store offline/online store-u sinxronlaşdırır; training-serving skew-nin qarşısını alır. ML-enabled backend sistem üçün vacib infrastruktur komponentdir.
 
 ## Problem (The Problem)
 
@@ -27,7 +32,7 @@ Feature store bunların həlli:
 - Offline və online store arasında **consistent values**
 - Training üçün **point-in-time correct** time travel
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ```
                    ┌─────────────────────────┐
@@ -327,7 +332,7 @@ Latency budget: Feast 5ms + TF Serving 15ms + Laravel overhead 10ms ≈ 30ms, p9
 - Managed $50k+/il, amma ops yükü yox
 - Self-hosted ucuz, amma SRE komanda lazım
 
-## Interview Sualları (Interview Q&A)
+## Praktik Tapşırıqlar
 
 **S1: Training-serving skew nədir və feature store necə həll edir?**
 C: Training (offline Python / Spark) və serving (online Java / Go) feature-i fərqli hesablayır — eyni transformation iki dəfə yazılır, implementation fərqli olur. Feature store tək transformation definition-dan batch (offline store) və streaming (online store) pipeline-ları generate edir. Eyni kod, eyni nəticə.
@@ -353,7 +358,7 @@ C: (1) Pre-materialized online store — hesablama zamanı yox, lookup zamanı; 
 **S8: Kiçik şirkət üçün feature store gərəkdirmi?**
 C: 1-2 model varsa yox — SQL view + Redis KV + notebook kifayətdir, feature store overhead-dir. 5+ model, fərqli komandalar, eyni feature-ləri yenidən yazmaq başlayanda ROI görünür. Compliance tələbi (banking, healthcare — PII lineage, audit) olsa məcburiyyətdir. Başlanğıc üçün Feast (open source) yaxşı — sadə, Python-native, sonradan Tecton / managed-ə keçmək mümkündür.
 
-## Best Practices
+## Praktik Baxış
 
 - **Tək transformation definition** — batch və streaming pipeline-ı eyni koddan generate et (skew olmaz)
 - **Point-in-time join mütləq**: naive join training-də silent data leakage yaradır
@@ -373,3 +378,12 @@ C: 1-2 model varsa yox — SQL view + Redis KV + notebook kifayətdir, feature s
   - Fayl 54 — stream processing (streaming features)
   - Fayl 16 — logging/monitoring (drift, freshness alerts)
   - Fayl 46 — CDC/outbox (source-dan feature pipeline trigger)
+
+
+## Əlaqəli Mövzular
+
+- [Vector Database](69-vector-database-design.md) — embedding feature saxlama
+- [Recommendation System](36-recommendation-system.md) — feature-lərin istehlakçısı
+- [AI Inference Serving](78-ai-inference-serving.md) — feature serving latency
+- [Time-Series DB](66-time-series-database.md) — time-based feature hesablaması
+- [Data Lake/Warehouse](67-data-lake-warehouse-mesh.md) — offline feature pipeline

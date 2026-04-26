@@ -1,6 +1,6 @@
-# Load Balancing
+# Load Balancing (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Load balancer gələn network trafikini bir neçə server arasında paylayan komponentdir.
 Məqsəd heç bir serverin həddindən artıq yüklənməməsini təmin etməkdir. Bu, yüksək
@@ -19,7 +19,12 @@ Client Request
 [S1]  [S2]  [S3]   <-- Backend Servers
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Hər production sistemi bir anda tək serverdən çox trafikə xidmət etməlidir. Load balancer olmadan tək server çöküşü bütün sistemi dayandırır; health check mexanizmi aradan çıxan serverləri avtomatik traffic-dən kənar tutur. Deploy, rolling update, canary release — hamısı load balancer üzərindən idarə olunur.
+
+## Əsas Anlayışlar
 
 ### L4 vs L7 Load Balancing
 
@@ -127,7 +132,7 @@ User B -> Cookie: SERVERID=s2 -> Server 2
 Problem: Server düşərsə, session itirilir.
 Həll: Session-ları Redis/Memcached-ə keçirmək (centralized session store).
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Tipik Production Arxitekturası
 
@@ -262,7 +267,7 @@ ALB Routing Rules:
 - Header: X-Custom: mobile -> Target Group: Mobile API
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Laravel Load Balancer Arxasında
 
@@ -367,7 +372,7 @@ yönləndirmə edir. gRPC traffic üçün xüsusi LB həlləri var.
 **GitHub:** GLB (GitHub Load Balancer) adlı custom L4 LB yaradıblar. DPDK istifadə edərək
 kernel-ı bypass edir, çox yüksək performance əldə edirlər.
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S: L4 və L7 load balancing arasındaki fərq nədir?**
 C: L4 transport layer-də (TCP/UDP) işləyir, yalnız IP və port-a baxır, daha sürətlidir.
@@ -389,7 +394,7 @@ C: Multi-tier yanaşma: DNS Round Robin (global) -> L4 NLB (regional) -> L7 ALB 
 Auto-scaling group ilə backend serverləri. Health check + circuit breaker. Geo-based routing
 ilə istifadəçiləri ən yaxın region-a yönləndirmə.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Həmişə redundant LB olsun** - Tək LB single point of failure-dır. Active-passive və ya active-active pair istifadə edin
 2. **Health check-ləri düzgün konfiqurasiya edin** - Yalnız HTTP 200 yox, database və cache connectivity-ni də yoxlayın
@@ -399,3 +404,12 @@ ilə istifadəçiləri ən yaxın region-a yönləndirmə.
 6. **Monitoring quraşdırın** - LB metrics: request rate, error rate, latency, active connections
 7. **Rate limiting əlavə edin** - DDoS-dan qorunmaq üçün LB-da rate limit tətbiq edin
 8. **Graceful degradation** - Backend-lər yavaşlayanda timeout-ları düzgün tənzimləyin
+
+
+## Əlaqəli Mövzular
+
+- [API Gateway](02-api-gateway.md) — L7 routing və auth mərkəzləşdirmə
+- [Rate Limiting](06-rate-limiting.md) — trafikə limit qoymaq
+- [Scaling](08-scaling.md) — horizontal/vertical böyümə strategiyaları
+- [CDN](04-cdn.md) — edge-dən statik content serv etmək
+- [Backpressure & Load Shedding](57-backpressure-load-shedding.md) — həddindən artıq yük idarəsi

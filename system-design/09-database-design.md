@@ -1,12 +1,17 @@
-# Database Design
+# Database Design (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Database design data-nın necə saxlanacağını, əlaqələndiriləcəyini və sorğulanacağını
 planlaşdırmaqdır. Yaxşı database design performanslı, scalable və maintainable sistem
 yaratmağın əsasıdır. Pis schema dizaynı sonradan düzəltmək çox çətindir.
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Pis proyektləşdirilmiş DB şeması production-da düzəltmək üçün çox baha başa gəlir. İndeks seçimi sorğu performansını 100x artıra bilər; şema miqrasiyası downtime riski daşıyır. Real layihələrdə DB dizaynı sistemin uzunmüddətli sürətini müəyyən edir.
+
+## Əsas Anlayışlar
 
 ### Normalization vs Denormalization
 
@@ -134,7 +139,7 @@ Search:                 Elasticsearch - full-text search, analytics
 Time-Series:            InfluxDB, TimescaleDB - metrics, IoT data
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Database Architecture Patterns
 
@@ -161,7 +166,7 @@ Pattern 4: Polyglot Persistence
   Social graph -> Neo4j
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Migration Best Practices
 
@@ -373,7 +378,7 @@ User data PostgreSQL-da, Search Elasticsearch-da. Schemaless (custom sharding la
 **Netflix:** Cassandra (primary), EVCache, Elasticsearch. Cassandra multi-region
 replication. Hər region öz data copy-sinə malikdir. Eventually consistent model.
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S: SQL vs NoSQL nə vaxt istifadə olunur?**
 C: SQL - structured data, complex relations, ACID, reporting (e-commerce, banking).
@@ -395,7 +400,7 @@ C: Pessimistic: Row lock edir, digər transaction gözləyir. Conflict çox olan
 Optimistic: Lock etmir, version check edir, conflict olsa retry. Conflict az olanda yaxşı.
 E-commerce stock: pessimistic. Blog post edit: optimistic.
 
-## Best Practices
+## Praktik Baxış
 
 1. **İndexləri EXPLAIN ilə yoxlayın** - Hər yavaş query-ni EXPLAIN edin
 2. **N+1 önləyin** - Eager loading, preventLazyLoading istifadə edin
@@ -405,3 +410,12 @@ E-commerce stock: pessimistic. Blog post edit: optimistic.
 6. **Connection pool istifadə edin** - Max connection limitini aşmayın
 7. **Read/write split** - Read-heavy workload üçün replica istifadə edin
 8. **Monitoring** - Slow query log, deadlock log, connection count izləyin
+
+
+## Əlaqəli Mövzular
+
+- [Data Partitioning](26-data-partitioning.md) — böyük cədvəlləri şardlamaq
+- [Database Replication](43-database-replication.md) — read scale və HA
+- [Caching](03-caching-strategies.md) — DB yükünü azaltmaq
+- [SQL vs NoSQL](41-sql-vs-nosql-selection.md) — doğru DB seçimi
+- [Consistency Patterns](32-consistency-patterns.md) — DB-nin consistency zəmanətləri

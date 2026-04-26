@@ -1,6 +1,6 @@
-# News Aggregator Design (Reddit / Hacker News)
+# News Aggregator Design (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 News aggregator istifadəçilərin link və text post submit etdiyi, bir-birinin
 postlarına upvote/downvote verdiyi, nested comment yazdığı sosial platformadır.
@@ -21,7 +21,12 @@ Users comment ─────▶ [Comment DB]─┘
                                    User sees top 25 posts
 ```
 
-## Requirementlər (Requirements)
+
+## Niyə Vacibdir
+
+Reddit, Hacker News kimi platformaların hot score, ranking algoritm, nested comment — hər biri ayrıca texniki problem yaradır. RSS feed aggregation, crawling, content deduplication da əhatə olunur. Fan-out, cache, vote counter — sistem dizayn biliklərini inteqrasiya edir.
+
+## Tələblər
 
 **Functional:** user link/text post submit edir; upvote/downvote (bir user bir
 post üçün bir dəfə); nested comments; feed types (Hot, New, Top, Rising);
@@ -39,7 +44,7 @@ Capacity:
   Cache (top 10k hot post body + metadata): ~100MB in Redis
 ```
 
-## Əsas Komponentlər (Key Components)
+## Əsas Anlayışlar
 
 ### Ranking Algoritmləri
 
@@ -171,7 +176,7 @@ Vote write path: debounced queue job (ShouldBeUnique, 10s window) → spike abso
 - **Real-time**: WebSocket (Laravel Reverb / Pusher), `channel: post.{id}`,
   live vote/comment counter animate (Reddit bubble effect)
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ```
 ┌────────┐   ┌──────────────┐   ┌──────────────┐
@@ -346,7 +351,7 @@ class CommentRepository
 Package alternativləri: `kalnoy/nestedset` (nested set model), `staudenmeir/laravel-adjacency-list`
 (recursive CTE builder).
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S1: Reddit "hot" algoritmində niyə log10 istifadə olunur?**
 C: Viral post-un sonsuz dominant olmaması üçün. log10 sayəsində ilk 10 vote
@@ -404,7 +409,7 @@ ilə. **Trending**: Redis sliding window counter — hər vote `INCR trend:{post
 - Search systems (Elasticsearch integration) → 12-search-systems.md
 - Data partitioning (post_id vs subreddit sharding) → 26-data-partitioning.md
 
-## Best Practices
+## Praktik Baxış
 
 1. **Async Score Recalc** - Vote path sync update ilə yüklənmir, queue-ya atılır
 2. **Debounce Viral Updates** - `ShouldBeUnique` job 10 saniyə pəncərə
@@ -417,3 +422,12 @@ ilə. **Trending**: Redis sliding window counter — hər vote `INCR trend:{post
 9. **Karma Threshold** - Yeni hesab vote manipulation qarşısı
 10. **Shard by post_id** - Uniform load, subreddit hotspot-lardan qaçma
 11. **CDN for Post Pages** - Viral post HTML edge-dən, 60s TTL
+
+
+## Əlaqəli Mövzular
+
+- [Feed System](22-feed-system-design.md) — personalized content sıralaması
+- [Web Crawler](48-web-crawler-design.md) — RSS/web content toplama
+- [Recommendation System](36-recommendation-system.md) — personalized ranking
+- [Sharded Counters](88-sharded-counters.md) — upvote sayacı
+- [Caching](03-caching-strategies.md) — hot content cache

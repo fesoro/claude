@@ -1,6 +1,6 @@
-# Data Partitioning
+# Data Partitioning (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Data partitioning (sharding) - böyük verilənlər bazasını kiçik, daha asan idarə edilən hissələrə (partition/shard) bölmək prosesidir. Hər partition ayrı serverdə saxlanıla və emal edilə bilər. Bu, sistemin horizontal scalability qazanmasını təmin edir.
 
@@ -10,7 +10,12 @@ Partitioning əsas məqsədləri:
 - **Availability** - Bir shard fail olsa belə digərləri işləyir
 - **Geographic distribution** - Data istifadəçiyə yaxın saxlanılır
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Tək verilənlər bazası böyük məlumat həcmini saxlaya bilmir. Sharding olmadan horizontal scale mümkün deyil; consistent hashing yeni shard əlavəsini minimal rebalancing ilə həll edir. Laravel, Eloquent multi-DB, PlanetScale — real layihələrdə şardlama qərarları buradan çıxır.
+
+## Əsas Anlayışlar
 
 ### 1. Horizontal vs Vertical Partitioning
 
@@ -107,7 +112,7 @@ Bir neçə shard-dan data almaq çətindir:
 - **Denormalization** - data-nı dublikat saxla
 - **Secondary indexes** - global index (Cassandra material view)
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ```
                     ┌──────────────┐
@@ -138,7 +143,7 @@ Consistent Hashing Ring:
           key2 (hash=150)
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Consistent Hashing Implementation
 
@@ -384,7 +389,7 @@ class ScatterGatherService
 - **Cassandra** - Consistent hashing ring, virtual nodes
 - **DynamoDB** - Partition key + sort key model
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **Q1: Sharding və replication fərqi nədir?**
 Sharding - data-nı bölmək (hər shard-da fərqli data). Replication - data-nı çoxaltmaq (bütün replica-larda eyni data). Sharding scalability üçün, replication availability və read scalability üçündür. Adətən ikisi birlikdə istifadə olunur - hər shard-ın öz replica set-i olur.
@@ -455,7 +460,7 @@ MongoDB native sharding arxitekturası:
 - **Balancer** - chunk-ları avtomatik balansa salır
 Shard key range, hashed və ya zone-based ola bilər.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Start without sharding** - Sharding kompleksity artırır, lazım olana qədər etmə
 2. **Plan shard key carefully** - Shard key sonradan dəyişdirmək çətindir
@@ -467,3 +472,12 @@ Shard key range, hashed və ya zone-based ola bilər.
 8. **Plan for rebalancing** - Online migration, throttling
 9. **Backup per shard** - Hər shard üçün ayrı backup strategy
 10. **Test with production-like data** - Kiçik dataset-də sharding effektivliyi görsənmir
+
+
+## Əlaqəli Mövzular
+
+- [Database Design](09-database-design.md) — partisiya məntiqi əsası
+- [Database Replication](43-database-replication.md) — shard-daxili replica
+- [Distributed Systems](25-distributed-systems.md) — partition fundamentalları
+- [KV Store](50-key-value-store-design.md) — consistent hashing praktikası
+- [Distributed ID](68-distributed-id-generation.md) — shard-dostu ID strategiyası

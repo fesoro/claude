@@ -1,6 +1,6 @@
-# Ad Serving System Design (RTB)
+# Ad Serving System Design (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Ad serving system istifadəçi publisher səhifəsini açanda <100ms içində ən uyğun
 reklamı seçib göstərən və impression/click/conversion hadisələrini izləyən sistemdir.
@@ -24,7 +24,12 @@ Browser ── click redirect   ──▶ Tracker ──▶ Kafka ──▶ targ
 Advertiser site ── conversion ──▶ Attribution ──▶ bill advertiser
 ```
 
-## Tələblər (Requirements)
+
+## Niyə Vacibdir
+
+Real-Time Bidding (RTB) 100ms-dən az vaxtda auction keçirir. Targeting, attribution, click fraud detection — reklam texnologiyası sənayesinin əsas arxitektura problemlərini anlayanlara böyük üstünlük verir. Google Ads, Meta Ads arxitekturası bu prinsiplər üzərindədir.
+
+## Tələblər
 
 ### Funksional (Functional)
 
@@ -58,7 +63,7 @@ Consistency:
   Billing strictly auditable (financial grade)
 ```
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Anlayışlar
 
 ### Core Loop — Request-dən Conversion-a
 
@@ -116,7 +121,7 @@ Budget + Freq + Brand safety filter
 Winner → SSP (bid_amount, creative_url)
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Yüksək Səviyyə (High Level)
 
@@ -213,7 +218,7 @@ ratio  = actual / target
   ratio < 0.9 → participation_rate × 1.1  (aqressiv)
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Click Tracking Endpoint
 
@@ -347,7 +352,7 @@ conversions(id, click_id, user_id, campaign_id, order_id,
             revenue, model, credit, ts)
 ```
 
-## Interview Q&A
+## Praktik Tapşırıqlar
 
 **S1: Niyə bid response 100ms hard limit-dir?**
 OpenRTB spec-i belə qoyur — publisher page render-i blok etmək olmaz. Geç DSP
@@ -391,7 +396,7 @@ Redis-də `freq:{user}:{campaign}:{date}` incr + TTL 24h. Bid time GET < 1ms.
 Distributed mühitdə hafif overshoot OK. Alternativ: Bloom filter (yaddaşa
 qənaət, false positive dözümlüyü tələb edir).
 
-## Best Practices
+## Praktik Baxış
 
 - **Hot path-dan DB-ni at** — bid time-da yalnız in-memory / Redis / feature store
 - **Precompute everything** — targeting reverse index, freq counters, budget remaining
@@ -415,3 +420,12 @@ qənaət, false positive dözümlüyü tələb edir).
 - [Back-of-envelope](31-back-of-envelope-estimation.md) — 100k rps capacity planning
 - [Chaos Engineering](56-chaos-engineering.md) — DSP timeout / SSP failover testləri
 - [Backpressure](57-backpressure-load-shedding.md) — bid peak-lərdə load shedding
+
+
+## Əlaqəli Mövzular
+
+- [Probabilistic Data Structures](33-probabilistic-data-structures.md) — frequency capping
+- [Message Queues](05-message-queues.md) — impression/click event stream
+- [Caching](03-caching-strategies.md) — targeting data cache
+- [Sharded Counters](88-sharded-counters.md) — impression sayacı
+- [Recommendation System](36-recommendation-system.md) — ad targeting modeli

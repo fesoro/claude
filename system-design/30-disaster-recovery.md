@@ -1,6 +1,6 @@
-# Disaster Recovery
+# Disaster Recovery (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Disaster Recovery (DR) - katastrofik hadisələrdən (natural disasters, hardware failures, cyber attacks, human errors) sonra sistemin bərpa edilməsi üçün hazırlanan planlar və proseslərdir. DR biznesin davamlılığının (Business Continuity) bir hissəsidir.
 
@@ -14,7 +14,12 @@ Mümkün fəlakətlər:
 
 Yaxşı DR plan - "haçan" deyil, "nə qədər tez" sualına cavab verir.
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Datacenter yanğını, cloud outage, yanlış DB migration — hamısı real baş verir. RTO/RPO SLA-nı müəyyən edir; backup strategiyası olmayan şirkət data itirir. Multi-region failover bu riskləri minimizasiya edir. 'Heç vaxt baş verməz' deyənlər yanılır.
+
+## Əsas Anlayışlar
 
 ### 1. RTO və RPO
 
@@ -142,7 +147,7 @@ Chaos engineering - sistemdə qəsdən fail yaradaraq zəif yerləri aşkarlamaq
 - Measure: Error rate, latency
 - Learn: Cache TTL uzatmaq lazım
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Multi-Region DR Architecture
 
@@ -176,7 +181,7 @@ Chaos engineering - sistemdə qəsdən fail yaradaraq zəif yerləri aşkarlamaq
               (Backups, User Files)
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Database Backup Command
 
@@ -546,7 +551,7 @@ class ChaosTest extends Command
 - **Stripe** - Active-active multi-region, zero-downtime failover
 - **Amazon.com** - Cell-based architecture, regional isolation
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **Q1: RTO və RPO fərqi?**
 RTO (Recovery Time Objective) - downtime tolerance, sistem nə qədər tez bərpa olunmalıdır. RPO (Recovery Point Objective) - data loss tolerance, nə qədər son data itkisi qəbul edilə bilər. Məs., RTO=1 saat, RPO=5 dəqiqə - 1 saat ərzində bərpa ol, son 5 dəqiqənin data-sı itə bilər. Hər ikisi 0-a yaxınlaşdıqca xərc eksponensial artır.
@@ -615,7 +620,7 @@ Runbook - fəlakət zamanı addım-addım təlimat. Müzakirə vaxtı yoxdur, st
 
 Təcrübəli DevOps komandaları runbook-u test edir, yeni işçiləri onunla öyrədir.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Test backups regularly** - Quarterly restore drills
 2. **Automate everything** - Manual steps fail source-u
@@ -637,3 +642,12 @@ Təcrübəli DevOps komandaları runbook-u test edir, yeni işçiləri onunla ö
 18. **Warm up cache before cutover** - Cache miss storm qarşısı
 19. **Graceful degradation** - Tam fail etmə, feature disable et
 20. **Regular DR drills** - Illik tam simulation
+
+
+## Əlaqəli Mövzular
+
+- [Database Replication](43-database-replication.md) — failover üçün replica
+- [SLA/SLO](44-sla-slo-sli.md) — RTO/RPO-nu SLA-ya bağlamaq
+- [Multi-Region Active-Active](85-multi-region-active-active.md) — geographic redundancy
+- [Logging & Monitoring](16-logging-monitoring.md) — incident zamanı observability
+- [Chaos Engineering](56-chaos-engineering.md) — DR planını sınaqdan keçirmək

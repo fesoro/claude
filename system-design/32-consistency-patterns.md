@@ -1,10 +1,15 @@
-# Consistency Patterns (Ardıcıllıq Modelləri)
+# Consistency Patterns (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Consistency** — distributed sistemdə data-nın müxtəlif node-larda eyni görünmə qaydalarıdır. CAP teoremi göstərir: Consistency, Availability və Partition tolerance-dən ancaq 2-ni seçmək olar. Müxtəlif consistency model-ləri fərqli trade-off-lar təklif edir.
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+'Müştəri ödəniş etdi, amma balansı hələ köhnə göstərir' — eventual consistency-nin real nəticəsidir. Hansı hallarda strong, hansı hallarda eventual consistency qəbul edilə bilər — bu fərqi bilmək arxitektura qərarlarını düzgün verir. Read-your-writes, monotonic reads — real UX problemlərini həll edir.
+
+## Əsas Anlayışlar
 
 ### 1. Consistency Spectrum
 
@@ -69,7 +74,7 @@ Səbəb-nəticə əlaqəli yazılar düzgün sırada görünür.
 
 Hamı əvvəl post-u, sonra comment-i görməlidir.
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Strong Consistency — Banking
 
@@ -180,7 +185,7 @@ class CausalOrder
 }
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Multi-Master vs Single-Master
 
@@ -217,7 +222,7 @@ Read Quorum (R=2):
 Client → [Node 1] [Node 3] → ən son timestamp qalibdir
 ```
 
-## PHP/Laravel ilə Tətbiq
+## PHP/Laravel Nümunələri
 
 ### MySQL Replication Lag Handling
 
@@ -283,7 +288,7 @@ class CachedUserRepository
 - **DNS**: Eventual consistency (propagation ~24 saat)
 - **Git**: Eventual consistency arası repository
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **1. Strong vs Eventual consistency arasında necə seçirik?**
 - Strong: financial (bank, inventory), data correctness kritik
@@ -313,7 +318,7 @@ Bir session daxilində read-your-writes + monotonic read təmin olunur. Əsasən
 **8. Quorum-based consistency formulası?**
 `W + R > N` strong consistency verir. N=3, W=2, R=2 klassik seçimdir. Hər yazı ən azı 2 node-a gedir, hər oxu 2 node-dan.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Business requirement-ə baxaraq seç** — hamı üçün strong lazım deyil
 2. **Sticky session** istifadə et — RYW üçün
@@ -325,3 +330,12 @@ Bir session daxilində read-your-writes + monotonic read təmin olunur. Əsasən
 8. **CQRS pattern** — read və write ayrı consistency model-də
 9. **Event sourcing** — causal consistency təmin edir
 10. **Distributed lock** — Redis Redlock, ZooKeeper critical section üçün
+
+
+## Əlaqəli Mövzular
+
+- [CAP & PACELC](42-cap-pacelc.md) — consistency vs availability seçimi
+- [Database Replication](43-database-replication.md) — replication lag = eventual consistency
+- [Distributed Systems](25-distributed-systems.md) — consistency model fundamentalları
+- [Distributed Locks](83-distributed-locks-deep-dive.md) — strong consistency primitivi
+- [Distributed Transactions](45-distributed-transactions-saga.md) — eventual consistency ilə əməliyyat

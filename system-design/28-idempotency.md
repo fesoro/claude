@@ -1,6 +1,6 @@
-# Idempotency
+# Idempotency (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Idempotency - eyni əməliyyatın bir neçə dəfə icra edilməsinin sistemə eyni təsir etməsi xüsusiyyətidir. Yəni əməliyyatı bir dəfə və ya 100 dəfə çağırsan, nəticə eyni olur.
 
@@ -16,7 +16,12 @@ Niyə vacibdir?
 - **Client errors** - "Submit" düyməsinə iki dəfə basmaq
 - **Payment systems** - İki dəfə ödəniş qəbul edilməməli
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Şəbəkə timeout olduqda client retry edir; server idempotent deyilsə eyni əməliyyat iki dəfə icra olunur. Ödəniş, email göndərmə, inventar azaltma — hamısı idempotent olmalıdır. Idempotency key pattern Stripe kimi şirkətlərin API dizaynının əsasıdır.
+
+## Əsas Anlayışlar
 
 ### 1. HTTP Methods Idempotency
 
@@ -99,7 +104,7 @@ Yaxşı API dizaynı:
 - Same key + same body = same response
 - Same key + different body = 409 Conflict
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ```
 Client
@@ -120,7 +125,7 @@ Laravel App
 Return Response
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Idempotency Middleware
 
@@ -496,7 +501,7 @@ if ($response->failed()) {
 - **Twilio** - Unique message SID ilə duplicate SMS qarşısı
 - **GitHub API** - Webhook delivery ID-lər
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **Q1: Idempotency və immutability fərqi?**
 Idempotency - eyni əməliyyatı bir neçə dəfə icra etmək eyni nəticə verir. Immutability - yaradıldıqdan sonra dəyişmir. Məsələn, `UPDATE user SET name='Ali'` idempotent-dir amma user immutable deyil. Blockchain bloklar həm immutable, həm əməliyyatlar idempotent-dir.
@@ -574,7 +579,7 @@ Stripe API-də:
 5. Key paralel request-də olarsa, `409 Conflict`
 6. Stripe key-i bütün endpoint-lər üçün scoped saxlayır
 
-## Best Practices
+## Praktik Baxış
 
 1. **Client generates key** - Client-side UUID, server-də deyil
 2. **Use UUID v4 or ULID** - Collision-free
@@ -591,3 +596,12 @@ Stripe API-də:
 13. **Natural idempotency preferred** - Upsert-lər simplest
 14. **Version in payload** - Large updates üçün version field
 15. **Monitor cache hit rate** - Idempotency effectiveness
+
+
+## Əlaqəli Mövzular
+
+- [Payment System](20-payment-system-design.md) — ödənişdə idempotency
+- [Distributed Transactions](45-distributed-transactions-saga.md) — saga idempotency
+- [Webhook Delivery](82-webhook-delivery-system.md) — at-least-once + idempotency
+- [Message Queues](05-message-queues.md) — exactly-once delivery
+- [Task Scheduler](21-task-scheduler-design.md) — task deduplication

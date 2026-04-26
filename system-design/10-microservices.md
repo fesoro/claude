@@ -1,6 +1,6 @@
-# Microservices
+# Microservices (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Microservices arxitekturası böyük bir tətbiqi kiçik, müstəqil xidmətlərə (services) ayıran
 dizayn yanaşmasıdır. Hər bir service öz business logic-ini, verilənlər bazasını və deployment
@@ -24,7 +24,12 @@ Monolit:                          Microservices:
                                  └─────────┘ └─────────┘
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Monolith böyüdükcə deploy çətinləşir, yavaş build dövrü yaranır, team autonomiyası itirilir. Mikroservislər müstəqil deploy, technology heterogeneity, fault isolation imkanı verir — lakin distributed systems kompleksliyini əlavə edir. Bu trade-off-u bilmədən arxitektura qərarı vermək olmaz.
+
+## Əsas Anlayışlar
 
 ### Monolith vs Microservices
 
@@ -255,7 +260,7 @@ Service-to-service communication-u idarə edən infrastructure layer:
 └──────────┘    └──────────┘    └──────────┘
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Typical Microservices Architecture
 
@@ -287,7 +292,7 @@ Service-to-service communication-u idarə edən infrastructure layer:
                     └──────────────┘
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Lumen Microservice Nümunəsi
 
@@ -485,7 +490,7 @@ volumes:
 3. **Uber** - Domain-oriented microservices architecture (DOMA)
 4. **Spotify** - Squad model, hər squad öz microservice-lərini idarə edir
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S1: Monolith-dən microservices-ə nə vaxt keçmək lazımdır?**
 C: Əgər team böyüyürsə (10+ developer), deployment-lər risk yaradırsa, müxtəlif
@@ -522,7 +527,7 @@ C: Cross-service queries çətindir, data duplication ola bilər, distributed
 transactions lazım olur. JOIN əməliyyatları mümkün deyil - API composition
 və ya CQRS pattern istifadə etmək lazımdır.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Start with Monolith** - "Monolith First" yanaşması, lazım olanda decompose edin
 2. **Domain-Driven Design** - Bounded Context ilə service sərhədlərini təyin edin
@@ -534,3 +539,12 @@ və ya CQRS pattern istifadə etmək lazımdır.
 8. **Async Communication** - Mümkün olanda message queue istifadə edin
 9. **Infrastructure as Code** - Terraform, Docker Compose ilə idarə edin
 10. **Feature Flags** - Yeni feature-ləri tədricən açın
+
+
+## Əlaqəli Mövzular
+
+- [Distributed Systems](25-distributed-systems.md) — mikroservislərin əsası
+- [Event-Driven](11-event-driven-architecture.md) — servislərarası async əlaqə
+- [Service Discovery](29-service-discovery.md) — servislərin bir-birini tapması
+- [Service Mesh](47-service-mesh.md) — cross-cutting concern-lərin infra-ya köçürülməsi
+- [Distributed Transactions](45-distributed-transactions-saga.md) — mikroservislər arası əməliyyat

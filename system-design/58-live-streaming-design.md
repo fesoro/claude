@@ -1,6 +1,6 @@
-# Live Streaming Design (Twitch / YouTube Live)
+# Live Streaming Design (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Live streaming sistemi bir streamer-in video/audio yayımını milyonlarla izləyiciyə
 minimum gecikmə ilə çatdıran arxitekturadır. VOD-dan fərqli olaraq content real vaxtda
@@ -30,7 +30,12 @@ Streamer (OBS)                                      Viewer (Browser/Mobile)
                  (ABR)
 ```
 
-## Requirementlər (Requirements)
+
+## Niyə Vacibdir
+
+Live stream real-time ingest, transcoding, CDN distribution, low latency delivery kimi bir neçə çətin mövzunu birləşdirir. Twitch/YouTube Live-ın arxitekturası miqyaslı real-time sistem dizaynının əla nümunəsidir. LL-HLS, WebRTC, RTMP — protokol seçimi latency vs compatibility trade-off-unu müəyyən edir.
+
+## Tələblər
 
 ### Functional
 
@@ -65,7 +70,7 @@ Storage (VOD):
   30 gün: 30 PB
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -100,7 +105,7 @@ Storage (VOD):
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## Əsas Komponentlər (Key Components)
+## Əsas Anlayışlar
 
 ### Ingest Protokolları
 
@@ -190,7 +195,7 @@ Segmentlər AES-128/SAMPLE-AES ilə encrypt. Key server auth user-ə key verir.
 CDN encrypted segment cache edir, amma oxuya bilmir.
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### 1. Stream Key Validation (Laravel + Nginx-RTMP)
 
@@ -347,7 +352,7 @@ Player:   rebuffer ratio, startup time, ABR switches
 Latency:  SEI timestamp (streamer → player delta), target P50=2s P99=6s
 ```
 
-## Interview Sualları (Interview Questions)
+## Praktik Tapşırıqlar
 
 **1. Niyə HLS latency 20+ saniyədir və LL-HLS necə həll edir?**
 
@@ -395,7 +400,7 @@ ABR (default 720p). Transcode ikinci xərcdir — GPU utilization monitoring kri
 Orijinal streamer disconnect olsa, hacker yayım açar. Həlli: key rotation UI, IP whitelist
 (enterprise), short-lived JWT token, HMAC-signed ingest URL.
 
-## Best Practices
+## Praktik Baxış
 
 - Ingest həmişə regional PoP-a yönəldilsin (GeoDNS) — streamer-ə ən yaxın datacenter
 - Stream key URL path-da olmasın, yalnız `/live` path + private key
@@ -416,3 +421,12 @@ Orijinal streamer disconnect olsa, hacker yayım açar. Həlli: key rotation UI,
 - Ban sistemi ingest səviyyəsində olsun (banned user açıla bilməsin)
 - Recording S3-yə direct yazılsın, offline transcode sonra olsun
 - Cost dashboard: egress GB/day, transcode GPU-hour, storage PB real-time
+
+
+## Əlaqəli Mövzular
+
+- [Video Streaming](23-video-streaming-design.md) — VOD arxitekturası
+- [CDN](04-cdn.md) — live chunk distribution
+- [Stream Processing](54-stream-processing.md) — live video analitika
+- [Video Conferencing](80-video-conferencing-design.md) — iki tərəfli video
+- [Real-Time Systems](17-real-time-systems.md) — live chat fan-out

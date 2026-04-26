@@ -1,6 +1,6 @@
-# File Storage
+# File Storage (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 File storage sistemi istifadəçi fayllarını (şəkillər, videolar, sənədlər) etibarlı
 şəkildə saxlamaq, idarə etmək və çatdırmaq üçün arxitekturadır. Modern tətbiqlər
@@ -19,7 +19,12 @@ təhlükəsiz saxlanır, istənilən vaxt əldə edə bilirsiniz.
 └──────────┘     └──────────┘     └───────────────┘
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Local disk istifadəsi horizontal scale-i çətinləşdirir; S3 kimi object storage ucuz, durable, globally accessible-dir. Pre-signed URL-lər server-i bypass edərək birbaşa upload imkanı verir. Laravel Storage, Flysystem — bu abstraksiyanın arxasındakı prinsiplər vacibdir.
+
+## Əsas Anlayışlar
 
 ### Object Storage vs File System vs Block Storage
 
@@ -105,7 +110,7 @@ Original Upload (5MB JPEG)
 └──────────────────┘
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Complete File Storage System
 
@@ -140,7 +145,7 @@ Original Upload (5MB JPEG)
                    └────────────┘
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Laravel Storage Facade
 
@@ -464,7 +469,7 @@ class ChunkedUploadController extends Controller
 4. **Google Drive** - Multi-format storage, real-time collaboration
 5. **Imgur** - Image hosting, on-the-fly resizing
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S1: Pre-signed URL nədir və niyə istifadə olunur?**
 C: Server tərəfindən imzalanmış, müvəqqəti URL-dir. Client birbaşa S3-ə yükləyir,
@@ -496,7 +501,7 @@ C: Statik faylları CDN edge location-lara cache edin. S3-ı origin kimi istifad
 Cache headers (Cache-Control, ETag) ilə cache policy təyin edin. Purge/invalidation
 strategiyası olsun. Custom domain + SSL.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Pre-signed URLs** - Server üzərindən traffic keçirməyin
 2. **Virus Scanning** - Upload olunan faylları scan edin
@@ -508,3 +513,12 @@ strategiyası olsun. Custom domain + SSL.
 8. **Backup** - Cross-region replication aktiv edin
 9. **Async Processing** - Image/video processing queue-da edin
 10. **Access Control** - Hər fayla düzgün permission təyin edin
+
+
+## Əlaqəli Mövzular
+
+- [CDN](04-cdn.md) — file-ları edge-dən serv etmək
+- [Dropbox Design](52-dropbox-design.md) — chunking, delta sync, dedup
+- [Distributed File System](65-distributed-file-system.md) — petabyte miqyaslı saxlama
+- [Video Streaming](23-video-streaming-design.md) — böyük media file idarəsi
+- [Scaling](08-scaling.md) — stateless dizayn üçün external storage

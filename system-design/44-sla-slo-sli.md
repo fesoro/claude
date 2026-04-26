@@ -1,6 +1,6 @@
-# SLA, SLO, SLI & Error Budgets
+# SLA, SLO, SLI & Error Budgets (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 SRE (Site Reliability Engineering) dünyasında reliability (etibarlılıq) rəqəmlərlə
 ölçülür. SLI, SLO və SLA bu ölçmənin üç səviyyəsidir. Error budget isə bu rəqəmlərdən
@@ -17,7 +17,12 @@ SLA  ≤  SLO  ≤  SLI (actual)
 (loosest)  (tighter)  (reality)
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+'99.9% uptime' nə deməkdir — ildə 8.7 saat downtime! Error budget olmadan engineering team risk götürməkdən çəkinir. SRE praktikası məhsul keyfiyyəti ilə yeni feature arasındakı balansı elmi əsasda qurur. Hər senior engineer bu anlayışları bilməlidir.
+
+## Əsas Anlayışlar
 
 ### Üç Səviyyə (Three Levels)
 
@@ -147,7 +152,7 @@ Probability ALL 100 complete fast = 0.99^100 = 36%
 Həll: hedging, parallel requests, timeout+retry, caching
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Laravel Middleware — SLI Collection
 
@@ -320,7 +325,7 @@ Tövsiyə: LB səviyyəsində ölç. User-centric amma stabil.
 Client-side çox noisy, app-level internal overhead-i görmür.
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S: SLA, SLO, SLI fərqi nədir?**
 C: SLI - nəyi ölçürük (actual measurement, misal availability = 99.95%).
@@ -367,7 +372,7 @@ C: SLI formul: good_events / valid_events. Valid events - sayılmalı olan hər 
 nəticələr. Misal: 1000 request, 900 = 2xx, 50 = 4xx (bad input), 50 = 5xx.
 Availability = 900 / (900 + 50) = 94.7%, 4xx kənara atılır.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Az sayda SLO saxla** - 3-5 critical user journey üçün SLO. 50 metric izləmək
    hamısını mənasızlaşdırır.
@@ -393,3 +398,12 @@ Availability = 900 / (900 + 50) = 94.7%, 4xx kənara atılır.
     User onları görmür. Result-based metrics (request success, latency) SLO olur.
 12. **Blameless post-mortem** - SLO pozulanda fərdi günahlandırma yox, sistemi düzəlt.
     Error budget bunun üçün var - risk götürmək normal qarşılanır.
+
+
+## Əlaqəli Mövzular
+
+- [Disaster Recovery](30-disaster-recovery.md) — RTO/RPO-nu SLA-ya bağlamaq
+- [Logging & Monitoring](16-logging-monitoring.md) — SLI-ı ölçmək
+- [Chaos Engineering](56-chaos-engineering.md) — error budget xərclənməsi
+- [Metrics System](53-metrics-monitoring-design.md) — SLI toplama infrastrukturu
+- [Distributed Tracing](91-distributed-tracing-deep-dive.md) — latency SLI ölçmə

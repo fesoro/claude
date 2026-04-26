@@ -1,12 +1,17 @@
-# Probabilistic Data Structures
+# Probabilistic Data Structures (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Probabilistic data structures** — tam dəqiqlikdən imtina edərək çox az yaddaşla və sürətlə böyük data setləri üzərində sualları cavablandıran strukturlarıdır. False positive və ya kiçik səhv payı (~1-5%) olsa da, yaddaş qazancı böyük data-da çox vacibdir.
 
 İstifadə halları: spam filtering, duplicate detection, cardinality estimation, caching layer.
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+'Bu URL artıq crawl olunub?' sualını milyardlarla URL üçün exact set-də saxlamaq GB RAM tələb edir; Bloom filter bunu MB-la həll edir. HLL unique visitor sayını RAM-sız hesablayır; Count-Min Sketch top-K elementi tapır. Space-efficiency kritik olduqda bu strukturlar vacibdir.
+
+## Əsas Anlayışlar
 
 ### 1. Bloom Filter
 
@@ -90,7 +95,7 @@ Redis Sorted Set-lərdə istifadə olunur.
 
 Bloom filter alternativi. Üstünlük: silmə dəstəyi var, daha cache-friendly.
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Bloom Filter — PHP İmplementasiya
 
@@ -224,7 +229,7 @@ echo $sketch->estimate("#covid");     // ~1_234_567
 echo $sketch->estimate("#ai");         // ~987_654
 ```
 
-## PHP/Laravel ilə Tətbiq
+## PHP/Laravel Nümunələri
 
 ### Laravel Cache-də Bloom Filter
 
@@ -302,7 +307,7 @@ class SpamUrlFilter
 - **Bitcoin**: Bloom filter — lightweight client transaction filtering
 - **Akamai**: Count-min sketch — top content traffic analysis
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **1. Bloom filter false positive niyə var, false negative yoxdur?**
 Bit set edildikdən sonra clear edilmir (standard Bloom). Element varsa, onun bitləri mütləq 1-dir. Amma başqa element-lərin bitləri kəsişib 1 olub → yalnış "var" cavabı.
@@ -331,7 +336,7 @@ Redis sorted set skip list istifadə edir.
 **8. Distributed Bloom filter?**
 Bit array-i nodes arası partition edirsən. Hər node öz bit-lərinə məsuldur. Lookup: hamısı yoxlanılır. Və ya mərkəzləşmiş bir Bloom + hər node-da cache.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Tələbə uyğun seç** — exact need-sizsə probabilistic cəlb edicidir
 2. **False positive rate təyin et** — 1% çox vaxt kifayətdir
@@ -343,3 +348,12 @@ Bit array-i nodes arası partition edirsən. Hər node öz bit-lərinə məsuldu
 8. **Monitoring** — estimated vs actual müqayisə et
 9. **Merging** — HyperLogLog-lar birləşdirilə bilər (union)
 10. **Stream processing** — Kafka + CMS ilə real-time counting
+
+
+## Əlaqəli Mövzular
+
+- [Web Crawler](48-web-crawler-design.md) — Bloom filter ilə URL deduplication
+- [Caching](03-caching-strategies.md) — negative cache miss azaltmaq
+- [Sharded Counters](88-sharded-counters.md) — approximate counting alternativ
+- [Database Design](09-database-design.md) — exact vs approximate trade-off
+- [Typeahead](75-typeahead-autocomplete.md) — popular query tracking

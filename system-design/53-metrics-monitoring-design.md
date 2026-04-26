@@ -1,6 +1,6 @@
-# Metrics & Monitoring System Design
+# Metrics & Monitoring System Design (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Metrics & Monitoring System minlərlə service-dən ədədi ölçülər (CPU, latency, request
 count) toplayıb, time-series database-də saxlayıb, dashboard və alert-lər üçün query
@@ -25,7 +25,12 @@ bax: [16-logging-monitoring.md](16-logging-monitoring.md) (logs + metrics + trac
  └────────┘       └──────────┘      └──────────────┘    └──────────┘
 ```
 
-## Funksional Tələblər (Functional Requirements)
+
+## Niyə Vacibdir
+
+Prometheus-un TSDB arxitekturası yüksək cardinality problemindən əziyyət çəkir. Custom metrics sistemi dizaynı — ingestion, storage, query, alerting — observability pillar-larından birini başa düşdürür. Datadog, VictoriaMetrics — real tool-ların daxili işini anlamaq üçün vacibdir.
+
+## Tələblər
 
 1. **Metric types toplamaq** — counter (monoton artır), gauge (yuxarı/aşağı), histogram
    (bucket-lara bölünmüş distribution), summary (client-side quantile).
@@ -389,7 +394,7 @@ cheap (bytes/sample)    expensive (sample        expensive (full-text
 Praktikada: dashboard metrics üzərində, incident debug-ı trace + log ilə aparılır.
 Exemplars ilə metric-dən trace-ə linkləmək olur (Grafana exemplars feature).
 
-## Interview Q&A
+## Praktik Tapşırıqlar
 
 **Q1: Nəyə görə pull model push-dan daha çox istifadə olunur uzun-ömürlü service-lər üçün?**
 Pull model "target up/down" bilgisini pulsuz verir (scrape fail = `up=0`). Service
@@ -441,3 +446,12 @@ bilmirsən. Buna görə "meta-monitoring" aparılır: ayrı bir Prometheus (baş
 və ya provider) əsas Prometheus-un `up` və `scrape_duration` metriklərini skrape
 edir. Dead man's switch alert — məlum "həmişə firing" alert-i hər dəqiqə gəlməsə,
 monitoring stack özü down deməkdir.
+
+
+## Əlaqəli Mövzular
+
+- [SLA/SLO/SLI](44-sla-slo-sli.md) — SLI-ın metrics sistemi üzərindən ölçülməsi
+- [Logging & Monitoring](16-logging-monitoring.md) — üç pillar birlikdə
+- [Distributed Tracing](91-distributed-tracing-deep-dive.md) — üçüncü observability pillar
+- [Time-Series DB](66-time-series-database.md) — metrics storage arxitekturası
+- [Chaos Engineering](56-chaos-engineering.md) — monitoring ilə chaos sınaqları

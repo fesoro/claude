@@ -1,6 +1,6 @@
-# Object-Oriented Design (OOD)
+# Object-Oriented Design (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Object-Oriented Design (OOD)** real-world problemləri **obyekt**lər, onların **atribut**ları (data) və **davranış**ları (methods) vasitəsilə modelləşdirmə prosesidir. Interview-larda OOD sualları namizədin **abstraksiya**, **encapsulation**, **inheritance**, **polymorphism** və **design pattern**lərdən istifadə bacarığını yoxlayır.
 
@@ -16,7 +16,12 @@ Tipik OOD interview sualları: Parking Lot, Elevator, Vending Machine, Library M
 6. **Design Pattern tətbiq et** - Strategy, State, Observer, Factory.
 7. **SOLID** - Extensible code.
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+LLD (Low-Level Design) interview-larında parking lot, elevator, chess kimi OOD sualları soruşulur. SOLID prinsiplər, design pattern-lar — real PHP/Laravel layihəsinin strukturunu müəyyən edir. Refactoring, testability, maintainability hamısı bu prinsiplərə əsaslanır.
+
+## Əsas Anlayışlar
 
 ### SOLID Principles
 
@@ -37,7 +42,7 @@ Tipik OOD interview sualları: Parking Lot, Elevator, Vending Machine, Library M
 - **Singleton** - Tək instance (ParkingLotManager).
 - **Command** - Əmrləri obyekt kimi (ATM transactions).
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Class Relationships
 
@@ -58,7 +63,7 @@ ParkingLot (Singleton) → ParkingFloor → ParkingSpot (abstract)
 ParkingLot → Ticket (many)
 ```
 
-## PHP/Laravel ilə Tətbiq
+## Nümunələr
 
 ### 1. Parking Lot (Strategy + Singleton)
 
@@ -307,7 +312,7 @@ class Knight extends Piece {
 - **ATM** - Banking: Idle → CardInserted → Authenticated → Transaction.
 - **Chess** - Chess.com, Lichess engines use OOD for movement validation.
 
-## Interview Sualları (Q&A)
+## Praktik Tapşırıqlar
 
 ### 1. Parking Lot-da Strategy Pattern niyə?
 
@@ -384,7 +389,7 @@ class CheckDetector {
 ```
 **Separation of Concerns** - board data saxlayır, detector məntiq.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Requirement-ləri aydınlaşdır** - Fərziyyələrlə başlama.
 2. **Interface vs Abstract class** - Contract vs partial implementation.
@@ -398,3 +403,12 @@ class CheckDetector {
 10. **Design pattern over-engineering** - Lazım olanda.
 11. **UML diagram** - Interview zamanı whiteboard.
 12. **Extensibility vurğula** - "Yeni feature necə əlavə olunar?"
+
+
+## Əlaqəli Mövzular
+
+- [Microservices](10-microservices.md) — servis sərhədi OOD ilə müəyyən olunur
+- [Database Design](09-database-design.md) — domain model ilə DB şeması
+- [API Design](55-api-design-patterns.md) — OOD prinsipləri API-ə tətbiqi
+- [Auth](14-authentication-authorization.md) — role/permission OOD modeli
+- [E-Commerce Design](24-e-commerce-design.md) — domain model nümunəsi

@@ -1,12 +1,17 @@
-# Distributed Transactions & Saga Pattern
+# Distributed Transactions & Saga Pattern (Lead)
 
-## Nədir? (What is it?)
+## İcmal
 
 Monolit tətbiqdə bir `DB::transaction()` bütün dəyişiklikləri ACID qaydası ilə idarə edir — ya hamısı commit olur, ya hamısı rollback. Mikroservis memarlığında isə hər servisin öz DB-si var. `Order` servisi MySQL-dədir, `Payment` servisi PostgreSQL-də, `Inventory` Redis+Mongo-da. Bir biznes əməliyyatı (məsələn, order yerləşdirmək) bu üç servisi də dəyişməlidir. Amma **distributed `COMMIT` yoxdur** — şəbəkə vasitəsilə atomic commit etmək praktik deyil.
 
 **Distributed transaction** — bir neçə müstəqil sistemdə ardıcıl dəyişikliklərin koordinasiyasıdır. Yaxınlaşmalar: 2PC, 3PC (klassik, blocking), **Saga** (müasir, non-blocking, eventual consistency).
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Mikroservislər arasında ACID transaction mümkün deyil — hər servisin öz DB-si var. Saga pattern eventual consistency ilə distributed iş axını koordinasiya edir; 2PC bloklanma problemi həll olunur. E-commerce order, payment, inventory — hamısı saga tələb edir.
+
+## Əsas Anlayışlar
 
 ### 1. Problem — ACID Mikroservisdə Qırılır
 
@@ -167,7 +172,7 @@ Saga Atomicity və Durability verir (eventual), amma **Isolation** itirir. Addı
 - **By value pattern** — critical data-nı saga state-də saxla
 - **Reread value** — kompensasiya zamanı son dəyəri oxu
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### E-commerce Order Saga
 
@@ -356,7 +361,7 @@ DB::transaction(function () use ($order) {
 
 Daha ətraflı: **file 46 — Outbox Pattern**.
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **1. 2PC niyə müasir mikroservislərdə istifadə olunmur?**
 Blocking protocol-dur — coordinator və ya participant fail olarsa resurslar sonsuz lock qalır. Yüksək latency, availability aşağı. Cloud-native API-lər (Stripe, AWS) 2PC dəstəkləmir. Saga seçilir.
@@ -383,7 +388,7 @@ State DB-də saxlanmalıdır (saga state machine table). Restart-da pending saga
 **8. Saga-da event publishing reliability necə təmin olunur?**
 **Outbox pattern** — DB transaction daxilində həm dəyişikliyi, həm event-i bir cədvələ yaz. Ayrı relay prosesi outbox-dan oxuyur, broker-ə göndərir, commit edir. Bu `at-least-once delivery` + consumer idempotency-dən nəticə effektiv olaraq `exactly-once` verir.
 
-## Best Practices
+## Praktik Baxış
 
 1. **2PC istifadə etmə** — monolit DB deyilsə, Saga seç
 2. **Idempotent steps** — hər step idempotency key qəbul etməlidir
@@ -398,3 +403,12 @@ State DB-də saxlanmalıdır (saga state machine table). Restart-da pending saga
 11. **Saga-lar qısa olsun** — uzun saga = çox failure point
 12. **Circuit breaker** — hər external çağırışda (file 07)
 13. **Distributed tracing** — trace_id bütün saga addımlarına ötür
+
+
+## Əlaqəli Mövzular
+
+- [Microservices](10-microservices.md) — saga-nın əsas istifadə yeri
+- [Idempotency](28-idempotency.md) — saga addımlarının idempotentliyi
+- [CDC & Outbox](46-cdc-outbox-pattern.md) — saga event-lərini reliable göndərmək
+- [Consistency Patterns](32-consistency-patterns.md) — eventual consistency çərçivəsi
+- [Payment System](20-payment-system-design.md) — ödəniş saga nümunəsi

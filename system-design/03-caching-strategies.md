@@ -1,6 +1,6 @@
-# Caching Strategies
+# Caching Strategies (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Caching tez-tez istifadə olunan data-nı sürətli yaddaşda saxlamaqdır. Database-ə hər dəfə
 müraciət etmək əvəzinə, cavabı cache-dən oxumaq 10-100x daha sürətlidir. Caching performansı
@@ -18,7 +18,12 @@ Database query:  ~5-50 ms
 API call:       ~50-500 ms
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Database-ə hər sorğu 10–100ms latency deməkdir; cache hit isə 1ms-dən azdır. Read-heavy sistemlərdə caching olmadan horizontal scale praktik cəhətdən mümkün olmur. Yanlış cache invalidation isə stale data yaradır — bu trade-off-u bilmək kritikdir.
+
+## Əsas Anlayışlar
 
 ### Caching Strategiyaları
 
@@ -126,7 +131,7 @@ Max value size   | 512MB              | 1MB
 Multithreaded    | Xeyr (single)      | Bəli
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Multi-Layer Caching
 
@@ -160,7 +165,7 @@ Database Buffer Pool
 Key -> CRC16(key) % 16384 = slot number -> Master node
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Laravel Cache Facade
 
@@ -359,7 +364,7 @@ Subscriber data, viewing history, recommendations cache olunur.
 **Stack Overflow:** Yalnız 9 web server ilə milyonlarla request handle edir, çünki
 aggressive caching strategiyası var. Redis + local in-memory cache.
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S: Cache-aside vs read-through fərqi?**
 C: Cache-aside-da application cache miss zamanı DB-dən oxuyub cache-ə yazır. Read-through-da
@@ -381,7 +386,7 @@ C: Redis persistence dəstəkləyir (RDB snapshots, AOF), amma primary DB kimi
 tövsiyə olunmur. RAM-limited, complex query yoxdur. Amma session, cache, real-time
 leaderboard, pub/sub kimi use case-lər üçün əladır.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Cache hit rate izləyin** - 95%+ olmalıdır, aşağıdırsa strategiyanı yoxlayın
 2. **TTL həmişə qoyun** - forever cache data staleness-ə səbəb olur
@@ -391,3 +396,12 @@ leaderboard, pub/sub kimi use case-lər üçün əladır.
 6. **Graceful degradation** - Cache down olsa app işləməyə davam etməlidir
 7. **Monitor memory** - Redis maxmemory və eviction policy düzgün konfiqurasiya edin
 8. **Avoid thundering herd** - Populyar key-lərin TTL-inə jitter əlavə edin
+
+
+## Əlaqəli Mövzular
+
+- [Database Design](09-database-design.md) — cache-in arxasındakı mənbə
+- [Distributed Cache Design](49-distributed-cache-design.md) — Redis cluster arxitekturası
+- [Consistency Patterns](32-consistency-patterns.md) — stale cache trade-off-ları
+- [Data Partitioning](26-data-partitioning.md) — cache şardlama
+- [Probabilistic Data Structures](33-probabilistic-data-structures.md) — Bloom filter ilə cache miss azaltmaq

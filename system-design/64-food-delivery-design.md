@@ -1,6 +1,6 @@
-# Food Delivery System Design (DoorDash / Wolt)
+# Food Delivery System Design (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Food delivery system** — müştərinin yaxın restoranlardan yemək sifariş verdiyi, platformanın driver (courier / dasher) təyin edərək yeməyi çatdırdığı paylanmış sistemdir. DoorDash, Wolt, Uber Eats, Glovo, Deliveroo belə işləyir.
 
@@ -9,7 +9,12 @@ Ride-sharing (fayl 37) ilə oxşardır — hər ikisində real-time matching, ge
 - **Order batching**: driver 2-3 yaxın sifarişi bir dəfəyə daşıya bilər
 - **Just-in-time dispatch**: driver restorana tam hazır olan vaxt gəlməlidir (erkən gəlsə gözləyir, gec gəlsə yemək soyuyur)
 
-## Tələblər (Requirements)
+
+## Niyə Vacibdir
+
+Rider dispatch, ETA hesablanması, order batching — real-time geospatial sistemi tələb edir. DoorDash/Wolt kimi platformaların arxitekturası ride-sharing ilə oxşar, lakin restoran hazırlıq vaxtı, multi-restaurant batching əlavə edir. Sistem dizayn müsahibəsinin populyar mövzusudur.
+
+## Tələblər
 
 ### Funksional
 
@@ -373,7 +378,7 @@ class DriverFinder
           Kafka ──► ETA ML, Analytics, Notifications
 ```
 
-## Interview Sualları (Interview Q&A)
+## Praktik Tapşırıqlar
 
 **S1: Driver-i sifariş hazır olmamış təyin etmək olarmı?**
 C: Bəli, amma vaxtı ML model proqnozlaşdırır. Driver restorana tam ready vaxtında gəlsin deyə `dispatch_time = ready_time - travel_time - buffer` formulu. Erkən gəlsə OPH aşağı düşür, gec gəlsə yemək soyuyur.
@@ -399,7 +404,7 @@ C: Bir neçə strategiya: (1) surge pricing — delivery fee artır, driver-lər
 **S8: Driver location update-ləri niyə birbaşa MySQL-ə yazılmır?**
 C: Çox write volume (30k QPS), və hot path query-lər radius search-dir. Redis Geo O(log N) ilə həll edir, MySQL-də PostGIS olsa belə belə yük write-ə uyğun deyil. History analytics üçün Kafka → ClickHouse.
 
-## Best Practices
+## Praktik Baxış
 
 - **Ayrı read/write path**: order write MySQL-ə, read-heavy tracking Redis + WebSocket
 - **Idempotency key hər side-effect endpoint-də** (order create, payment capture, driver accept)
@@ -416,3 +421,12 @@ C: Çox write volume (30k QPS), və hot path query-lər radius search-dir. Redis
   - Fayl 71 — geospatial indexing (geohash / S2)
   - Fayl 41 — payment systems (idempotency, reconciliation)
   - Fayl 56 — real-time notifications (WebSocket, push)
+
+
+## Əlaqəli Mövzular
+
+- [Ride-Sharing](37-ride-sharing-design.md) — oxşar dispatch arxitekturası
+- [Geospatial Design](71-geospatial-system-design.md) — rider/restoran proximity
+- [Real-Time Systems](17-real-time-systems.md) — order status update
+- [Message Queues](05-message-queues.md) — order event axını
+- [Booking System](39-booking-system.md) — order slot reservation

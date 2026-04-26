@@ -1,10 +1,15 @@
-# Video Conferencing Design (Zoom / Google Meet)
+# Video Conferencing Design (Lead)
 
 Bu sənəd **video conferencing platform** (Zoom, Google Meet, Microsoft Teams) dizaynını izah edir. Real-time video/audio, WebRTC, SFU topology və Laravel signaling ilə interview prep üçün.
 
 ---
 
-## 1. Tələblər (Requirements)
+
+## Niyə Vacibdir
+
+Zoom/Meet kimi sistemlər WebRTC, SFU/MCU topology, simulcast, adaptive bitrate — real-time media üzrə ən mürəkkəb texniki problemləri əhatə edir. P2P vs server-mediated seçimi scale ilə bağlıdır. Bu arxitekturanı başa düşmək real-time sistem mühəndisliyi üçün ən yüksək dərəcəli hazırlıqdır.
+
+## Tələblər
 
 ### Funksional (Functional)
 - Multi-party video və audio (2-dən 1000-ə qədər iştirakçı)
@@ -453,3 +458,12 @@ Video conferencing sisteminin əsas hissələri:
 - **Laravel-in rolu** — signaling + business logic, SFU ayrı service
 
 Interview-da **SFU vs MCU tradeoff-unu**, **simulcast-ın əhəmiyyətini**, və **signaling/media separation**-u izah et — bu 3 fikir əsas-dır.
+
+
+## Əlaqəli Mövzular
+
+- [Real-Time Systems](17-real-time-systems.md) — WebSocket/SSE əsasları
+- [Live Streaming](58-live-streaming-design.md) — one-to-many video delivery
+- [Pub/Sub](81-pubsub-system-design.md) — signaling event delivery
+- [CDN](04-cdn.md) — TURN server distribution
+- [Video Streaming](23-video-streaming-design.md) — VOD müqayisəsi

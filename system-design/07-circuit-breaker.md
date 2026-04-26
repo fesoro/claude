@@ -1,6 +1,6 @@
-# Circuit Breaker Pattern
+# Circuit Breaker Pattern (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Circuit breaker bir service fail olduqda cascade failure-ı önləyən patterndir. Elektrik
 sigortası kimi işləyir - problem olduqda "açılır" və daha çox zərər verməsinin qarşısını alır.
@@ -16,7 +16,12 @@ Recovery:     App -> [Circuit Breaker: HALF-OPEN] -> Service (test request)
   Fail:       App -> [Circuit Breaker: OPEN] -> Fallback (yenidən gözlə)
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Downstream servis yavaşladıqda kaskad xəta bütün sistemi çökdürə bilər. Circuit breaker fail-fast davranışı ilə thread pool-ların tükənməsinin qarşısını alır; fallback mexanizmi istifadəçiyə degraded service göstərməyə imkan verir. Resilience4j, Laravel Spatie — bu pattern hər backend-də lazımdır.
+
+## Əsas Anlayışlar
 
 ### Circuit Breaker States
 
@@ -107,7 +112,7 @@ slow_call_threshold: 5s     # Bundan yavaş response failure sayılır
 slow_call_rate: 80%         # 80%+ slow call olsa OPEN et
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Service Mesh Circuit Breaker
 
@@ -140,7 +145,7 @@ Istio/Envoy sidecar proxy circuit breaker-i service kodu dəyişmədən təmin e
 Hər service üçün ayrı circuit breaker.
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Circuit Breaker Implementation
 
@@ -450,7 +455,7 @@ strategiyaları. DynamoDB, S3, SQS-də default retry mexanizmi.
 **Uber:** Service mesh (Envoy) ilə circuit breaker. Microservice-lər arası bütün
 call-lar proxy-dən keçir. Central configuration ilə threshold-lar idarə olunur.
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S: Circuit breaker nə vaxt istifadə olunmalıdır?**
 C: External service call-larda (payment gateway, third-party API), microservice-lər arası
@@ -471,7 +476,7 @@ C: Service bərpa olubsa yoxlamaq üçün. Birbaşa OPEN-dən CLOSED-a keçsək,
 hələ hazır deyilsə bütün trafik yenidən fail olacaq. Half-open limited request göndərir,
 service hazırdırsa tədricən normal vəziyyətə qayıdır.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Hər downstream service üçün ayrı circuit breaker** - Global deyil, per-service
 2. **Meaningful fallbacks** - Boş cavab əvəzinə faydalı fallback: cached data, degraded mode
@@ -481,3 +486,12 @@ service hazırdırsa tədricən normal vəziyyətə qayıdır.
 6. **Bulkhead ilə kombinasiya** - Thread/connection pool izolasiyası əlavə edin
 7. **Test edin** - Chaos engineering ilə circuit breaker-in düzgün işlədiyini yoxlayın
 8. **Gradual recovery** - Half-open-da trafiki tədricən artırın
+
+
+## Əlaqəli Mövzular
+
+- [Message Queues](05-message-queues.md) — async ilə circuit breaker alternativ
+- [Microservices](10-microservices.md) — circuit breaker-in əsas istifadə yeri
+- [Backpressure](57-backpressure-load-shedding.md) — sistemik yük idarəsi
+- [Service Discovery](29-service-discovery.md) — sağlam endpoint seçimi
+- [Webhook Delivery](82-webhook-delivery-system.md) — external servis circuit breaker

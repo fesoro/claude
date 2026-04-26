@@ -1,6 +1,6 @@
-# Task Scheduler Design
+# Task Scheduler Design (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Task scheduler müəyyən vaxtda və ya müntəzəm intervallarla tapşırıqları avtomatik
 icra edən sistemdir. Cron jobs, delayed jobs, recurring tasks, və distributed
@@ -21,7 +21,12 @@ Schedule Definition                    Execution
 └──────────────┘    └──────────┘    └──────────┘
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Cron job single node-da işlədikdə SPOF (single point of failure) yaranır. Distributed scheduler — at-least-once execution, deduplication, leader election — production üçün vacibdir. Laravel Schedule cluster-də çalışdıqda distributed lock tələb edir.
+
+## Əsas Anlayışlar
 
 ### Scheduling Types
 
@@ -92,7 +97,7 @@ Backoff Strategies:
   With jitter: 60s ± random(30s)  (prevent thundering herd)
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Distributed Task Scheduler
 
@@ -127,7 +132,7 @@ Backoff Strategies:
 └──────┘ └──────┘ └──────┘
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Laravel Task Scheduling
 
@@ -374,7 +379,7 @@ class QueueMonitorCommand extends Command
 4. **AWS EventBridge** - Serverless event scheduling
 5. **Kubernetes CronJobs** - Container-based scheduled tasks
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S1: Distributed mühitdə job-un bir dəfə icra olunmasını necə təmin edirsiniz?**
 C: Distributed lock (Redis SETNX), database advisory lock, leader election.
@@ -411,7 +416,7 @@ C: Scheduler yalnız dispatch edir, ağır işi workers görür. Worker sayını
 artırın (horizontal scaling). Queue-ları bölün (queue per job type).
 Auto-scaling: queue size-a görə worker sayı artır/azalır.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Idempotent Jobs** - Eyni job iki dəfə icra olunsa eyni nəticə versin
 2. **Timeout Setting** - Hər job üçün timeout təyin edin
@@ -423,3 +428,12 @@ Auto-scaling: queue size-a görə worker sayı artır/azalır.
 8. **Failed Job Handling** - Alert + manual retry interface
 9. **Job Batching** - Böyük taskları kiçik batch-lara bölün
 10. **Logging** - Hər job-un start/end/duration-ını log edin
+
+
+## Əlaqəli Mövzular
+
+- [Message Queues](05-message-queues.md) — task async icra
+- [Idempotency](28-idempotency.md) — eyni task-ı iki dəfə icra etməmək
+- [Distributed Locks](83-distributed-locks-deep-dive.md) — leader election məqsədilə
+- [Distributed Systems](25-distributed-systems.md) — cluster scheduler fundamentalları
+- [Event-Driven](11-event-driven-architecture.md) — event-triggered task icra

@@ -1,6 +1,6 @@
-# Collaborative Editing Design (Google Docs)
+# Collaborative Editing Design (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Collaborative editing sistem** — eyni sənəd üzərində bir neçə istifadəçinin eyni anda redaktə edə biləcəyi, real-time olaraq bir-birinin dəyişikliklərini, kursorunu və seçimini görə biləcəyi platformadır. Google Docs, Microsoft 365, Figma, Notion, Quip belə işləyir.
 
@@ -23,6 +23,11 @@ User A (browser)                 User B (browser)
   │  final doc: "HelloXY world"      │
   │  final doc: "HelloXY world"      │
 ```
+
+
+## Niyə Vacibdir
+
+Google Docs kimi real-time collaboration eyni sənədi eyni anda redaktə etməyə imkan verir. OT (Operational Transformation) vs CRDT seçimi konsistentlik, latency, offline support arasındakı fundamental trade-off-u göstərir. Modern collaboration tool-ların hamısı bu arxitektura üzərindədir.
 
 ## Əsas Tələblər (Requirements)
 
@@ -391,7 +396,7 @@ ydoc.on('update', update => {
 
 Kiçik nümunə (LWW-Register konsepti) üçün [34-crdt.md](34-crdt.md)-ə bax — orada G-Counter, PN-Counter, LWW-Register, OR-Set detallı izah olunur.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Snapshot + log hibrid** — saf log load 10s+ vuracaq
 2. **Sticky routing doc_id ilə** — OT correctness ondan asılıdır
@@ -404,7 +409,7 @@ Kiçik nümunə (LWW-Register konsepti) üçün [34-crdt.md](34-crdt.md)-ə bax 
 9. **Versioned op schema** — format dəyişəndə migration asan
 10. **Feature flag new engine** — OT → CRDT keçidi risklidir, canary et
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **1. OT və CRDT arasında seçim necə edərdin?**
 Server-centric, bandwidth kritikdirsə (mobile, low-end network) → OT. Offline-first, P2P, local-first (Linear, Obsidian Sync kimi) → CRDT. Rich collaborative tree (nested list, table) implementasiyası CRDT-də daha asan; məsələn Yjs XML fragment təbii dəstəkləyir. Google Docs 2006-da başlayanda CRDT yetkin deyildi, bu gün yeni məhsul başlasa çoxu CRDT seçir (Notion, Linear, Figma).
@@ -436,3 +441,12 @@ Hə, bir sıra sahədə:
 - **Origin check** — CSRF qarşısı WebSocket-də
 - **Audit log** — hər op kim, haçan, nə etdi (compliance)
 - OT-də transform correctness — malicious rev göndərib transform exception-a gətirə bilməsin
+
+
+## Əlaqəli Mövzular
+
+- [CRDT](34-crdt.md) — conflict-free məlumat strukturları
+- [Real-Time Systems](17-real-time-systems.md) — WebSocket sync mexanizmi
+- [Distributed Locks](83-distributed-locks-deep-dive.md) — presence lock
+- [Consistency](32-consistency-patterns.md) — collaborative editing consistency
+- [Chat System](19-chat-system-design.md) — real-time kommunikasiya arxitekturası

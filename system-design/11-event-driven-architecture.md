@@ -1,6 +1,6 @@
-# Event-Driven Architecture
+# Event-Driven Architecture (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Event-Driven Architecture (EDA) sistemdəki komponentlərin event-lər vasitəsilə
 əlaqə saxladığı arxitektura yanaşmasıdır. Bir komponent event yaradır (publish),
@@ -24,7 +24,12 @@ Sadə dillə: qəzet nəşriyyatı kimi düşünün - qəzet çap olunur (event)
                                created" └──────────┘
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Request/response modeli tight coupling yaradır; EDA producer-consumer arasında decoupling təmin edir. Event sourcing audit log-u pulsuz əldə edir; CQRS read/write modellərini ayrı optimize etməyə imkan verir. Laravel Events, Horizon, Kafka — real layihələrdə bu prinsiplər üzərindədir.
+
+## Əsas Anlayışlar
 
 ### Event Types
 
@@ -262,7 +267,7 @@ Time 4: All services are consistent (eventually)
 Latency: milliseconds to seconds
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Full Event-Driven System
 
@@ -302,7 +307,7 @@ Latency: milliseconds to seconds
 └─────────┘  └─────────┘  └─────────┘
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Laravel Events və Listeners
 
@@ -447,7 +452,7 @@ class OrderStatusUpdated implements ShouldBroadcast
 4. **Amazon** - Order lifecycle events across hundreds of services
 5. **Spotify** - User listening events for recommendations
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S1: Event Sourcing ilə traditional CRUD arasındakı fərq nədir?**
 C: CRUD-da yalnız current state saxlanır, data dəyişdikdə köhnə state itirilir.
@@ -484,7 +489,7 @@ C: Debugging çətindir (distributed flow), eventual consistency complexity,
 event ordering problemləri, idempotency təmin etmək lazımdır, sistem
 davranışını anlamaq çətinləşir (event storm).
 
-## Best Practices
+## Praktik Baxış
 
 1. **Event Naming** - Past tense istifadə edin: OrderPlaced, PaymentReceived
 2. **Event Schema Versioning** - Schema dəyişdikdə backward compatibility saxlayın
@@ -496,3 +501,12 @@ davranışını anlamaq çətinləşir (event storm).
 8. **Monitoring** - Event lag, consumer health, failed events track edin
 9. **Outbox Pattern** - DB write və event publish atomik olsun
 10. **Event Replay** - Production event-ləri test mühitində replay edə bilin
+
+
+## Əlaqəli Mövzular
+
+- [Message Queues](05-message-queues.md) — event transport qatı
+- [Microservices](10-microservices.md) — EDA-nın əsas istifadə yeri
+- [CDC & Outbox](46-cdc-outbox-pattern.md) — DB dəyişikliyini event-ə çevirmək
+- [Stream Processing](54-stream-processing.md) — event axınını real-time analiz etmək
+- [Pub/Sub](81-pubsub-system-design.md) — event fan-out dizaynı

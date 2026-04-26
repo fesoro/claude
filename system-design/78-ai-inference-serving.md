@@ -1,12 +1,17 @@
-# AI Inference Serving at Scale
+# AI Inference Serving at Scale (Lead)
 
-## Nədir? (What is it?)
+## İcmal
 
 **AI inference serving** — train olunmuş ML modellərini (LLM chat, image classification, recommendation, fraud scoring) production trafikdə aşağı latency, yüksək throughput və cost-efficient təqdim edən sistemdir. Model bir dəfə train olunur, amma serving gündə milyonlarla dəfə çağırılır — serving layer ML product-ın iqtisadiyyatını müəyyən edir.
 
 Əsas çağırışlar: GPU bahalıdır ($2-8/saat A100, H100 daha çox), model yaddaşa böyük yer tutur (Llama-70B ≈ 140 GB FP16), batch açılanda throughput 10-50× artır amma latency də artır.
 
-## Requirements (Tələblər)
+
+## Niyə Vacibdir
+
+LLM-ləri production-da serve etmək GPU memory management, dynamic batching, KV cache kimi unikal problemlər yaradır. vLLM, Triton, PagedAttention — AI infrastruktur mühəndisliyinin standart alətlərini bilmək AI-native məhsul üçün vacibdir. Bu sahə sürətlə inkişaf edir.
+
+## Tələblər
 
 **Functional:** prediction endpoint (REST/gRPC/streaming), multi-model hosting (eyni cluster-də 10-100 model), versioning və A/B, input validation və tokenization.
 
@@ -17,7 +22,7 @@
 - **Cost**: GPU utilization > 60%, idle GPU = yanmış pul
 - **Scalability**: traffic 10× artanda autoscale (GPU scale-up yavaşdır — dəqiqələr)
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ```
                ┌──────────────────────┐
@@ -336,7 +341,7 @@ public function chat(Request $r, InferenceClient $c)
 - **Managed vs self-host**: Bedrock/OpenAI API ($/token, 0 ops) vs GPU lease + SRE; ~1M req/gün break-even
 - **Precision**: INT4 bəzi task-da 5% drop — benchmark (MMLU, domain eval)
 
-## Interview Sualları (Interview Q&A)
+## Praktik Tapşırıqlar
 
 **S1: Dynamic batching nədir və niyə lazımdır?**
 C: GPU parallel compute üçün dizayn olunub — 1 vs 32 request təqribən eyni vaxtda bitir. Batcher gələn request-ləri qısa pəncərədə (5-50ms) toplayır, tək GPU call göndərir, cavabları ayırır. Throughput 10-30× artır, amma queue latency 5-50ms əlavə olunur. Latency-sensitive path-da `max_wait_ms` aşağı tutulur.
@@ -362,7 +367,7 @@ C: Query embedding-ini hesablayıb (5ms) vector DB-də cosine similarity top-1 a
 **S8: Speculative decoding necə LLM-i sürətləndirir?**
 C: LLM inference memory-bandwidth-bound-dur — compute boşdur. Kiçik draft model (7B) N=4 token təklif edir, böyük (70B) hamısını tək forward pass-da verify edir. Hamısı doğrudursa 4 token 1 addımda hazır. Səhv olan ilk token-dən sonrası atılır. 2-3× speedup, output mathematically eynidir. OpenAI, Anthropic istifadə edir.
 
-## Best Practices
+## Praktik Baxış
 
 - **Dynamic batching default aç** — Triton config-də, throughput 10× pulsuz
 - **LLM üçün vLLM / TGI** — naive TorchServe LLM-də 5-10× aşağı throughput
@@ -388,3 +393,12 @@ C: LLM inference memory-bandwidth-bound-dur — compute boşdur. Kiçik draft mo
   - Fayl 16 — logging/monitoring (GPU, latency, tokens/sec)
   - Fayl 57 — backpressure / load shedding (queue full, 429)
   - Fayl 03 — caching strategies (semantic cache üst səviyyə)
+
+
+## Əlaqəli Mövzular
+
+- [Vector Database](69-vector-database-design.md) — embedding generation pipeline
+- [Feature Store](70-feature-store-design.md) — ML feature serving
+- [Recommendation System](36-recommendation-system.md) — ML model serving
+- [Caching](03-caching-strategies.md) — inference result semantic caching
+- [Load Balancing](01-load-balancing.md) — inference server yük paylaması

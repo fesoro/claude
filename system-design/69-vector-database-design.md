@@ -1,6 +1,6 @@
-# Vector Database Design
+# Vector Database Design (Lead)
 
-## Nədir? (What is it?)
+## İcmal
 
 Vector database embedding-ləri (yüksək ölçülü float array-ləri) saxlayan və
 similarity search edə bilən ixtisaslaşmış storage sistemidir. LLM və image
@@ -21,7 +21,12 @@ Text "laravel queue fails"
   Vector DB ── ANN index ──▶ Top-K oxşar vektor → metadata (doc id, url)
 ```
 
-## Requirements (Tələblər)
+
+## Niyə Vacibdir
+
+Generative AI dövrü semantic search tələbini kəskin artırdı. HNSW, IVF indekslər ANN (Approximate Nearest Neighbor) sorğusunu millisaniyədə cavablandırır; RAG (Retrieval Augmented Generation) bu olmadan mümkün deyil. pgvector, Pinecone, Weaviate — real AI produktlarının əsasıdır.
+
+## Tələblər
 
 ### Functional
 
@@ -337,7 +342,7 @@ Tombstone:   delete = mark deleted; HNSW graph tam silmir, periodic rebuild laz�
 Başlanğıc seçimi: Postgres varsa pgvector (1M-10M OK); 100M+ və ya ayrıca
 tenant-lər üçün Qdrant / Pinecone; ExSearch artıq stack-dədirsə kNN plugin.
 
-## Best Practices
+## Praktik Baxış
 
 ```
 - Normalize vectors client-side bir dəfə (cosine üçün), query-də təkrar yox
@@ -356,7 +361,7 @@ tenant-lər üçün Qdrant / Pinecone; ExSearch artıq stack-dədirsə kNN plugi
 - Quality metrics: MRR, NDCG, recall@k offline test set ilə
 ```
 
-## Interview Q&A
+## Praktik Tapşırıqlar
 
 **Q1: Exact kNN nə vaxt kifayətdir, nə vaxt ANN lazımdır?**
 A: Corpus < 100k və QPS < 10 olanda pgvector `ORDER BY embedding <=> q` brute
@@ -399,3 +404,12 @@ A: 1B × 768 × 4 = 3 TB — tək node-da olmaz. (1) PQ quantization 3TB → ~10
 A: Offline test set — ground truth exact kNN top-k. ANN nəticəsi ilə intersection/k
 = recall@k. HNSW-də `ef_search` artsa recall artır, latency artır; 95-99% recall
 target üçün p99 latency-ni ölçə-ölçə tune et. Online: user CTR, LLM-as-judge.
+
+
+## Əlaqəli Mövzular
+
+- [Recommendation System](36-recommendation-system.md) — embedding similarity
+- [Document Search](76-document-search-design.md) — hybrid BM25 + vector search
+- [Feature Store](70-feature-store-design.md) — embedding feature-ləri saxlamaq
+- [Search Systems](12-search-systems.md) — semantic search konteksti
+- [AI Inference Serving](78-ai-inference-serving.md) — embedding generation

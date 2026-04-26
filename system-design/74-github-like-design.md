@@ -1,12 +1,17 @@
-# GitHub-like Platform Design
+# GitHub-like Platform Design (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 GitHub-like platform - git-based kod hosting, collaboration və CI/CD xidmətidir. Developerlər kod push edir, başqaları clone edir, pull request (PR) açır, review gedir, CI pipeline işləyir, merge olunur. Platforma həm **distributed version control storage** (git), həm **application layer** (PR, issue, review, actions), həm **object storage** (release, LFS, artifact) birləşdirir.
 
 Tanınmış nümunələr: **GitHub**, **GitLab**, **Bitbucket**, **Gitea**, **Gerrit**. Əsas çətinlik: milyardlarla git obyektini saxlamaq, minlərlə concurrent clone/push-a cavab vermək, monorepo-ları (Linux kernel, Chromium) səmərəli daşımaq və DDoS hücumundan qoruyaraq public API sərgiləmək.
 
-## Requirements (Tələblər)
+
+## Niyə Vacibdir
+
+Git repository storage, PR workflow, CI/CD integration, code search — developer tooling platformasının arxitekturası. Spokes replication, git pack format, diff storage — unikal texniki problemlərdir. GitHub, GitLab, Bitbucket-in arxitekturasını başa düşmək tooling şirkətlərindəki rol üçün vacibdir.
+
+## Tələblər
 
 ### Funksional tələblər
 
@@ -369,7 +374,7 @@ Http::withToken($token)->post("https://api.github.com/repos/{$repo}/statuses/{$s
 | Runner pool exhausted | Auto-scale VM pool, reject with 503 if over limit |
 | LFS object missing | S3 404; prompt re-upload |
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **Q1: Git repo-ları server-də necə storage və shard edilir?**
 Repo "bare" formatda saxlanır - working directory yox, yalnız `.git` content (refs, objects, hooks). Obyektlər loose (tək file) və pack (birləşdirilmiş compressed) olur, `git gc` periodik pack edir. Directory-də repo_id hash-inin ilk 2-4 char sub-directory kimi istifadə olunur (`/ab/cd/repo-1234.git`) - filesystem balansı üçün. 300M repo tək serverə tutmaz, repo_id hash ilə fileserver node-lara shardlanır. İki yanaşma: consistent hashing (rebalance az) və lookup table (DB-də `primary_fileserver_id`, manual migration mümkün, hot repo ayrıca köçürülə bilər). GitHub lookup table seçib - hot repo management və DR orchestration daha nəzarətli.
@@ -395,7 +400,7 @@ Hər job **ephemeral VM/container**-də. Lifecycle: queue-dan pull → pre-warme
 **Q8: Webhook delivery necə reliable edilir, receiver down olduqda nə baş verir?**
 Sync HTTP etmə - customer down olsa thread block olur. Həll: **async queue**. Event yaranır → enqueue (Sidekiq/Kafka) → worker HTTP POST. Fail olsa **exponential backoff retry** (1s, 2s, 4s... max 24h). Hər delivery `X-GitHub-Delivery: UUID` - receiver idempotency üçün istifadə edir. **HMAC signature** (`X-Hub-Signature-256: sha256=HMAC(secret, body)`) spoofing-dən qoruyur. UI-də delivery log + manual redeliver. Per-endpoint rate limit, 24h sonra fail olanlar "suspended" + admin notification.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Git storage sharding by repo_id** - lookup table manual migration üçün (hot repo-ları ayrı shard-a köçür)
 2. **Sync replication (3 replica, 2/3 quorum)** - data loss qoruması, failover fast
@@ -414,3 +419,12 @@ Sync HTTP etmə - customer down olsa thread block olur. Həll: **async queue**. 
 15. **Code search via trigram index** - Zoekt/Sourcegraph, grep etmə
 16. **Shallow/partial clone dəstəyi** - CI-da `--depth 1`, monorepo-da `--filter=blob:none`
 17. **Audit log everything** - push, force-push, permission change, token creation - compliance və incident investigation
+
+
+## Əlaqəli Mövzular
+
+- [File Storage](15-file-storage.md) — git object saxlama
+- [Distributed File System](65-distributed-file-system.md) — repo replication
+- [Collaborative Editing](51-collaborative-editing-design.md) — PR review real-time
+- [Search Systems](12-search-systems.md) — code search
+- [Webhook Delivery](82-webhook-delivery-system.md) — CI/CD trigger webhook-lar

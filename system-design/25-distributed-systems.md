@@ -1,6 +1,6 @@
-# Distributed Systems
+# Distributed Systems (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Distributed systems - bir çox müstəqil kompüterin (node) network üzərindən əlaqə quraraq vahid sistem kimi işləməsidir. İstifadəçi üçün bu sistem tək bir kompüter kimi görünür, amma arxa planda onlarla, yüzlərlə server birlikdə iş görür.
 
@@ -11,7 +11,12 @@ Distributed sistemlərin əsas problemləri:
 - **Consensus** - Nodların ortaq qərara gəlməsi
 - **Time synchronization** - Saatların sinxronizasiyası
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Distributed sistemlər partial failure, network partition, clock skew kimi unikal problemlər gətirir. Bu fundamentalları bilmədən Kafka, Redis Cluster, PostgreSQL replication-ı düzgün konfiqurasiya etmək mümkün deyil. CAP, FLP, two generals problem — distributed engineering-in özəyi bunlardır.
+
+## Əsas Anlayışlar
 
 ### 1. CAP Theorem
 - **Consistency** - Bütün nodlar eyni məlumatı görür
@@ -82,7 +87,7 @@ Həlli:
 - **Fencing tokens** - unique increasing token
 - **STONITH** - "Shoot The Other Node In The Head"
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ```
 Client → Load Balancer → [Node1 (Leader), Node2 (Follower), Node3 (Follower)]
@@ -99,7 +104,7 @@ Tipik Raft cluster:
 - Election timeout 150-300ms
 - Heartbeat interval 50ms
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Redis Redlock Implementation
 
@@ -332,7 +337,7 @@ class LeaderElection
 - **CockroachDB** - Raft əsaslı SQL database
 - **Redis Sentinel** - Master-slave failover üçün
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **Q1: Raft və Paxos arasındakı fərq nədir?**
 Raft sadəlik üçün dizayn edilib - strong leader modeli, ayrıca leader election və log replication fazaları. Paxos daha ümumi, amma başa düşməsi çətindir - Multi-Paxos, Fast Paxos kimi variantları var. Raft production sistemlərdə (etcd, Consul) daha çox istifadə olunur.
@@ -376,7 +381,7 @@ Eventual consistency - update-dən sonra əgər əlavə yazılar olmasa, oxumala
 **Q10: Consensus niyə çətindir?**
 FLP impossibility teoremi sübut edir ki, asinxron network-də, bir node belə fail olsa, deterministik consensus algoritmi mövcud deyil. Praktikada bunu randomization (ping timeout) və failure detectorlar ilə həll edirik. Bu isə trade-off-lara gətirib çıxarır.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Odd number of nodes** - Consensus cluster-ləri 3, 5, 7 node ilə qur
 2. **Timeout tuning** - Election timeout heartbeat-dan 10x böyük olsun
@@ -388,3 +393,12 @@ FLP impossibility teoremi sübut edir ki, asinxron network-də, bir node belə f
 8. **Quorum writes and reads** - CP sistemdə W+R > N təmin et
 9. **Network partition testing** - Chaos engineering ilə test et
 10. **Graceful degradation** - Leader itirildikdə read-only mode-a keç
+
+
+## Əlaqəli Mövzular
+
+- [CAP & PACELC](42-cap-pacelc.md) — distributed sistem fundamental seçimi
+- [Consistency Patterns](32-consistency-patterns.md) — consistency modellər spektri
+- [Distributed Locks](83-distributed-locks-deep-dive.md) — koordinasiya primitivi
+- [Raft/Paxos](84-raft-paxos-consensus.md) — leader election və consensus
+- [Anti-Entropy](92-anti-entropy-merkle-trees.md) — replica divergence aşkarlanması

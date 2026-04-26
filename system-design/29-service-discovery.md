@@ -1,6 +1,6 @@
-# Service Discovery
+# Service Discovery (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 Service discovery - microservices arxitekturasında servisların bir-birini dinamik şəkildə tapması mexanizmidir. Monolitik sistemdə hər şey bir hostname/port-da işləyir, amma mikrosservislərdə yüzlərlə servis fərqli IP və port-larda işləyə bilər və autoscaling zamanı bu dinamik olaraq dəyişir.
 
@@ -13,7 +13,12 @@ Niyə lazımdır?
 
 Service discovery olmasa, IP-ləri hardcode etməli olarsan - bu production-da qəbul edilməzdir.
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Mikroservislər dinamik IP-lərlə işlədiyindən hardcoded endpoint-lər işləmir. Consul, etcd, Kubernetes DNS-based discovery avtomatik service registration və health-aware routing təmin edir. K8s-da bu built-in gəlir, amma mexanizmi bilmək debug üçün vacibdir.
+
+## Əsas Anlayışlar
 
 ### 1. Service Registry
 
@@ -124,7 +129,7 @@ Nümunələr: Istio, Linkerd, Consul Connect
   - Mutual TLS
   - Observability
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Consul Architecture
 
@@ -161,7 +166,7 @@ Client → etcd cluster (Raft, 3/5 nodes)
          └─ Followers (reads)
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Consul Integration
 
@@ -520,7 +525,7 @@ Route::get('/live', [HealthController::class, 'live']);
 - **Istio / Linkerd** - Service mesh-də built-in discovery
 - **NATS** - Subject-based discovery
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **Q1: Client-side və server-side discovery fərqi?**
 Client-side - client birbaşa registry-yə sorğu göndərir və özü instance seçir (Netflix Eureka). Server-side - load balancer/gateway registry ilə əlaqə qurur (AWS ELB, Kubernetes). Client-side daha az latency amma hər dildə client library lazım. Server-side sadə client, amma əlavə hop var.
@@ -588,7 +593,7 @@ Kubernetes-də:
 5. **Pod** səviyyəsində DNS cache
 Pod restart, scale dəyişikliyi avtomatik yansıyır.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Highly available registry** - Registry SPOF olmamalıdır (3+ nodes)
 2. **Implement health checks** - Liveness + readiness
@@ -605,3 +610,12 @@ Pod restart, scale dəyişikliyi avtomatik yansıyır.
 13. **Document service contracts** - OpenAPI, gRPC proto
 14. **Test discovery failures** - Registry unavailable scenarios
 15. **Automate registration** - CI/CD-də deploy hook
+
+
+## Əlaqəli Mövzular
+
+- [Microservices](10-microservices.md) — service discovery-nin əsas istifadə yeri
+- [API Gateway](02-api-gateway.md) — discovery ilə dynamic routing
+- [Service Mesh](47-service-mesh.md) — discovery + load balancing birlikdə
+- [Load Balancing](01-load-balancing.md) — healthy endpoint seçimi
+- [Distributed Systems](25-distributed-systems.md) — coordination fundamentalları

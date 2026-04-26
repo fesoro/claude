@@ -1,6 +1,6 @@
-# Rate Limiting
+# Rate Limiting (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Rate limiting müəyyən vaxt ərzində client-in göndərə biləcəyi request sayını məhdudlaşdırır.
 API abuse, DDoS hücumları və resource exhaustion-dan qorunmaq üçün istifadə olunur.
@@ -12,7 +12,12 @@ Client: 100 request/dəqiqə limit
                   Retry-After: 30
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Nəzarətsiz API trafiqi bir istifadəçinin bütün resursları tükətməsinə imkan verir. DDoS həmləsindən qorunmaq, SLA-nı qorumaq, billing düzgünlüyü — rate limiting bunların hamısı üçün kritikdir. Token bucket vs sliding window seçimi burst trafikinə münasibəti müəyyən edir.
+
+## Əsas Anlayışlar
 
 ### Rate Limiting Alqoritmləri
 
@@ -126,7 +131,7 @@ X-RateLimit-Remaining: 0
 X-RateLimit-Reset: 1640000000
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Redis-Based Rate Limiter
 
@@ -179,7 +184,7 @@ else
 end
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Laravel Built-in Rate Limiting
 
@@ -365,7 +370,7 @@ Basic: $100/mo, 10,000 tweets/read per month. Endpoint-based limits.
 **Cloudflare:** Edge-level rate limiting. Milyonlarla IP üçün real-time.
 JavaScript challenge, CAPTCHA, block kimi fərqli aksiyalar.
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S: Token bucket vs leaky bucket fərqi?**
 C: Token bucket burst traffic-ə icazə verir (bucket capacity qədər), leaky bucket
@@ -386,7 +391,7 @@ X-RateLimit-Reset (reset timestamp). Body-də error mesajı.
 C: Fixed window-da boundary problem var - iki window-un qovşağında limit 2x aşıla bilər.
 Sliding window hər an son N saniyədəki request-ləri sayır, boundary problem yoxdur.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Response headers göndərin** - Client limit, remaining, reset bilməlidir
 2. **Retry-After header** - Client-ə nə qədər gözləməyi bildirin
@@ -396,3 +401,12 @@ Sliding window hər an son N saniyədəki request-ləri sayır, boundary problem
 6. **Logging** - Rate limit hit-ləri log edin, abuse pattern-ləri analiz edin
 7. **Dynamic limits** - Plan-based, time-based (peak hours) dəyişən limitlər
 8. **Documentation** - API docs-da rate limit-ləri açıq yazın
+
+
+## Əlaqəli Mövzular
+
+- [API Gateway](02-api-gateway.md) — rate limiting mərkəzləşdirməsi
+- [Load Balancing](01-load-balancing.md) — upstream limit
+- [Backpressure & Load Shedding](57-backpressure-load-shedding.md) — sistematik yük idarəsi
+- [Auth](14-authentication-authorization.md) — kim nə qədər sorğu göndərə bilər
+- [Webhook Delivery](82-webhook-delivery-system.md) — outbound rate limit

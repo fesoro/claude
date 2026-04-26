@@ -1,6 +1,6 @@
-# Dropbox / Google Drive Design
+# Dropbox / Google Drive Design (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Dropbox / Google Drive istifadəçinin fayllarını cloud-da saxlayan, bütün cihazlar
 arasında sync edən və başqaları ilə share etməyə imkan verən sistemdir. İstifadəçi
@@ -23,7 +23,12 @@ Laptop (macOS)                  Cloud                    Phone (iOS)
   └─ synced                       │                          ├─ synced
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+File sync sistemi chunking, deduplication, delta sync kimi mürəkkəb problemləri həll edir. Content-addressable storage ilə yalnız dəyişən hissəni transfer etmək bandwidth-i kəskin azaldır. Dropbox, Google Drive, OneDrive — hamısı bu prinsiplər üzərindədir.
+
+## Əsas Anlayışlar
 
 ### Requirements
 
@@ -411,7 +416,7 @@ Team folder:
   Parent folder-ə ACL qoyulur, child file-lar inherit edir.
 ```
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S1: Niyə 4MB chunk ölçüsü seçilib?**
 C: Trade-off: kiçik chunk → yaxşı dedup və delta sync, amma metadata partlayır (1TB =
@@ -454,3 +459,12 @@ bir user-in faylları eyni shard-da, cross-user query nadirdir.
 C: WebSocket connection-lar uzunmüddətli və stateful-dir (hər cihaz = 1 connection).
 Upload/metadata stateless horizontal scale olunur, notification ayrı optimized runtime
 (Go, Elixir) + pub/sub backbone (Redis, Kafka) ilə fan-out edir.
+
+
+## Əlaqəli Mövzular
+
+- [File Storage](15-file-storage.md) — S3 object storage əsasları
+- [Distributed File System](65-distributed-file-system.md) — petabyte miqyaslı saxlama
+- [Database Replication](43-database-replication.md) — metadata replication
+- [Idempotency](28-idempotency.md) — upload resume idempotency
+- [Collaborative Editing](51-collaborative-editing-design.md) — shared document sync

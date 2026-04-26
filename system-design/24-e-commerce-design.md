@@ -1,6 +1,6 @@
-# E-Commerce System Design
+# E-Commerce System Design (Middle)
 
-## Nədir? (What is it?)
+## İcmal
 
 E-commerce system online alış-veriş platformasıdır. Product catalog, shopping cart,
 inventory management, order processing, payment və shipping əhatə edir. Amazon,
@@ -13,7 +13,12 @@ Sadə dillə: online mağaza - məhsulu seçirsən, səbətə atırsan, ödəyir
 Browse → Add to Cart → Checkout → Payment → Order → Shipping → Delivery
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+E-commerce sisteminin hər hissəsi — inventar, ödəniş, sifariş, çatdırılma — ayrı domain-dir. Yüksək trafik (Black Friday) zamanı inventory concurrency kritik problemdir; idempotent ödəniş pulun itməsinin qarşısını alır. Shopify, Amazon arxitekturası bu prinsiplər üzərindədir.
+
+## Əsas Anlayışlar
 
 ### Core Domains
 
@@ -91,7 +96,7 @@ Approach 4: Hybrid
                                                └──────────┘
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### E-Commerce Architecture
 
@@ -134,7 +139,7 @@ Approach 4: Hybrid
 └──────┘ └───────┘ └────────┘
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Product Catalog
 
@@ -507,7 +512,7 @@ class OrderService
 4. **eBay** - Auction + fixed-price, 1.7B listings
 5. **Etsy** - Handmade marketplace, 90M+ active buyers
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S1: Flash sale zamanı inventory race condition necə həll olunur?**
 C: Redis atomic operations (DECRBY + check >= 0), database optimistic lock
@@ -539,7 +544,7 @@ C: State machine pattern ilə valid transitions enforce edin. Hər status
 dəyişikliyi event emit edir. WebSocket/push notification ilə real-time
 update. Third-party shipping API-dan webhook ilə status sync.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Inventory Lock** - Atomic operations ilə overselling-in qarşısını alın
 2. **Idempotent Checkout** - Duplicate order prevention
@@ -551,3 +556,12 @@ update. Third-party shipping API-dan webhook ilə status sync.
 8. **Rate Limiting** - Checkout endpoint-ə rate limit
 9. **Audit Trail** - Hər order dəyişikliyini log edin
 10. **Graceful Degradation** - Payment down olsa "retry later" göstərin
+
+
+## Əlaqəli Mövzular
+
+- [Payment System](20-payment-system-design.md) — checkout ödəniş axını
+- [Booking System](39-booking-system.md) — inventory lock problemi
+- [Idempotency](28-idempotency.md) — sifariş təkrarının qarşısı
+- [Distributed Transactions](45-distributed-transactions-saga.md) — order saga
+- [Caching](03-caching-strategies.md) — məhsul kataloqu cache

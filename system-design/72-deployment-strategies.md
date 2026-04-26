@@ -1,6 +1,6 @@
-# Deployment Strategies (Blue-Green, Canary, Shadow)
+# Deployment Strategies (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Deployment strategy - yeni kod versiyasını production-a çıxarmaq üçün seçilən yanaşmadır. Məqsəd: downtime-ı minimumda saxlamaq, regression-ları tez aşkar etmək, təhlükəsiz rollback təmin etmək və DB migration-larla uyğun olmaq.
 
@@ -8,7 +8,12 @@ Bir neçə əsas strategiya var: **Recreate**, **Rolling**, **Blue-Green**, **Ca
 
 Qızıl qayda: **deploy ≠ release**. Kod production-a getmək (deploy) ilə istifadəçilərin onu görmək (release) ayrıla bilər - feature flag bu ayrılığı reallaşdırır.
 
-## Requirements (Tələblər)
+
+## Niyə Vacibdir
+
+Yanlış deployment downtime yaradır, istifadəçiləri birdən broken versiyaya köçürür. Blue-green, canary, shadow deployment — risk minimizasiya ilə yeni versiya buraxmağın sənaye standart yoludur. GitOps, K8s rolling update — real CI/CD pipeline-ın əsasıdır.
+
+## Tələblər
 
 Müasir deployment pipeline aşağıdakıları təmin etməlidir:
 
@@ -333,7 +338,7 @@ Argo CD + Flagger Kubernetes-də declarative canary-ni həyata keçirir: develop
 | Frontend SPA | Blue-Green (CDN swap) |
 | Internal admin panel | Rolling / Recreate |
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **Q1: Blue-Green və Canary arasında əsas fərq nədir, hansı nə vaxt seçilir?**
 Blue-Green - iki tam identical environment (Blue = v1, Green = v2) var. LB bir anda bütün trafiki Green-ə keçirir. Rollback LB flip ilə 1 saniyədə olur. 2× infra cost var. Canary - yalnız kiçik faiz pod v2-dir, traffic tədricən dəyişir (1% → 100%). Overhead az, amma orkestrasyon (Flagger/Argo) lazımdır. Blue-Green seç: instant cutover lazımdır, audit/compliance sınaq bütün stack-də mümkün olsun deyir, infra cost qəbul edilir. Canary seç: blast radius minimum saxlamaq istəyirsən, real user-lərlə yoxlamaq lazımdır, progressive exposure vacibdir. Kritik payment servisdə çox vaxt ikisi birlikdə - blue-green infra topologiyası + canary-style traffic ramp.
@@ -359,7 +364,7 @@ Pod silinən zaman Kubernetes bu ardıcıllığı icra edir: (1) Pod `Terminatin
 **Q8: Feature flag "debt" nədir və onu necə idarə etmək olar?**
 Feature flag code-a `if (flag) { new } else { old }` branch əlavə edir. Release-dən sonra flag silinmirsə, kodda ölü if-else yığılır - oxumaq çətin, test coverage splitləşir, yeni developer çaşqın olur. Real nümunə: 200 flag var, onların 150-si 6 aydır true - heç kim silmir, qorxur. İdarəetmə: (1) **Flag TTL** - hər flag yaranarkən expiry date (90 gün) qoyulur, platform bunu reminder edir; (2) **Owner** - flag-ın sahibi (team/person) qeyd olunur, cleanup məsuliyyəti onundur; (3) **Type** - release flag (short-lived, rollout üçün), experiment flag (A/B, 30 gün), ops flag (kill switch, permanent), permission flag (permanent). Release flag 30-90 gün sonra silinməlidir. (4) **Quarterly cleanup** - sprint-lərə flag cleanup task-i daxil olunur; (5) **Linter** - CI köhnə flag istifadəsini tapan automated tool. LaunchDarkly/Unleash dashboard flag age göstərir.
 
-## Best Practices
+## Praktik Baxış
 
 1. **Deploy ≠ release** - feature flag ilə kod və visibility-ni ayır
 2. **Always have rollback plan** - hər deploy-dan öncə "necə geri qaytaracağıq" sualına cavab
@@ -379,3 +384,12 @@ Feature flag code-a `if (flag) { new } else { old }` branch əlavə edir. Releas
 16. **Peak-aware deployment** - Friday 5PM və peak-hours-da kritik deploy yox
 17. **Runbook hər strategy üçün** - canary halt olsa nə edirik, blue flip geri çevirmək üçün aduklar
 18. **Practice rollback monthly** - real dəfə rollback işlət ki, muscle memory olsun
+
+
+## Əlaqəli Mövzular
+
+- [Feature Flags](94-feature-flags-progressive-delivery.md) — deployment-dən müstəqil release
+- [Logging & Monitoring](16-logging-monitoring.md) — deployment zamanı izləmə
+- [SLA/SLO](44-sla-slo-sli.md) — deployment error budget
+- [Disaster Recovery](30-disaster-recovery.md) — rollback strategiyası
+- [Chaos Engineering](56-chaos-engineering.md) — deployment resilience sınağı

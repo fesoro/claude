@@ -1,10 +1,15 @@
-# Database Replication
+# Database Replication (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Database Replication** — eyni data-nın bir neçə database node-unda (replica-da) saxlanmasıdır. Məqsəd: data-ya daha yaxın olmaq (geo-distribution), yükü bölüşdürmək (read scalability), bir node çökəndə sistemin işləməyə davam etməsi (high availability) və analytics/backup iş yükünü production-dan ayırmaq.
 
 Replikasiya distributed sistemlərin bel sütunudur — demək olar ki, hər ciddi production DB (MySQL, PostgreSQL, MongoDB, Cassandra, Redis, DynamoDB) replikasiyanı bu və ya digər formada dəstəkləyir.
+
+
+## Niyə Vacibdir
+
+Single DB node — single point of failure-dır. Leader-follower replication read scale verir, failover imkanı yaradır; multi-leader conflict resolution tələb edir. Aurora, PlanetScale, Patroni — hamısı bu konseptlər üzərindədir. Replication lag real UX problemlərə gətirir.
 
 ## Niyə Replikasiya? (Why Replicate?)
 
@@ -17,7 +22,7 @@ Replikasiya distributed sistemlərin bel sütunudur — demək olar ki, hər cid
 | **Analytics Isolation** | OLAP/reporting ayrı replica-da, OLTP-yə zərər vermir |
 | **Disaster Recovery** | Başqa data-center-də replica varsa, region itsə belə data sağdır |
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Anlayışlar
 
 ### 1. Single-Leader Replication (Leader-Follower)
 
@@ -149,7 +154,7 @@ Client ──→ [N1] [N3]  → ən son timestamp qalib
 - **Sloppy quorum**: Əsas node-lar əlçatmazdırsa, müvəqqəti olaraq başqa node-lara yaz
 - **Hinted handoff**: Müvəqqəti node "hint" saxlayır, əsas node qayıdanda ona göndərir
 
-## Praktiki Nümunələr (Practical Examples)
+## Nümunələr
 
 ### Laravel — Read/Write Split
 
@@ -284,7 +289,7 @@ class OrderService
 | **Conflict** | Multi-leader cross-region-da konflikt qaçınılmaz — strategy əvvəldən seç |
 | **Cost** | AWS/GCP cross-region data transfer bahadır — filter edib göndər |
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 ### Q: Single-leader və multi-leader replikasiya arasında necə seçirsən?
 **A:** Single-leader default seçimimdir — konflikt yoxdur, sadədir, əksər OLTP yüklər üçün kifayətdir. Multi-leader-i yalnız aşağıdakı hallarda seçirəm: (1) multi-datacenter yazı latency-si kritikdir, (2) offline clients sync lazımdır (mobile app), (3) collaborative editing. Multi-leader konflikt həlli mürəkkəbləşdirir, ona görə əvvəlcə CRDT və ya deterministic merge strategy olub-olmadığına baxıram.
@@ -310,7 +315,7 @@ class OrderService
 ### Q: Laravel-də read-after-write problemini necə həll edirsən?
 **A:** Əsas alət `'sticky' => true` config-də. Bu, eyni HTTP request daxilində yazı baş verərsə, sonrakı oxuların həmin request üçün leader-dən getməsini təmin edir. Amma bu **request-əsaslıdır** — istifadəçi növbəti səhifəyə keçirsə, yenidən replica-dan oxuyur. Bunu həll etmək üçün: (1) yazıdan sonra cache-ə dərhal yaz (TTL lag pəncərəsindən böyük), (2) kritik sahələrdə `DB::connection()->getPdo()` ilə write PDO-nu məcbur et, (3) user-specific data üçün session-based affinity (eyni user həmişə leader-dən oxusun kritik endpoint-lərdə).
 
-## Best Practices
+## Praktik Baxış
 
 1. **Default olaraq single-leader seç** — multi-leader yalnız konkret ehtiyac olduqda
 2. **Sticky connection aç** (Laravel `sticky => true`) — read-your-writes üçün minimum qoruma
@@ -326,3 +331,12 @@ class OrderService
 12. **Conflict resolution strategy-ni əvvəldən seç** — multi-leader qurursan, LWW/CRDT/custom seçimini kod yazmazdan əvvəl ver
 13. **GTID (MySQL) və ya logical replication slots (PostgreSQL)** istifadə et — pozisiya-əsaslı replication-dan etibarlıdır
 14. **Disaster recovery test et** — failover drill ildə ən azı 2 dəfə real şəraitdə icra olunmalıdır
+
+
+## Əlaqəli Mövzular
+
+- [CAP & PACELC](42-cap-pacelc.md) — replication consistency trade-off
+- [Consistency Patterns](32-consistency-patterns.md) — replication lag = eventual consistency
+- [Data Partitioning](26-data-partitioning.md) — shard-daxili replica
+- [Disaster Recovery](30-disaster-recovery.md) — replica üzərindən failover
+- [Anti-Entropy](92-anti-entropy-merkle-trees.md) — replica divergence sinxronizasiyası

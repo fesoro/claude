@@ -1,6 +1,6 @@
-# Multi-Region Active-Active Architecture
+# Multi-Region Active-Active Architecture (Lead)
 
-## Nədir? (What is it?)
+## İcmal
 
 Multi-region active-active - sistemin bir neçə coğrafi region-da eyni anda trafik qəbul etdiyi və istifadəçilərə xidmət göstərdiyi arxitekturadır. Bütün region-lar "aktiv"dir: hər biri read və write qəbul edir, heç biri passive standby-da durmur.
 
@@ -12,6 +12,11 @@ Multi-region active-active - sistemin bir neçə coğrafi region-da eyni anda tr
 - **Capacity** - trafik region-lar arasında paylanır, kapasitet horizontal genişlənir
 
 Bu məqalə file 30 (disaster recovery) və file 26 (data partitioning) ilə sıx əlaqəlidir: active-active aslında DR-in ən yüksək pilləsidir, və region-lar arası sharding data partitioning strategiyasının coğrafi variantıdır.
+
+
+## Niyə Vacibdir
+
+Single region outage bütün sistemi dayandırır; active-active multi-region həm availability həm latency baxımından üstündür. Geo-distributed write conflict resolution isə ən çətin arxitektura problemidir. Global şirkətlər (Google, Amazon) bu arxitektura üzərindədir.
 
 ## Active-Passive vs Active-Active (Active-Passive vs Active-Active)
 
@@ -367,7 +372,7 @@ Netflix hər həftə production-da chaos exercise aparır. Onların prinsipi: "D
 - **Shopify** - pod architecture, hər pod region-ə bağlı
 - **Stripe** - multi-region Mongo + Kafka, financial data strong consistency
 
-## Müsahibə Sualları (Interview Q&A)
+## Praktik Tapşırıqlar
 
 **S1: Active-passive və active-active arasında seçim necə edirsən?**
 
@@ -401,7 +406,7 @@ Shard key olaraq user.home_region. EU user data (PII, mesajlar) yalnız EU regio
 
 Regional rolling deploy: bir region-da deploy, metrics müşahidə, sonra digərləri. Per-region canary (5% -> 100%). Feature flag region-specific. DB migration - backward-compatible schema (expand/contract pattern): öncə yeni sütun, sonra code dəyişir, axırda köhnə silinir. Hər mərhələdə region-lar arası fərq backward compatible olmalıdır.
 
-## Best Practices (Best Practices)
+## Praktik Baxış
 
 1. **Stateless services** - scale-out və region failover asandır. Session data kənar store-da (Redis, JWT).
 2. **Idempotent APIs** - cross-region retry duplicate yaratmasın. Idempotency key hər write request-də.
@@ -418,3 +423,12 @@ Regional rolling deploy: bir region-da deploy, metrics müşahidə, sonra digər
 13. **Documentation** - hər service üçün "home region", "failover region", "RPO/RTO", "conflict strategy" yazılı olsun.
 14. **Dependency mapping** - service A region-larda active, amma DB X yalnız us-east-dədir? Onda A aslında active-passive-dir.
 15. **Chaos testing** - file 56 (chaos engineering) baxın, multi-region üçün network partition test-ləri kritikdir.
+
+
+## Əlaqəli Mövzular
+
+- [Database Replication](43-database-replication.md) — cross-region replica
+- [Disaster Recovery](30-disaster-recovery.md) — regional failover
+- [Consistency](32-consistency-patterns.md) — multi-region consistency trade-off
+- [Raft/Paxos](84-raft-paxos-consensus.md) — geo-distributed consensus
+- [CRDT](34-crdt.md) — conflict-free multi-region write

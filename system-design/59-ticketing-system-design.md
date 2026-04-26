@@ -1,12 +1,17 @@
-# Ticketing System Design (Ticketmaster)
+# Ticketing System Design (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Ticketing System** — konsert, idman, teatr biletlərinin onlayn satışı üçün platforma. Ticketmaster, BookMyShow, Eventbrite, StubHub kimi sistemlər. Booking system-dən (Airbnb, otel) əsas fərqi: **flash sale** — 10:00-da bilet açılır, 100k istifadəçi eyni anda "Buy" düyməsinə basır, 50k yer var, 5 dəqiqəyə hər şey bitir. Yəni problem availability tapmaq deyil, **nəhəng concurrency** altında ədalətli və düzgün satmaqdır.
 
 **Booking vs Ticketing fərqləri:** Booking-də load sabitdir, inventory tarix aralığıdır, rəqabət azdır. Ticketing-də flash sale spike var (10:00), inventory konkret seat-dir (A12), rəqabət yüksək, fairness və anti-bot kritikdir.
 
-## Tələblər (Requirements)
+
+## Niyə Vacibdir
+
+Konsert biletlərinin eyni anda milyonlarca nəfər tərəfindən alınmağa cəhdi — extreme concurrency problemidir. Virtual waiting room, seat lock, fairness algorithm — booking sisteminin ən çətin versiyasıdır. Ticketmaster, StubHub arxitekturası bu problemi real miqyasda həll etməlidir.
+
+## Tələblər
 
 ### Funksional (Functional)
 
@@ -40,7 +45,7 @@
 - **DB writes (booking commit):** ~200/s (1000/s × 0.3 churn + 0.7 final)
 - **Redis ops:** 10k/s (seat locks, queue ops)
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ```
                       ┌──────────────────────────┐
@@ -165,7 +170,7 @@ RETURNING available;
 
 Əgər DB insert unique violation verərsə → "seat artıq satılıb" xətası; Redis lock-a baxmayaraq DB son söz deyir.
 
-## Laravel Implementation
+## Nümunələr
 
 ### Seat Lock (Cache::lock)
 
@@ -380,7 +385,7 @@ Ticketing-də **pessimistic lock** + **short TTL (5 min)** standartdır.
 
 FIFO sadədir amma "fast network" üstünlüyü verir. Randomized ədalətlidir amma user şikayət edir. Ticketmaster hybrid: ilk 30 saniyə randomized, sonra FIFO.
 
-## Interview Q&A
+## Praktik Tapşırıqlar
 
 **Q1: 100k nəfər eyni anda Buy-a basır, sistem necə sağ qalır?**
 A: Virtual waiting room — queue service istifadəçiləri Redis sorted set-də saxlayır, booking API-yə saniyədə ancaq 1000 entry token release edir. Booking service stabil load görür, 100k yox. Queue service özü horizontal scalable (stateless + Redis).
@@ -406,7 +411,7 @@ A: Seat-by-seat lock əvəzinə atomic counter istifadə edirik: `UPDATE invento
 **Q8: 1M concurrent queue gözləyir, Redis sorted set saxlaya bilər?**
 A: Bəli — 1M entry ~100MB memory (hər entry ~100 byte). Real boğaz position update push-dur. WebSocket əvəzinə SSE with polling (5 saniyədə bir) — hər user 5s-də poll etsə 200k RPS, 10 node arxasında HAProxy ilə həll olur. Hər dəyişmədə push şərt deyil, approximate position kifayətdir.
 
-## Best Practices
+## Praktik Baxış
 
 1. **İki səviyyə lock** — Redis (fast, UX) + DB unique constraint (correctness)
 2. **Idempotency key hər yerdə** — payment webhook, refund, booking
@@ -418,3 +423,12 @@ A: Bəli — 1M entry ~100MB memory (hər entry ~100 byte). Real boğaz position
 8. **Graceful degradation** — queue service down olsa throttled direct mode
 9. **Observability** — queue length, release rate, hold success ratio
 10. **Load test annual** — real flash sale-dən əvvəl weak link-i tap
+
+
+## Əlaqəli Mövzular
+
+- [Booking System](39-booking-system.md) — ümumi booking concurrency
+- [Distributed Locks](83-distributed-locks-deep-dive.md) — seat lock implementasiyası
+- [Idempotency](28-idempotency.md) — bilet alışı deduplication
+- [Sharded Counters](88-sharded-counters.md) — bilet sayacı hot row
+- [Rate Limiting](06-rate-limiting.md) — bot-ların qarşısı

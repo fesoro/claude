@@ -1,12 +1,17 @@
-# Geospatial System Design (Nearby Search)
+# Geospatial System Design (Senior)
 
-## Nədir? (What is it?)
+## İcmal
 
 **Geospatial system** — lokasiya (lat, lng) əsaslı sorğuları effektiv cavablandıran sistemdir: "mənim 1 km radiusumda hansı restoranlar var?", "ən yaxın 5 sürücü kimdir?", "bu bbox daxilində neçə POI mövcuddur?". Uber, DoorDash, Yelp, Google Maps, Airbnb — hamısı bu problemi həll edir.
 
 Ride-sharing (fayl 37) və food-delivery (fayl 64) sistemləri bu primitive-ləri istifadə edir, amma bu fayl **indexing strukturlarına** (geohash, quadtree, R-tree, S2, H3) və **verilənlər bazası seçiminə** (PostGIS, Redis GEO, Mongo 2dsphere) fokuslanır.
 
-## Tələblər (Requirements)
+
+## Niyə Vacibdir
+
+'Yaxınlıqdakı restoranları tap' sorğusu sadə görünür, amma miqyasda Haversine formula ilə table scan mümkün deyil. Geohash, quadtree, S2, H3 — spatial indexing yanaşmaları ride-sharing, delivery, real-estate platformalarının əsasıdır. Redis GEO, PostGIS — real tool seçiminə bağlıdır.
+
+## Tələblər
 
 ### Funksional
 
@@ -353,7 +358,7 @@ PostGIS üçün: `clickbar/laravel-magellan` fluent builder, MongoDB üçün `je
 - **Yelp**: PostGIS + Elasticsearch hybrid (text + geo)
 - **Tinder / Pokémon GO**: geohash bucket / S2 cell-based spawn və match grids
 
-## Interview Sualları (Interview Q&A)
+## Praktik Tapşırıqlar
 
 **S1: Geohash-in əsas problemi nədir?**
 C: **Cell boundary**: iki yaxın nöqtə fərqli cell-lərdə ola bilər və prefix paylaşmaz. Həll — merkəz cell + 8 qonşunu scan etmək (Moore neighborhood), sonra dəqiq haversine məsafəsi ilə filter. Həmçinin geohash cell-ləri non-uniform ölçüdədir (polyusda daralır).
@@ -379,7 +384,7 @@ C: **Bbox** — min/max lat-lng rectangle, xəritə viewport üçün təbii (Goo
 **S8: Qlobal sistemi necə shard edərdin?**
 C: **Geohash prefix** ilə (2-3 char, ~150km cell). Hər shard regional cluster-ə mapped (us-west, eu-west). Request router user lat-lng-dən prefix hesablayır, düzgün shard-ə göndərir. **Cross-shard query** (sərhəddə) nadir — shard sərhədinin 5 km daxilində query-lər overlapping prefix-ləri də scan edir. Hotspot (NYC) tək prefix öz dedicated cluster-i olur.
 
-## Best Practices
+## Praktik Baxış
 
 - **Redis GEO hot moving objects üçün**, PostGIS static data və analytics üçün — hybrid
 - **Two-step refinement**: geo predicate ilə candidate, sonra dəqiq filter — həmişə
@@ -398,3 +403,12 @@ C: **Geohash prefix** ilə (2-3 char, ~150km cell). Hər shard regional cluster-
   - Fayl 64 — food delivery nearby (PostGIS + Redis hybrid)
   - Fayl 26 — data partitioning (geo shard strategiyası)
   - Fayl 49 — distributed cache (Redis scaling patterns)
+
+
+## Əlaqəli Mövzular
+
+- [Ride-Sharing](37-ride-sharing-design.md) — driver location indexing
+- [Food Delivery](64-food-delivery-design.md) — restoran proximity axtarışı
+- [Database Design](09-database-design.md) — spatial index strategiyası
+- [Caching](03-caching-strategies.md) — geo-based cache strategyası
+- [Social Graph](61-social-graph-design.md) — location-based friend suggestion

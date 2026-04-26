@@ -1,6 +1,6 @@
-# Message Queues
+# Message Queues (Junior)
 
-## Nədir? (What is it?)
+## İcmal
 
 Message queue asinxron kommunikasiya mexanizmidir. Producer mesaj göndərir, queue saxlayır,
 consumer emal edir. Bu decouple edir - producer consumer-in mövcudluğunu bilmir. Yavaş
@@ -17,7 +17,12 @@ User clicks "Export PDF"
   -> User notification alır
 ```
 
-## Əsas Konseptlər (Key Concepts)
+
+## Niyə Vacibdir
+
+Sinxron servis-servis əlaqəsi tight coupling yaradır; bir servis çökdükdə bütün zəncir dayanır. Message queue olmadan ani trafik artımı (spike) backend-i çökdürə bilər. Async processing sistemi daha resilient edir — producer-consumer müstəqil miqyaslanır.
+
+## Əsas Anlayışlar
 
 ### Point-to-Point vs Pub/Sub
 
@@ -112,7 +117,7 @@ RabbitMQ: Tək queue, tək consumer ilə ordering
           Multiple consumer-da ordering zəmanət verilmir
 ```
 
-## Arxitektura (Architecture)
+## Arxitektura
 
 ### Kafka Cluster Arxitekturası
 
@@ -157,7 +162,7 @@ Exchange Types:
   Headers: Header attributes match
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Nümunələr
 
 ### Laravel Queue System
 
@@ -388,7 +393,7 @@ Millions of messages/second real-time çatdırılır.
 **Shopify:** Background jobs üçün Kafka. Order processing, inventory sync, webhook
 delivery. Black Friday-da milyonlarla job emal edir.
 
-## Interview Sualları
+## Praktik Tapşırıqlar
 
 **S: Niyə message queue istifadə edilir?**
 C: 1) Asynchronous processing - yavaş əməliyyatları background-a keçirmək
@@ -410,7 +415,7 @@ mümkündür. Consumer-da unique ID ilə duplicate check edilir.
 C: Kafka-da partition key istifadə etmək - eyni key eyni partition-a düşür, partition
 daxilində ordering var. SQS FIFO-da MessageGroupId. Amma ordering throughput-u azaldır.
 
-## Best Practices
+## Praktik Baxış
 
 1. **İdempotent consumers** - Eyni mesajı 2 dəfə emal etmək eyni nəticə verməlidir
 2. **DLQ konfiqurasiya edin** - Failed mesajları itirməyin
@@ -420,3 +425,12 @@ daxilində ordering var. SQS FIFO-da MessageGroupId. Amma ordering throughput-u 
 6. **Retry with backoff** - Exponential backoff istifadə edin (1s, 2s, 4s, 8s)
 7. **Poison pill handling** - Emal oluna bilməyən mesajları detect edib DLQ-ya göndərin
 8. **Queue per concern** - Emails, orders, analytics üçün ayrı queue-lar
+
+
+## Əlaqəli Mövzular
+
+- [Event-Driven Architecture](11-event-driven-architecture.md) — queue üzərindən event axını
+- [Backpressure](57-backpressure-load-shedding.md) — consumer yavaş olanda nə baş verir
+- [Stream Processing](54-stream-processing.md) — queue-dan real-time analiz
+- [Pub/Sub System](81-pubsub-system-design.md) — fan-out delivery modeli
+- [Circuit Breaker](07-circuit-breaker.md) — queue consumer resilience
