@@ -1,4 +1,4 @@
-# Architecture və Deployment
+# Architecture və Deployment (Senior)
 
 ## 1. Monolith vs Microservices — nə vaxt hansı?
 

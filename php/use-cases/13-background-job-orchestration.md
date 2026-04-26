@@ -1,4 +1,4 @@
-# Background Job Orchestration (Mürəkkəb İş Axınları)
+# Background Job Orchestration (Lead)
 
 ## Problem Statement
 

@@ -1,4 +1,4 @@
-# Use Case: Real-time Chat System (Reverb)
+# Real-time Chat System (Reverb) (Senior)
 
 ## Problem
 - 1-on-1 və group chat

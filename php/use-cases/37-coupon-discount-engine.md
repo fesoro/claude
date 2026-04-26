@@ -1,4 +1,4 @@
-# Coupon & Discount Engine
+# Coupon & Discount Engine (Senior)
 
 ## Problem necə yaranır?
 

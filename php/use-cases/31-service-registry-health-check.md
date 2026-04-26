@@ -1,4 +1,4 @@
-# 31. Service Registry və Health Check
+# Service Registry və Health Check (Lead)
 
 ## Ssenari
 

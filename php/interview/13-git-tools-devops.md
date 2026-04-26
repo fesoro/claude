@@ -1,4 +1,4 @@
-# Git, Alətlər və DevOps
+# Git, Alətlər və DevOps (Middle)
 
 ## 1. Git — Senior Developer üçün vacib biliklər
 

@@ -1,4 +1,4 @@
-# Miqyasda Session İdarəetməsi — Stateless Auth, JWT vs Opaque Token
+# Miqyasda Session İdarəetməsi (Senior)
 
 ## Problem Təsviri
 

@@ -1,4 +1,4 @@
-# GraphQL & Real-time — Interview Suallar
+# GraphQL & Real-time (Senior)
 
 ## Mündəricat
 1. GraphQL əsasları

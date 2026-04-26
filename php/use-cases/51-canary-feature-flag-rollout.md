@@ -1,4 +1,4 @@
-# Use Case: Canary Deployment + Feature Flag Rollout
+# Canary Deployment + Feature Flag Rollout (Senior)
 
 ## Problem
 - Yeni "checkout v2" feature deploy etmək lazımdır

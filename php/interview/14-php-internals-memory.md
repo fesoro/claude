@@ -1,4 +1,4 @@
-# PHP Internals və Memory Management
+# PHP Internals və Memory Management (Senior)
 
 ## 1. PHP necə işləyir? Zend Engine nədir?
 

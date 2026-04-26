@@ -1,4 +1,4 @@
-# Soft Delete & GDPR Compliance
+# Soft Delete & GDPR Compliance (Middle)
 
 ## Problem necə yaranır?
 

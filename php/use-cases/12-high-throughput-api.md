@@ -1,4 +1,4 @@
-# High-Throughput API Dizaynı (Yüksək Yüklü API)
+# High-Throughput API Dizaynı (Senior)
 
 ## Problem Statement
 

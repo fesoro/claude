@@ -1,4 +1,4 @@
-# Loyalty Points & Credit System
+# Loyalty Points & Credit System (Senior)
 
 ## Problem necə yaranır?
 

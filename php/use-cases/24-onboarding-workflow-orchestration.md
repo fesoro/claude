@@ -1,4 +1,4 @@
-# Çox Addımlı İş Axını Orkestrasyonu (Onboarding/KYC/Checkout)
+# Çox Addımlı İş Axını Orkestrasyonu (Onboarding/KYC/Checkout) (Lead)
 
 ## Problem Təsviri
 

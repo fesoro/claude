@@ -1,4 +1,4 @@
-# Real Use Cases — Notifications, File Upload, Real-time
+# Real Use Cases (Senior)
 
 ## 1. Multi-Channel Notification sistemi (preferences ilə)
 

@@ -1,4 +1,4 @@
-# Use Case: Delayed & Scheduled Jobs at Scale
+# Delayed & Scheduled Jobs at Scale (Lead)
 
 ## Problem
 - "Email reminder 7 gün sonra" — milyonlarla pending job

@@ -1,4 +1,4 @@
-# System Design və Behavioral Suallar
+# System Design və Behavioral Suallar (Senior)
 
 ## System Design Sualları
 

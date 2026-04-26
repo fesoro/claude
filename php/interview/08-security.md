@@ -1,4 +1,4 @@
-# Security
+# Security (Senior)
 
 ## 1. SQL Injection nədir və necə qarşısı alınır?
 

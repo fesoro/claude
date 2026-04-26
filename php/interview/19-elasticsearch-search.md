@@ -1,4 +1,4 @@
-# Elasticsearch, Search və Data Processing
+# Elasticsearch, Search və Data Processing (Senior)
 
 ## 1. Full-Text Search — Elasticsearch ilə Laravel
 

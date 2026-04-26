@@ -1,4 +1,4 @@
-# Race Condition — Inventory/Stock Management
+# Race Condition (Senior)
 
 ## Problem
 

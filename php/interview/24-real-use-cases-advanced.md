@@ -1,4 +1,4 @@
-# Real Use Cases — Advanced Scenarios
+# Real Use Cases (Lead)
 
 ## 1. Rate Limiter ilə API Throttling (Sliding Window)
 

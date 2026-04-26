@@ -1,4 +1,4 @@
-# Use Case: Real-time Fraud Detection (Payment)
+# Real-time Fraud Detection (Payment) (Lead)
 
 ## Problem
 - E-commerce: 10k payment/saat

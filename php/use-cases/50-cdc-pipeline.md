@@ -1,4 +1,4 @@
-# Use Case: CDC Pipeline (MySQL → Kafka → Elasticsearch)
+# CDC Pipeline (Lead)
 
 ## Problem
 - MySQL-də `products` cədvəli (1M row, 100 update/sec)

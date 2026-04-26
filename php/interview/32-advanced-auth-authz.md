@@ -1,4 +1,4 @@
-# Advanced Auth & Authorization — Interview Suallar
+# Advanced Auth & Authorization (Senior)
 
 ## Mündəricat
 1. Authentication strategiyaları

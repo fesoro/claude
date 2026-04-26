@@ -1,4 +1,4 @@
-# Use Case: GraphQL N+1 Problem & DataLoader
+# GraphQL N+1 Problem & DataLoader (Senior)
 
 ## Problem
 Frontend GraphQL query yazır:

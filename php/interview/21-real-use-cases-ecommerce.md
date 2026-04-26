@@ -1,4 +1,4 @@
-# Real Use Cases — E-Commerce
+# Real Use Cases (Senior)
 
 ## 1. Shopping Cart implementasiyası (Session + DB hybrid)
 

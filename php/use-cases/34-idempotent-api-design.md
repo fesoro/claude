@@ -1,4 +1,4 @@
-# Idempotent API Design
+# Idempotent API Design (Middle)
 
 ## Problem necə yaranır?
 

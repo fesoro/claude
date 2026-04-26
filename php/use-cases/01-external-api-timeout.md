@@ -1,4 +1,4 @@
-# External API-dən Gələn Response-u Userə Göstərmək (Timeout, Gecikmə Problemləri)
+# External API-dən Gələn Response-u Userə Göstərmək (Middle)
 
 ## Problem Təsviri
 

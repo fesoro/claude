@@ -1,4 +1,4 @@
-# Database Deep Dive
+# Database Deep Dive (Senior)
 
 ## 1. Normalization nədir? Normal formalar izah edin.
 

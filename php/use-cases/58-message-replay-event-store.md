@@ -1,4 +1,4 @@
-# Use Case: Message Replay & Event Store Recovery
+# Message Replay & Event Store Recovery (Lead)
 
 ## Problem
 - Microservice consumer-də bug → 2 saat ərzində bütün event-lər səhv işləndi

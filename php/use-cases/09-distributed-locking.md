@@ -1,4 +1,4 @@
-# Distributed Locking ve Concurrency Control
+# Distributed Locking ve Concurrency Control (Senior)
 
 ## Problem
 

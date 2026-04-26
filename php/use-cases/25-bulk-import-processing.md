@@ -1,4 +1,4 @@
-# Kütləvi İdxal Emalı — Validation və Qismən Uğursuzluqlarla Böyük CSV/XML
+# Kütləvi İdxal Emalı (Middle)
 
 ## Problem Təsviri
 

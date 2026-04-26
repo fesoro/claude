@@ -1,4 +1,4 @@
-# Use Case: Product Recommendation Engine
+# Product Recommendation Engine (Lead)
 
 ## Problem
 - E-commerce: 100k product, 1M user, 10M order history

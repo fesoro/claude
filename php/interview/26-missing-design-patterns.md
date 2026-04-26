@@ -1,4 +1,4 @@
-# Əksik Design Patterns
+# Əksik Design Patterns (Senior)
 
 ## 1. Adapter Pattern
 

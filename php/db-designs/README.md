@@ -5,45 +5,45 @@
 ### Ümumi Tətbiq Dizaynları
 | Fayl | Tətbiq | Tövsiyə olunan DB |
 |------|--------|-------------------|
-| [chat-app.md](chat-app.md) | Mesajlaşma tətbiqi | Cassandra + Redis |
-| [e-commerce.md](e-commerce.md) | E-ticarət | PostgreSQL + Redis + Elasticsearch |
-| [blog-cms.md](blog-cms.md) | Blog / CMS | PostgreSQL + Redis |
-| [social-media.md](social-media.md) | Sosial media | PostgreSQL + Cassandra + Redis |
-| [ride-sharing.md](ride-sharing.md) | Taksi tətbiqi | PostgreSQL + Redis (geospatial) |
-| [food-delivery.md](food-delivery.md) | Yemək çatdırılması | PostgreSQL + Redis |
-| [banking-fintech.md](banking-fintech.md) | Bank / FinTech | PostgreSQL (ACID) |
-| [video-streaming.md](video-streaming.md) | Video streaming | Cassandra + MySQL + S3 |
-| [google-drive.md](google-drive.md) | Cloud file storage | PostgreSQL + S3 + Redis |
-| [youtube.md](youtube.md) | Video platform | MySQL (Vitess) + Bigtable + S3 |
-| [hotel-booking.md](hotel-booking.md) | Otel rezervasiyası | PostgreSQL + Redis + Elasticsearch |
-| [stock-trading.md](stock-trading.md) | Birja / Trading | PostgreSQL + Redis + TimescaleDB |
-| [event-ticketing.md](event-ticketing.md) | Bilet satışı | PostgreSQL + Redis (seat lock) |
-| [healthcare-ehr.md](healthcare-ehr.md) | Sağlıq / EHR | PostgreSQL (HIPAA) |
-| [online-learning.md](online-learning.md) | Online təhsil | PostgreSQL + Redis + S3 |
-| [job-board.md](job-board.md) | İş elanları | PostgreSQL + Elasticsearch |
+| [01-blog-cms.md](01-blog-cms.md) | Blog / CMS | PostgreSQL + Redis |
+| [02-chat-app.md](02-chat-app.md) | Mesajlaşma tətbiqi | Cassandra + Redis |
+| [03-e-commerce.md](03-e-commerce.md) | E-ticarət | PostgreSQL + Redis + Elasticsearch |
+| [04-social-media.md](04-social-media.md) | Sosial media | PostgreSQL + Cassandra + Redis |
+| [05-ride-sharing.md](05-ride-sharing.md) | Taksi tətbiqi | PostgreSQL + Redis (geospatial) |
+| [06-food-delivery.md](06-food-delivery.md) | Yemək çatdırılması | PostgreSQL + Redis |
+| [07-banking-fintech.md](07-banking-fintech.md) | Bank / FinTech | PostgreSQL (ACID) |
+| [08-video-streaming.md](08-video-streaming.md) | Video streaming | Cassandra + MySQL + S3 |
+| [09-google-drive.md](09-google-drive.md) | Cloud file storage | PostgreSQL + S3 + Redis |
+| [10-youtube.md](10-youtube.md) | Video platform | MySQL (Vitess) + Bigtable + S3 |
+| [11-hotel-booking.md](11-hotel-booking.md) | Otel rezervasiyası | PostgreSQL + Redis + Elasticsearch |
+| [12-stock-trading.md](12-stock-trading.md) | Birja / Trading | PostgreSQL + Redis + TimescaleDB |
+| [13-event-ticketing.md](13-event-ticketing.md) | Bilet satışı | PostgreSQL + Redis (seat lock) |
+| [14-healthcare-ehr.md](14-healthcare-ehr.md) | Sağlıq / EHR | PostgreSQL (HIPAA) |
+| [15-online-learning.md](15-online-learning.md) | Online təhsil | PostgreSQL + Redis + S3 |
+| [16-job-board.md](16-job-board.md) | İş elanları | PostgreSQL + Elasticsearch |
 
 ### Tanınmış Sistemlərin DB Dizaynları
 | Fayl | Sistem | Actual DB Stack |
 |------|--------|-----------------|
-| [netflix.md](netflix.md) | Netflix | Cassandra + MySQL + CockroachDB |
-| [instagram.md](instagram.md) | Instagram | PostgreSQL + Cassandra + Redis |
-| [whatsapp.md](whatsapp.md) | WhatsApp | Mnesia (Erlang) + MySQL |
-| [amazon.md](amazon.md) | Amazon | DynamoDB + Aurora + RDS |
-| [paypal.md](paypal.md) | PayPal | Oracle → MySQL + PostgreSQL |
-| [uber.md](uber.md) | Uber | MySQL + Schemaless + H3 |
-| [twitter.md](twitter.md) | Twitter/X | MySQL + Manhattan (custom) + Redis |
-| [airbnb.md](airbnb.md) | Airbnb | MySQL + Amazon RDS |
-| [discord.md](discord.md) | Discord | ScyllaDB + PostgreSQL + Redis |
-| [google.md](google.md) | Google | Bigtable + Spanner + BigQuery |
-| [linkedin.md](linkedin.md) | LinkedIn | Espresso + Kafka + Voldemort |
-| [github.md](github.md) | GitHub | MySQL (Vitess) + Git objects |
-| [slack.md](slack.md) | Slack | MySQL (Vitess) + Redis + Flannel |
-| [spotify.md](spotify.md) | Spotify | PostgreSQL + Cassandra + GCP |
-| [tiktok.md](tiktok.md) | TikTok | TiDB + ClickHouse + Cassandra |
-| [shopify.md](shopify.md) | Shopify | MySQL (Vitess) + Redis |
+| [17-netflix.md](17-netflix.md) | Netflix | Cassandra + MySQL + CockroachDB |
+| [18-instagram.md](18-instagram.md) | Instagram | PostgreSQL + Cassandra + Redis |
+| [19-whatsapp.md](19-whatsapp.md) | WhatsApp | Mnesia (Erlang) + MySQL |
+| [20-amazon.md](20-amazon.md) | Amazon | DynamoDB + Aurora + RDS |
+| [21-paypal.md](21-paypal.md) | PayPal | Oracle → MySQL + PostgreSQL |
+| [22-uber.md](22-uber.md) | Uber | MySQL + Schemaless + H3 |
+| [23-twitter.md](23-twitter.md) | Twitter/X | MySQL + Manhattan (custom) + Redis |
+| [24-airbnb.md](24-airbnb.md) | Airbnb | MySQL + Amazon RDS |
+| [25-discord.md](25-discord.md) | Discord | ScyllaDB + PostgreSQL + Redis |
+| [26-google.md](26-google.md) | Google | Bigtable + Spanner + BigQuery |
+| [27-linkedin.md](27-linkedin.md) | LinkedIn | Espresso + Kafka + Voldemort |
+| [28-github.md](28-github.md) | GitHub | MySQL (Vitess) + Git objects |
+| [29-slack.md](29-slack.md) | Slack | MySQL (Vitess) + Redis + Flannel |
+| [30-spotify.md](30-spotify.md) | Spotify | PostgreSQL + Cassandra + GCP |
+| [31-tiktok.md](31-tiktok.md) | TikTok | TiDB + ClickHouse + Cassandra |
+| [32-shopify.md](32-shopify.md) | Shopify | MySQL (Vitess) + Redis |
 
 ### DB Seçim Bələdçisi
-| [db-selection-guide.md](db-selection-guide.md) | Hansı DB-ni seçmək lazımdır? CAP, PACELC, consistency models |
+| [33-db-selection-guide.md](33-db-selection-guide.md) | Hansı DB-ni seçmək lazımdır? CAP, PACELC, consistency models |
 
 ---
 

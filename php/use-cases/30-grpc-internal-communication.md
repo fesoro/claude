@@ -1,4 +1,4 @@
-# gRPC Internal Service Communication
+# gRPC Internal Service Communication (Lead)
 
 ## Ssenari
 

@@ -1,4 +1,4 @@
-# Advanced Laravel
+# Advanced Laravel (Senior)
 
 ## 1. Laravel Pipeline nədir?
 

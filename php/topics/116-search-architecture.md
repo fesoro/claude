@@ -1,4 +1,4 @@
-# Search Architecture (Elasticsearch)
+# Search Architecture (Elasticsearch) (Senior)
 
 ## Mündəricat
 1. [Inverted Index](#inverted-index)

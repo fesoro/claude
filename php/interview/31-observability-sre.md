@@ -1,4 +1,4 @@
-# Observability & SRE — Interview Suallar
+# Observability & SRE (Senior)
 
 ## Mündəricat
 1. Logging

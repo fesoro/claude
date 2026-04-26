@@ -1,4 +1,4 @@
-# Coding Challenges — Live Coding Sualları
+# Coding Challenges (Senior)
 
 ## 1. Palindrome yoxla
 

@@ -1,4 +1,4 @@
-# Qiymət Hesablama Mühərriki — Mürəkkəb Qiymət Qaydaları, Endirim, Vergi, Valyuta
+# Qiymət Hesablama Mühərriki (Senior)
 
 ## Problem Təsviri
 

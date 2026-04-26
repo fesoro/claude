@@ -1,4 +1,4 @@
-# Approval Workflow
+# Approval Workflow (Senior)
 
 ## Problem necə yaranır?
 

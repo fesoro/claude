@@ -1,4 +1,4 @@
-# Audit Log Sistemi + GDPR Uyğunluğu
+# Audit Log Sistemi + GDPR Uyğunluğu (Senior)
 
 ## Problem
 

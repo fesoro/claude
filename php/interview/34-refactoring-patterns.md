@@ -1,4 +1,4 @@
-# Refactoring & Advanced Patterns — Interview Suallar
+# Refactoring & Advanced Patterns (Senior)
 
 ## Mündəricat
 1. Code smells

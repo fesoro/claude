@@ -1,4 +1,4 @@
-# Laravel Fundamentals
+# Laravel Fundamentals (Middle)
 
 ## 1. Laravel-in Service Container (IoC Container) necə işləyir?
 

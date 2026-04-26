@@ -1,4 +1,4 @@
-# Database və Eloquent Advanced
+# Database və Eloquent Advanced (Senior)
 
 ## 1. Database Indexing nədir və nə vaxt istifadə olunmalıdır?
 

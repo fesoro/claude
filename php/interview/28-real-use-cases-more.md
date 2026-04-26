@@ -1,4 +1,4 @@
-# Real Use Cases — Daha Çox Praktiki Problemlər
+# Real Use Cases (Lead)
 
 ## 1. Multi-language / Localization sistemi (Database-based)
 

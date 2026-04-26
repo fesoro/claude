@@ -1,4 +1,4 @@
-# Use Case: Scheduled Reports & Batch Export
+# Scheduled Reports & Batch Export (Lead)
 
 ## Problem
 - Admin dashboard: hər həftə CEO-ya revenue report email

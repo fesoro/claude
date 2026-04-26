@@ -1,4 +1,4 @@
-# Əlavə Vacib Suallar və Patterns
+# Əlavə Vacib Suallar və Patterns (Senior)
 
 ## 1. Cursor-based Pagination vs Offset Pagination
 

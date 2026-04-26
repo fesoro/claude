@@ -1,4 +1,4 @@
-# Real-World Scenarios — Praktiki Ssenari Sualları
+# Real-World Scenarios (Lead)
 
 ## 1. "Payment sistemi double charge edir, necə həll edərsiniz?"
 

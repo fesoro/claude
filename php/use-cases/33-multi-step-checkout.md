@@ -1,4 +1,4 @@
-# Multi-step Checkout Flow
+# Multi-step Checkout Flow (Senior)
 
 ## Problem necə yaranır?
 

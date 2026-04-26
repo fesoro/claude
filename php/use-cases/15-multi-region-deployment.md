@@ -1,4 +1,4 @@
-# Multi-Region Deployment Dizaynı
+# Multi-Region Deployment Dizaynı (Lead)
 
 ## Problem
 

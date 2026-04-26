@@ -1,4 +1,4 @@
-# OOP və Design Patterns
+# OOP və Design Patterns (Middle)
 
 ## 1. SOLID prinsipləri izah edin.
 

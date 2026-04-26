@@ -1,4 +1,4 @@
-# Modern PHP 8.x Features — Interview Suallar
+# Modern PHP 8.x Features (Senior)
 
 ## Mündəricat
 1. PHP 8.0 features

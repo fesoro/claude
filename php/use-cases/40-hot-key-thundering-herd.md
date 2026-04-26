@@ -1,4 +1,4 @@
-# Hot Key & Thundering Herd
+# Hot Key & Thundering Herd (Senior)
 
 ## Problem necə yaranır?
 

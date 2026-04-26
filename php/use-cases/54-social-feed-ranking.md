@@ -1,4 +1,4 @@
-# Use Case: Social Feed Ranking (Timeline Algorithm)
+# Social Feed Ranking (Lead)
 
 ## Problem
 - 1M user, hər user 100 friend

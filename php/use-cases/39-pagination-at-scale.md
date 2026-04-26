@@ -1,4 +1,4 @@
-# Pagination at Scale
+# Pagination at Scale (Senior)
 
 ## Problem necə yaranır?
 

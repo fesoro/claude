@@ -1,4 +1,4 @@
-# PHP Core - Muasir PHP Bilikleri
+# PHP Core (Middle)
 
 ## 1. PHP 8.x-de hansı yeni xüsusiyyətlər var?
 

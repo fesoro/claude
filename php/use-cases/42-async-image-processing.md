@@ -1,4 +1,4 @@
-# Async Image Processing Pipeline
+# Async Image Processing Pipeline (Middle)
 
 ## Problem necə yaranır?
 

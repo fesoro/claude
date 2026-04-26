@@ -1,4 +1,4 @@
-# Use Case: BFF Pattern (Mobile + Web + Partner API)
+# BFF Pattern (Lead)
 
 ## Problem
 - 3 müxtəlif client: Mobile app, Web SPA, Partner B2B

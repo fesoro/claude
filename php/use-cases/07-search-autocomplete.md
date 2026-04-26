@@ -1,4 +1,4 @@
-# Search Autocomplete / Typeahead Dizaynı
+# Search Autocomplete / Typeahead Dizaynı (Senior)
 
 ## Problem
 

@@ -1,4 +1,4 @@
-# Laravel Ecosystem — Livewire, Inertia, Pennant, Pulse, Reverb
+# Laravel Ecosystem (Senior)
 
 ## 1. Laravel Livewire nədir?
 

@@ -1,4 +1,4 @@
-# Real Use Cases — Authentication, RBAC, Audit
+# Real Use Cases (Senior)
 
 ## 1. Role-Based Access Control (RBAC) sistemi
 

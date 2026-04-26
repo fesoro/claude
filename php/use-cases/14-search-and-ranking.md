@@ -1,4 +1,4 @@
-# Search and Ranking Sistemi Dizaynı
+# Search and Ranking Sistemi Dizaynı (Senior)
 
 ## Problem Statement
 

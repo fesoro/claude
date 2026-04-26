@@ -1,4 +1,4 @@
-# Clean Code, Code Smells və Refactoring
+# Clean Code, Code Smells və Refactoring (Senior)
 
 ## 1. Code Smells — pis kodun əlamətləri
 

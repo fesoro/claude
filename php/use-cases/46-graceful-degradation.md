@@ -1,4 +1,4 @@
-# Graceful Degradation
+# Graceful Degradation (Senior)
 
 ## Problem necə yaranır?
 

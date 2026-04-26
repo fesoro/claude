@@ -1,4 +1,4 @@
-# Token Refresh Strategy
+# Token Refresh Strategy (Middle)
 
 ## Problem necə yaranır?
 

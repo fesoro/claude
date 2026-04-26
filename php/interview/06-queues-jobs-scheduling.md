@@ -1,4 +1,4 @@
-# Queues, Jobs və Task Scheduling
+# Queues, Jobs və Task Scheduling (Senior)
 
 ## 1. Laravel Queue sistemi necə işləyir?
 

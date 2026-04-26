@@ -1,4 +1,4 @@
-# Use Case: Multi-currency Pricing & FX Conversion
+# Multi-currency Pricing & FX Conversion (Senior)
 
 ## Problem
 - E-commerce platform: USD, EUR, AZN, RUB

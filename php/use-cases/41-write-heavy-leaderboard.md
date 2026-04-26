@@ -1,4 +1,4 @@
-# Write-heavy Leaderboard
+# Write-heavy Leaderboard (Senior)
 
 ## Problem necə yaranır?
 
