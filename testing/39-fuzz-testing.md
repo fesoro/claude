@@ -1,6 +1,5 @@
-# Fuzz Testing
-
-## Nədir? (What is it?)
+# Fuzz Testing (Lead)
+## İcmal
 
 **Fuzz Testing (Fuzzing)** - proqrama **random, invalid, malformed, və ya gözlənilməz input-lar** verərək crash, memory leak, güvənlik boşluqları və ya undefined behavior-ları tapmaq üçün istifadə olunan avtomatlaşdırılmış test texnikasıdır.
 
@@ -13,7 +12,14 @@
 
 **Tarix:** 1988-ci ildə Professor Barton Miller tərəfindən Wisconsin Universitetində icad olunub. "Fuzz" adı - random noise mənasındadır.
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Parser/validator bug-ları**: CSV parser, JSON deserializer, XML handler kimi input emal edən kod fuzz-a çox həssasdır — manual test kifayət etmir
+- **Security relevance**: Heartbleed, Shellshock kimi kritik CVE-lər fuzzing ilə tapılıb — security-critical kod üçün mütləqdir
+- **Unexpected input**: Production-da istifadəçilər proqramçının düşünmədiyini yazır — fuzzer bunu simulyasiya edir
+- **Automation**: Bir dəfə qurulduqdan sonra fuzz testi 24/7 işləyir, daim yeni paths kəşf edir
+
+## Əsas Anlayışlar
 
 ### 1. Fuzz Testing Növləri
 
@@ -85,7 +91,34 @@ Fuzz testing security testing-in vacib hissəsidir:
 - **Interesting inputs:** yeni coverage açan girişlər
 - **Crash corpus:** crash edən input-lar
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+1. **Good seed corpus saxlayın** - valid input nümunələri fuzzer-ə başlanğıc verir
+2. **Crash-ları track edin** - hər crash ayrıca saxlanıb analiz edilməli
+3. **CI-da continuous fuzz** - hər commit-də qısa fuzz run
+4. **Fuzzing + sanitizers** - ASan, UBSan ilə memory bugs tapmaq
+5. **Domain-spesifik dictionary** - SQL, HTTP keyword-ləri fuzzer-ə vermək
+6. **Resource limits** - timeout, memory limit qoymaq (DoS etməsin)
+
+### Anti-Patterns
+
+1. **Fuzzing-siz security** - "Code review kifayətdir" düşünmək
+2. **Crash-ları görməməzlik** - "Bu real input deyil" bəhanəsi
+3. **Production-da fuzz** - production DB-də fuzz etmək fəlakətdir
+4. **Short run** - 10 iterasiya yetərli deyil, minlərlə-milyonlarla lazım
+5. **Environment isolation yox** - fuzzer production services-ə təsir edir
+6. **Coverage ignore** - coverage-guided olmasa dayaz qalır
+
+### Təhlükəsizlik Qeydləri
+
+- Fuzz testing **pentesting-in tamamlayıcısıdır**, əvəzi deyil
+- Heartbleed, Shellshock kimi böyük CVE-lər fuzzing ilə tapılıb
+- PHP kimi managed languages-də əsasən **logic bugs** və **input validation** tapılır
+- Cloud fuzzing (OSS-Fuzz, ClusterFuzz) open-source üçün pulsuzdur
+
+## Nümunələr
 
 ### Sadə PHP Fuzzer
 
@@ -374,7 +407,7 @@ public function testJsonParsersMatch(): void
 }
 ```
 
-## Interview Sualları (Q&A)
+## Ətraflı Qeydlər
 
 ### 1. Fuzz testing nədir və niyə istifadə olunur?
 
@@ -428,29 +461,10 @@ Google-un open-source layihələri üçün continuous fuzzing infrastrukturudur.
 
 Oxşardırlar amma fuzzing əsasən **crash/security bugs** üçün, PBT isə **invariant violations** üçündür. Fuzzing format-sız random data verir, PBT strukturlaşdırılmış data generasiya edir.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-1. **Good seed corpus saxlayın** - valid input nümunələri fuzzer-ə başlanğıc verir
-2. **Crash-ları track edin** - hər crash ayrıca saxlanıb analiz edilməli
-3. **CI-da continuous fuzz** - hər commit-də qısa fuzz run
-4. **Fuzzing + sanitizers** - ASan, UBSan ilə memory bugs tapmaq
-5. **Domain-spesifik dictionary** - SQL, HTTP keyword-ləri fuzzer-ə vermək
-6. **Resource limits** - timeout, memory limit qoymaq (DoS etməsin)
-
-### Anti-Patterns
-
-1. **Fuzzing-siz security** - "Code review kifayətdir" düşünmək
-2. **Crash-ları görməməzlik** - "Bu real input deyil" bəhanəsi
-3. **Production-da fuzz** - production DB-də fuzz etmək fəlakətdir
-4. **Short run** - 10 iterasiya yetərli deyil, minlərlə-milyonlarla lazım
-5. **Environment isolation yox** - fuzzer production services-ə təsir edir
-6. **Coverage ignore** - coverage-guided olmasa dayaz qalır
-
-### Təhlükəsizlik Qeydləri
-
-- Fuzz testing **pentesting-in tamamlayıcısıdır**, əvəzi deyil
-- Heartbleed, Shellshock kimi böyük CVE-lər fuzzing ilə tapılıb
-- PHP kimi managed languages-də əsasən **logic bugs** və **input validation** tapılır
-- Cloud fuzzing (OSS-Fuzz, ClusterFuzz) open-source üçün pulsuzdur
+- [Security Testing (Senior)](21-security-testing.md)
+- [Property-Based Testing (Lead)](38-property-based-testing.md)
+- [API Testing (Middle)](09-api-testing.md)
+- [Testing Anti-Patterns (Senior)](27-testing-anti-patterns.md)
+- [Testing Microservices (Lead)](37-testing-microservices.md)

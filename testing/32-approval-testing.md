@@ -1,6 +1,5 @@
-# Approval Testing
-
-## Nədir? (What is it?)
+# Approval Testing (Senior)
+## İcmal
 
 **Approval Testing** (həmçinin **Golden Master Testing** adlanır) - **funksiyanın/sistemin çıxışını əvvəlcədən yoxlanılıb "onaylanmış" (approved) fayllarla müqayisə edən** test metodudur. Test zamanı actual output `received` faylına yazılır və `approved` faylla müqayisə edilir.
 
@@ -23,7 +22,15 @@
 - Refactor zamanı regression-ları avtomatik tapmaq
 - Human review ilə qərar verilə bilər
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Kompleks output-ların test edilməsini sadələşdirir:** Email template-lər, PDF invoice-lər, böyük JSON response-lar üçün hər assertion-u əl ilə yazmaq çox vaxt aparır. Approval testing ilə bütün çıxışı bir anda "snapshot" kimi qeyd etmək mümkündür.
+- **API schema regression-larını erkən aşkarlayır:** API response strukturu istemeden dəyişdikdə approval test dərhal fail olur. Bu, müştəri (client) tərəfində integration pozulmadan əvvəl problemi tutmağa imkan verir.
+- **Kod review prosesini gücləndirir:** Approved faylları Git-ə commit etmək, PR-də output dəyişikliklərini görünən edir. Reviewer yalnız kod yox, faktiki çıxışı da yoxlaya bilər — bu insan gözetimi üçün dəyərlidir.
+- **Generated kod keyfiyyətini təmin edir:** Migration generator, scaffolding, ya da report builder yazıldıqda, çıxışı approved fayl kimi saxlamaq əl ilə yoxlamadan qorunma sağlayır. Generator refactor ediləndə regression dərhal görünür.
+- **Çətin test edilən side effect-ləri asan yoxlamaq:** Email body-si, rendered HTML view, ya da export fayl kimi vizual çıxışları ənənəvi assertion-larla test etmək çətin olur. Approval testing bu problemin ən praktik həllidir.
+
+## Əsas Anlayışlar
 
 ### 1. Approved vs Received Files
 
@@ -81,7 +88,42 @@ Dinamik data-nı normalize edir:
 - **verify** (.NET, C#)
 - **jest snapshots** (JS - approval-ın bir növü)
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+1. **Scrubber aggressive qur** - bütün dinamik data-nı normalize et
+2. **Approved file-ları gözəl format-la** - diff oxunan olsun
+3. **Kiçik approved faylları** - 50 sətirdən az, böyükdürsə böl
+4. **Review ciddi alın** - approved file = test expectation
+5. **Diff tool inteqrasiya et** - IDE-də avto review
+6. **Test adı descriptive** - `InvoiceRendering_UsdCurrency_NoDiscount`
+
+### Anti-Patterns
+
+1. **Auto-approve in CI** - regression-ları keçirər
+2. **Scrub etməmək** - flaky test yaranır
+3. **Binary approval** - görünməz diff
+4. **Giant approval file** - review çətin olur
+5. **No human review** - ilk approve göz gəzdirmədən
+6. **Frequently changing data** - hər run re-approve zəhmət
+7. **`--update` flag CI-da** - dəhşətli anti-pattern
+
+### Faydalı Texnikalar
+
+- **Combination approval** - bir neçə input/output birləşmiş faylda
+- **Reporter chain** - PhpStorm > Console > File
+- **Named approvals** - bir test bir neçə approve edə bilər
+- **Inline approvals** - kiçik output üçün kod içində
+
+### Kitablar/Resurslar
+
+- Llewellyn Falco - Approval Tests yaradıcısı
+- **ApprovalTests.com** - multiple language dokumentasiyası
+- Emily Bache - "Approval Testing" videoları
+- Spatie snapshot package docs
+
+## Nümunələr
 
 ### Basic Approval Test
 
@@ -191,7 +233,7 @@ class OrderReportTest extends TestCase
 }
 ```
 
-## PHP/Laravel ilə Tətbiq
+## Praktik Tapşırıqlar
 
 ### Custom Approval Trait
 
@@ -502,7 +544,7 @@ done
 **/*.received.html
 ```
 
-## Interview Sualları (Q&A)
+## Ətraflı Qeydlər
 
 ### 1. Approval testing nədir və necə işləyir?
 
@@ -563,37 +605,11 @@ Bəli! **Approved files** version control-un hissəsidir - test data kimidir. **
 - Developer local-da review edib commit edir
 - Auto-approve **CI-da qətiyyən etməyin**
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-1. **Scrubber aggressive qur** - bütün dinamik data-nı normalize et
-2. **Approved file-ları gözəl format-la** - diff oxunan olsun
-3. **Kiçik approved faylları** - 50 sətirdən az, böyükdürsə böl
-4. **Review ciddi alın** - approved file = test expectation
-5. **Diff tool inteqrasiya et** - IDE-də avto review
-6. **Test adı descriptive** - `InvoiceRendering_UsdCurrency_NoDiscount`
-
-### Anti-Patterns
-
-1. **Auto-approve in CI** - regression-ları keçirər
-2. **Scrub etməmək** - flaky test yaranır
-3. **Binary approval** - görünməz diff
-4. **Giant approval file** - review çətin olur
-5. **No human review** - ilk approve göz gəzdirmədən
-6. **Frequently changing data** - hər run re-approve zəhmət
-7. **`--update` flag CI-da** - dəhşətli anti-pattern
-
-### Faydalı Texnikalar
-
-- **Combination approval** - bir neçə input/output birləşmiş faylda
-- **Reporter chain** - PhpStorm > Console > File
-- **Named approvals** - bir test bir neçə approve edə bilər
-- **Inline approvals** - kiçik output üçün kod içində
-
-### Kitablar/Resurslar
-
-- Llewellyn Falco - Approval Tests yaradıcısı
-- **ApprovalTests.com** - multiple language dokumentasiyası
-- Emily Bache - "Approval Testing" videoları
-- Spatie snapshot package docs
+- [Characterization Tests (Senior)](31-characterization-tests.md)
+- [Snapshot Testing (Senior)](25-snapshot-testing.md)
+- [Regression, Smoke və Sanity Testing (Senior)](34-regression-smoke-sanity.md)
+- [Testing Third-Party Services (Senior)](28-testing-third-party.md)
+- [Test Data Management (Senior)](33-test-data-management.md)
+- [Contract Testing (Senior)](24-contract-testing.md)

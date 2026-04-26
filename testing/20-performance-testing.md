@@ -1,6 +1,5 @@
-# Performance Testing
-
-## Nədir? (What is it?)
+# Performance Testing (Senior)
+## İcmal
 
 Performance testing, proqram təminatının müxtəlif yük şəraitində necə davrandığını ölçmək
 prosesidir. Məqsəd sistemin sürət, sabitlik, scalability və resurs istifadəsi baxımından
@@ -18,7 +17,15 @@ tapır və sistemin nə qədər yükə dözə biləcəyini müəyyən edir.
 4. **SLA təminatı** - Response time, uptime tələblərini ödəmək
 5. **Cost optimization** - Lazımsız infrastructure xərclərinin qarşısını almaq
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **İstifadəçi saxlamaq** — səhifə 3 saniyədən yavaş açılsa, istifadəçilərin 40%-i tərk edir; performance test bu riski production-a çatmadan aşkar edir
+- **SLA/SLO təminatı** — real layihələrdə "P95 < 500ms" kimi müqaviləvi öhdəliklər olur; test olmadan bu öhdəliyin pozulduğunu yalnız incident-dən sonra öyrənirsən
+- **N+1 və DB bottleneck-ləri** — Laravel-də ən çox gizli problem eager loading çatışmazlığıdır; `DB::listen()` ilə query sayını assert etmək bu problemi CI-da tutmağa imkan verir
+- **Infrastructure xərcləri** — server scale etməmişdən əvvəl bottleneck kod səviyyəsindədir; performance test göstərir ki, problem hardware-dədir yoxsa kodda
+- **Regression qoruması** — yeni feature əlavə edəndə köhnə endpoint-in yavaşlamasını CI-dəki threshold assert-ləri avtomatik tutacaq
+
+## Əsas Anlayışlar
 
 ### Performance Test Növləri
 
@@ -82,7 +89,27 @@ Average 200ms olsa belə, bəzi request-lər 5 saniyə çəkə bilər.
 P95/P99 real istifadəçi təcrübəsini daha yaxşı göstərir.
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+1. **Realistic scenarios yazın** - Real istifadəçi davranışını modelləyin
+2. **Think time əlavə edin** - İstifadəçilər arasında gözləmə vaxtı qoyun
+3. **Threshold-lar təyin edin** - P95 < 500ms kimi obyektiv metriklər
+4. **Baseline yaradın** - Dəyişiklikləri müqayisə etmək üçün referans nöqtəsi
+5. **Production-a yaxın mühitdə test edin** - Staging environment eyni spec-də olmalı
+6. **Ramp-up istifadə edin** - Yükü tədricən artırın, birdən verməyin
+
+### Anti-Patterns
+
+1. **Yalnız happy path test etmək** - Error ssenariləri da yük altında test edin
+2. **Average ilə qiymətləndirmək** - Percentile metriklər istifadə edin
+3. **Kiçik data set-lə test etmək** - Production-a yaxın data həcmi lazımdır
+4. **Cache-i nəzərə almamaq** - Cold start və warm cache ayrıca test edin
+5. **Network latency-ni unutmaq** - Local testlər real şəraiti əks etdirmir
+6. **Bir dəfə test edib unutmaq** - Performance regression üçün CI/CD-yə əlavə edin
+
+## Nümunələr
 
 ### k6 ilə Load Testing
 
@@ -201,7 +228,7 @@ class WebsiteUser(HttpUser):
         self.client.get("/api/posts/1", headers=self.headers)
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### Laravel Query Performance Testing
 
@@ -385,7 +412,7 @@ class Benchmark
 }
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 ### 1. Load testing və stress testing arasındakı fərq nədir?
 **Cavab:** Load testing gözlənilən/normal yükü simulyasiya edir - "100 user-ə xidmət edə bilirik?". Stress testing isə yükü artıraraq sistemin qırılma nöqtəsini tapır - "neçə user-ə qədər dözür?". Load testing keçsə sistem hazırdır, stress testing keçməsə normaldır, limit nöqtəsini bilmək üçündür.
@@ -408,22 +435,10 @@ class Benchmark
 ### 7. Laravel-də performance optimization üçün nə edərsiniz?
 **Cavab:** 1) Eager loading (N+1 həll), 2) Query caching (Redis/Memcached), 3) Route/config/view caching, 4) Database indexing, 5) Queue ilə ağır işləri async etmək, 6) CDN static assets üçün, 7) Pagination böyük data set-lər üçün, 8) Lazy collections memory optimization üçün.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-1. **Realistic scenarios yazın** - Real istifadəçi davranışını modelləyin
-2. **Think time əlavə edin** - İstifadəçilər arasında gözləmə vaxtı qoyun
-3. **Threshold-lar təyin edin** - P95 < 500ms kimi obyektiv metriklər
-4. **Baseline yaradın** - Dəyişiklikləri müqayisə etmək üçün referans nöqtəsi
-5. **Production-a yaxın mühitdə test edin** - Staging environment eyni spec-də olmalı
-6. **Ramp-up istifadə edin** - Yükü tədricən artırın, birdən verməyin
-
-### Anti-Patterns
-
-1. **Yalnız happy path test etmək** - Error ssenariləri da yük altında test edin
-2. **Average ilə qiymətləndirmək** - Percentile metriklər istifadə edin
-3. **Kiçik data set-lə test etmək** - Production-a yaxın data həcmi lazımdır
-4. **Cache-i nəzərə almamaq** - Cold start və warm cache ayrıca test edin
-5. **Network latency-ni unutmaq** - Local testlər real şəraiti əks etdirmir
-6. **Bir dəfə test edib unutmaq** - Performance regression üçün CI/CD-yə əlavə edin
+- [Continuous Testing (Senior)](23-continuous-testing.md)
+- [Testing Anti-Patterns (Senior)](27-testing-anti-patterns.md)
+- [Database Testing (Middle)](10-database-testing.md)
+- [Testing Best Practices (Senior)](30-testing-best-practices.md)
+- [Code Coverage (Middle)](12-code-coverage.md)

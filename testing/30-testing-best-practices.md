@@ -1,6 +1,5 @@
-# Testing Best Practices
-
-## Nədir? (What is it?)
+# Testing Best Practices (Senior)
+## İcmal
 
 Testing best practices, illər ərzində yığılmış təcrübədən formalaşmış qaydalar toplusudur.
 Bu qaydalar test-in **etibarlı (reliable)**, **oxunaqlı (readable)** və **davamlı
@@ -17,7 +16,14 @@ Timely) və dəstəkləyici praktikalar.
 3. **Maintenance cost** - Hər feature dəyişikliyi 100 test qırırsa, ya test, ya feature inkişaf etmir
 4. **Confidence** - Yaxşı test → deploy-a inam
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Uzunmüddətli dəyər**: Best practices olmadan yazılan testlər 6 aydan sonra maintainability problemi yaradır — dəyişdirmək production koddan çətin olur
+- **Komanda mədəniyyəti**: FIRST prinsipləri komanda daxilindəki test keyfiyyəti standartını müəyyən edir
+- **CI etibarlılığı**: Brittle testlər CI pipeline-ı etibarsız edir — komanda nəticələri ignore etməyə başlayır
+- **Onboarding**: Yaxşı yazılmış testlər yeni developer-ə kodun necə işlədiyini göstərir
+
+## Əsas Anlayışlar
 
 ### FIRST Principles
 
@@ -62,7 +68,41 @@ public function test_user_cannot_login_with_invalid_password(): void
 public function guest_cannot_access_admin_panel(): void
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+- **Bir konsept = bir test** - Failure-də tez lokalize edirsən
+- **Descriptive test names** - `test_refund_fails_for_shipped_order` > `test_refund`
+- **AAA / Given-When-Then** - Struktur hər test-də eyni
+- **Factories > Hardcoded data** - Refactoring-də az dəyişiklik
+- **Fake external services** - Fast, reliable, deterministic
+- **Test the interface, not implementation** - Refactoring test-ləri qırmamalıdır
+- **Time freezing** - `$this->travelTo()` time-dependent test-lər üçün
+- **Custom assertions** - Təkrarlanan yoxlamalar helper-ə çıxarılır
+- **Separate slow/fast suites** - Unit = tez feedback, integration = CI
+- **Test data builders** - Object Mother, Factory trait-ləri
+- **Regular mutation testing** - Coverage-in real keyfiyyətini ölçür
+- **Test review checklist** - Kod review-da test keyfiyyəti də yoxlanır
+
+### Anti-Patterns
+
+- **Flaky tests** - Rastgəle pass/fail
+- **Test interdependence** - A test-i B-dən əvvəl işləməlidir
+- **Ice cream cone** - Çox E2E, az unit
+- **Over-mocking** - Hər şey mock, real kod test olunmur
+- **Assertion-free tests** - Test işləyir, amma heç nə yoxlamır
+- **Gigantic test methods** - 200 sətir setup, 3 assertion
+- **Hardcoded waits** - `sleep(5)` - brittle
+- **Copy-paste tests** - Tiny variations, böyük maintenance cost
+- **Testing framework/library** - Laravel Eloquent-in işləməsini test etmə
+- **Snapshot testing without review** - Snapshot-u görmədən kor-koranə qəbul etmə
+- **Dead code coverage** - Unreachable branch-lərin coverage-i hesablanır
+- **Comments-based grouping** - `// === happy path ===` əvəzinə ayrı test class-ları
+- **Yalnız happy path** - Production bug-ların 80%-i edge case-dir
+- **No CI execution** - Local-da keçən test CI-də qırılır
+
+## Nümunələr
 
 ### FIRST Principle in Action
 
@@ -93,7 +133,7 @@ public function testUser(): void {}
 public function test_registering_with_existing_email_returns_validation_error(): void {}
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### 1. Test Organization Best Practices
 
@@ -410,7 +450,7 @@ public function test_refundable_items_can_be_refunded(): void
 }
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 **Q1: FIRST principles nələrdir?**
 A: **F**ast, **I**ndependent, **R**epeatable, **S**elf-validating, **T**imely. Test-in
@@ -453,36 +493,10 @@ A: (1) Test adı aydındır? (2) Tək konsept yoxlanılır? (3) Negative path va
 risk? (5) Mock-lar əsaslıdır? (6) Assertion message helpful-dir? (7) Test kodu DRY-dır,
 amma oxunaqlı?
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-- **Bir konsept = bir test** - Failure-də tez lokalize edirsən
-- **Descriptive test names** - `test_refund_fails_for_shipped_order` > `test_refund`
-- **AAA / Given-When-Then** - Struktur hər test-də eyni
-- **Factories > Hardcoded data** - Refactoring-də az dəyişiklik
-- **Fake external services** - Fast, reliable, deterministic
-- **Test the interface, not implementation** - Refactoring test-ləri qırmamalıdır
-- **Time freezing** - `$this->travelTo()` time-dependent test-lər üçün
-- **Custom assertions** - Təkrarlanan yoxlamalar helper-ə çıxarılır
-- **Separate slow/fast suites** - Unit = tez feedback, integration = CI
-- **Test data builders** - Object Mother, Factory trait-ləri
-- **Regular mutation testing** - Coverage-in real keyfiyyətini ölçür
-- **Test review checklist** - Kod review-da test keyfiyyəti də yoxlanır
-
-### Anti-Patterns
-
-- **Flaky tests** - Rastgəle pass/fail
-- **Test interdependence** - A test-i B-dən əvvəl işləməlidir
-- **Ice cream cone** - Çox E2E, az unit
-- **Over-mocking** - Hər şey mock, real kod test olunmur
-- **Assertion-free tests** - Test işləyir, amma heç nə yoxlamır
-- **Gigantic test methods** - 200 sətir setup, 3 assertion
-- **Hardcoded waits** - `sleep(5)` - brittle
-- **Copy-paste tests** - Tiny variations, böyük maintenance cost
-- **Testing framework/library** - Laravel Eloquent-in işləməsini test etmə
-- **Snapshot testing without review** - Snapshot-u görmədən kor-koranə qəbul etmə
-- **Dead code coverage** - Unreachable branch-lərin coverage-i hesablanır
-- **Comments-based grouping** - `// === happy path ===` əvəzinə ayrı test class-ları
-- **Yalnız happy path** - Production bug-ların 80%-i edge case-dir
-- **No CI execution** - Local-da keçən test CI-də qırılır
+- [Test Patterns (Senior)](26-test-patterns.md)
+- [Testing Anti-Patterns (Senior)](27-testing-anti-patterns.md)
+- [Test Organization (Middle)](13-test-organization.md)
+- [Continuous Testing (Senior)](23-continuous-testing.md)
+- [Test Data Management (Senior)](33-test-data-management.md)

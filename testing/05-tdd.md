@@ -1,6 +1,5 @@
-# Test-Driven Development (TDD)
-
-## Nədir? (What is it?)
+# Test-Driven Development - TDD (Middle)
+## İcmal
 
 TDD (Test-Driven Development) proqramlaşdırma metodologiyasıdır. Əsas prinsipi:
 əvvəl test yaz, sonra kodu yaz. Bu, "Red-Green-Refactor" dövrü adlanır.
@@ -11,7 +10,15 @@ yaxşı interfeyslərə gətirib çıxarır.
 
 TDD-nin əsas ideyası: "Əgər kodu test etmək çətindirsə, dizayn yaxşı deyil."
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Over-engineering qarşısı**: Yalnız testi keçirmək üçün lazım olan kodu yazdığınızdan YAGNI prinsipini avtomatik tətbiq edirsiniz — lazımsız abstraction yaranmır
+- **Dizayn keyfiyyəti**: TDD ilə yazılan kod dependency injection, single responsibility prinsiplərini təbii şəkildə izləyir, çünki test yazarkən sıx bağlı kod dərhal aşkar olunur
+- **Regression safety**: Hər yeni feature əlavə etdikdə mövcud testlər sınmadığı üçün refactoring etmək mümkün olur
+- **Specification kimi işləyir**: Testlər kodun nə etməli olduğunu sənədləşdirir — iki il sonra da oxunur, çünki davranışı göstərir
+- **Bug-ların kök səbəbi**: Test əvvəl yazıldığından edge case-lər implementasiyadan əvvəl nəzərə alınır, "sonradan test yazarkən tapılan" bug-lar artıq yoxdur
+
+## Əsas Anlayışlar
 
 ### Red-Green-Refactor Dövrü
 
@@ -64,7 +71,25 @@ düzəlt. Testlər hələ keçməlidir.
 - Database/UI kimi xarici asılılıqlarla çətin
 - Komanda dəstəyi lazımdır
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+- Kiçik addımlarla irəlilə (baby steps)
+- Hər addımda yalnız bir test əlavə et
+- Green mərhələsində ən sadə kodu yaz
+- Refactor mərhələsini atlama
+- Commit tez-tez et (hər Green/Refactor-dan sonra)
+- Test adlarını specification kimi yaz
+
+### Anti-Patterns
+- **Big steps**: Bir dəfəyə çoxlu funksionallıq əlavə etmək
+- **Skipping Red**: Test yazmadan birbaşa kod yazmaq
+- **Gold plating in Green**: Green mərhələsində lazımsız optimizasiya
+- **Skipping Refactor**: Kodu təmizləməyi unutmaq
+- **Testing implementation**: Davranış əvəzinə implementasiya detallarını test etmək
+- **Not running tests**: Testləri tez-tez çalışdırmamaq
+
+## Nümunələr
 
 ### TDD Kata: String Calculator
 
@@ -236,7 +261,7 @@ public function test_calculate_order_total(): void
 // 5. Refactor
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### TDD ilə Laravel Service Yaratma
 
@@ -410,7 +435,7 @@ public function test_guest_cannot_update_profile(): void
 }
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 **S: TDD nədir və niyə istifadə edilir?**
 C: TDD əvvəl test, sonra kod yazma metodologiyasıdır. Red-Green-Refactor dövrünə
@@ -436,20 +461,11 @@ C: Test-first ilə: testable dizayn yaranır, bütün kod test edilir (test-last
 çox vaxt skip olur), over-engineering azalır (yalnız tələb olunanı yazırsınız),
 testlər specification kimi işləyir.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-- Kiçik addımlarla irəlilə (baby steps)
-- Hər addımda yalnız bir test əlavə et
-- Green mərhələsində ən sadə kodu yaz
-- Refactor mərhələsini atlama
-- Commit tez-tez et (hər Green/Refactor-dan sonra)
-- Test adlarını specification kimi yaz
-
-### Anti-Patterns
-- **Big steps**: Bir dəfəyə çoxlu funksionallıq əlavə etmək
-- **Skipping Red**: Test yazmadan birbaşa kod yazmaq
-- **Gold plating in Green**: Green mərhələsində lazımsız optimizasiya
-- **Skipping Refactor**: Kodu təmizləməyi unutmaq
-- **Testing implementation**: Davranış əvəzinə implementasiya detallarını test etmək
-- **Not running tests**: Testləri tez-tez çalışdırmamaq
+- [Unit Testing (Junior)](02-unit-testing.md)
+- [BDD (Middle)](06-bdd.md)
+- [Mocking (Middle)](07-mocking.md)
+- [Test Patterns (Senior)](26-test-patterns.md)
+- [Testing Anti-Patterns (Senior)](27-testing-anti-patterns.md)
+- [Testing Best Practices (Senior)](30-testing-best-practices.md)

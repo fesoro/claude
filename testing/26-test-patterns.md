@@ -1,6 +1,5 @@
-# Test Patterns
-
-## Nədir? (What is it?)
+# Test Patterns (Senior)
+## İcmal
 
 Test patterns, testləri daha oxunaqlı, bakımı asan və təkrarlanabilir yazmaq üçün
 istifadə olunan dizayn şablonlarıdır. Mürəkkəb test data hazırlama, setup kodu təkrarı
@@ -18,7 +17,14 @@ geniş istifadə olunur.
 4. **Sürətli test yazmaq** - Yeni test yazmaq sürətlənir
 5. **Konsistentlik** - Komandada eyni yanaşma istifadə olunur
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Test maintenance**: Pattern-siz yazılan testlər production kodu kimi dəyişikliyə müqavimət göstərir — 100 test 50 faylda dəyişik istəyir
+- **Oxunuşuq**: Object Mother pattern-i test məqsədini aydın göstərir — test data-sı həmişə kontekstdə mənalıdır
+- **DRY prinsip**: Builder pattern test data qurulmasını mərkəzləşdirir — bir yerdə dəyişiklik bütün testlərə yayılır
+- **Team consistency**: Komanda üzvləri eyni pattern-ləri istifadə edəndə review asanlaşır
+
+## Əsas Anlayışlar
 
 ### Test Pattern Kateqoriyaları
 
@@ -67,7 +73,27 @@ public function it_applies_discount_for_vip_customers(): void
 }
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+1. **Builder/Mother pattern istifadə edin** - Mürəkkəb test data üçün
+2. **Factory state-ləri yazın** - Təkrarlanan konfiqurasiyalar üçün
+3. **Custom assertions yaradın** - Təkrarlanan yoxlamalar üçün
+4. **DataProvider istifadə edin** - Eyni test, fərqli data
+5. **Helper method-lar yazın** - signIn, apiGet kimi shortcut-lar
+6. **Immutable builder** - clone istifadə edin, original-ı dəyişdirməyin
+
+### Anti-Patterns
+
+1. **Test-lərdə copy-paste** - DRY prinsipinə əməl edin
+2. **God setUp** - 20+ sətir setUp method
+3. **Irrelevant detail** - Test-də lazım olmayan data təyin etmək
+4. **Magic numbers** - `create(['total' => 150])` niyə 150?
+5. **Mürəkkəb factory chain** - 10 state chain oxunmaz olur
+6. **Over-abstraction** - Çox sadə test üçün Builder lazım deyil
+
+## Nümunələr
 
 ### Builder Pattern (Test Data Builder)
 
@@ -407,7 +433,7 @@ $orders = Order::factory()
     ->create();
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### Custom Assertions
 
@@ -589,7 +615,7 @@ abstract class TestCase extends BaseTestCase
 }
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 ### 1. Builder pattern test-lərdə necə istifadə olunur?
 **Cavab:** Builder pattern mürəkkəb test object-ləri addım-addım qurmağa imkan verir. Method chaining ilə yalnız test üçün vacib olan xüsusiyyətlər təyin edilir: `OrderBuilder::anOrder()->withItem($product)->withCoupon('SAVE20')->build()`. Bu, test-i oxunaqlı edir və yalnız relevant detail-lər göstərilir.
@@ -609,22 +635,10 @@ abstract class TestCase extends BaseTestCase
 ### 6. Fresh Fixture və Shared Fixture arasındakı fərq nədir?
 **Cavab:** Fresh Fixture: hər testdə yeni data yaradılır - tam izolyasiya, amma yavaş. Shared Fixture: setUp-da yaradılan data bütün testlər tərəfindən paylaşılır - sürətli, amma testlər bir-birini təsir edə bilər. Shared fixture yalnız readonly data üçün təhlükəsizdir. Laravel-da RefreshDatabase fresh fixture təmin edir.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-1. **Builder/Mother pattern istifadə edin** - Mürəkkəb test data üçün
-2. **Factory state-ləri yazın** - Təkrarlanan konfiqurasiyalar üçün
-3. **Custom assertions yaradın** - Təkrarlanan yoxlamalar üçün
-4. **DataProvider istifadə edin** - Eyni test, fərqli data
-5. **Helper method-lar yazın** - signIn, apiGet kimi shortcut-lar
-6. **Immutable builder** - clone istifadə edin, original-ı dəyişdirməyin
-
-### Anti-Patterns
-
-1. **Test-lərdə copy-paste** - DRY prinsipinə əməl edin
-2. **God setUp** - 20+ sətir setUp method
-3. **Irrelevant detail** - Test-də lazım olmayan data təyin etmək
-4. **Magic numbers** - `create(['total' => 150])` niyə 150?
-5. **Mürəkkəb factory chain** - 10 state chain oxunmaz olur
-6. **Over-abstraction** - Çox sadə test üçün Builder lazım deyil
+- [Unit Testing (Junior)](02-unit-testing.md)
+- [Database Testing (Middle)](10-database-testing.md)
+- [Test Data Management (Senior)](33-test-data-management.md)
+- [Testing Anti-Patterns (Senior)](27-testing-anti-patterns.md)
+- [Testing Best Practices (Senior)](30-testing-best-practices.md)

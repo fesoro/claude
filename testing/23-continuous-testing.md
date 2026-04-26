@@ -1,6 +1,5 @@
-# Continuous Testing
-
-## Nədir? (What is it?)
+# Continuous Testing (Senior)
+## İcmal
 
 Continuous testing, testlərin CI/CD (Continuous Integration/Continuous Deployment) pipeline-ında
 avtomatik işlədilməsi prosesidir. Hər code push, pull request və ya deployment zamanı testlər
@@ -18,7 +17,15 @@ riski minimuma enir.
 4. **Regression prevention** - Köhnə bug-lar təkrar yaranmır
 5. **Quality gate** - Minimum coverage, test pass tələbi
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **"Shift left" prinsipi** — bug-ı developer maşınında tapmaq production-da tapmaqdan 100x ucuzdur; CI pipeline hər push-da bu fürsəti avtomatik yaradır
+- **Merge qapısı kimi** — branch protection rules ilə testlər keçmədən heç bir kod main branch-ə merge edilə bilmir; bu insan faktorunu aradan qaldırır
+- **Paralel icra ilə sürət** — unit, feature, integration test-lərini paralel işlətmək 10 dəqiqəlik pipeline-ı 3 dəqiqəyə endirə bilər; developer vaxtı qorunur
+- **Flaky test idarəsi** — CI-da müntəzəm işlədilən testlər flaky davranışı erkən aşkar edir; local-da bəzən olan problem CI-da hər dəfə görünür
+- **Coverage trend izləmə** — Codecov kimi alətlər PR-larda coverage düşüşünü göstərir; trendə baxmaq test debt-in yığılmasının qarşısını alır
+
+## Əsas Anlayışlar
 
 ### CI/CD Pipeline Test Strategiyası
 
@@ -83,7 +90,27 @@ Həll yolları:
   6. Quarantine flaky tests
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+1. **Fail-fast pipeline** - Ən sürətli testlər əvvəl işləsin
+2. **Paralel execution** - Mümkün olan yerdə paralel işlət
+3. **Caching** - Composer vendor, npm node_modules cache-lə
+4. **Coverage tracking** - Trend-i izlə, düşməsinə icazə vermə
+5. **Notifications** - Failure halında komandanı xəbərdar et
+6. **Branch protection** - Test keçmədən merge olunmasın
+
+### Anti-Patterns
+
+1. **Yavaş pipeline** - 30+ dəqiqə CI developer-ləri gözlətir
+2. **Flaky testləri ignore etmək** - Bütün CI-ya güvəni sarsıdır
+3. **Test-siz deploy** - Heç bir test olmadan production-a deploy etmək
+4. **Yalnız main branch-da test** - PR-da da test işləməlidir
+5. **Manual test trigger** - Avtomatik olmalıdır, manual deyil
+6. **Retry ilə flaky test-i gizlətmək** - Root cause-u tapın, retry son çarədir
+
+## Nümunələr
 
 ### GitHub Actions - Tam Pipeline
 
@@ -224,7 +251,7 @@ feature-tests:
       run: vendor/bin/phpunit tests/${{ matrix.testsuite }}
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### .env.testing Konfiqurasiyası
 
@@ -415,7 +442,7 @@ GitHub Settings → Branches → Branch protection rules:
 ✅ Require pull request reviews before merging
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 ### 1. CI/CD pipeline-da testlər necə təşkil olunmalıdır?
 **Cavab:** Fail-fast prinsipi ilə: əvvəl lint/static analysis (saniyələr), sonra unit tests (dəqiqələr), sonra feature tests (dəqiqələr), sonra E2E (əgər varsa). Hər stage əvvəlkindən asılıdır - lint fail edirsə, testlər işləmir. Unit və feature testlər paralel işləyə bilər.
@@ -438,22 +465,11 @@ GitHub Settings → Branches → Branch protection rules:
 ### 7. Deployment pipeline-da smoke testlər nə üçün lazımdır?
 **Cavab:** Deploy-dan sonra production-da əsas funksionallığın işlədiyini yoxlayan minimal test setidir. Login edə bilir? Əsas səhifələr açılır? API cavab verir? Smoke test fail edirsə, avtomatik rollback edilir. Full test suite deyil, yalnız critical path test edilir.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-1. **Fail-fast pipeline** - Ən sürətli testlər əvvəl işləsin
-2. **Paralel execution** - Mümkün olan yerdə paralel işlət
-3. **Caching** - Composer vendor, npm node_modules cache-lə
-4. **Coverage tracking** - Trend-i izlə, düşməsinə icazə vermə
-5. **Notifications** - Failure halında komandanı xəbərdar et
-6. **Branch protection** - Test keçmədən merge olunmasın
-
-### Anti-Patterns
-
-1. **Yavaş pipeline** - 30+ dəqiqə CI developer-ləri gözlətir
-2. **Flaky testləri ignore etmək** - Bütün CI-ya güvəni sarsıdır
-3. **Test-siz deploy** - Heç bir test olmadan production-a deploy etmək
-4. **Yalnız main branch-da test** - PR-da da test işləməlidir
-5. **Manual test trigger** - Avtomatik olmalıdır, manual deyil
-6. **Retry ilə flaky test-i gizlətmək** - Root cause-u tapın, retry son çarədir
+- [Testing Best Practices (Senior)](30-testing-best-practices.md)
+- [Performance Testing (Senior)](20-performance-testing.md)
+- [Mutation Testing (Senior)](22-mutation-testing.md)
+- [Code Coverage (Middle)](12-code-coverage.md)
+- [Testing Anti-Patterns (Senior)](27-testing-anti-patterns.md)
+- [Test Organization (Middle)](13-test-organization.md)

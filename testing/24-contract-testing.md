@@ -1,6 +1,5 @@
-# Contract Testing
-
-## Nədir? (What is it?)
+# Contract Testing (Senior)
+## İcmal
 
 Contract testing, iki service arasındakı API "müqaviləsinin" (contract) düzgün saxlanıldığını
 yoxlayan test növüdür. Microservice arxitekturada Service A (consumer) Service B-dən (provider)
@@ -19,7 +18,15 @@ deploy olunmasını təhlükəsiz edir.
 4. **Documentation** - Contract-lar API-nin living documentation-ıdır
 5. **Güvən** - Provider team consumer-lərin nə gözlədiyini bilir
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Microservice deployment təhlükəsizliyi** — bir service-in API-sını dəyişdikdə consumer-ləri sındırıb-sındırmadığını real environment qurmadan müəyyən etmək mümkündür; bu müstəqil deploy üçün əsas şərtdir
+- **Breaking change-ləri erkən tutmaq** — field silmək, type dəyişmək kimi dəyişikliklər provider verification mərhələsində aşkar edilir; production-da 404/500 error-larla deyil, CI-da öyrənilir
+- **E2E testdən sürətli** — tam stack qaldırmağa ehtiyac yoxdur; consumer mock server, provider isə öz endpoint-lərini test edir; feedback loop dəqiqələr içindədir
+- **API documentation əvəzedicisi** — contract faylları API-nin nə gözlədiyini canlı sənəd kimi saxlayır; Swagger-dən fərqli olaraq həm consumer, həm provider tərəfindən doğrulanır
+- **Komandalar arası əlaqəni asanlaşdırır** — backend team consumer-lərin nə gözlədiyini Pact Broker-dən görür; şifahi koordinasiyaya ehtiyac azalır
+
+## Əsas Anlayışlar
 
 ### Consumer-Driven Contracts (CDC)
 
@@ -77,7 +84,27 @@ Can-I-Deploy:
   Broker bütün consumer/provider versiyalarını yoxlayır
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+1. **Consumer-first approach** - Consumer-in ehtiyaclarından başlayın
+2. **Minimal contract** - Yalnız istifadə olunan field-ləri contract-a əlavə edin
+3. **Pact Broker istifadə edin** - Mərkəzi contract idarəetməsi
+4. **CI/CD-yə inteqrasiya** - Can-I-Deploy deploy-dan əvvəl
+5. **Provider state-ləri sadə saxlayın** - Minimal test data
+6. **Versiyalama** - Consumer/provider versiyalarını izləyin
+
+### Anti-Patterns
+
+1. **Bütün response-u contract-a əlavə etmək** - Yalnız istifadə olunan field-lər
+2. **Contract testing-i E2E əvəzinə istifadə etmək** - Fərqli məqsədlərdir
+3. **Contract-ları manual idarə etmək** - Broker istifadə edin
+4. **Provider state-də mürəkkəb setup** - Sadə factory-lər istifadə edin
+5. **Contract-ları nadir yeniləmək** - Hər API dəyişikliyində yeniləyin
+6. **Yalnız bir tərəfi test etmək** - Həm consumer, həm provider test olunmalıdır
+
+## Nümunələr
 
 ### Pact Consumer Test (PHP)
 
@@ -286,7 +313,7 @@ if (app()->environment('testing')) {
 }
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### Sadə Contract Test (Pact-sız)
 
@@ -449,7 +476,7 @@ class OpenApiContractTest extends TestCase
 }
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 ### 1. Contract testing nədir və nə üçün lazımdır?
 **Cavab:** Contract testing iki service arasındakı API müqaviləsinin düzgün saxlanıldığını yoxlayır. Consumer "mən bu formatda data gözləyirəm" deyir, provider "mən bu formatı ödəyirəm" deyə verify edir. Microservice-lərin müstəqil deploy olunmasını təhlükəsiz edir. E2E testdən sürətlidir, breaking change-ləri tez tapır.
@@ -469,22 +496,10 @@ class OpenApiContractTest extends TestCase
 ### 6. Breaking change nədir və contract testing bunu necə tutur?
 **Cavab:** Breaking change API-nin geriyə uyğun olmayan dəyişikliyidir: field silinir, type dəyişir, endpoint URL dəyişir. Contract testing: consumer field gözləyir → provider field silir → provider verification fail olur → deploy bloklanır. Field əlavə etmək breaking deyil.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-1. **Consumer-first approach** - Consumer-in ehtiyaclarından başlayın
-2. **Minimal contract** - Yalnız istifadə olunan field-ləri contract-a əlavə edin
-3. **Pact Broker istifadə edin** - Mərkəzi contract idarəetməsi
-4. **CI/CD-yə inteqrasiya** - Can-I-Deploy deploy-dan əvvəl
-5. **Provider state-ləri sadə saxlayın** - Minimal test data
-6. **Versiyalama** - Consumer/provider versiyalarını izləyin
-
-### Anti-Patterns
-
-1. **Bütün response-u contract-a əlavə etmək** - Yalnız istifadə olunan field-lər
-2. **Contract testing-i E2E əvəzinə istifadə etmək** - Fərqli məqsədlərdir
-3. **Contract-ları manual idarə etmək** - Broker istifadə edin
-4. **Provider state-də mürəkkəb setup** - Sadə factory-lər istifadə edin
-5. **Contract-ları nadir yeniləmək** - Hər API dəyişikliyində yeniləyin
-6. **Yalnız bir tərəfi test etmək** - Həm consumer, həm provider test olunmalıdır
+- [API Testing (Middle)](09-api-testing.md)
+- [Integration Testing (Junior)](03-integration-testing.md)
+- [Testing Third-Party Integrations (Senior)](28-testing-third-party.md)
+- [Continuous Testing (Senior)](23-continuous-testing.md)
+- [Snapshot Testing (Senior)](25-snapshot-testing.md)

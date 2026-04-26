@@ -1,6 +1,5 @@
-# Testing Email & Notifications
-
-## Nədir? (What is it?)
+# Testing Email & Notifications (Middle)
+## İcmal
 
 Email və notification testing, istifadəçilərə göndərilən mesajların (email, SMS, Slack,
 database notification və s.) düzgün format, alıcı və məzmunla göndərildiyini yoxlamaq
@@ -18,7 +17,15 @@ Email testing iki səviyyədə olur:
 3. **Deliverability** - Test zamanı real email göndərmək spam score-a təsir edir
 4. **Multi-channel** - Eyni notification bir neçə kanalda fərqli format olur
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Müştəriyə çatan məzmunun keyfiyyəti** — Yanlış subject, broken link, və ya səhv alıcı olan email müştəri itkisinə və reputation zədəsinə səbəb olur; mailable unit testlər bunu production-dan əvvəl tutur.
+- **Compliance tələblərinin yerinə yetirilməsi** — GDPR unsubscribe link-i, HIPAA-uyğun məlumat formatı kimi qanuni tələblər email testlərində yoxlanılmalıdır; test olmadan compliance pozuntusu gizli qalır.
+- **Multi-channel notification mürəkkəbliyi** — Eyni notification mail, database, Slack kanallarında fərqli format tələb edir; hər kanalın ayrıca yoxlanması channel-spesifik bug-ları aşkar edir.
+- **Real SMTP-yə göndərməkdən qaçınmaq** — Test zamanı real email göndərmək spam filter-lərin score-unu artırır, rate limit-ə çatır, xərc yaradır; `Mail::fake()` bütün bunları aradan qaldırır.
+- **Negative path-ların əhəmiyyəti** — Unsubscribe etmiş, email_notifications=false olan istifadəçiyə email getməməsi kritikdir; bu path test edilmədikdə istifadəçi razısızlığı yaranır.
+
+## Əsas Anlayışlar
 
 ### Fake Helpers
 
@@ -58,7 +65,26 @@ slack      → Slack webhook
 custom     → öz channel-ınız
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+- **Mail content-i Mailable unit test-ində yoxlayın** - Feature test yalnız dispatch-ı yoxlasın
+- **Closure ilə specific assertion** - `assertSent` + `hasTo`, `subject`, data yoxlanışı
+- **Unsubscribe / preferences** - Hər email ötürməyən path-i test edin
+- **Markdown rendering** - `->render()` ilə compile xətası tutulur
+- **Fake-i lokal test-də saxlayın** - Global CI-də real mail getmir (`.env.testing`)
+
+### Anti-Patterns
+
+- **Real SMTP ilə test** - Spam, slow, flaky
+- **`assertSent` olmadan dispatch yoxlaması** - Silent pass
+- **Content-i Feature test-də yoxlamaq** - View değişəndə 100 test qırılır
+- **Yalnız happy path** - Unsubscribe, invalid email, bounce test olunmur
+- **Fake unutmaq** - `Mail::fake()` çağırılmazsa test production-a email göndərə bilər
+- **Hardcoded email addresses** - `u@example.com` əvəzinə faker istifadə edin
+
+## Nümunələr
 
 ### Mailable Testing
 
@@ -92,7 +118,7 @@ public function test_registration_sends_welcome_email(): void
 }
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### 1. Mailable - Content Testing
 
@@ -406,7 +432,7 @@ public function test_markdown_mail_renders_correctly(): void
 }
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 **Q1: `Mail::fake()` çağırıldıqdan sonra email həqiqətən göndərilir?**
 A: Xeyr. Mail facade fake-ə yönlənir; SMTP-yə getmir, amma göndərmə qeydə alınır.
@@ -440,21 +466,11 @@ A: `$mail->assertHasAttachment(Attachment::fromPath(...))` və ya `assertHasAtta
 **Q10: `notify()` ilə `Notification::send()` fərqi?**
 A: `$user->notify()` tək istifadəçi üçün. `Notification::send([$u1, $u2], $notification)` collection üçün (broadcast kanalı işləmir `sendNow` lazımdır).
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-- **Mail content-i Mailable unit test-ində yoxlayın** - Feature test yalnız dispatch-ı yoxlasın
-- **Closure ilə specific assertion** - `assertSent` + `hasTo`, `subject`, data yoxlanışı
-- **Unsubscribe / preferences** - Hər email ötürməyən path-i test edin
-- **Markdown rendering** - `->render()` ilə compile xətası tutulur
-- **Fake-i lokal test-də saxlayın** - Global CI-də real mail getmir (`.env.testing`)
-
-### Anti-Patterns
-
-- **Real SMTP ilə test** - Spam, slow, flaky
-- **`assertSent` olmadan dispatch yoxlaması** - Silent pass
-- **Content-i Feature test-də yoxlamaq** - View değişəndə 100 test qırılır
-- **Yalnız happy path** - Unsubscribe, invalid email, bounce test olunmur
-- **Fake unutmaq** - `Mail::fake()` çağırılmazsa test production-a email göndərə bilər
-- **Hardcoded email addresses** - `u@example.com` əvəzinə faker istifadə edin
+- [Mocking (Middle)](07-mocking.md)
+- [Testing Events & Queues (Middle)](15-testing-events-queues.md)
+- [Testing Authentication & Authorization (Middle)](18-testing-authentication.md)
+- [Testing Third-Party Services (Senior)](28-testing-third-party.md)
+- [Contract Testing (Senior)](24-contract-testing.md)
+- [Testing Best Practices (Senior)](30-testing-best-practices.md)

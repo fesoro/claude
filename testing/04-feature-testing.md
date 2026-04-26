@@ -1,6 +1,5 @@
-# Feature Testing
-
-## Nədir? (What is it?)
+# Feature Testing (Junior)
+## İcmal
 
 Feature testing (və ya end-to-end testing) proqramın bütün request lifecycle-ını
 istifadəçi perspektivindən test edir. HTTP request göndərilir, middleware-lər,
@@ -13,7 +12,15 @@ application-ın boot olmasını təmin edir.
 Feature test bir istifadəçinin brauzerdə etdiyi əməliyyatı simulyasiya edir:
 sayfaya gir, form doldur, submit et, nəticəni gör.
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Tam stack yoxlama**: Routing, middleware, controller, service, database — hamısı bir arada sınaqdan keçirilir; ayrı-ayrılıqda doğru olan komponentlər birlikdə düzgün işləməyə bilər
+- **Authentication və authorization**: Real middleware zənciri işlədiyindən, 401/403 ssenariləri düzgün sınaqdan keçirilir — unit testdə bu mümkün deyil
+- **Form validation end-to-end**: Validation qaydalarının request-dən response-a qədər düzgün işlədiyini yoxlayır, session error-larını da əhatə edir
+- **Regression prevention**: CRUD əməliyyatları üçün yazılan feature testlər refactoring zamanı bütün endpoint-lərin hələ də düzgün işlədiyini zəmanət edir
+- **API contract**: Frontend komandası üçün API-nin davranışını sənədləşdirir — yeni developer actingAs, assertJson pattern-lərindən öyrənir
+
+## Əsas Anlayışlar
 
 ### Feature Test vs Unit Test vs Integration Test
 
@@ -75,7 +82,25 @@ $response->assertCookie('token');
 $response->assertCookieExpired('token');
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+- Hər critical user flow üçün feature test yazın
+- Factory-lər istifadə edin, manual data yaratmayın
+- actingAs() ilə authentication-ı sadələşdirin
+- Həm happy path, həm error case test edin
+- assertDatabaseHas/Missing ilə side effect-ləri yoxlayın
+- JSON API testlərində assertJsonStructure istifadə edin
+
+### Anti-Patterns
+- **Testing framework**: Laravel-in öz funksionallığını test etmək
+- **Too many assertions**: Bir testdə 20 assert - testləri bölün
+- **No edge cases**: Yalnız happy path test etmək
+- **Ignoring validation**: Form validation testlərini yazmamaq
+- **Hard-coded IDs**: `User::find(1)` əvəzinə factory istifadə edin
+- **Testing views in detail**: View-un HTML strukturunu çox detallı test etmək
+
+## Nümunələr
 
 ### User Registration Feature Test
 
@@ -264,7 +289,7 @@ class PostManagementTest extends TestCase
 }
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### JSON API Feature Tests
 
@@ -451,7 +476,7 @@ class PaginationTest extends TestCase
 }
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 **S: Feature test nə vaxt yazmalıyıq?**
 C: Kritik user flow-lar üçün: qeydiyyat, login, ödəniş, sifariş vermə. Feature
@@ -476,20 +501,11 @@ C: Middleware-dən asılı olmayan funksionallığı test edərkən. Məsələn,
 middleware-ni disable etmək API testlərində lazım ola bilər. Amma ehtiyatlı olun -
 middleware-lər özləri də test edilməlidir.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-- Hər critical user flow üçün feature test yazın
-- Factory-lər istifadə edin, manual data yaratmayın
-- actingAs() ilə authentication-ı sadələşdirin
-- Həm happy path, həm error case test edin
-- assertDatabaseHas/Missing ilə side effect-ləri yoxlayın
-- JSON API testlərində assertJsonStructure istifadə edin
-
-### Anti-Patterns
-- **Testing framework**: Laravel-in öz funksionallığını test etmək
-- **Too many assertions**: Bir testdə 20 assert - testləri bölün
-- **No edge cases**: Yalnız happy path test etmək
-- **Ignoring validation**: Form validation testlərini yazmamaq
-- **Hard-coded IDs**: `User::find(1)` əvəzinə factory istifadə edin
-- **Testing views in detail**: View-un HTML strukturunu çox detallı test etmək
+- [Testing Fundamentals (Junior)](01-testing-fundamentals.md)
+- [Integration Testing (Junior)](03-integration-testing.md)
+- [API Testing (Middle)](09-api-testing.md)
+- [Testing Authentication (Middle)](18-testing-authentication.md)
+- [Test Patterns (Senior)](26-test-patterns.md)
+- [Testing Best Practices (Senior)](30-testing-best-practices.md)

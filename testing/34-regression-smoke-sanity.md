@@ -1,6 +1,5 @@
-# Regression, Smoke və Sanity Testing
-
-## Nədir? (What is it?)
+# Regression, Smoke və Sanity Testing (Senior)
+## İcmal
 
 Bu üç test tipi hamısı **mövcud funksionallığı yoxlasa da**, **əhatə dairəsi** və
 **məqsədləri** fərqlidir. Müsahibələrdə tez-tez qarışdırılır.
@@ -15,7 +14,15 @@ Metaforalar:
 - **Sanity test**: "Sürət dəyişdikdə düzgün işləyir?"
 - **Regression test**: "Bütün sistemlər (radio, kondisioner, fren) işləyir?"
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Deploy güvənliyinin təməlidir:** Production-a hər deploy-dan sonra smoke test avtomatik işlədilmədikdə, sistem tamamilə xarab olsa belə development komandası saatlarla bunun fərqində olmaya bilər. Post-deploy smoke test bu boşluğu bağlayır.
+- **Regression riski hər dəyişiklikdə mövcuddur:** Laravel layihəsinin paylaşılan service-ləri, shared helper-ləri və ya global middleware-ləri bir yerdə dəyişiklik etmək başqa yerləri poza bilər. Avtomatlaşdırılmış regression suite bu riskə qarşı yeganə effektiv qalxandır.
+- **CI/CD pipeline-ın sürətini optimallaşdırır:** Smoke test-ləri tez işlədərək (5-10 dəqiqə) ümumi regression-u (saatlarla) yalnız lazım olanda işlətmək resurs itkisini azaldır. Fast-to-slow pipeline developer feedback vaxtını minimuma endirir.
+- **Bug fix-lərin keyfiyyətini sübut edir:** Sanity test bir bug düzəldildikdən sonra yalnız həmin sahəni yoxlayır. Bu, gereksiz tam regression işlətməyi aradan qaldırır, eyni zamanda fix-in işlədiyini sənədləşdirir.
+- **Release confidence yaradır:** Komanda tam regression suite-in yaşıl olduğunu görərkən release qərarı vermək asanlaşır. Bu, "bir şeylər pozula bilər" qorxusu ilə edilən gecikdirilmiş release-lərin qarşısını alır.
+
+## Əsas Anlayışlar
 
 ### 1. Regression Testing
 
@@ -75,7 +82,45 @@ Slow (nightly)   → Full regression (saatlar)
 Manual (release) → Exploratory + Sanity
 ```
 
-## Praktiki Nümunələr
+## Praktik Baxış
+
+### Best Practices
+1. **Ayrıca test suite-lər** — tests/Smoke, tests/Regression
+2. **Fast-to-slow pipeline** — commit-də unit, nightly-də regression
+3. **Smoke deploy-dan sonra da** — sistem gerçəkdə işləyir
+4. **Sanity manual saxla** — bu ad-hoc-dur
+5. **Regression avtomatlaşdır** — manual çox bahadır
+6. **Critical path prioritet** — business-critical yollar smoke-da
+7. **Paralel işlətmə** — regression sürətləndirmə
+8. **Test impact analysis** — yalnız təsirlənən testlər
+9. **Flaky testləri isolate et** — regression-u korlayır
+10. **Hər bug fix üçün regression test** — təkrar olmasın
+
+### Anti-Patterns
+- **"Smoke = 5 test"** — çox az; kritik yolları əhatə etmir
+- **"Regression = full manual"** — imkansız və baha
+- **Smoke deploy-dan əvvəl yalnız** — prod-dakı real problemlər görünmür
+- **Hamısı bir suite-də** — fərqli məqsədlər qarışır
+- **Slow smoke** — 30 dəqiqəlik smoke smoke deyil
+- **No rollback on smoke fail** — test əhəmiyyətsiz olur
+- **Flaky regression test-ləri ignore et** — pipeline etibarsız olur
+- **Sanity-ni regression əvəzinə işlət** — əhatə yetərsiz
+- **Smoke unit test kimi** — integration/E2E olmalıdır
+- **No metrics** — hansı test-lər ən uzun çəkir, hansı ən çox pozulur?
+
+### Test Strategiyası Checklist
+- [ ] Smoke suite (5-20 kritik test) mövcuddur
+- [ ] Regression suite tam əhatə edir
+- [ ] CI pipeline fast → slow sıralanıb
+- [ ] Smoke deploy-dan sonra da işləyir
+- [ ] Hər bug fix üçün regression test yazılır
+- [ ] Flaky testlər izolyasiya edilir
+- [ ] Paralel işlətmə aktivdir
+- [ ] Sanity prosesi sənədlənib (manual)
+- [ ] Test suite-ləri ayrıcadır
+- [ ] Metrics izlənilir (duration, flakiness)
+
+## Nümunələr
 
 ### Nümunə 1: E-commerce app
 - **Smoke**: Giriş, səhifə açılır, ödəniş formu göstərilir
@@ -98,7 +143,7 @@ Regression: 500+ test case → 8 saat (avtomatlaşdırılmış)
 5. Before release → Manual sanity on critical fixes
 ```
 
-## PHP/Laravel ilə Tətbiq
+## Praktik Tapşırıqlar
 
 ### 1. Smoke Test - Laravel
 
@@ -471,7 +516,7 @@ php artisan test --group=regression,billing
 php artisan test --exclude-group=slow
 ```
 
-## Interview Sualları (Q&A)
+## Ətraflı Qeydlər
 
 ### S1: Smoke və sanity test arasında fərq nədir?
 **C:**
@@ -550,40 +595,10 @@ Bəzi komandalarda bu terminlər bir-birinin yerinə istifadə olunur.
 Canary/Blue-green deploy-da post-deploy smoke pozulsa, traffic **avtomatik geri
 çevrilir** (rollback).
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-1. **Ayrıca test suite-lər** — tests/Smoke, tests/Regression
-2. **Fast-to-slow pipeline** — commit-də unit, nightly-də regression
-3. **Smoke deploy-dan sonra da** — sistem gerçəkdə işləyir
-4. **Sanity manual saxla** — bu ad-hoc-dur
-5. **Regression avtomatlaşdır** — manual çox bahadır
-6. **Critical path prioritet** — business-critical yollar smoke-da
-7. **Paralel işlətmə** — regression sürətləndirmə
-8. **Test impact analysis** — yalnız təsirlənən testlər
-9. **Flaky testləri isolate et** — regression-u korlayır
-10. **Hər bug fix üçün regression test** — təkrar olmasın
-
-### Anti-Patterns
-- **"Smoke = 5 test"** — çox az; kritik yolları əhatə etmir
-- **"Regression = full manual"** — imkansız və baha
-- **Smoke deploy-dan əvvəl yalnız** — prod-dakı real problemlər görünmür
-- **Hamısı bir suite-də** — fərqli məqsədlər qarışır
-- **Slow smoke** — 30 dəqiqəlik smoke smoke deyil
-- **No rollback on smoke fail** — test əhəmiyyətsiz olur
-- **Flaky regression test-ləri ignore et** — pipeline etibarsız olur
-- **Sanity-ni regression əvəzinə işlət** — əhatə yetərsiz
-- **Smoke unit test kimi** — integration/E2E olmalıdır
-- **No metrics** — hansı test-lər ən uzun çəkir, hansı ən çox pozulur?
-
-### Test Strategiyası Checklist
-- [ ] Smoke suite (5-20 kritik test) mövcuddur
-- [ ] Regression suite tam əhatə edir
-- [ ] CI pipeline fast → slow sıralanıb
-- [ ] Smoke deploy-dan sonra da işləyir
-- [ ] Hər bug fix üçün regression test yazılır
-- [ ] Flaky testlər izolyasiya edilir
-- [ ] Paralel işlətmə aktivdir
-- [ ] Sanity prosesi sənədlənib (manual)
-- [ ] Test suite-ləri ayrıcadır
-- [ ] Metrics izlənilir (duration, flakiness)
+- [Testing Fundamentals (Junior)](01-testing-fundamentals.md)
+- [Continuous Testing (Senior)](23-continuous-testing.md)
+- [Test Organization (Middle)](13-test-organization.md)
+- [Test Environment Management (Lead)](40-test-environment-management.md)
+- [Testing Best Practices (Senior)](30-testing-best-practices.md)

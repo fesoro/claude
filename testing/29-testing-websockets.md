@@ -1,6 +1,5 @@
-# Testing WebSockets & Real-Time Features
-
-## Nədir? (What is it?)
+# Testing WebSockets & Real-Time Features (Senior)
+## İcmal
 
 WebSocket və real-time testing, broadcasting (Pusher, Soketi, Laravel Reverb), presence
 channels, private channels və real-time notification-lar üçün istifadə olunan
@@ -16,7 +15,14 @@ təqdim edir.
 4. **Multiple clients** - Bir neçə subscriber-in görməsi lazımdır
 5. **Infrastructure** - Pusher/Soketi server test-də qaldırılmalıdır?
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Real-time bug tapılması**: Broadcasting event-lər yanlış channel-a göndərilirsə, real vaxtda istifadəçi bildiriş almır — test olmadan debug çətin olur
+- **Authorization qorunması**: Private/presence channel-lara icazəsiz giriş ciddisəhvdir — broadcasting auth test edilməlidir
+- **Payload contract**: Frontend WebSocket payload-a etibar edir; struktur dəyişsə silent bug yaranır
+- **Larvel Reverb/Pusher**: Driver dəyişiklikləri broadcasting davranışını dəyişə bilər — testlər bu dəyişikliyi tutur
+
+## Əsas Anlayışlar
 
 ### Broadcasting Channel Types
 
@@ -65,7 +71,27 @@ Event::assertDispatched(MessageSent::class);
 Event::assertDispatched(MessageSent::class, fn ($e) => $e->message->text === 'Hi');
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+- **`Event::fake()` istifadə edin** - Real broadcast server lazım deyil
+- **Channel authorization ayrı test** - Kritik security boundary
+- **Payload-ı `broadcastWith` test edin** - Client tərəfi asılıdır
+- **Channel adı constant** - `"orders.{$id}"` hər yerdə yazılmır
+- **`broadcastWhen` logic-i unit test** - Conditional broadcast səhv olarsa silent
+- **Integration test-i ayrı suite** - `@group websocket` ilə CI-də ayrı step
+
+### Anti-Patterns
+
+- **Real WebSocket hər unit test-də** - Slow, flaky
+- **Channel authorization-u bypass** - Private channel-ı public kimi test etmək
+- **Payload struktur test etməmək** - Frontend pozulur
+- **Yalnız happy path** - Unauthorized access test olunmur
+- **Broadcast driver prod-da null** - Config səhv deploy olarsa real-time işləmir
+- **`broadcastOn` return-unu hardcode** - Dinamik ID-lər channel-da dəyişir
+
+## Nümunələr
 
 ### Broadcast Event Test
 
@@ -104,7 +130,7 @@ public function test_user_can_join_private_channel_for_their_chat(): void
 }
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### 1. Broadcast Event Implementation & Test
 
@@ -491,7 +517,7 @@ public function test_broadcast_skipped_when_user_disabled_realtime(): void
 }
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 **Q1: `ShouldBroadcast` və `ShouldBroadcastNow` fərqi?**
 A: `ShouldBroadcast` - queue üzərindən göndərilir (async). `ShouldBroadcastNow` -
@@ -532,22 +558,10 @@ Amma `/broadcasting/auth` feature test daha real scenario verir.
 A: Test environment-də `BROADCAST_DRIVER=log` və ya `null` istifadə olunur — real
 network call getmir. `Event::fake()` ilə tam dayandırılır.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-- **`Event::fake()` istifadə edin** - Real broadcast server lazım deyil
-- **Channel authorization ayrı test** - Kritik security boundary
-- **Payload-ı `broadcastWith` test edin** - Client tərəfi asılıdır
-- **Channel adı constant** - `"orders.{$id}"` hər yerdə yazılmır
-- **`broadcastWhen` logic-i unit test** - Conditional broadcast səhv olarsa silent
-- **Integration test-i ayrı suite** - `@group websocket` ilə CI-də ayrı step
-
-### Anti-Patterns
-
-- **Real WebSocket hər unit test-də** - Slow, flaky
-- **Channel authorization-u bypass** - Private channel-ı public kimi test etmək
-- **Payload struktur test etməmək** - Frontend pozulur
-- **Yalnız happy path** - Unauthorized access test olunmur
-- **Broadcast driver prod-da null** - Config səhv deploy olarsa real-time işləmir
-- **`broadcastOn` return-unu hardcode** - Dinamik ID-lər channel-da dəyişir
+- [Testing Events & Queues (Middle)](15-testing-events-queues.md)
+- [Feature Testing (Junior)](04-feature-testing.md)
+- [Contract Testing (Senior)](24-contract-testing.md)
+- [Testing Microservices (Lead)](37-testing-microservices.md)
+- [Concurrency & Race Condition Testing (Senior)](35-concurrency-race-testing.md)

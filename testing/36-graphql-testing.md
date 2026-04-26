@@ -1,6 +1,5 @@
-# GraphQL Testing
-
-## Nədir? (What is it?)
+# GraphQL Testing (Senior)
+## İcmal
 
 **GraphQL** — API query dilidir. REST-dən fərqli olaraq, klient **tam lazım olan
 sahələri** seçir və bir endpoint (`/graphql`) üzərindən bütün əməliyyatlar aparılır.
@@ -18,7 +17,14 @@ yoxlanmasıdır.
 
 **Laravel ekosistemi:** Lighthouse — populyar GraphQL paketi, test helper-ləri ilə.
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **N+1 problem**: GraphQL-in flexible query strukturu N+1 yaratmağa çox meyillidir — test olmadan performance regression görünmür
+- **Schema breaking change**: Field silinməsi, type dəyişməsi client-ləri bilavasitə pozur — schema test bu riskə qarşı qoruyur
+- **Authorization complexity**: Field-level permission-lar Laravel policy ilə test edilməlidir — resolver səviyyəsindəki xəta data sızmasına aparır
+- **Lighthouse specificity**: Laravel Lighthouse-un spesifik davranışları (directives, subscriptions) framework-specific test tələb edir
+
+## Əsas Anlayışlar
 
 ### 1. GraphQL Əməliyyat Növləri
 
@@ -82,7 +88,45 @@ type User {
 }
 ```
 
-## Praktiki Nümunələr
+## Praktik Baxış
+
+### Best Practices
+1. **MakesGraphQLRequests trait** — Lighthouse test helper-ləri
+2. **Schema snapshot** — breaking change aşkarlama
+3. **N+1 query count test** — performans regresiyası
+4. **Field-level auth test** — hər rol üçün
+5. **Validation testləri** — `assertGraphQLValidationError`
+6. **Query complexity limit** — DoS qarşısı
+7. **Deprecated field işarələ** — breaking change-dən qaç
+8. **DataLoader/`@with`** — eager loading
+9. **Subscription event-ini yoxla** — WebSocket yerine
+10. **Introspection test** — schema integrity
+
+### Anti-Patterns
+- **Her field üçün ayrı REST endpoint** — GraphQL-ın mənasını itirir
+- **No N+1 detection** — production-da yavaşlayır
+- **No query complexity limit** — DoS zəifliyi
+- **Authorization resolver-də** — `@can` directive istifadə et
+- **Breaking change schema-da** — klientlər qırılır
+- **Test yalnız happy path** — auth və validation yoxlanmır
+- **Full introspection production-da** — məlumat leak
+- **No field deprecation** — birdən silmək
+- **Mock GraphQL client** — real Lighthouse istifadə et
+- **Subscription real WebSocket ilə test** — çox mürəkkəb, event fake kifayətdir
+
+### GraphQL Testing Checklist
+- [ ] Bütün query-lər üçün test
+- [ ] Bütün mutation-lar üçün test (happy + validation + auth)
+- [ ] Field-level permission-lar yoxlanılıb
+- [ ] N+1 detection test
+- [ ] Schema snapshot/introspection test
+- [ ] Query complexity limitlənib və test olunur
+- [ ] Subscription broadcast testi
+- [ ] Error handling (null, invalid input)
+- [ ] Deprecated field-lər doğru işarələnib
+- [ ] Authentication-sız query-lər rədd olunur (qorunan sahələrdə)
+
+## Nümunələr
 
 ### Nümunə 1: Over-fetching (REST problemi)
 ```
@@ -104,7 +148,7 @@ Schema v2: user { email: String } (nullable → breaking!)
 → Mövcud klientlər qırılır
 ```
 
-## PHP/Laravel ilə Tətbiq
+## Praktik Tapşırıqlar
 
 ### 1. Lighthouse GraphQL Schema
 
@@ -664,7 +708,7 @@ class QueryComplexityTest extends TestCase
 }
 ```
 
-## Interview Sualları (Q&A)
+## Ətraflı Qeydlər
 
 ### S1: GraphQL və REST test fərqləri?
 **C:**
@@ -746,40 +790,10 @@ type Post {
 ```
 Lighthouse Eloquent `with('author')` əlavə edir — N+1-in qarşısını alır.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-1. **MakesGraphQLRequests trait** — Lighthouse test helper-ləri
-2. **Schema snapshot** — breaking change aşkarlama
-3. **N+1 query count test** — performans regresiyası
-4. **Field-level auth test** — hər rol üçün
-5. **Validation testləri** — `assertGraphQLValidationError`
-6. **Query complexity limit** — DoS qarşısı
-7. **Deprecated field işarələ** — breaking change-dən qaç
-8. **DataLoader/`@with`** — eager loading
-9. **Subscription event-ini yoxla** — WebSocket yerine
-10. **Introspection test** — schema integrity
-
-### Anti-Patterns
-- **Her field üçün ayrı REST endpoint** — GraphQL-ın mənasını itirir
-- **No N+1 detection** — production-da yavaşlayır
-- **No query complexity limit** — DoS zəifliyi
-- **Authorization resolver-də** — `@can` directive istifadə et
-- **Breaking change schema-da** — klientlər qırılır
-- **Test yalnız happy path** — auth və validation yoxlanmır
-- **Full introspection production-da** — məlumat leak
-- **No field deprecation** — birdən silmək
-- **Mock GraphQL client** — real Lighthouse istifadə et
-- **Subscription real WebSocket ilə test** — çox mürəkkəb, event fake kifayətdir
-
-### GraphQL Testing Checklist
-- [ ] Bütün query-lər üçün test
-- [ ] Bütün mutation-lar üçün test (happy + validation + auth)
-- [ ] Field-level permission-lar yoxlanılıb
-- [ ] N+1 detection test
-- [ ] Schema snapshot/introspection test
-- [ ] Query complexity limitlənib və test olunur
-- [ ] Subscription broadcast testi
-- [ ] Error handling (null, invalid input)
-- [ ] Deprecated field-lər doğru işarələnib
-- [ ] Authentication-sız query-lər rədd olunur (qorunan sahələrdə)
+- [API Testing (Middle)](09-api-testing.md)
+- [Contract Testing (Senior)](24-contract-testing.md)
+- [Snapshot Testing (Senior)](25-snapshot-testing.md)
+- [Testing Authentication & Authorization (Middle)](18-testing-authentication.md)
+- [Performance Testing (Senior)](20-performance-testing.md)

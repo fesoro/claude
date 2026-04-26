@@ -1,6 +1,5 @@
-# Database Testing
-
-## Nədir? (What is it?)
+# Database Testing (Middle)
+## İcmal
 
 Database testing, verilənlər bazası əməliyyatlarının düzgün işlədiyini yoxlamaq prosesidir.
 CRUD (Create, Read, Update, Delete) əməliyyatları, migration-lar, relationship-lər, query-lər
@@ -11,7 +10,7 @@ Laravel-də database testing güclü alətlərlə dəstəklənir: Factory-lər t
 kimi method-lar database state-ini yoxlayır. Bu testlər integration test kateqoriyasına aiddir
 çünki real database ilə işləyir.
 
-### Niyə Database Testing Vacibdir?
+## Niyə Vacibdir
 
 1. **Data integrity** - Məlumatların düzgün saxlanıldığını təmin edir
 2. **Query doğruluğu** - Mürəkkəb query-lərin düzgün nəticə qaytardığını yoxlayır
@@ -19,7 +18,7 @@ kimi method-lar database state-ini yoxlayır. Bu testlər integration test kateq
 4. **Relationship doğruluğu** - Model əlaqələrinin düzgün işlədiyini yoxlayır
 5. **Performance** - N+1 query problemlərini və yavaş query-ləri tapır
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Anlayışlar
 
 ### Test Database Strategiyaları
 
@@ -68,7 +67,27 @@ UserFactory::new()
   →  Relationship-ləri avtomatik yaradır
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+1. **RefreshDatabase istifadə edin** - Ən etibarlı test isolation strategiyasıdır
+2. **Factory-lər istifadə edin** - Manual data yaratmaq əvəzinə factory pattern istifadə edin
+3. **Yalnız lazımi data yaradın** - Hər testdə minimum data ilə işləyin
+4. **State method-ları yazın** - Təkrarlanan factory konfiqurasiyalarını state-ə çıxarın
+5. **Schema testləri yazın** - Migration-ların düzgün işlədiyini yoxlayın
+6. **Sequence istifadə edin** - `Sequence` class ilə fərqli data variantları yaradın
+
+### Anti-Patterns
+
+1. **Testlər arası data paylaşmaq** - Hər test öz data-sını yaratmalıdır
+2. **Production database-ə qoşulmaq** - Həmişə ayrı test database istifadə edin
+3. **Hardcoded ID-lər** - Auto-increment ID-lərə etibar etməyin
+4. **Böyük seeder-lərdən asılılıq** - Testlər seeder-siz işləməlidir
+5. **Bütün column-ları assert etmək** - Yalnız test üçün vacib column-ları yoxlayın
+6. **Database state-ini manual təmizləmək** - RefreshDatabase/DatabaseTransactions istifadə edin
+
+## Nümunələr
 
 ### Factory Yaratmaq
 
@@ -164,7 +183,7 @@ class PostFactory extends Factory
 }
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### Əsas Database Test Nümunələri
 
@@ -479,7 +498,7 @@ class MigrationTest extends TestCase
 }
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 ### 1. RefreshDatabase və DatabaseTransactions arasındakı fərq nədir?
 **Cavab:** `RefreshDatabase` hər test suite başlanğıcında `migrate:fresh` işlədir, sonra hər testi transaction-a bükür. `DatabaseTransactions` migration işlətmir, sadəcə hər testi transaction-a bükür və sonra rollback edir. RefreshDatabase daha etibarlıdır çünki hər dəfə təmiz schema ilə başlayır.
@@ -505,22 +524,10 @@ class MigrationTest extends TestCase
 ### 8. Transaction rollback testing nə üçün istifadə olunur?
 **Cavab:** Hər testi database transaction-a bükmək testlər arası izolyasiya təmin edir. Test bitdikdə transaction rollback edilir, database əvvəlki vəziyyətinə qayıdır. Bu testləri sürətləndirir (DELETE/TRUNCATE-dən sürətli) və testlər bir-birini təsir etmir.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-1. **RefreshDatabase istifadə edin** - Ən etibarlı test isolation strategiyasıdır
-2. **Factory-lər istifadə edin** - Manual data yaratmaq əvəzinə factory pattern istifadə edin
-3. **Yalnız lazımi data yaradın** - Hər testdə minimum data ilə işləyin
-4. **State method-ları yazın** - Təkrarlanan factory konfiqurasiyalarını state-ə çıxarın
-5. **Schema testləri yazın** - Migration-ların düzgün işlədiyini yoxlayın
-6. **Sequence istifadə edin** - `Sequence` class ilə fərqli data variantları yaradın
-
-### Anti-Patterns
-
-1. **Testlər arası data paylaşmaq** - Hər test öz data-sını yaratmalıdır
-2. **Production database-ə qoşulmaq** - Həmişə ayrı test database istifadə edin
-3. **Hardcoded ID-lər** - Auto-increment ID-lərə etibar etməyin
-4. **Böyük seeder-lərdən asılılıq** - Testlər seeder-siz işləməlidir
-5. **Bütün column-ları assert etmək** - Yalnız test üçün vacib column-ları yoxlayın
-6. **Database state-ini manual təmizləmək** - RefreshDatabase/DatabaseTransactions istifadə edin
+- [Integration Testing (Junior)](03-integration-testing.md)
+- [Database Testing (Middle)](10-database-testing.md)
+- [Test Data Management (Senior)](33-test-data-management.md)
+- [Concurrency & Race Condition Testing (Senior)](35-concurrency-race-testing.md)
+- [Testing Anti-Patterns (Senior)](27-testing-anti-patterns.md)

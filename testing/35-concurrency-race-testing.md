@@ -1,6 +1,5 @@
-# Concurrency və Race Condition Testing
-
-## Nədir? (What is it?)
+# Concurrency və Race Condition Testing (Senior)
+## İcmal
 
 **Concurrency testing** — paralel işləyən kodun (thread-lər, proses-lər, async tapşırıqlar)
 düzgünlüyünü yoxlamaq prosesidir.
@@ -21,7 +20,14 @@ olmayan** şəkildə müraciət etdikdə yaranan xəta. Nəticə icra sırasınd
 - **Timing-dependent** — kompüterin sürətindən asılı
 - **Heisenbug** — debugger altında görünmür
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Race condition gizliliyi**: Concurrency bug-ları lokal development-də nadirən göründür, production-da yüksək load altında pik saatlarda çıxır — test olmadan root cause tapmaq saatlar alır
+- **Data corruption riski**: İki paralel request eyni resursda yazanda corrupted state yarana bilər — test olmadan tapılmaz
+- **Idempotency**: Payment, order creation kimi kritik əməliyyatlar double-submit qarşısında qorunmalıdır
+- **Laravel queue**: Parallel queue worker-ları eyni job-u emal edə bilər — unique job test edilməlidir
+
+## Əsas Anlayışlar
 
 ### 1. Race Condition Nümunəsi
 
@@ -70,7 +76,45 @@ Thread B: lock(Y) → lock(X)
 
 **Həll**: həmişə eyni sırada lock alın (resource ordering).
 
-## Praktiki Nümunələr
+## Praktik Baxış
+
+### Best Practices
+1. **Atomic operations** — `increment()`, `UPDATE x=x+1`
+2. **Transaction-da lock** — `lockForUpdate()`
+3. **Idempotency key** — duplicate request qoruması
+4. **Resource ordering** — deadlock qarşısı
+5. **Queue worker isolation** — `ShouldBeUnique`
+6. **Cache lock** — kritik bölmə üçün `Cache::lock()`
+7. **Concurrent test** — pcntl_fork və ya Http::pool
+8. **Stress test** — real-dünya yükü simulyasiyası
+9. **Timeout hər lock-a** — sonsuz gözləmə qarşısı
+10. **Retry logic** — optimistic lock xətasında
+
+### Anti-Patterns
+- **Read-modify-write** transaction-sız — klassik race
+- **File-based lock** — network FS-də etibarsız
+- **Sleep-based synchronization** — timing-ə bel bağlamaq
+- **Global mutable state** — thread-safe deyil
+- **No timeout on lock** — deadlock → sistem dayanır
+- **Optimistic lock without retry** — hər konfliktdə UX pisləşir
+- **Forgetting FOR UPDATE** — Laravel default SELECT lock-suzdur
+- **Long transactions** — lock müddətini artırır
+- **Ignoring deadlock errors** — silent data corruption
+- **Testing yalnız happy path** — race yalnız yük altında görünür
+
+### Concurrency Testing Checklist
+- [ ] Kritik bölmələrdə lock (pessimistic/optimistic)
+- [ ] Atomic DB operations istifadə olunur
+- [ ] Idempotency key POST-larda
+- [ ] Concurrent test-lər (pcntl_fork, Http::pool)
+- [ ] Queue unique jobs
+- [ ] Resource ordering ilə deadlock qarşısı
+- [ ] Lock timeout-ları var
+- [ ] Bus::fake ilə async test
+- [ ] Stress test regresiyada
+- [ ] Chaos testing staging-də
+
+## Nümunələr
 
 ### Nümunə 1: Stock overselling
 ```
@@ -95,7 +139,7 @@ Transfer B → A (lock B, sonra A)
 Həll: həmişə account id-si kiçik olanı əvvəl lock et
 ```
 
-## PHP/Laravel ilə Tətbiq
+## Praktik Tapşırıqlar
 
 ### 1. Race Condition Nümunəsi (SUT)
 
@@ -560,7 +604,7 @@ class QueueConcurrencyTest extends TestCase
 }
 ```
 
-## Interview Sualları (Q&A)
+## Ətraflı Qeydlər
 
 ### S1: Race condition nədir?
 **C:** İki və ya daha çox thread/process eyni resursa eyni zamanda müraciət etdikdə
@@ -635,40 +679,10 @@ salaraq sistemi stress altına qoyursunuz. Race condition-lar normal şəraitdə
 qala bilər, amma xaos altında ortaya çıxır. Netflix **Chaos Monkey** bunun klassik
 nümunəsidir.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-1. **Atomic operations** — `increment()`, `UPDATE x=x+1`
-2. **Transaction-da lock** — `lockForUpdate()`
-3. **Idempotency key** — duplicate request qoruması
-4. **Resource ordering** — deadlock qarşısı
-5. **Queue worker isolation** — `ShouldBeUnique`
-6. **Cache lock** — kritik bölmə üçün `Cache::lock()`
-7. **Concurrent test** — pcntl_fork və ya Http::pool
-8. **Stress test** — real-dünya yükü simulyasiyası
-9. **Timeout hər lock-a** — sonsuz gözləmə qarşısı
-10. **Retry logic** — optimistic lock xətasında
-
-### Anti-Patterns
-- **Read-modify-write** transaction-sız — klassik race
-- **File-based lock** — network FS-də etibarsız
-- **Sleep-based synchronization** — timing-ə bel bağlamaq
-- **Global mutable state** — thread-safe deyil
-- **No timeout on lock** — deadlock → sistem dayanır
-- **Optimistic lock without retry** — hər konfliktdə UX pisləşir
-- **Forgetting FOR UPDATE** — Laravel default SELECT lock-suzdur
-- **Long transactions** — lock müddətini artırır
-- **Ignoring deadlock errors** — silent data corruption
-- **Testing yalnız happy path** — race yalnız yük altında görünür
-
-### Concurrency Testing Checklist
-- [ ] Kritik bölmələrdə lock (pessimistic/optimistic)
-- [ ] Atomic DB operations istifadə olunur
-- [ ] Idempotency key POST-larda
-- [ ] Concurrent test-lər (pcntl_fork, Http::pool)
-- [ ] Queue unique jobs
-- [ ] Resource ordering ilə deadlock qarşısı
-- [ ] Lock timeout-ları var
-- [ ] Bus::fake ilə async test
-- [ ] Stress test regresiyada
-- [ ] Chaos testing staging-də
+- [Database Testing (Middle)](10-database-testing.md)
+- [Testing Events & Queues (Middle)](15-testing-events-queues.md)
+- [Performance Testing (Senior)](20-performance-testing.md)
+- [Testing Microservices (Lead)](37-testing-microservices.md)
+- [Test Environment Management (Lead)](40-test-environment-management.md)

@@ -1,6 +1,5 @@
-# Unit Testing
-
-## Nədir? (What is it?)
+# Unit Testing (Junior)
+## İcmal
 
 Unit testing proqramın ən kiçik test edilə bilən hissəsini (unit) izolə şəkildə
 yoxlamaq prosesidir. Bir unit adətən bir metod və ya funksiyadır. Unit testlər
@@ -12,7 +11,15 @@ olmalıdır, çünki onlar ən sürətli işləyir, ən ucuzdur və ən dəqiq f
 Bir bug tapıldıqda unit test dəqiq hansı metodda problem olduğunu göstərir.
 Integration test isə yalnız "bir yerdə problem var" deyir.
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Refactoring təhlükəsizliyi**: Unit testlər olmadan heç bir kod dəyişikliyi etmək risklidir — regression-ları real vaxtda aşkar edir
+- **Development sürəti**: Bug-ları integration test və ya manual test əvəzinə millisaniyələr içində tapır, developer feedback loop-u qısaldır
+- **Kod dizaynı**: Unit test yazılan kod avtomatik olaraq daha az coupled, daha modular olur — test yazmaq çətin olan sinif çox güman ki, poorly designed sinifdir
+- **Onboarding**: Yeni developer-lər testlər vasitəsilə kodun davranışını anlamaq üçün canlı sənəd kimi istifadə edir
+- **Business logic qorunması**: Endirimin hesablanması, vergi qaydasının tətbiqi kimi kritik logic-ləri izolə şəkildə sınaq altında saxlayır
+
+## Əsas Anlayışlar
 
 ### Yaxşı Unit Testin Xüsusiyyətləri
 
@@ -84,7 +91,25 @@ test_calculator_with_negative_numbers_throws_exception
 test_user_without_email_fails_validation
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+- Hər test metodu yalnız bir davranışı test etsin
+- Test adları nəyi test etdiyini aydın izah etsin
+- Testlər sürətli olsun (unit test suite saniyələr ərzində bitməli)
+- Public API-nı test et, private metodları deyil
+- Magic number-lar əvəzinə named constants istifadə et
+- Edge case-ləri test et: null, empty, boundary, overflow
+
+### Anti-Patterns
+- **Brittle tests**: Implementasiya dəyişdikdə sınan testlər
+- **Testing private methods**: Reflection ilə private metodları test etmək
+- **No assertion**: Test var amma assert yoxdur
+- **Too many assertions**: Bir testdə 20 assert
+- **Test logic**: Testdə if/else/loop istifadəsi
+- **Hard-coded paths**: `/home/user/test.txt` kimi sabit yollar
+
+## Nümunələr
 
 ### Sadə Sinif və Test
 
@@ -277,7 +302,7 @@ class OrderServiceTest extends TestCase
 }
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### PHPUnit Əsasları
 
@@ -452,7 +477,7 @@ class MoneyTest extends TestCase
 }
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 **S: Unit test ilə integration test arasındakı fərq nədir?**
 C: Unit test tək bir metod/funksiyanı izolə şəkildə test edir, xarici asılılıqlar mock
@@ -475,20 +500,11 @@ edge case-ləri əlavə etməyi asanlaşdırır.
 C: Hər testdən əvvəl çalışır. Ümumi test fixturelarını hazırlamaq üçündür.
 Test siniflərində təkrarlanan Arrange hissəsini setUp-a çıxarmaq olar.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-- Hər test metodu yalnız bir davranışı test etsin
-- Test adları nəyi test etdiyini aydın izah etsin
-- Testlər sürətli olsun (unit test suite saniyələr ərzində bitməli)
-- Public API-nı test et, private metodları deyil
-- Magic number-lar əvəzinə named constants istifadə et
-- Edge case-ləri test et: null, empty, boundary, overflow
-
-### Anti-Patterns
-- **Brittle tests**: Implementasiya dəyişdikdə sınan testlər
-- **Testing private methods**: Reflection ilə private metodları test etmək
-- **No assertion**: Test var amma assert yoxdur
-- **Too many assertions**: Bir testdə 20 assert
-- **Test logic**: Testdə if/else/loop istifadəsi
-- **Hard-coded paths**: `/home/user/test.txt` kimi sabit yollar
+- [Testing Fundamentals (Junior)](01-testing-fundamentals.md)
+- [Integration Testing (Junior)](03-integration-testing.md)
+- [Mocking (Middle)](07-mocking.md)
+- [Test Doubles (Middle)](08-test-doubles.md)
+- [Test Patterns (Senior)](26-test-patterns.md)
+- [Testing Best Practices (Senior)](30-testing-best-practices.md)

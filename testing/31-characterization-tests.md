@@ -1,6 +1,5 @@
-# Characterization Tests
-
-## Nədir? (What is it?)
+# Characterization Tests (Senior)
+## İcmal
 
 **Characterization Tests** (həmçinin **Golden Master Tests** və ya **Pinning Tests** adlanır) - **mövcud legacy kodun cari davranışını sənədləşdirmək və qorumaq** üçün yazılan testlərdir. Məqsəd: kod "doğru"dur demək deyil, sadəcə **hal-hazırda necə davranır** qeyd etmək və refactor zamanı bu davranışın dəyişməməsini təmin etmək.
 
@@ -19,7 +18,15 @@
 
 > "Legacy code - testləri olmayan koddur."
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Legacy kod refactoring-i mümkün edir:** Real layihələrdə köhnə, sənədləşdirilməmiş kod hər zaman mövcuddur. Characterization test olmadan refactoring həmişə regression riski daşıyır — bu testlər ilk dəfə qoruyucu şəbəkə yaradır.
+- **Qorxusuzca dəyişdirmə imkanı:** Legacy controller və ya service-i dəyişdirərkən test suite yaşıl qaldıqca heç bir regression olmadığına əmin olursunuz. Bu, yavaş və ehtiyatlı iş əvəzinə sürətli refactoring imkanı verir.
+- **Production bug-larının dokumentasiyası:** Buggy davranışı "expected" kimi qeyd etmək, sonradan nə dəyişdirildiyi barədə tarix yaradır. Bug düzəldildikdə test-lər dəyişir — bu, audit trail rolunu oynayır.
+- **Sprout method ilə təhlükəsiz genişləndirmə:** Mövcud legacy metodları dəyişdirmədən, yeni funksionallığı ayrıca test edilə bilən method kimi yazmaq mümkün olur. Bu, legacy sistemi qırmadan yeni feature əlavə etməyin ən praktik yoludur.
+- **Yeni komandalarda bilik transferi:** Characterization test-lər "kod necə işləyir?" sualına cavab verir. Yeni developer-lər bu testlər vasitəsilə mövcud davranışı tez başa düşür, sənədləşdirilməmiş kodun mənasını kəşf edir.
+
+## Əsas Anlayışlar
 
 ### 1. Characterization Test Yaratma Prosesi
 
@@ -92,7 +99,40 @@ Feathers-ın texnikaları:
 - **Sprout Class:** yeni class yarat, legacy-də istifadə et
 - **Wrap Method:** mövcud method-u wrap edib əlavə davranış əlavə et
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+1. **Əvvəlcə characterization, sonra refactor** - güvənli safety net qurun
+2. **Bug-ları qeyd edin** - şərhlə "known bug" yazın, sonra düzəldin
+3. **Kiçik seam yaradın** - böyük rewrite əvəzinə incremental
+4. **Hər input combination-ı test edin** - data provider-lərdən istifadə
+5. **Log-based testing** - side effect-lər üçün event log yaradın
+6. **Golden master** - kompleks output üçün
+
+### Anti-Patterns
+
+1. **Legacy kodu test yazmadan refactor etmək** - regression qaçılmazdır
+2. **"Yaxşı bug" düzəltmə** - characterization yaratmadan
+3. **Bir neçə günə hər şeyi rewrite** - klassik failure pattern
+4. **Sadəcə happy path test** - edge case-lər bug yuvasıdır
+5. **Mocking everything** - legacy kodun real davranışı itir
+
+### Feathers-ın Algoritmi
+
+1. Dəyişiklik nöqtələrini tap (change points)
+2. Test point-ləri tap (test points)
+3. Dependency-ləri sındır (break dependencies)
+4. Testləri yaz
+5. Refactor və change et
+
+### Vacib Kitablar
+
+- **Working Effectively with Legacy Code** - Michael Feathers (2004)
+- **Refactoring** - Martin Fowler (2nd ed, 2018)
+- **Refactoring to Patterns** - Joshua Kerievsky
+
+## Nümunələr
 
 ### Legacy Function-a Characterization Test
 
@@ -183,7 +223,7 @@ class ShippingCharacterizationTest extends TestCase
 }
 ```
 
-## PHP/Laravel ilə Tətbiq
+## Praktik Tapşırıqlar
 
 ### Legacy Controller-i Pin Etmək
 
@@ -494,7 +534,7 @@ class LogBasedCharacterizationTest extends TestCase
 }
 ```
 
-## Interview Sualları (Q&A)
+## Ətraflı Qeydlər
 
 ### 1. Characterization test nədir və ənənəvi unit test-dən fərqi?
 
@@ -542,35 +582,11 @@ Kompleks legacy kodun **bir çox inputlarla çıxışını faylda saxlamaq** və
 
 Michael Feathers bu kitabda **testi olmayan kodla işləmə metodologiyasını** formal həll edir. Seam, sprout method, characterization test kimi konseptlər burada yaradılıb. Legacy kodla işləyən hər developer üçün essential.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-1. **Əvvəlcə characterization, sonra refactor** - güvənli safety net qurun
-2. **Bug-ları qeyd edin** - şərhlə "known bug" yazın, sonra düzəldin
-3. **Kiçik seam yaradın** - böyük rewrite əvəzinə incremental
-4. **Hər input combination-ı test edin** - data provider-lərdən istifadə
-5. **Log-based testing** - side effect-lər üçün event log yaradın
-6. **Golden master** - kompleks output üçün
-
-### Anti-Patterns
-
-1. **Legacy kodu test yazmadan refactor etmək** - regression qaçılmazdır
-2. **"Yaxşı bug" düzəltmə** - characterization yaratmadan
-3. **Bir neçə günə hər şeyi rewrite** - klassik failure pattern
-4. **Sadəcə happy path test** - edge case-lər bug yuvasıdır
-5. **Mocking everything** - legacy kodun real davranışı itir
-
-### Feathers-ın Algoritmi
-
-1. Dəyişiklik nöqtələrini tap (change points)
-2. Test point-ləri tap (test points)
-3. Dependency-ləri sındır (break dependencies)
-4. Testləri yaz
-5. Refactor və change et
-
-### Vacib Kitablar
-
-- **Working Effectively with Legacy Code** - Michael Feathers (2004)
-- **Refactoring** - Martin Fowler (2nd ed, 2018)
-- **Refactoring to Patterns** - Joshua Kerievsky
+- [Testing Anti-Patterns (Senior)](27-testing-anti-patterns.md)
+- [Test Patterns (Senior)](26-test-patterns.md)
+- [Approval Testing (Senior)](32-approval-testing.md)
+- [Mocking (Middle)](07-mocking.md)
+- [Snapshot Testing (Senior)](25-snapshot-testing.md)
+- [Continuous Testing (Senior)](23-continuous-testing.md)

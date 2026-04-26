@@ -1,6 +1,5 @@
-# Mocking
-
-## Nədir? (What is it?)
+# Mocking (Middle)
+## İcmal
 
 Mocking, test zamanı real obyektləri simulated (saxta) obyektlərlə əvəz etmə texnikasıdır.
 Xarici asılılıqları (database, API, email servisi) izolə etmək üçün istifadə olunur.
@@ -14,7 +13,14 @@ Mocking sayəsində:
 Mock termin olaraq bəzən bütün test double-ları əhatə edir amma texniki olaraq
 mock yalnız bir növ test double-dır.
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Test sürəti**: Real API, database, email servisləri olmadan testlər millisaniyələrdə işləyir
+- **İzolasiya**: Xarici servis down olsa belə testlər keçir — CI pipeline etibarlı qalır
+- **Edge case simulyasiyası**: API-nin 500 qaytarması, network timeout kimi nadir vəziyyətlər asanlıqla test edilir
+- **Dizayn siqnalı**: Mock etmək çətin olan sinif pis dizaynın əlamətidir — refactoring tələb edir
+
+## Əsas Anlayışlar
 
 ### Mock vs Stub vs Spy vs Fake
 
@@ -88,7 +94,24 @@ public function test_order_total_includes_tax(): void
 }
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+- Yalnız xarici asılılıqları mock edin
+- Mockery::close() tearDown-da çağırın
+- Http::preventStrayRequests() istifadə edin
+- Argument matchers ilə flexible yoxlama edin
+- Mock-ları interface üzərindən yaradın
+
+### Anti-Patterns
+- **Over-mocking**: Hər şeyi mock etmək
+- **Mocking the SUT**: Test edilən sinifi mock etmək
+- **Mocking value objects**: Sadə data obyektlərini mock etmək
+- **Implementation coupling**: Mock-lar implementasiya detallarına bağlıdır
+- **Missing tearDown**: Mockery::close() çağırmamaq
+- **Complex mock setup**: 20 sətirlik mock setup - dizayn probleminə işarədir
+
+## Nümunələr
 
 ### Mockery Əsasları
 
@@ -185,7 +208,7 @@ $mock->shouldReceive('method')
     ->with(Mockery::subset(['key' => 'value'])); // Array subset
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### Laravel Facade Mocking
 
@@ -377,7 +400,7 @@ class InvoiceServiceTest extends TestCase
 }
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 **S: Mocking nədir və niyə istifadə edilir?**
 C: Real obyektləri simulated obyektlərlə əvəz etmə texnikasıdır. Xarici
@@ -400,19 +423,10 @@ isə sonradan yoxlayır (spy). Mock-da gözlənti yerinə yetirilməzsə test fa
 C: Obyektin bəzi metodlarını mock edib, qalanlarını real saxlamaqdır. makePartial()
 ilə yaradılır. Yalnız shouldReceive() ilə təyin edilən metodlar mock olur.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-- Yalnız xarici asılılıqları mock edin
-- Mockery::close() tearDown-da çağırın
-- Http::preventStrayRequests() istifadə edin
-- Argument matchers ilə flexible yoxlama edin
-- Mock-ları interface üzərindən yaradın
-
-### Anti-Patterns
-- **Over-mocking**: Hər şeyi mock etmək
-- **Mocking the SUT**: Test edilən sinifi mock etmək
-- **Mocking value objects**: Sadə data obyektlərini mock etmək
-- **Implementation coupling**: Mock-lar implementasiya detallarına bağlıdır
-- **Missing tearDown**: Mockery::close() çağırmamaq
-- **Complex mock setup**: 20 sətirlik mock setup - dizayn probleminə işarədir
+- [Unit Testing (Junior)](02-unit-testing.md)
+- [Test Doubles (Middle)](08-test-doubles.md)
+- [Testing Third-Party Integrations (Senior)](28-testing-third-party.md)
+- [Testing Events & Queues (Middle)](15-testing-events-queues.md)
+- [Testing Anti-Patterns (Senior)](27-testing-anti-patterns.md)

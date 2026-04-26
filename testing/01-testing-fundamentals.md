@@ -1,6 +1,5 @@
-# Testing Fundamentals
-
-## Nədir? (What is it?)
+# Testing Fundamentals (Junior)
+## İcmal
 
 Software testing, proqram təminatının düzgün işlədiyini yoxlamaq prosesidir. Əsas məqsəd
 bug-ları production-a çatmadan əvvəl tapmaq, keyfiyyəti təmin etmək və proqramın
@@ -10,6 +9,14 @@ Testing olmadan developer-lər hər dəyişiklikdən sonra manual olaraq bütün
 Bu həm vaxt itkisi, həm də insan xətalarına açıq yoldur. Automated testing bu prosesi
 proqramlaşdırılmış qaydada həll edir.
 
+## Niyə Vacibdir
+
+- **Production bug xərci**: Bug production-da tapıldıqda fix etmək, incident report yazmaq, müştəriyə izahat vermək — development zamanı tapılan bug-dan 10-100x baha başa gəlir
+- **Refactoring cəsarəti**: Testlər olmadan legacy kodu refactor etmək praktiki olaraq mümkün deyil — heç bir dəyişiklik etmək olmur, çünki nəyin sındığı bilinmir
+- **Onboarding sürəti**: Yeni developer test suitini oxuyaraq sistemin davranışını anlamaq üçün kod oxumaqdan daha az vaxt sərf edir
+- **CI/CD etibarlılığı**: Automated testing olmadan deployment pipeline-ı etibarlı olmur — hər deploy əl ilə yoxlama tələb edir
+- **Team confidence**: Testlər olan layihədə bütün komanda dəyişiklik edə bilir, yalnız "bu kodu yazan adam" deyil
+
 ### Niyə Test Yazmalıyıq?
 
 1. **Bug-ların erkən tapılması** - Production-da bug tapmaq development-dəkindən 100x baha başa gəlir
@@ -18,7 +25,7 @@ proqramlaşdırılmış qaydada həll edir.
 4. **Dizayn keyfiyyəti** - Test yazmaq daha yaxşı kod arxitekturasına sövq edir
 5. **Komanda güvəni** - Yeni developer-lər testlər sayəsində dəyişiklik etməyə cəsarət edir
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Anlayışlar
 
 ### Testing Pyramid (Test Piramidası)
 
@@ -190,7 +197,26 @@ $dummyLogger = Mockery::mock(Logger::class);
 $service = new OrderService($repository, $dummyLogger);
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+- Hər test yalnız bir şeyi test etsin (Single Responsibility)
+- Testlər bir-birindən asılı olmasın (Independent)
+- Testlər həmişə eyni nəticəni versin (Deterministic)
+- Test adları aydın və təsviri olsun
+- AAA pattern-i istifadə edin (Arrange-Act-Assert)
+- Edge case-ləri unutmayın (null, empty, boundary values)
+- Test kodu production kodu qədər təmiz olmalıdır
+
+### Anti-Patterns
+- **Test interdependence**: Testlər bir-birindən asılıdır
+- **Slow tests**: Testlər çox yavaş işləyir, developer-lər qaçırmağa başlayır
+- **Testing implementation**: Davranış əvəzinə implementasiyanı test etmək
+- **No assertions**: Test var amma heç nə yoxlamır
+- **God test**: Bir testdə çoxlu şey yoxlamaq
+- **Ice cream cone**: Piramidanın tərsi - çox E2E, az unit test
+
+## Nümunələr
 
 ### Sadə Test Nümunəsi
 
@@ -243,7 +269,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### PHPUnit Quraşdırma
 
@@ -308,7 +334,7 @@ php artisan test --filter=test_user_can_be_created
 php artisan test --parallel
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 **S: Testing pyramid nədir və niyə vacibdir?**
 C: Testing pyramid test növlərinin nisbətini göstərən modeldir. Əsasda çoxlu unit test,
@@ -335,21 +361,11 @@ C: Eyni kod üzərində bəzən keçən, bəzən uğursuz olan testdir. Səbəbl
 xarici servisə bağlılıq, vaxt asılılığı, test sırası asılılığı. Flaky testlər test
 suite-ə inamı azaldır.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-- Hər test yalnız bir şeyi test etsin (Single Responsibility)
-- Testlər bir-birindən asılı olmasın (Independent)
-- Testlər həmişə eyni nəticəni versin (Deterministic)
-- Test adları aydın və təsviri olsun
-- AAA pattern-i istifadə edin (Arrange-Act-Assert)
-- Edge case-ləri unutmayın (null, empty, boundary values)
-- Test kodu production kodu qədər təmiz olmalıdır
-
-### Anti-Patterns
-- **Test interdependence**: Testlər bir-birindən asılıdır
-- **Slow tests**: Testlər çox yavaş işləyir, developer-lər qaçırmağa başlayır
-- **Testing implementation**: Davranış əvəzinə implementasiyanı test etmək
-- **No assertions**: Test var amma heç nə yoxlamır
-- **God test**: Bir testdə çoxlu şey yoxlamaq
-- **Ice cream cone**: Piramidanın tərsi - çox E2E, az unit test
+- [Unit Testing (Junior)](02-unit-testing.md)
+- [Integration Testing (Junior)](03-integration-testing.md)
+- [Feature Testing (Junior)](04-feature-testing.md)
+- [Test Doubles (Middle)](08-test-doubles.md)
+- [Test Organization (Middle)](13-test-organization.md)
+- [Testing Best Practices (Senior)](30-testing-best-practices.md)

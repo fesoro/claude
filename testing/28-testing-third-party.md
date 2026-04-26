@@ -1,6 +1,5 @@
-# Testing Third-Party Integrations
-
-## Nədir? (What is it?)
+# Testing Third-Party Integrations (Senior)
+## İcmal
 
 Third-party testing, application-ımızın xarici servis-lərlə (Stripe, SendGrid, Twilio, AWS,
 Google APIs) olan inteqrasiyalarını yoxlamaq prosesidir. Real API-lara hər test-də çağırış
@@ -19,7 +18,14 @@ testing istifadə olunur.
 4. **Flakiness** - Third-party xidməti down olarsa test-lər qırılır
 5. **Side effects** - Real customer-ə email, real card-dan ödəniş
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Flakiness qarşısı**: Stripe, SendGrid kimi xarici servislərin downtime-ı testləri qırmamalıdır — Http::fake bu problemi həll edir
+- **Cost control**: Real API çağırışları test run-da pul xərclənir (SMS, payment); fake istifadə xərci sıfıra endirir
+- **Rate limit**: API-lər test run-da rate limit vura bilər — fake-lər bu riskdən azad edir
+- **Edge case**: Xarici servisin 500, timeout, malformed response qaytarması real mühitdə nadir olur; fake ilə asanlıqla simulyasiya edilir
+
+## Əsas Anlayışlar
 
 ### Testing Yanaşmaları
 
@@ -63,7 +69,27 @@ Http::fake(['known-api.com/*' => Http::response(...)]);
 // Call to unknown-api.com → Exception
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+- **`Http::preventStrayRequests()` CI-də aktiv** - Gizli real call qarşısını alır
+- **Service wrapper layer** - SDK-nı wrap edib mock etmək asan olur
+- **Hər error scenario test** - 4xx, 5xx, timeout, network error
+- **Sandbox yalnız smoke test** - `@group integration` ilə ayrı suite
+- **Webhook signature yoxlaması** - Security kritikdir
+- **Response fixture-lərini saxlayın** - Realistik response struktur (VCR cassette)
+
+### Anti-Patterns
+
+- **Real API-ı unit test-də vurmaq** - Slow, flaky, costly
+- **Happy path only** - 500, timeout test olunmur
+- **Hardcoded production URL** - Config-də environment-ə görə dəyişməlidir
+- **Signature verification atlamaq** - Webhook endpoint-i spoof oluna bilər
+- **API key test-də hardcoded** - Leak riski, env-dən götürülsün
+- **Mock SDK-nı hər test-də** - Service wrapper yaradın, wrapper-i mock edin
+
+## Nümunələr
 
 ### Simple Http Mock
 
@@ -96,7 +122,7 @@ Http::assertSentCount(2);
 Http::assertNothingSent();
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### 1. Stripe-like Payment Integration
 
@@ -421,7 +447,7 @@ public function setUp(): void
 // Test-də Http::fake çağırmasanız və HTTP call olsa → RuntimeException
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 **Q1: `Http::fake()` çağırıldıqdan sonra real HTTP getmir — necə?**
 A: Laravel `HttpClient` facade-ını fake handler ilə əvəz edir; Guzzle-ın alt səviyyə
@@ -461,22 +487,10 @@ A: `Http::response('', 429)` qaytarıb, retry logic-in düzgün işlədiyini tes
 A: Timeout, 500, 503, network error test olunmalıdır. Retry, fallback, circuit breaker
 logic-i var?
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-- **`Http::preventStrayRequests()` CI-də aktiv** - Gizli real call qarşısını alır
-- **Service wrapper layer** - SDK-nı wrap edib mock etmək asan olur
-- **Hər error scenario test** - 4xx, 5xx, timeout, network error
-- **Sandbox yalnız smoke test** - `@group integration` ilə ayrı suite
-- **Webhook signature yoxlaması** - Security kritikdir
-- **Response fixture-lərini saxlayın** - Realistik response struktur (VCR cassette)
-
-### Anti-Patterns
-
-- **Real API-ı unit test-də vurmaq** - Slow, flaky, costly
-- **Happy path only** - 500, timeout test olunmur
-- **Hardcoded production URL** - Config-də environment-ə görə dəyişməlidir
-- **Signature verification atlamaq** - Webhook endpoint-i spoof oluna bilər
-- **API key test-də hardcoded** - Leak riski, env-dən götürülsün
-- **Mock SDK-nı hər test-də** - Service wrapper yaradın, wrapper-i mock edin
+- [Mocking (Middle)](07-mocking.md)
+- [Test Doubles (Middle)](08-test-doubles.md)
+- [Contract Testing (Senior)](24-contract-testing.md)
+- [Testing Anti-Patterns (Senior)](27-testing-anti-patterns.md)
+- [Testing Microservices (Lead)](37-testing-microservices.md)

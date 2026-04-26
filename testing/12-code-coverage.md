@@ -1,6 +1,5 @@
-# Code Coverage
-
-## Nədir? (What is it?)
+# Code Coverage (Middle)
+## İcmal
 
 Code coverage, test suite-in mənbə kodunun nə qədər hissəsini icra etdiyini ölçən metrikdir.
 Faiz olaraq ifadə edilir - 80% coverage o deməkdir ki, kodun 80%-i testlər tərəfindən
@@ -19,7 +18,15 @@ Coverage zəruri amma kifayət deyil.
 4. **Standart tələbi** - Çox şirkətlər minimum coverage tələb edir (70-80%)
 5. **CI/CD gate** - Pipeline-da coverage düşərsə build fail edir
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Test boşluqlarını görünən etmək** — Kodun hansı hissəsinin heç test edilmədiyini fayl və sətir səviyyəsində göstərir; manual review ilə tapılması çətin olan boş sahələri üzə çıxarır.
+- **CI/CD keyfiyyət gate-i kimi istifadə** — Coverage minimum həddinin altına düşəndə pipeline-ı fail etmək, yeni kod üçün testsiz merge-in qarşısını alır; texniki borcu azaldır.
+- **Refactoring zamanı güvən yaratmaq** — Yüksək coverage-ı olan kod bazasında daxili strukturu dəyişdirmək daha təhlükəsizdir; renyesiyanı test suite aşkar edir.
+- **Yeni developer onboarding** — Hansı kod hissələrinin test edildiyi aydın olduqda yeni komanda üzvü mövcud testsiz code path-lərini görür və coverage-ı qoruyaraq işə başlayır.
+- **Branch coverage ilə edge case-lərin tapılması** — Yalnız line coverage deyil, branch coverage da izlənəndə if/else-in hər iki nəticəsi test olunmağa məcbur olur; gizli logic xətaları üzə çıxır.
+
+## Əsas Anlayışlar
 
 ### Coverage Növləri
 
@@ -103,7 +110,27 @@ Realist hədəflər:
   90%+   → Yalnız çox kritik kodda (ödəniş, təhlükəsizlik)
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+1. **Branch coverage izləyin** - Line coverage-dan daha dəyərlidir
+2. **Coverage gate CI/CD-yə qoyun** - Coverage düşərsə build fail etsin
+3. **Trend izləyin** - Zaman keçdikcə coverage artmalıdır, azalmamalı
+4. **Yeni kod üçün yüksək coverage** - Minimum 80% yeni kod üçün
+5. **PCOV istifadə edin** - CI/CD-də Xdebug-dan 10x sürətli
+6. **HTML report-u baxın** - Hansı sətirlərin test edilmədiyini vizual görün
+
+### Anti-Patterns
+
+1. **Coverage üçün keyfiyyətsiz test yazmaq** - `assertTrue(true)` coverage artırır amma dəyərsizdir
+2. **100% hədəfləmək** - Diminishing returns, vaxt itkisi
+3. **Coverage-ı yeganə metrik kimi istifadə etmək** - Mutation testing, code review də lazımdır
+4. **@codeCoverageIgnore-u sui-istifadə etmək** - Hər yerdə istifadə etməyin
+5. **Yalnız ümumi faizə baxmaq** - Fayl/method səviyyəsində analiz edin
+6. **Legacy koda yüksək coverage tələb etmək** - Tədricən artırın, birdən yox
+
+## Nümunələr
 
 ### PHPUnit Coverage Report
 
@@ -159,7 +186,7 @@ vendor/bin/phpunit --coverage-text --coverage-min=80
 </phpunit>
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### Xdebug və PCOV Müqayisəsi
 
@@ -419,7 +446,7 @@ class LegacyService
 // @codeCoverageIgnoreEnd
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 ### 1. Code coverage nədir və hansı növləri var?
 **Cavab:** Code coverage test suite-in mənbə kodunun nə qədərini icra etdiyini ölçən metrikdir. Əsas növləri: Line coverage (hər sətir icra olunub?), Branch coverage (hər if/else test olunub?), Path coverage (bütün icra yolları?), Method coverage (hər method çağırılıb?). Branch coverage line coverage-dan daha güclüdür.
@@ -442,22 +469,11 @@ class LegacyService
 ### 7. @codeCoverageIgnore nə zaman istifadə olunmalıdır?
 **Cavab:** Legacy kod, getters/setters, framework boilerplate, constructor-lar kimi test dəyəri az olan kodlar üçün. İstifadəni minimuma endirin - hər ignore etdiyiniz kod potensial test edilməmiş bug-dur. Team-də convention müəyyən edin, code review-da ignore istifadəsini yoxlayın.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-1. **Branch coverage izləyin** - Line coverage-dan daha dəyərlidir
-2. **Coverage gate CI/CD-yə qoyun** - Coverage düşərsə build fail etsin
-3. **Trend izləyin** - Zaman keçdikcə coverage artmalıdır, azalmamalı
-4. **Yeni kod üçün yüksək coverage** - Minimum 80% yeni kod üçün
-5. **PCOV istifadə edin** - CI/CD-də Xdebug-dan 10x sürətli
-6. **HTML report-u baxın** - Hansı sətirlərin test edilmədiyini vizual görün
-
-### Anti-Patterns
-
-1. **Coverage üçün keyfiyyətsiz test yazmaq** - `assertTrue(true)` coverage artırır amma dəyərsizdir
-2. **100% hədəfləmək** - Diminishing returns, vaxt itkisi
-3. **Coverage-ı yeganə metrik kimi istifadə etmək** - Mutation testing, code review də lazımdır
-4. **@codeCoverageIgnore-u sui-istifadə etmək** - Hər yerdə istifadə etməyin
-5. **Yalnız ümumi faizə baxmaq** - Fayl/method səviyyəsində analiz edin
-6. **Legacy koda yüksək coverage tələb etmək** - Tədricən artırın, birdən yox
+- [Unit Testing (Junior)](02-unit-testing.md)
+- [Test Organization (Middle)](13-test-organization.md)
+- [Pest PHP (Middle)](14-pest-php.md)
+- [Mutation Testing (Senior)](22-mutation-testing.md)
+- [Continuous Testing (Senior)](23-continuous-testing.md)
+- [Testing Anti-Patterns (Senior)](27-testing-anti-patterns.md)

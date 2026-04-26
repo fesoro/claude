@@ -1,6 +1,5 @@
-# Testing Authentication & Authorization
-
-## Nədir? (What is it?)
+# Testing Authentication & Authorization (Middle)
+## İcmal
 
 Authentication (kimsən?) və authorization (nə edə bilərsən?) testing, application-ın
 giriş, qeydiyyat, şifrə sıfırlama, role və permission mexanizmlərinin düzgün işlədiyini
@@ -18,7 +17,14 @@ route assertion-lar.
 4. **Multi-tenant** - User A, User B-nin məlumatını görə bilməz
 5. **Token lifecycle** - Expire, revoke, refresh
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Güvenlik qarantisi**: Authentication/authorization test edilməzsə, xəta production-da müştəri məlumatlarının sızmasına səbəb olur
+- **Regression prevention**: Role dəyişikliyi, yeni middleware əlavəsi köhnə endpoint-lərin icazə siyasətini poza bilər
+- **Compliance**: GDPR, PCI-DSS kimi standartlar məlumat qorunmasını tələb edir — testlər audit sübutu verir
+- **Policy-based access**: RBAC/ABAC siyasətlərinin mürəkkəb kombinasiyaları yalnız automated test ilə tam əhatə oluna bilər
+
+## Əsas Anlayışlar
 
 ### Auth Helper-lər
 
@@ -55,7 +61,27 @@ Registration → Email verification → Login → 2FA → Authenticated session
 | Gate | `Gate::define('edit-settings', ...)` |
 | Blade | `@can('update', $post)` |
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+- **Policy-ləri ayrı unit test edin** - Feature test yalnız integration yoxlasın
+- **Negative path-ları prioritet verin** - "İcazəsiz user giriş edə bilməz" daha kritikdir
+- **Cross-user access test** - User A, User B-nin resource-una girməməlidir
+- **Rate limiting test** - Brute force protection həqiqətən işləyir?
+- **Token revocation test** - Logout sonra token işləməməlidir
+- **Password complexity rules** - Bütün qaydalar ayrıca test olunsun
+
+### Anti-Patterns
+
+- **Yalnız happy path** - "Admin girir" var, "non-admin girmir" yoxdur
+- **Password plain-text müqayisəsi** - `Hash::check` lazımdır
+- **Global `actingAs($admin)`** - Hər test-in öz auth state-i olmalıdır
+- **Hardcoded credentials** - `'password123'` test-də mövcuddursa production-da da riskdir
+- **Middleware test-sizliyi** - Route middleware-i olmasa belə yaxşı policy işləmir
+- **Session data yoxlamamaq** - Logout sonra session tam təmizlənir?
+
+## Nümunələr
 
 ### Login Test
 
@@ -92,7 +118,7 @@ public function test_user_cannot_delete_others_post(): void
 }
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### 1. Registration Tests
 
@@ -466,7 +492,7 @@ public function test_verified_middleware_redirects_unverified(): void
 }
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 **Q1: `actingAs` və real login (via POST) fərqi?**
 A: `actingAs` bypass edir; yalnız session-a user qoyur. Real login flow-u test etmək
@@ -505,22 +531,10 @@ ilə verify et → verified_at null deyil.
 A: Login → 2FA code step → kod daxil et → final session. Test-də `google2fa` library
 ilə valid code generate olunur.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-- **Policy-ləri ayrı unit test edin** - Feature test yalnız integration yoxlasın
-- **Negative path-ları prioritet verin** - "İcazəsiz user giriş edə bilməz" daha kritikdir
-- **Cross-user access test** - User A, User B-nin resource-una girməməlidir
-- **Rate limiting test** - Brute force protection həqiqətən işləyir?
-- **Token revocation test** - Logout sonra token işləməməlidir
-- **Password complexity rules** - Bütün qaydalar ayrıca test olunsun
-
-### Anti-Patterns
-
-- **Yalnız happy path** - "Admin girir" var, "non-admin girmir" yoxdur
-- **Password plain-text müqayisəsi** - `Hash::check` lazımdır
-- **Global `actingAs($admin)`** - Hər test-in öz auth state-i olmalıdır
-- **Hardcoded credentials** - `'password123'` test-də mövcuddursa production-da da riskdir
-- **Middleware test-sizliyi** - Route middleware-i olmasa belə yaxşı policy işləmir
-- **Session data yoxlamamaq** - Logout sonra session tam təmizlənir?
+- [Feature Testing (Junior)](04-feature-testing.md)
+- [API Testing (Middle)](09-api-testing.md)
+- [Mocking (Middle)](07-mocking.md)
+- [Security Testing (Senior)](21-security-testing.md)
+- [Testing Anti-Patterns (Senior)](27-testing-anti-patterns.md)

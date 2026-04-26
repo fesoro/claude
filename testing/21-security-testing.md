@@ -1,6 +1,5 @@
-# Security Testing
-
-## Nədir? (What is it?)
+# Security Testing (Senior)
+## İcmal
 
 Security testing, proqram təminatının təhlükəsizlik zəifliklərini tapmaq və aradan qaldırmaq
 üçün aparılan test prosesidir. Məqsəd sistemin icazəsiz giriş, data sızması, injection
@@ -18,7 +17,15 @@ built-in security feature-ləri güclüdür, amma düzgün konfiqurasiya və tes
 4. **Maliyyə itkisi** - Data breach-in orta dəyəri milyonlarla dollardır
 5. **Müştəri güvəni** - İstifadəçilər təhlükəsiz platforma istəyir
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Data sızması maliyyə və reputasiya itkisi deməkdir** — hər security pozuntusu ortalama milyonlarla dollara başa gəlir; test mərhələsində tapılan zəiflik isə praktiki olaraq sıfır xərc tələb edir
+- **OWASP Top 10 real hücumları əhatə edir** — Broken Access Control, SQL Injection, XSS kimi hücumlar hər gün real tətbiqlərə qarşı istifadə olunur; Laravel built-in qorumalar güclüdür amma düzgün test olunmadan kifayətsiz ola bilər
+- **Authorization bug-ları produksiyada gec tapılır** — IDOR kimi icazə yoxlaması xətaları funksional testdən keçir, yalnız security-focused test onları üzə çıxarır
+- **Hüquqi uyğunluq tələbi** — GDPR, PCI-DSS kimi standartlar security testini tələb edir; audit zamanı test sübutu vacibdir
+- **Regression qoruması** — hər deploy-da security regressionun qarşısını almaq üçün `composer audit` və automated security scan CI pipeline-ının bir hissəsi olmalıdır
+
+## Əsas Anlayışlar
 
 ### OWASP Top 10 (2021)
 
@@ -65,7 +72,27 @@ built-in security feature-ləri güclüdür, amma düzgün konfiqurasiya və tes
 | Brute Force | Parolu təxmin etmə cəhdləri | Rate limiting, account lockout |
 | Path Traversal | Fayl sistemində icazəsiz gəzmə | Input validation, chroot |
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+1. **OWASP Top 10-u əsas götürün** - Ən çox rast gəlinən zəifliklərdən başlayın
+2. **Automated security scans CI/CD-yə əlavə edin** - Hər PR-da SAST/DAST
+3. **Dependency audit edin** - `composer audit` ilə zəif package-ləri tapın
+4. **Input validation hər yerdə** - Never trust user input
+5. **Principle of Least Privilege** - Minimum lazımi icazə verin
+6. **Security headers konfiqurasiya edin** - X-Frame-Options, CSP, HSTS
+
+### Anti-Patterns
+
+1. **Security-ni sona saxlamaq** - Başlanğıcdan düşünülməlidir
+2. **Yalnız frontend validation** - Server-side validation mütləqdir
+3. **Sensitive data log etmək** - Password, token log-lara yazılmamalıdır
+4. **Debug mode production-da** - `APP_DEBUG=false` olmalıdır
+5. **Hardcoded credentials** - Environment variable istifadə edin
+6. **Köhnə dependency-lər** - Mütəmadi yeniləyin və audit edin
+
+## Nümunələr
 
 ### SQL Injection Testing
 
@@ -247,7 +274,7 @@ class CsrfTest extends TestCase
 }
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### Authorization (IDOR) Testing
 
@@ -500,7 +527,7 @@ class SecurityHeadersTest extends TestCase
 }
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 ### 1. OWASP Top 10 nədir?
 **Cavab:** OWASP (Open Web Application Security Project) tərəfindən hazırlanan ən kritik 10 web təhlükəsizlik risklərinin siyahısıdır. 2021 versiyasında Broken Access Control birinci yerdədir. Bu siyahı security testing-də prioritetləri müəyyən etmək üçün standart kimi istifadə olunur.
@@ -526,22 +553,11 @@ class SecurityHeadersTest extends TestCase
 ### 8. Penetration testing və vulnerability scanning arasındakı fərq nədir?
 **Cavab:** Vulnerability scanning avtomatik tool ilə bilinen zəiflikləri tarayır (OWASP ZAP, Nessus). Penetration testing manual olaraq hacker perspektivindən sistemi hack etməyə çalışır. Scanning daha sürətli və geniş, pentest daha dərin və yaradıcıdır. İkisi də lazımdır.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-1. **OWASP Top 10-u əsas götürün** - Ən çox rast gəlinən zəifliklərdən başlayın
-2. **Automated security scans CI/CD-yə əlavə edin** - Hər PR-da SAST/DAST
-3. **Dependency audit edin** - `composer audit` ilə zəif package-ləri tapın
-4. **Input validation hər yerdə** - Never trust user input
-5. **Principle of Least Privilege** - Minimum lazımi icazə verin
-6. **Security headers konfiqurasiya edin** - X-Frame-Options, CSP, HSTS
-
-### Anti-Patterns
-
-1. **Security-ni sona saxlamaq** - Başlanğıcdan düşünülməlidir
-2. **Yalnız frontend validation** - Server-side validation mütləqdir
-3. **Sensitive data log etmək** - Password, token log-lara yazılmamalıdır
-4. **Debug mode production-da** - `APP_DEBUG=false` olmalıdır
-5. **Hardcoded credentials** - Environment variable istifadə edin
-6. **Köhnə dependency-lər** - Mütəmadi yeniləyin və audit edin
+- [Testing Authentication (Middle)](18-testing-authentication.md)
+- [Testing Best Practices (Senior)](30-testing-best-practices.md)
+- [Feature Testing (Junior)](04-feature-testing.md)
+- [Continuous Testing (Senior)](23-continuous-testing.md)
+- [Testing Anti-Patterns (Senior)](27-testing-anti-patterns.md)
+- [Contract Testing (Senior)](24-contract-testing.md)

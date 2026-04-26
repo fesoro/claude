@@ -1,6 +1,5 @@
-# Testing Artisan Commands
-
-## Nədir? (What is it?)
+# Testing Artisan Commands (Middle)
+## İcmal
 
 Artisan command testing, Laravel CLI komandalarının (`php artisan ...`) input, output,
 exit code və yan təsirlərini (database dəyişiklikləri, job dispatch) yoxlamaq prosesidir.
@@ -18,7 +17,14 @@ Laravel test framework-unda `artisan()` helper və xüsusi assertion-lar (`expec
 4. **Exit codes** - CI/CD pipeline-da exit code vacibdir
 5. **Idempotency** - Eyni komanda 2 dəfə işlədilsə problem olmasın
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Scheduled job etibarlılığı**: Artisan komandaları çox vaxt cron ilə işləyir — xəta məlumat itkisinə, göndərilməmiş email-lərə səbəb olur
+- **CI pipeline**: Command-ları manual test etmək olmur — automated test yeganə etibarlı yoxlama üsuludur
+- **Output doğrulaması**: Komanda çıxışı log-lara gedəndə regression tapılması çətin olur; assertion ilə dərhal görünür
+- **Exit code mühümdür**: 0 deyil exit code cron job-un next run-u bloklamasına səbəb ola bilər
+
+## Əsas Anlayışlar
 
 ### artisan() Helper
 
@@ -57,7 +63,29 @@ $this->artisan('email:send user@example.com')
 128+n - Fatal signal n
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+- **Exit code-u həmişə yoxlayın** - CI/CD pipeline exit code-dan asılıdır
+- **Hər option/flag üçün test** - `--dry-run`, `--force`, `--env`
+- **Dry-run mode test** - Data dəyişdirməyən mode çox vacibdir
+- **Edge case input** - Boş, invalid, çox böyük input
+- **Scheduled command test** - Registration və logic ayrıca
+- **Use constants for signatures** - `CleanupCommand::SIGNATURE`
+- **Faker-dən istifadə** - `@example.com` əvəzinə `faker->email()`
+
+### Anti-Patterns
+
+- **Real file system / API ilə test** - Fake istifadə edin
+- **Yalnız happy path** - Error path-ları test olunmur
+- **`->run()` vs `->artisan()`** - Production behavior-dan fərqlənə bilər
+- **Exit code yoxlamamaq** - `assertExitCode(0)` olmadan silent failure
+- **Long-running command-ı sync test** - Timeout riski; kiçik dataset istifadə edin
+- **Output format-ına strict bağlanmaq** - Kiçik text dəyişiklik test-i qırır
+- **Global state dəyişən komandalar** - Test isolation pozulur (RefreshDatabase lazımdır)
+
+## Nümunələr
 
 ### Basic Command Test
 
@@ -86,7 +114,7 @@ public function test_create_user_command_with_prompts(): void
 }
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### 1. Simple Cleanup Command
 
@@ -471,7 +499,7 @@ public function test_command_runs_in_production(): void
 }
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 **Q1: Artisan command-ı niyə test etmək vacibdir?**
 A: Scheduled task-lar production-da insansız işləyir. CLI komandaları çox zaman data və
@@ -511,24 +539,10 @@ saxlamaq və ya `$command::class` istifadəsi daha yaxşıdır.
 A: Eyni komanda-nı 2 dəfə çağırıb, eyni nəticə gözləyirik. Dəyişən data (timestamp)
 mock edilməlidir.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-- **Exit code-u həmişə yoxlayın** - CI/CD pipeline exit code-dan asılıdır
-- **Hər option/flag üçün test** - `--dry-run`, `--force`, `--env`
-- **Dry-run mode test** - Data dəyişdirməyən mode çox vacibdir
-- **Edge case input** - Boş, invalid, çox böyük input
-- **Scheduled command test** - Registration və logic ayrıca
-- **Use constants for signatures** - `CleanupCommand::SIGNATURE`
-- **Faker-dən istifadə** - `@example.com` əvəzinə `faker->email()`
-
-### Anti-Patterns
-
-- **Real file system / API ilə test** - Fake istifadə edin
-- **Yalnız happy path** - Error path-ları test olunmur
-- **`->run()` vs `->artisan()`** - Production behavior-dan fərqlənə bilər
-- **Exit code yoxlamamaq** - `assertExitCode(0)` olmadan silent failure
-- **Long-running command-ı sync test** - Timeout riski; kiçik dataset istifadə edin
-- **Output format-ına strict bağlanmaq** - Kiçik text dəyişiklik test-i qırır
-- **Global state dəyişən komandalar** - Test isolation pozulur (RefreshDatabase lazımdır)
+- [Integration Testing (Junior)](03-integration-testing.md)
+- [Database Testing (Middle)](10-database-testing.md)
+- [Testing Events & Queues (Middle)](15-testing-events-queues.md)
+- [Continuous Testing (Senior)](23-continuous-testing.md)
+- [Test Organization (Middle)](13-test-organization.md)

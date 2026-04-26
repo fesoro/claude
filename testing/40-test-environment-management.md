@@ -1,6 +1,5 @@
-# Test Environment Management
-
-## Nədir? (What is it?)
+# Test Environment Management (Lead)
+## İcmal
 
 **Test Environment Management** — test üçün lazım olan infrastruktur, xidmətlər,
 verilənlər bazası və konfiqurasiyaların yaradılması, idarə edilməsi və təmizlənməsi
@@ -16,7 +15,14 @@ edilmiş olmalıdır. "Works on my machine" problemi məhz mühit fərqlərində
 - **Staging** — production-un klonu (pre-prod)
 - **Production** — real istifadəçilər
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **"Works on my machine" problemi**: Environment paritet olmadan lokal keçən test CI-da qırılır — parity bunu aradan qaldırır
+- **Flaky test root cause**: Bir çox flaky test əslində environment inconsistency-dən qaynaqlanır — Testcontainers bu problemi həll edir
+- **Parallel CI**: Shared test database paralel test run-da race condition yaradır — ephemeral environment hər run üçün izolasiya təmin edir
+- **Staging reliability**: Production-a oxşamayan staging "bu staging-də işləyir" syndrome-una aparır — parity mühiti bu riskə qarşı qoruyur
+
+## Əsas Anlayışlar
 
 ### 1. Environment Parity
 
@@ -70,7 +76,45 @@ GET /api/users → 200 OK (basic functionality)
 `.env.local`, `.env.testing`, `.env.staging`, `.env.production` — hər biri öz
 mühiti üçün dəyərlər saxlayır.
 
-## Praktiki Nümunələr
+## Praktik Baxış
+
+### Best Practices
+1. **Docker ilə parity** — dev, CI, prod eyni image
+2. **`.env.testing`** — ayrıca test konfiq
+3. **Ephemeral environments** — hər PR üçün
+4. **Smoke test on deploy** — rollback avtomatik
+5. **Testcontainers** — real servislərlə integration test
+6. **Health endpoint** — `/health` Kubernetes/monitoring üçün
+7. **CI secret management** — GitHub/GitLab secrets
+8. **Env validation** — setup zamanı environment yoxla
+9. **Blue/green deploy** — zero-downtime
+10. **Feature flags** — env-specific davranış
+
+### Anti-Patterns
+- **Dev-də SQLite, prod-da MySQL** — parity yoxdur
+- **Hardcoded credentials** — env variable əvəzinə
+- **Testing in production** — real istifadəçilərlə
+- **Shared staging** — bir developer digərinin datasını pozur
+- **No smoke test** — deploy uğursuz olur, amma bilinmir
+- **`.env` git-ə commit** — secret leak
+- **Production seeder test-də** — yanlışlıqla prod-a data
+- **Manual deploy** — avtomatlaşdırma yoxdur
+- **No rollback strategy** — deploy pozularsa nə?
+- **CI env və local env fərqli** — "CI-da işləmir" bug-ları
+
+### Environment Checklist
+- [ ] Docker ilə dev environment
+- [ ] `.env.example` commit edilib, `.env` isə yox
+- [ ] `.env.testing` ilə test konfiq
+- [ ] CI pipeline-da eyni versiyalar (PHP, MySQL, Redis)
+- [ ] Health endpoint mövcuddur
+- [ ] Smoke testlər deploy-dan sonra işləyir
+- [ ] Ephemeral environments PR üçün
+- [ ] Secret management (Vault, GitHub Secrets)
+- [ ] Rollback strategiyası mövcuddur
+- [ ] Staging production-a oxşar
+
+## Nümunələr
 
 ### Nümunə 1: Works on my machine
 ```
@@ -94,7 +138,7 @@ Deploy script:
 3. Success → traffic switch (blue/green)
 ```
 
-## PHP/Laravel ilə Tətbiq
+## Praktik Tapşırıqlar
 
 ### 1. `.env.testing` Fayl
 
@@ -480,7 +524,7 @@ kubectl patch service app -p '{"spec":{"selector":{"version":"green"}}}'
 echo "Deploy successful"
 ```
 
-## Interview Sualları (Q&A)
+## Ətraflı Qeydlər
 
 ### S1: Environment parity niyə vacibdir?
 **C:** Dev, staging və production arasında fərqlər bug-lar yaradır. "Works on my
@@ -559,40 +603,10 @@ manager-dən prod credentials istifadə etməyin.
 
 Heç vaxt production secret-ləri test env-də istifadə etməyin.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-1. **Docker ilə parity** — dev, CI, prod eyni image
-2. **`.env.testing`** — ayrıca test konfiq
-3. **Ephemeral environments** — hər PR üçün
-4. **Smoke test on deploy** — rollback avtomatik
-5. **Testcontainers** — real servislərlə integration test
-6. **Health endpoint** — `/health` Kubernetes/monitoring üçün
-7. **CI secret management** — GitHub/GitLab secrets
-8. **Env validation** — setup zamanı environment yoxla
-9. **Blue/green deploy** — zero-downtime
-10. **Feature flags** — env-specific davranış
-
-### Anti-Patterns
-- **Dev-də SQLite, prod-da MySQL** — parity yoxdur
-- **Hardcoded credentials** — env variable əvəzinə
-- **Testing in production** — real istifadəçilərlə
-- **Shared staging** — bir developer digərinin datasını pozur
-- **No smoke test** — deploy uğursuz olur, amma bilinmir
-- **`.env` git-ə commit** — secret leak
-- **Production seeder test-də** — yanlışlıqla prod-a data
-- **Manual deploy** — avtomatlaşdırma yoxdur
-- **No rollback strategy** — deploy pozularsa nə?
-- **CI env və local env fərqli** — "CI-da işləmir" bug-ları
-
-### Environment Checklist
-- [ ] Docker ilə dev environment
-- [ ] `.env.example` commit edilib, `.env` isə yox
-- [ ] `.env.testing` ilə test konfiq
-- [ ] CI pipeline-da eyni versiyalar (PHP, MySQL, Redis)
-- [ ] Health endpoint mövcuddur
-- [ ] Smoke testlər deploy-dan sonra işləyir
-- [ ] Ephemeral environments PR üçün
-- [ ] Secret management (Vault, GitHub Secrets)
-- [ ] Rollback strategiyası mövcuddur
-- [ ] Staging production-a oxşar
+- [Database Testing (Middle)](10-database-testing.md)
+- [Continuous Testing (Senior)](23-continuous-testing.md)
+- [Regression, Smoke & Sanity Testing (Senior)](34-regression-smoke-sanity.md)
+- [Testing Microservices (Lead)](37-testing-microservices.md)
+- [Test Data Management (Senior)](33-test-data-management.md)

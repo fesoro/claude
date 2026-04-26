@@ -1,6 +1,5 @@
-# API Testing
-
-## Nədir? (What is it?)
+# API Testing (Middle)
+## İcmal
 
 API testing, proqramın Application Programming Interface-lərini birbaşa test etmək prosesidir.
 REST API-lər üçün bu HTTP request göndərib response-u yoxlamaq deməkdir. UI-dan keçmədən
@@ -10,7 +9,7 @@ API testləri integration testlərin bir növüdür. Əsas məqsəd endpoint-lə
 response body, headers və error handling qaytardığını yoxlamaqdır. Laravel-də bu testlər
 `Tests\Feature` qovluğunda yazılır və framework-ün HTTP testing helper-lərindən istifadə edir.
 
-### Niyə API Testing Vacibdir?
+## Niyə Vacibdir
 
 1. **Frontend-dən asılı deyil** - API testləri UI olmadan işləyir
 2. **Sürətli feedback** - Browser testlərindən 10-100x sürətlidir
@@ -18,7 +17,7 @@ response body, headers və error handling qaytardığını yoxlamaqdır. Laravel
 4. **Regression prevention** - Endpoint dəyişiklikləri mövcud client-ləri pozmasın
 5. **Documentation** - Testlər API-nin necə işləməli olduğunu sənədləşdirir
 
-## Əsas Konseptlər (Key Concepts)
+## Əsas Anlayışlar
 
 ### HTTP Methods və Status Codes
 
@@ -70,7 +69,27 @@ Edge Cases:
   ~ Concurrent requests
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+1. **Hər endpoint üçün positive və negative testlər yazın** - Həm düzgün, həm yanlış input test edin
+2. **Response strukturunu assertJsonStructure ilə yoxlayın** - Bütün gözlənilən field-ləri yoxlayın
+3. **Authentication testlərini ayrı class-da saxlayın** - Auth və business logic testlərini qarışdırmayın
+4. **Factory-lər istifadə edin** - Hər testdə manual data yaratmaq yerinə factory pattern istifadə edin
+5. **Status code-ları dəqiq yoxlayın** - `assertOk()` əvəzinə `assertStatus(200)` daha aydındır
+6. **API testlərini feature testlər qovluğunda saxlayın** - `Tests\Feature\Api\` namespace istifadə edin
+
+### Anti-Patterns
+
+1. **Testlər arası asılılıq** - Test A-nın yaratdığı data-ya Test B-nin etibar etməsi
+2. **Hardcoded ID-lər** - `getJson('/api/users/1')` əvəzinə dynamic ID istifadə edin
+3. **Response body-ni tam yoxlamaq** - Timestamp kimi dəyişən field-lər testi qıra bilər
+4. **Authentication-ı hər testdə təkrarlamaq** - setUp() və ya helper method istifadə edin
+5. **Yalnız happy path test etmək** - Error case-ləri, edge case-ləri mütləq test edin
+6. **Production API-yə test göndərmək** - Həmişə test/staging environment istifadə edin
+
+## Nümunələr
 
 ### Sadə API Test Nümunəsi (Raw PHP)
 
@@ -136,7 +155,7 @@ class ApiTestHelper
 }
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### Əsas API Test Strukturu
 
@@ -462,7 +481,7 @@ public function rate_limiting_headers_are_set(): void
 }
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 ### 1. API testing nədir və niyə vacibdir?
 **Cavab:** API testing, application programming interface-ləri birbaşa test etmək prosesidir. UI-dan keçmədən endpoint-lərə HTTP request göndərib response-u yoxlayırıq. Vacibdir çünki: frontend-dən asılı olmadan backend-i test edir, browser testlərindən çox sürətlidir, API contract-ını validate edir və regression bug-ları tutur.
@@ -488,22 +507,11 @@ public function rate_limiting_headers_are_set(): void
 ### 8. Postman/Newman ilə API testing-in faydaları nədir?
 **Cavab:** Postman collection-lar API-ni sənədləşdirir və manual test etməyə imkan verir. Newman CLI tool-u ilə bu testlər CI/CD pipeline-da avtomatik işlədilə bilər. Amma Laravel feature testləri daha güclüdür çünki database state-i idarə edir və application internals-a çıxışı var.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-1. **Hər endpoint üçün positive və negative testlər yazın** - Həm düzgün, həm yanlış input test edin
-2. **Response strukturunu assertJsonStructure ilə yoxlayın** - Bütün gözlənilən field-ləri yoxlayın
-3. **Authentication testlərini ayrı class-da saxlayın** - Auth və business logic testlərini qarışdırmayın
-4. **Factory-lər istifadə edin** - Hər testdə manual data yaratmaq yerinə factory pattern istifadə edin
-5. **Status code-ları dəqiq yoxlayın** - `assertOk()` əvəzinə `assertStatus(200)` daha aydındır
-6. **API testlərini feature testlər qovluğunda saxlayın** - `Tests\Feature\Api\` namespace istifadə edin
-
-### Anti-Patterns
-
-1. **Testlər arası asılılıq** - Test A-nın yaratdığı data-ya Test B-nin etibar etməsi
-2. **Hardcoded ID-lər** - `getJson('/api/users/1')` əvəzinə dynamic ID istifadə edin
-3. **Response body-ni tam yoxlamaq** - Timestamp kimi dəyişən field-lər testi qıra bilər
-4. **Authentication-ı hər testdə təkrarlamaq** - setUp() və ya helper method istifadə edin
-5. **Yalnız happy path test etmək** - Error case-ləri, edge case-ləri mütləq test edin
-6. **Production API-yə test göndərmək** - Həmişə test/staging environment istifadə edin
+- [Integration Testing (Junior)](03-integration-testing.md)
+- [Feature Testing (Junior)](04-feature-testing.md)
+- [Mocking (Middle)](07-mocking.md)
+- [Testing Authentication & Authorization (Middle)](18-testing-authentication.md)
+- [Contract Testing (Senior)](24-contract-testing.md)
+- [GraphQL Testing (Senior)](36-graphql-testing.md)

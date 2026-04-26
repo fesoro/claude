@@ -1,6 +1,5 @@
-# Snapshot Testing
-
-## Nədir? (What is it?)
+# Snapshot Testing (Senior)
+## İcmal
 
 Snapshot testing, test-in nəticəsini ilk dəfə "snapshot" (anlıq şəkil) olaraq saxlayıb,
 sonrakı test run-larında nəticəni bu snapshot ilə müqayisə edən test yanaşmasıdır.
@@ -19,7 +18,14 @@ etmək əvəzinə, snapshot bunu avtomatik edir.
 4. **Living documentation** - Snapshot faylları output-un nə olduğunu göstərir
 5. **Refactoring güvəni** - Output dəyişmədiyini avtomatik yoxlayır
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **API response regression**: JSON strukturu dəyişdikdə client tətbiqlər pozulur — snapshot test ani xəbərdarlıq verir
+- **Sürətli coverage**: Mürəkkəb nested response-ları manual assertion yazmadan tam əhatə edir
+- **Unintended change detection**: Refactoring zamanı gözlənilməz output dəyişikliyi snapshot test ilə tutulur
+- **Golden master**: Legacy kod üçün mövcud davranışı sənədləşdirir, dəyişiklik baş verəndə alert verir
+
+## Əsas Anlayışlar
 
 ### Snapshot Testing Workflow
 
@@ -84,7 +90,27 @@ $this->assertMatchesJsonSnapshot($response->json());
 // İlk dəfə snapshot yaranır, sonra avtomatik müqayisə
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+1. **Snapshot-ları review edin** - Update etmədən əvvəl dəyişikliyi oxuyun
+2. **Dynamic data normalize edin** - Timestamp, ID, random dəyərləri fix edin
+3. **Kiçik snapshot-lar saxlayın** - Böyük snapshot review çətindir
+4. **Git-ə commit edin** - Snapshot faylları kod-un hissəsidir
+5. **Traditional assert ilə birləşdirin** - Kritik field-lər üçün explicit assert
+6. **Adlandırma convention** - Snapshot fayl adları test-i identifikasiya etsin
+
+### Anti-Patterns
+
+1. **Blind update** - Nəticəni oxumadan `--update-snapshots` işlətmək
+2. **Hər şeyi snapshot ilə test etmək** - Sadə check-lər üçün assertEquals
+3. **Dynamic data normalize etməmək** - Hər run-da fail olan snapshot
+4. **Çox böyük snapshot** - MB-larla snapshot fayl
+5. **Snapshot-ları .gitignore-a əlavə etmək** - Commit edilməlidir
+6. **Yalnız snapshot-a güvənmək** - Behavior test-ləri də lazımdır
+
+## Nümunələr
 
 ### spatie/phpunit-snapshot-assertions Quraşdırma
 
@@ -193,7 +219,7 @@ tests/Unit/__snapshots__/
 }
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### API Response Snapshot Testing
 
@@ -418,7 +444,7 @@ git add tests/__snapshots__/
 git commit -m "Update test snapshots after API response change"
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 ### 1. Snapshot testing nədir?
 **Cavab:** Test nəticəsini ilk dəfə fayla saxlayıb (snapshot), sonrakı run-larda bu fayla qarşı müqayisə edən test yanaşmasıdır. Fərq varsa test fail olur. Mürəkkəb output-u (JSON, HTML, email) asan test etmək üçün istifadə olunur. İlk run snapshot yaradır, sonrakılar yoxlayır.
@@ -438,22 +464,10 @@ git commit -m "Update test snapshots after API response change"
 ### 6. Snapshot testing-in çatışmazlıqları nələrdir?
 **Cavab:** 1) False positives - kiçik dəyişiklik bütün snapshot-u pozur, 2) Lazy testing - nəticəni anlamadan snapshot yaratmaq, 3) Böyük snapshot faylları - review çətinləşir, 4) Dynamic data problemi - normalization lazımdır, 5) Snapshot blindness - developer dəyişikliyi review etmədən yeniləyir.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-1. **Snapshot-ları review edin** - Update etmədən əvvəl dəyişikliyi oxuyun
-2. **Dynamic data normalize edin** - Timestamp, ID, random dəyərləri fix edin
-3. **Kiçik snapshot-lar saxlayın** - Böyük snapshot review çətindir
-4. **Git-ə commit edin** - Snapshot faylları kod-un hissəsidir
-5. **Traditional assert ilə birləşdirin** - Kritik field-lər üçün explicit assert
-6. **Adlandırma convention** - Snapshot fayl adları test-i identifikasiya etsin
-
-### Anti-Patterns
-
-1. **Blind update** - Nəticəni oxumadan `--update-snapshots` işlətmək
-2. **Hər şeyi snapshot ilə test etmək** - Sadə check-lər üçün assertEquals
-3. **Dynamic data normalize etməmək** - Hər run-da fail olan snapshot
-4. **Çox böyük snapshot** - MB-larla snapshot fayl
-5. **Snapshot-ları .gitignore-a əlavə etmək** - Commit edilməlidir
-6. **Yalnız snapshot-a güvənmək** - Behavior test-ləri də lazımdır
+- [API Testing (Middle)](09-api-testing.md)
+- [Contract Testing (Senior)](24-contract-testing.md)
+- [Approval Testing (Senior)](32-approval-testing.md)
+- [Test Patterns (Senior)](26-test-patterns.md)
+- [GraphQL Testing (Senior)](36-graphql-testing.md)

@@ -1,6 +1,5 @@
-# Mutation Testing
-
-## Nədir? (What is it?)
+# Mutation Testing (Senior)
+## İcmal
 
 Mutation testing, test suite-in keyfiyyətini ölçmək üçün istifadə olunan bir texnikadır.
 Əsas fikir belədir: kodda kiçik dəyişikliklər (mutasiyalar) edilir və testlərin bu
@@ -19,7 +18,15 @@ biləcəyini yoxlayır.
 4. **Test suite gücləndirir** - Hansı testlərin əlavə olunmalı olduğunu göstərir
 5. **Code review yardımı** - Kritik kodun test coverage-ını yoxlayır
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Code coverage yalan söyləyə bilər** — 100% coverage olan test suite mutation score-u 40% ola bilər; mutation testing bu fərqi üzə çıxarır və test keyfiyyətini həqiqi ölçür
+- **Assert-siz testləri tapır** — `$this->assertTrue(true)` olan test coverage-ı artırır amma bug tapmır; mutation testing bu cür testləri survived mutant olaraq göstərir
+- **Boundary value bug-larını önləyir** — `>` vs `>=` kimi incə fərqləri adi test-lər atlaya bilər; mutation testing bu operatorları dəyişdirərək testlərin boundary dəyərlərini yoxladığını təmin edir
+- **CI/CD-yə inteqrasiya edilə bilər** — `--git-diff-filter=AM` ilə yalnız dəyişən fayllara tətbiq etmək mümkündür; bu PR review-da minimum overhead ilə test keyfiyyəti qapısı yaradır
+- **Kritik biznes məntiqini qoruyur** — pricing, discount, authorization kimi həssas kod sahələrini mutation testing ilə intensiv yoxlamaq production bug-larının sayını əhəmiyyətli azaldır
+
+## Əsas Anlayışlar
 
 ### Mutation Testing Prosesi
 
@@ -92,7 +99,27 @@ Nümunə:
   // discount(100) test edilsə, fərq görünər → mutant killed
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+1. **Tədricən tətbiq edin** - Bütün proyekti deyil, kritik hissələri test edin
+2. **--git-diff-filter istifadə edin** - Yalnız dəyişən fayllara tətbiq edin
+3. **CI/CD-yə əlavə edin** - PR review-da avtomatik işləsin
+4. **Survived mutant-ları analiz edin** - Hər survived mutant üçün test əlavə edin
+5. **Realistic MSI hədəfləri qoyun** - 100% mümkün deyil, 80%+ yaxşıdır
+6. **Parallel execution istifadə edin** - `--threads=4` ilə sürətləndirin
+
+### Anti-Patterns
+
+1. **100% MSI hədəfləmək** - Equivalent mutant-lar bunu mümkünsüz edir
+2. **Bütün proyektə tətbiq etmək** - Çox yavaş olacaq, kritik hissələrdən başlayın
+3. **Survived mutant-ları ignore etmək** - Hər birini analiz edin
+4. **Yalnız mutation testing-ə güvənmək** - Code review, manual testing də lazımdır
+5. **Hər commit-də işlətmək** - Çox yavaş, PR level-ində kifayətdir
+6. **Nəticələri anlamadan MSI-ya baxmaq** - Hansı mutant-ların survived olduğunu analiz edin
+
+## Nümunələr
 
 ### Zəif Test Nümunəsi
 
@@ -151,7 +178,7 @@ class CalculatorStrongTest extends TestCase
 }
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### Infection PHP Quraşdırma
 
@@ -442,7 +469,7 @@ jobs:
           path: infection.html
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 ### 1. Mutation testing nədir və code coverage-dan nə ilə fərqlənir?
 **Cavab:** Mutation testing kodda kiçik dəyişikliklər (mutasiyalar) edib testlərin bu dəyişiklikləri tutub-tutmadığını yoxlayır. Code coverage yalnız kodun icra edildiyini ölçür, amma düzgün assert edilib-edilmədiyini göstərmir. Assert-siz test 100% coverage verə bilər, amma mutation testing bunu tutacaq.
@@ -462,22 +489,10 @@ jobs:
 ### 6. Equivalent mutant nədir?
 **Cavab:** Kodun davranışını dəyişdirməyən mutasiyadır. Məsələn `$i = 0; while ($i < 10)` → `$i = 0; while ($i != 10)` - nəticə eynidir, amma tool bunu survived mutant kimi göstərir. Bu false positive-dir və mutation score-u süni olaraq aşağı salır.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-1. **Tədricən tətbiq edin** - Bütün proyekti deyil, kritik hissələri test edin
-2. **--git-diff-filter istifadə edin** - Yalnız dəyişən fayllara tətbiq edin
-3. **CI/CD-yə əlavə edin** - PR review-da avtomatik işləsin
-4. **Survived mutant-ları analiz edin** - Hər survived mutant üçün test əlavə edin
-5. **Realistic MSI hədəfləri qoyun** - 100% mümkün deyil, 80%+ yaxşıdır
-6. **Parallel execution istifadə edin** - `--threads=4` ilə sürətləndirin
-
-### Anti-Patterns
-
-1. **100% MSI hədəfləmək** - Equivalent mutant-lar bunu mümkünsüz edir
-2. **Bütün proyektə tətbiq etmək** - Çox yavaş olacaq, kritik hissələrdən başlayın
-3. **Survived mutant-ları ignore etmək** - Hər birini analiz edin
-4. **Yalnız mutation testing-ə güvənmək** - Code review, manual testing də lazımdır
-5. **Hər commit-də işlətmək** - Çox yavaş, PR level-ində kifayətdir
-6. **Nəticələri anlamadan MSI-ya baxmaq** - Hansı mutant-ların survived olduğunu analiz edin
+- [Code Coverage (Middle)](12-code-coverage.md)
+- [Unit Testing (Junior)](02-unit-testing.md)
+- [TDD (Middle)](05-tdd.md)
+- [Continuous Testing (Senior)](23-continuous-testing.md)
+- [Testing Best Practices (Senior)](30-testing-best-practices.md)

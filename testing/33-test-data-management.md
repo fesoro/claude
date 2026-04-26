@@ -1,6 +1,5 @@
-# Test Data Management
-
-## Nədir? (What is it?)
+# Test Data Management (Senior)
+## İcmal
 
 **Test Data Management (TDM)** — testlər üçün lazım olan məlumatların yaradılması,
 saxlanması, idarə edilməsi və təmizlənməsi prosesidir. Yaxşı TDM strategiyası testləri
@@ -18,7 +17,15 @@ saxlanması, idarə edilməsi və təmizlənməsi prosesidir. Yaxşı TDM strate
 - Realistik, lakin təhlükəsiz sintetik məlumat yaradır
 - Test sürətini artırır (minimal data)
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **GDPR və məxfilik uyumu:** Real production data-sını test mühitinə kopyalamaq qanuni risk daşıyır. Düzgün TDM strategiyası — Faker ilə sintetik data və ya anonimizasiya edilmiş dump — hüquqi problemlərin qarşısını alır.
+- **Test etibarlılığı (reliability):** Testlər bir-birinin data-sına görə uğursuz olarsa (test pollution), CI pipeline-da flaky test-lər yaranır. RefreshDatabase və factory-lərlə hər test öz izole mühitini alır.
+- **Development sürəti:** Yaxşı qurulmuş factory-lər ilə developer tək sətirdə kompleks scenario yarada bilər (`Order::factory()->withItems(5)->paid()->create()`). Bu, test yazmağı asanlaşdırır və coverage-i artırır.
+- **Realistic scenario-lar:** Factory state-ləri (admin, banned, premium) real production hallarını simulyasiya edir. Yalnız "normal" user ilə test etmək edge case-ləri buraxır — bunlar production-da bug kimi ortaya çıxır.
+- **CI/CD pipeline sabitliyi:** Testlər hardcoded ID-lər (`User::find(1)`) istifadə edərsə, data-nın mövcud olub-olmamasından asılı olur. Factory-lər hər mühitdə müstəqil data yaradır — pipeline hər yerdə eyni işləyir.
+
+## Əsas Anlayışlar
 
 ### 1. Test Data Strategiyaları
 
@@ -60,7 +67,43 @@ Object Mother-un təkmilləşdirilmiş versiyası. **Fluent interface** ilə mü
 - **Per-test isolation**: Hər test öz datasını yaradır (DatabaseTransactions, RefreshDatabase)
 - **Shared data**: Read-only reference data (countries, currencies) seeder-lə qurulur
 
-## Praktiki Nümunələr
+## Praktik Baxış
+
+### Best Practices
+1. **Factory-lərdən istifadə edin** — fixture yalnız statik data üçün
+2. **State-lərlə composable edin** — `->admin()->verified()`
+3. **Faker-dən istifadə edin** — realistik, lakin sintetik data
+4. **Per-test isolation** — RefreshDatabase və ya transactions
+5. **Seed yalnız reference data** — ölkələr, rollar
+6. **Minimal data yaradın** — lazım olmayan obyektləri yaratmayın
+7. **Builder pattern mürəkkəb obyektlər üçün** — 5+ əlaqə olduqda
+8. **Anonymize edin** — production clone-dan istifadə edərkən
+9. **Deterministic Faker seed** — flaky testlər üçün
+10. **Test namespace-lərindən istifadə edin** — `@example.com` domain
+
+### Anti-Patterns
+- **Hardcoded IDs** — `User::find(1)` → factory id-si istifadə et
+- **Test pollution** — testlər bir-birinə təsir edir
+- **Production dump** — PII data testdə
+- **Mega-factory** — bir factory hər şeyi yaradır
+- **Shared mutable data** — testlər arasında dəyişən data
+- **Duplicate setup** — hər testdə eyni 20 sətir setup
+- **Database-independent unit testlər DB-dən istifadə edir** — yavaşlatır
+- **Seeders hər testdə** — yalnız reference data üçün
+
+### Test Data Checklist
+- [ ] Factory-lər var və state-lərlə composable
+- [ ] Faker ilə realistik data
+- [ ] RefreshDatabase və ya DatabaseTransactions
+- [ ] Reference data seeder-lə yüklənir (setUp-da)
+- [ ] PII anonimizasiya edilib (staging/dev)
+- [ ] Builder pattern mürəkkəb obyektlər üçün
+- [ ] Hardcoded ID-lər yoxdur
+- [ ] Test namespace email (`@example.com`)
+- [ ] Minimal data yaradılır
+- [ ] Deterministic (Faker seed)
+
+## Nümunələr
 
 ### Nümunə 1: Test pollution problemi
 ```
@@ -80,7 +123,7 @@ User::factory()->admin()->verified()->create()
 User::factory()->unverified()->count(5)->create()
 ```
 
-## PHP/Laravel ilə Tətbiq
+## Praktik Tapşırıqlar
 
 ### 1. Əsas Factory
 
@@ -428,7 +471,7 @@ class OrderTest extends TestCase
 }
 ```
 
-## Interview Sualları (Q&A)
+## Ətraflı Qeydlər
 
 ### S1: Factory və Fixture arasında fərq nədir?
 **C:** **Factory** dinamik olaraq data yaradır (parametrlə, state ilə) — məs.
@@ -493,38 +536,11 @@ dəfə eyni data istehsal edir. Bu flaky test-lərin qarşısını alır və deb
 **Factory** — test üçün dinamik model nümunəsi yaradır. Seeder factory-ni istifadə edə
 bilər, lakin məqsədləri fərqlidir: seeder = populate, factory = generate.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-1. **Factory-lərdən istifadə edin** — fixture yalnız statik data üçün
-2. **State-lərlə composable edin** — `->admin()->verified()`
-3. **Faker-dən istifadə edin** — realistik, lakin sintetik data
-4. **Per-test isolation** — RefreshDatabase və ya transactions
-5. **Seed yalnız reference data** — ölkələr, rollar
-6. **Minimal data yaradın** — lazım olmayan obyektləri yaratmayın
-7. **Builder pattern mürəkkəb obyektlər üçün** — 5+ əlaqə olduqda
-8. **Anonymize edin** — production clone-dan istifadə edərkən
-9. **Deterministic Faker seed** — flaky testlər üçün
-10. **Test namespace-lərindən istifadə edin** — `@example.com` domain
-
-### Anti-Patterns
-- **Hardcoded IDs** — `User::find(1)` → factory id-si istifadə et
-- **Test pollution** — testlər bir-birinə təsir edir
-- **Production dump** — PII data testdə
-- **Mega-factory** — bir factory hər şeyi yaradır
-- **Shared mutable data** — testlər arasında dəyişən data
-- **Duplicate setup** — hər testdə eyni 20 sətir setup
-- **Database-independent unit testlər DB-dən istifadə edir** — yavaşlatır
-- **Seeders hər testdə** — yalnız reference data üçün
-
-### Test Data Checklist
-- [ ] Factory-lər var və state-lərlə composable
-- [ ] Faker ilə realistik data
-- [ ] RefreshDatabase və ya DatabaseTransactions
-- [ ] Reference data seeder-lə yüklənir (setUp-da)
-- [ ] PII anonimizasiya edilib (staging/dev)
-- [ ] Builder pattern mürəkkəb obyektlər üçün
-- [ ] Hardcoded ID-lər yoxdur
-- [ ] Test namespace email (`@example.com`)
-- [ ] Minimal data yaradılır
-- [ ] Deterministic (Faker seed)
+- [Database Testing (Middle)](10-database-testing.md)
+- [Test Organization (Middle)](13-test-organization.md)
+- [Integration Testing (Junior)](03-integration-testing.md)
+- [Test Environment Management (Lead)](40-test-environment-management.md)
+- [Testing Anti-Patterns (Senior)](27-testing-anti-patterns.md)
+- [Test Patterns (Senior)](26-test-patterns.md)

@@ -1,6 +1,5 @@
-# Behavior-Driven Development (BDD)
-
-## Nədir? (What is it?)
+# Behavior-Driven Development - BDD (Middle)
+## İcmal
 
 BDD (Behavior-Driven Development) proqram təminatının davranışını business language ilə
 təsvir edən development metodologiyasıdır. TDD-nin genişləndirilmiş versiyasıdır, amma
@@ -12,7 +11,14 @@ danışmalıdır. Bu ortaq dil "ubiquitous language" adlanır.
 Dan North tərəfindən yaradılıb, TDD-dəki "test" sözünün developer-ləri çaşdırması
 probleminə cavab olaraq.
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Stakeholder kommunikasiyası**: Business tərəf testləri oxuya bilir, tələblər test-ə çevrilir — developer ilə product owner eyni dili danışır
+- **Canlı sənəd**: BDD ssenariləri daima aktual spesifikasiya kimi çalışır, ayrı doc-a ehtiyac olmur
+- **Regression clarity**: Failing scenario tam olaraq hansı biznes qaydanın pozulduğunu göstərir
+- **Onboarding**: Yeni developer Gherkin ssenariləri oxuyaraq sistem davranışını anlayır
+
+## Əsas Anlayışlar
 
 ### Gherkin Syntax
 
@@ -83,7 +89,25 @@ Feature: Shopping Cart
 | Tool | PHPUnit | Behat/Cucumber |
 | Granularity | Method level | Feature level |
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+- Feature file-ları business language-da yazın
+- Scenario-ları qısa saxlayın (5-8 addım)
+- Background istifadə edərək dublikatı azaldın
+- Step definition-ları reusable yazın
+- Tag-lar ilə ssenariləri qruplaşdırın (@smoke, @regression)
+- Scenario Outline ilə data variation-ları test edin
+
+### Anti-Patterns
+- **Technical Gherkin**: "Given I INSERT INTO users..." - business dili olmalıdır
+- **Too many steps**: 20 addımlıq ssenari oxunmaz olur
+- **UI-coupled steps**: "I click button#submit" - davranışı təsvir edin
+- **Missing examples**: Yalnız happy path test etmək
+- **Untested steps**: Step definition-da assert olmadan
+- **Monolithic contexts**: Bir context class-da hər şey
+
+## Nümunələr
 
 ### E-Commerce BDD Ssenariləri
 
@@ -159,7 +183,7 @@ Feature: User Authentication
     And the user "user@test.com" should be locked
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### Behat Quraşdırma
 
@@ -394,7 +418,7 @@ class OrderFeatureTest extends TestCase
 }
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 **S: BDD ilə TDD arasındakı fərq nədir?**
 C: TDD texniki perspektivdən yazılır (unit test), BDD isə business perspektivdən
@@ -418,20 +442,10 @@ bağlayır. Cucumber-in PHP versiyasıdır.
 C: Eyni ssenarini fərqli data ilə çalışdırmaq üçün. Examples table-da müxtəlif
 input/output kombinasiyaları verilir. Data-driven testing imkanı yaradır.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-- Feature file-ları business language-da yazın
-- Scenario-ları qısa saxlayın (5-8 addım)
-- Background istifadə edərək dublikatı azaldın
-- Step definition-ları reusable yazın
-- Tag-lar ilə ssenariləri qruplaşdırın (@smoke, @regression)
-- Scenario Outline ilə data variation-ları test edin
-
-### Anti-Patterns
-- **Technical Gherkin**: "Given I INSERT INTO users..." - business dili olmalıdır
-- **Too many steps**: 20 addımlıq ssenari oxunmaz olur
-- **UI-coupled steps**: "I click button#submit" - davranışı təsvir edin
-- **Missing examples**: Yalnız happy path test etmək
-- **Untested steps**: Step definition-da assert olmadan
-- **Monolithic contexts**: Bir context class-da hər şey
+- [Testing Fundamentals (Junior)](01-testing-fundamentals.md)
+- [Test-Driven Development - TDD (Middle)](05-tdd.md)
+- [Feature Testing (Junior)](04-feature-testing.md)
+- [Test Organization (Middle)](13-test-organization.md)
+- [Continuous Testing (Senior)](23-continuous-testing.md)

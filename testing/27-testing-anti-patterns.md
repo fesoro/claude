@@ -1,6 +1,5 @@
-# Testing Anti-Patterns
-
-## Nədir? (What is it?)
+# Testing Anti-Patterns (Senior)
+## İcmal
 
 Testing anti-patterns, test yazmaqda tez-tez rast gəlinən səhv yanaşma və praktikalardır.
 Bu pattern-lər testləri yavaş, kövrək, çətin bakım edilən və ya dəyərsiz edir. Onları
@@ -17,7 +16,14 @@ CI/CD pipeline-ı 30 dəqiqəyə uzadır, developer-lərin testlərə güvənini
 4. **False security** - Zəif testlər yanlış güvən verir
 5. **Team moralı** - Pis testlər test yazmaq istəyini azaldır
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **Flaky test zərəri**: CI-da intermittently failing testlər komandanın test nəticələrinə inamını sarsıdır — xəbərdarlıqlar ignore edilir
+- **Over-mock tuzağı**: Həddən artıq mock etmək implementasiyanı test edir, davranışı yox — refactoring zamanı testlər mənasız sınır
+- **Texniki borc**: Anti-pattern-lər test suite-i zamanla dəyişdirmək çətin olan texniki borcu yaradır
+- **Real bug-ları keçirən testlər**: Yanlış yazılmış test həmişə keçir — bug production-a çatır
+
+## Əsas Anlayışlar
 
 ### Test Anti-Pattern Kateqoriyaları
 
@@ -65,7 +71,22 @@ Ucuz bakım                      Bahalı bakım
 Stabil                          Flaky
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Anti-Pattern-lərdən Qaçmaq üçün
+
+1. **Davranışı test edin** - Implementation deyil
+2. **Minimum data yaradın** - Yalnız test üçün lazımi qədər
+3. **Deterministic olun** - Time, random-dan qaçının, freeze edin
+4. **sleep istifadə etməyin** - waitFor, Carbon::setTestNow istifadə edin
+5. **Testləri müstəqil saxlayın** - Shared state yoxdur
+6. **Mock-u minimuma endirin** - Yalnız xarici service-lər
+7. **Test-ləri review edin** - Code review-da testlərə də baxın
+8. **Piramida qaydasına əməl edin** - Çox unit, az E2E
+9. **Dead testləri silin** - Skip/commented test saxlamayın
+10. **Test adını aydın yazın** - Nəyi test etdiyini izah etsin
+
+## Nümunələr
 
 ### Anti-Pattern 1: Testing Implementation Details
 
@@ -386,7 +407,7 @@ class PricingTest extends TestCase
 }
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### Anti-Pattern 7: Test Dependency Chain
 
@@ -546,7 +567,7 @@ Test Review Checklist:
 □ setUp-da çox iş görülür?
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 ### 1. Testing-də ən çox rast gəlinən anti-pattern-lər hansılardır?
 **Cavab:** 1) Flaky tests - bəzən pass, bəzən fail, 2) Testing implementation details - davranış əvəzinə kod strukturunu test etmək, 3) Excessive mocking - hər şeyi mock-lamaq, 4) Ice cream cone - çox E2E az unit test, 5) Slow tests - lazımsız data, sleep-lər, 6) Test dependency - testlər arası sıra asılılığı.
@@ -566,17 +587,10 @@ Test Review Checklist:
 ### 6. Mystery Guest anti-pattern nədir?
 **Cavab:** Test-in asılı olduğu data-nın testdə görünməməsidir - seeder, fixture file, shared state-dən gəlir. Test-i oxuyan developer nəticənin niyə belə olduğunu anlamır. Həll: bütün relevant data test method-da yaradılmalıdır, inline factory əvəzinə seeder, explicit əvəzinə implicit.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Anti-Pattern-lərdən Qaçmaq üçün
-
-1. **Davranışı test edin** - Implementation deyil
-2. **Minimum data yaradın** - Yalnız test üçün lazımi qədər
-3. **Deterministic olun** - Time, random-dan qaçının, freeze edin
-4. **sleep istifadə etməyin** - waitFor, Carbon::setTestNow istifadə edin
-5. **Testləri müstəqil saxlayın** - Shared state yoxdur
-6. **Mock-u minimuma endirin** - Yalnız xarici service-lər
-7. **Test-ləri review edin** - Code review-da testlərə də baxın
-8. **Piramida qaydasına əməl edin** - Çox unit, az E2E
-9. **Dead testləri silin** - Skip/commented test saxlamayın
-10. **Test adını aydın yazın** - Nəyi test etdiyini izah etsin
+- [Mocking (Middle)](07-mocking.md)
+- [Test Doubles (Middle)](08-test-doubles.md)
+- [Test Patterns (Senior)](26-test-patterns.md)
+- [Testing Best Practices (Senior)](30-testing-best-practices.md)
+- [Continuous Testing (Senior)](23-continuous-testing.md)

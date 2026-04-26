@@ -1,6 +1,5 @@
-# Browser Testing
-
-## Nədir? (What is it?)
+# Browser Testing (Middle)
+## İcmal
 
 Browser testing (E2E testing), real brauzerdə istifadəçi davranışını simulyasiya edərək
 proqramı test etmək prosesidir. Testlər link-lərə klik etmək, form doldurmaq, səhifələr
@@ -18,7 +17,15 @@ test edilir. Laravel-də Dusk package-i ilə browser testing həyata keçirilir.
 4. **Integration tam yoxlama** - Bütün stack-i birlikdə test edir
 5. **Regression detection** - UI dəyişikliklərinin funksionallığı pozmadığını yoxlayır
 
-## Əsas Konseptlər (Key Concepts)
+## Niyə Vacibdir
+
+- **JavaScript-dependent flow-ların yoxlanması** — Feature test-lər HTTP response-u yoxlayır, amma real brauzerdə JS işləməsə düymə klik olunmur, modal açılmır. Browser testing bu boşluğu bağlayır.
+- **Checkout, login, form submission kimi kritik user journey-lər** — E-commerce layihələrdə cart-to-payment flow-u yalnız browser testlə tam yoxlanıla bilər; unit testlər ayrı hissələri test edir.
+- **Regression detection** — Frontend dəyişikliklərindən sonra mövcud funksionallığın sınıb-sınmadığını tez aşkar edir; manual QA əvəzinə CI/CD-də avtomatik işləyir.
+- **Real-time feature-ların (WebSocket, polling) doğrulanması** — Chat, live notification kimi feature-lar yalnız real brauzer simulyasiyası ilə düzgün test oluna bilər.
+- **Multi-browser compatibility** — Fərqli brauzerlərdə eyni testi işlədərək CSS/JS uyğunsuzluqlarını production-a çatmadan aşkarlamaq mümkündür.
+
+## Əsas Anlayışlar
 
 ### Browser Testing Alətləri Müqayisəsi
 
@@ -60,7 +67,27 @@ Prioritet sırası (yuxarıdan aşağı):
 6. div > form > button:nth(2)   ← DOM structure (çox kövrək)
 ```
 
-## Praktiki Nümunələr (Practical Examples)
+## Praktik Baxış
+
+### Best Practices
+
+1. **data-testid istifadə edin** - CSS class və ID-lərə etibar etməyin, dəyişə bilər
+2. **Explicit wait istifadə edin** - `waitFor`, `waitForText` kimi method-lar istifadə edin
+3. **Page Object Pattern istifadə edin** - UI interaction-ları bir yerdə idarə edin
+4. **Az sayda browser test yazın** - Pyramid qaydasına riayət edin, əsas flow-ları test edin
+5. **Hər testi izole edin** - Testlər bir-birindən asılı olmamalıdır
+6. **Screenshot/video çəkin** - Failure halında debug üçün vizual evidence saxlayın
+
+### Anti-Patterns
+
+1. **sleep/pause istifadə etmək** - Explicit wait istifadə edin
+2. **Hər şeyi browser testlə test etmək** - Unit/feature testlər daha sürətlidir
+3. **Mürəkkəb CSS selector-lar** - `div.parent > ul > li:nth-child(3)` kövrəkdir
+4. **Test data-sını UI-dan yaratmaq** - Database-dən birbaşa yaradın
+5. **Testlər arası sıra asılılığı** - Hər test müstəqil olmalıdır
+6. **Production URL-lərə test yazmaq** - Həmişə test environment istifadə edin
+
+## Nümunələr
 
 ### Cypress Nümunəsi
 
@@ -129,7 +156,7 @@ test.describe('Login Flow', () => {
 });
 ```
 
-## PHP/Laravel ilə Tətbiq (Implementation with PHP/Laravel)
+## Praktik Tapşırıqlar
 
 ### Laravel Dusk Quraşdırma
 
@@ -395,7 +422,7 @@ public function capture_screenshot_on_complex_page(): void
 }
 ```
 
-## Interview Sualları
+## Ətraflı Qeydlər
 
 ### 1. Browser testing və feature testing arasındakı fərq nədir?
 **Cavab:** Feature testing HTTP request simulyasiya edir amma real brauzer istifadə etmir, JavaScript işləmir. Browser testing real brauzerdə işləyir, JS icra olunur, CSS render edilir. Feature testing daha sürətli, browser testing daha realdır. Feature testing backend, browser testing bütün stack-i test edir.
@@ -418,22 +445,11 @@ public function capture_screenshot_on_complex_page(): void
 ### 7. Browser testlərini CI/CD-də necə işlədirsiniz?
 **Cavab:** Headless brauzer istifadə edilir (Chrome Headless, Firefox Headless). Docker container-da Xvfb (virtual display) qurulur. Screenshot/video artifact olaraq saxlanır. Parallel execution sürəti artırır. Retry mechanism flaky testlər üçün əlavə olunur.
 
-## Best Practices / Anti-Patterns
+## Əlaqəli Mövzular
 
-### Best Practices
-
-1. **data-testid istifadə edin** - CSS class və ID-lərə etibar etməyin, dəyişə bilər
-2. **Explicit wait istifadə edin** - `waitFor`, `waitForText` kimi method-lar istifadə edin
-3. **Page Object Pattern istifadə edin** - UI interaction-ları bir yerdə idarə edin
-4. **Az sayda browser test yazın** - Pyramid qaydasına riayət edin, əsas flow-ları test edin
-5. **Hər testi izole edin** - Testlər bir-birindən asılı olmamalıdır
-6. **Screenshot/video çəkin** - Failure halında debug üçün vizual evidence saxlayın
-
-### Anti-Patterns
-
-1. **sleep/pause istifadə etmək** - Explicit wait istifadə edin
-2. **Hər şeyi browser testlə test etmək** - Unit/feature testlər daha sürətlidir
-3. **Mürəkkəb CSS selector-lar** - `div.parent > ul > li:nth-child(3)` kövrəkdir
-4. **Test data-sını UI-dan yaratmaq** - Database-dən birbaşa yaradın
-5. **Testlər arası sıra asılılığı** - Hər test müstəqil olmalıdır
-6. **Production URL-lərə test yazmaq** - Həmişə test environment istifadə edin
+- [Feature Testing (Junior)](04-feature-testing.md)
+- [API Testing (Middle)](09-api-testing.md)
+- [Test Organization (Middle)](13-test-organization.md)
+- [Testing Authentication & Authorization (Middle)](18-testing-authentication.md)
+- [Performance Testing (Senior)](20-performance-testing.md)
+- [Security Testing (Senior)](21-security-testing.md)
