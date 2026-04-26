@@ -1,149 +1,213 @@
 # Real-World Company Architecture Case Studies
 
-Dünyanın ən böyük texnoloji şirkətlərinin arxitektura seçimləri, dilləri, framework-ləri, verilənlər bazaları və bu seçimlərin **SƏBƏBLƏRİ**. Hər case study interview-də system design sualları üçün möhkəm reference verir.
+Dünyanın ən böyük texnoloji şirkətlərinin arxitektura seçimləri, dilləri, framework-ləri, verilənlər bazaları və bu seçimlərin **SƏBƏBLƏRİ**. Hər case study system design interview-ləri üçün möhkəm reference verir.
 
 ## Necə istifadə etmək
 
-- **System design interview-ə hazırlaşarkən**: uyğun case study-ni oxu (chat app → Discord/Slack, streaming → Netflix/Spotify, e-commerce → Shopify, şəkil paylaşma → Instagram).
+- **System design interview-ə hazırlaşarkən**: uyğun case study-ni oxu — chat app → Discord/Slack, streaming → Netflix/Spotify, e-commerce → Shopify, şəkil paylaşma → Instagram.
 - **Texniki qərarları qiymətləndirərkən**: niyə FB PHP saxladı? Niyə Shopify Rails monolitində qaldı? Niyə Discord Python-dan Rust-a keçdi? Bu sənin öz qərarlarına kontekst verir.
 - **Senior müsahibədə**: "We chose PostgreSQL because..." deyəndə Instagram, Notion, Reddit-in necə etdiyini müqayisə edə bilərsən.
+- **Müsahibədə istinad etmək üçün**: hər faylda "Müsahibədə necə istinad etmək" bölməsi konkret cavab şablonları verir.
 
-## Kateqoriyalar
+---
 
-### PHP mirası və monolit filosofları (Laravel developer-ə ən uyğun)
-| Şirkət | Dil | Framework | DB | Arxitektura | Niyə vacibdir |
-|---------|----------|-----------|-----|--------------|----------------|
-| [Meta / Facebook](meta-facebook.md) | Hack (PHP dialekti) | XHP, Hack-native | MySQL (UDB), TAO | Monolit → SOA | PHP-nin dünya səviyyəsində miqyası |
-| [Wikipedia](wikipedia.md) | PHP | MediaWiki (xüsusi) | MariaDB | Monolit | Ayda 10B+ baxışda PHP |
-| [Slack](slack.md) | Hack (əvvəlcə PHP) | Xüsusi | Vitess (MySQL) | Monolit → SOA | PHP→Hack köçmə hekayəsi |
-| [Etsy](etsy.md) | PHP → Scala | Xüsusi | MySQL, Redis | Monolit → SOA | PHP-də deployment mədəniyyətinin öncülü |
-| [Shopify](shopify.md) | Ruby | Rails ("majestic monolith") | MySQL + Vitess | Modul monolit | Monolit bir fəlsəfə kimi |
-| [Basecamp / 37signals](basecamp.md) | Ruby | Rails | MySQL | Majestic Monolith | Mikroservis əleyhinə reference |
-| [Stack Overflow](stackoverflow.md) | C# / .NET | ASP.NET + Dapper | SQL Server | Monolit (cəmi 9 server!) | Sadəlik qalib gəlir |
-| [GitHub](github.md) | Ruby | Rails | MySQL, Git | Modul monolit | Nəhəng miqyasda Rails |
-| [Tumblr](tumblr.md) | PHP | Xüsusi | MySQL | Monolit | PHP miqyaslanma dərsləri |
-| [Stripe](stripe.md) | Ruby (Sorbet) | Rails (custom forks) | MongoDB + PostgreSQL | Monolit (pay-server) + servislər | API dizayn mədəniyyəti, idempotency-key pattern |
+## ⭐⭐⭐ Senior — Monolit filosofları
 
-### Mikroservis nəhəngləri
-| Şirkət | Dil | Framework | DB | Arxitektura | Qeydlər |
-|---------|----------|-----------|-----|--------------|-------|
-| [Netflix](netflix.md) | Java | Spring Cloud | Cassandra, EVCache | 700+ mikroservis | Chaos engineering doğum yeri |
-| [Uber](uber.md) | Go, Java, Python, Node | Xüsusi (Ringpop, Fx) | Schemaless, Cassandra | 4000+ mikroservis | Polyglot ekstremal |
-| [Airbnb](airbnb.md) | Ruby → Java/Kotlin | Rails → SOA | MySQL + Vitess | Rails monolit → SOA | Miqrasiya case study |
-| [Amazon](amazon.md) | Java, C++, Rust | Xüsusi | DynamoDB, Aurora | Xidmət yönlü | SOA öncülü (Bezos memosu) |
-| [Twitter / X](twitter.md) | Scala, Java, Rust | Finagle | Manhattan (xüsusi) | Mikroservislər | Ruby → Scala köçməsi |
-| [LinkedIn](linkedin.md) | Java, Scala | Play, Rest.li | Espresso, Voldemort | Mikroservislər | Kafka-nın doğum yeri |
-| [Pinterest](pinterest.md) | Python, Java | Django → xüsusi | MySQL shardlı, HBase | SOA | Nəhəng miqyasda sharding |
-| [Google](google.md) | C++, Java, Go, Python | Bazel, gRPC, Protobuf | Spanner, Bigtable, Colossus | Monorepo + minlərlə servis | Distributed systems akademiyası (GFS, MapReduce, Spanner) |
-| [DoorDash](doordash.md) | Python → Kotlin, Python (ML) | Django → Spring Boot | PostgreSQL (Aurora) + Kafka | Monolit → mikroservislər | Python→Kotlin miqrasiyası, Cadence/Temporal |
+Sadəlik prinsipini sübut edən şirkətlər. Stack Overflow cəmi 9 server ilə milyonlara xidmət edir; Booking.com 2024-cü ildə hələ də Perl işlədir.
 
-### Dil yenilikçiləri / polyglot
-| Şirkət | Əsas dillər | Niyə | Arxitektura |
-|---------|---------------|-----|--------------|
-| [Instagram](instagram.md) | Python (Django), C++ | Sadəlik; lazım olan yerdə performans | Monolit + servislər |
-| [WhatsApp](whatsapp.md) | Erlang | Paralel bağlantılar | Sadə, az server |
-| [Discord](discord.md) | Elixir, Go, Rust, Python | Hər biri öz gücü üçün | Mikroservislər |
-| [Figma](figma.md) | TypeScript, C++, Rust | WASM performans | Client-ağır |
-| [Spotify](spotify.md) | Java, Python | Squad muxtariyyəti | Mikroservislər |
-| [Dropbox](dropbox.md) | Python → Go | Performans miqrasiyası | Xidmət yönlü |
-| [Notion](notion.md) | TypeScript (Next.js) | Full-stack TS | Monolit + worker-lər |
-| [Reddit](reddit.md) | Python | Başlanğıc hekayəsi | Monolit + servislər |
-| [Booking.com](booking.md) | **Perl** (hələ də!) | Hype yerinə praqmatizm | Monolit + servislər |
-| [Zalando](zalando.md) | Scala, Java, Python | Komanda muxtariyyəti | Mikroservislər (1000+) |
-| [Cloudflare](cloudflare.md) | Go, Rust, C | Edge-də GC-siz tail latency | Anycast + Pingora (Rust) + Workers (V8 isolates) |
-| [TikTok / ByteDance](tiktok.md) | Go (core), Python (ML), C++ (infra) | Polyglot; rec engine C++ | Mikroservislər + Monolith ML platform |
-| [Twitch](twitch.md) | Go, Rust, Erlang (tarixən) | Millions of concurrent chat conn | Chat Clusters (cell-based) |
+| # | Şirkət | Dil | Arxitektura | Niyə vacibdir |
+|---|---------|-----|-------------|----------------|
+| [01](01-basecamp.md) | Basecamp / 37signals | Ruby on Rails | Majestic Monolith | Mikroservis əleyhinə ən güclü argument |
+| [02](02-stackoverflow.md) | Stack Overflow | C# / .NET | Monolit (9 server) | Sadəliyin qalib gəldiyi ən məşhur nümunə |
+| [03](03-wikipedia.md) | Wikipedia | PHP + MediaWiki | Monolit | Ayda 10B+ baxışda PHP |
+| [04](04-tumblr.md) | Tumblr | PHP | Monolit | PHP miqyaslanma dərsləri |
+| [05](05-notion.md) | Notion | TypeScript (Next.js) | Monolit + worker-lər | Full-stack TS monolit |
+| [06](06-booking.md) | Booking.com | **Perl** (hələ də!) | Monolit + servislər | Hype yerinə praqmatizm |
+| [07](07-whatsapp.md) | WhatsApp | Erlang | Sadə, az server | 900M istifadəçi, 50 engineer |
 
-## Müqayisə: "Hansı DB nəyə üçün?"
+---
+
+## ⭐⭐⭐⭐ Lead — Miqyaslanma qərarları
+
+Maraqlı texniki qərarlar verən, böyümə zamanı kritik seçimlər etmiş şirkətlər.
+
+| # | Şirkət | Dil | Arxitektura | Niyə vacibdir |
+|---|---------|-----|-------------|----------------|
+| [08](08-instagram.md) | Instagram | Python (Django) | Monolit + servislər | Sadəlik + performans |
+| [09](09-reddit.md) | Reddit | Python | Monolit + servislər | 20 ildə Python sadiqliyi |
+| [10](10-shopify.md) | Shopify | Ruby on Rails | Modul monolit | Rails-i "majestic monolith" anlayışına qovuşduran |
+| [11](11-github.md) | GitHub | Ruby on Rails | Modul monolit | Nəhəng miqyasda Rails |
+| [12](12-etsy.md) | Etsy | PHP → Scala | Monolit → SOA | Deployment mədəniyyəti öncülü |
+| [13](13-slack.md) | Slack | PHP → Hack | Monolit → SOA | PHP→Hack köçmə hekayəsi |
+| [14](14-meta-facebook.md) | Meta / Facebook | Hack (PHP dialekti) | Monolit → SOA | PHP-nin dünya miqyaslı nümunəsi |
+| [15](15-twitter.md) | Twitter / X | Ruby → Scala | Mikroservislər | Ruby→Scala köçməsi |
+| [16](16-stripe.md) | Stripe | Ruby + Sorbet | Monolit + servislər | API dizayn mədəniyyəti, idempotency |
+| [17](17-discord.md) | Discord | Elixir, Go, Rust | Mikroservislər | Hər dil öz gücü üçün |
+| [18](18-figma.md) | Figma | TypeScript + C++/Rust | Client-ağır | WASM performans |
+| [19](19-spotify.md) | Spotify | Java, Python | Mikroservislər | Squad muxtariyyəti |
+| [20](20-dropbox.md) | Dropbox | Python → Go | Xidmət yönlü | Performans miqrasiyası |
+| [21](21-atlassian.md) | Atlassian | Java, Kotlin | Monolit → Cloud SaaS | Server → Cloud miqrasiyası, B2B SaaS |
+| [22](22-zalando.md) | Zalando | Scala, Java | Mikroservislər (1000+) | Komanda muxtariyyəti |
+
+---
+
+## ⭐⭐⭐⭐⭐ Architect — Distributed systems nəhəngləri
+
+Extreme-scale distributed sistemlər. System design interview-lərinin "reference əsərlər"i.
+
+| # | Şirkət | Dil | Arxitektura | Niyə vacibdir |
+|---|---------|-----|-------------|----------------|
+| [23](23-amazon.md) | Amazon | Java, C++ | SOA | SOA öncülü (Bezos memosu) |
+| [24](24-netflix.md) | Netflix | Java + Spring Cloud | 700+ mikroservis | Chaos engineering doğum yeri |
+| [25](25-uber.md) | Uber | Go, Java, Python | 4000+ mikroservis | Polyglot ekstremal |
+| [26](26-airbnb.md) | Airbnb | Ruby → Java/Kotlin | Rails monolit → SOA | Miqrasiya case study |
+| [27](27-linkedin.md) | LinkedIn | Java, Scala | Mikroservislər | **Kafka-nın doğum yeri** |
+| [28](28-pinterest.md) | Pinterest | Python, Java | SOA + sharding | Nəhəng miqyasda MySQL sharding |
+| [29](29-doordash.md) | DoorDash | Python → Kotlin | Monolit → mikroservislər | Python→Kotlin miqrasiyası |
+| [30](30-cloudflare.md) | Cloudflare | Go, Rust, C | Anycast + edge | Pingora (Rust), Workers (V8 isolates) |
+| [31](31-tiktok.md) | TikTok / ByteDance | Go + Python (ML) | Mikroservislər + ML platform | Rec engine at scale |
+| [32](32-twitch.md) | Twitch | Go, Rust, Erlang | Cell-based | Millions concurrent chat |
+| [33](33-google.md) | Google | C++, Java, Go | Monorepo + mikroservislər | GFS, MapReduce, Spanner öncülü |
+
+---
+
+## Reading Paths
+
+### PHP/Laravel developer üçün — Interview hazırlığı
+
+Sıra: **02 → 03 → 01 → 06 → 10 → 12 → 13 → 14 → 34**
+
+*Stack Overflow sadəliyi → Wikipedia PHP-si → Basecamp fəlsəfəsi → Booking praqmatizmi → Shopify Rails-at-scale → Etsy PHP miqrasiyası → Slack PHP hekayəsi → Meta Hack → Lessons*
+
+### Monolit → Mikroservis miqrasiya path
+
+Sıra: **10 → 26 → 29 → 25 → 34**
+
+*Shopify (qalmaq qərarı) → Airbnb (miqrasiya) → DoorDash (miqrasiya) → Uber (ekstremal) → Lessons*
+
+### System Design Interview — Core path
+
+Sıra: **24 → 27 → 25 → 23 → 33**
+
+*Netflix (microservices) → LinkedIn (event streaming) → Uber (scale) → Amazon (SOA) → Google (distributed systems)*
+
+### Dil miqrasiyası case study-ləri
+
+Sıra: **15 → 20 → 29 → 17 → 34**
+
+*Twitter Ruby→Scala → Dropbox Python→Go → DoorDash Python→Kotlin → Discord Go→Rust → Lessons*
+
+### B2B SaaS + Cloud architecture
+
+Sıra: **21 → 30 → 22 → 34**
+
+*Atlassian Server→Cloud → Cloudflare edge → Zalando microservices → Lessons*
+
+---
+
+## Müqayisə cədvəlləri
+
+### "Hansı DB nəyə üçün?"
 
 | İstifadə halı | Ümumi seçim | Kim istifadə edir |
-|----------|---------------|-------------|
+|--------------|-------------|-------------------|
 | Tranzaksional (əsas biznes) | **MySQL** | Facebook, Shopify, GitHub, Uber, Wikipedia |
-| Tranzaksional (PG üstün tutulur) | **PostgreSQL** | Instagram, Reddit, Notion |
-| Geniş sütun / zaman seriyası yazma-ağır | **Cassandra** | Netflix, Instagram (inbox), Discord (ScyllaDB vasitəsilə), Uber |
-| Key-value cache | **Redis** / **Memcached** | Hamı; FB-də Memcached (orijinal), Twitter-də Redis, GitHub |
-| Axtarış | **Elasticsearch** | GitHub, Wikipedia, Uber, Slack |
-| Analitika | **Presto / Trino**, **BigQuery** | Airbnb, Netflix, Spotify |
+| Tranzaksional (PG üstün tutulur) | **PostgreSQL** | Instagram, Reddit, Notion, Atlassian Cloud |
+| Geniş sütun / yazma-ağır | **Cassandra** | Netflix, Discord (ScyllaDB), Uber |
+| Key-value cache | **Redis / Memcached** | Hamı; FB Memcached, Twitter Redis |
+| Axtarış | **Elasticsearch** | GitHub, Wikipedia, Uber, Slack, Atlassian |
+| Analitika | **Presto / Trino, BigQuery** | Airbnb, Netflix, Spotify |
 | Event log / streaming | **Kafka** | LinkedIn (ixtira edən), Netflix, Uber, Slack |
-| Qraf | **Xüsusi** (TAO, ZippyDB, Dgraph) | Facebook, LinkedIn |
+| Qraf | **Xüsusi** (TAO, ZippyDB) | Facebook, LinkedIn |
 
-## Müqayisə: "Monolit vs Mikroservislər — kim nəyi seçdi?"
+### "Monolit vs Mikroservislər — kim nəyi seçdi?"
 
 | Pattern | Şirkətlər | Səbəb |
-|---------|-----------|-----------|
-| **Majestic monolit** | Basecamp, Shopify, GitHub, Stack Overflow | Daha az hissə; sürətli iterasiya; kiçik komandanın gücü |
-| **Modul monolit** | Shopify (komponentlər), Wikipedia | Paylanmış ağrı olmadan sərhədlər |
-| **Xidmət yönlü (SOA)** | Amazon, Airbnb (miqrasiyadan sonra) | Tam mikroservis vergisi olmadan komanda sahibliyi |
-| **Mikroservislər** | Netflix, Uber, Spotify | Nəhəng təşkilatda komanda muxtariyyəti; müstəqil deploy |
-| **Cell-based** | Slack, Netflix (bəzi yollar) | Partlayış radiusunu azaltmaq |
+|---------|-----------|-------|
+| **Majestic monolit** | Basecamp, Stack Overflow, Wikipedia | Sürətli iterasiya; kiçik komanda gücü |
+| **Modul monolit** | Shopify, GitHub, Atlassian (əvvəl) | Paylanmış ağrı olmadan sərhədlər |
+| **SOA** | Amazon, Airbnb (miqrasiyadan sonra) | Komanda sahibliyi; tam mikroservis vergisi olmadan |
+| **Mikroservislər** | Netflix, Uber, Spotify | Nəhəng təşkilatda komanda muxtariyyəti |
+| **Cell-based** | Slack, Twitch | Partlayış radiusunu azaltmaq |
 
-## Müqayisə: "Framework seçimini nəyin təyin etdiyi"
+### "Framework seçimini nəyin təyin etdiyi"
 
 | Framework | Seçilmə səbəbi | Kim |
-|-----------|---------------|-----|
+|-----------|----------------|-----|
 | **Rails** | Developer sürəti, konvensiya | GitHub, Shopify, Basecamp, Airbnb (ilkin) |
 | **Django** | Sürətli dev + Python ML ekosistemi | Instagram, Pinterest, Reddit |
-| **Spring (Java)** | Enterprise yetkinlik, ekosistem | Netflix, LinkedIn, Uber (hissə) |
-| **Express/Node** | Komanda JS-i hər iki tərəfdə istifadə edir | Uber API gateway, Netflix edge |
-| **Laravel / Symfony** | Sürətli dev + PHP ekosistemi | Bir çox SME; böyük tech-də deyil (böyük tech PHP-də Hack istifadə edir) |
-| **Phoenix (Elixir)** | Miqyasda soft real-time | Discord (bəzi hissələr), Bleacher Report |
-| **Go stdlib + kitabxanaları** | Az resurs, paralel | Uber (hissə), Dropbox Magic Pocket, Cloudflare |
+| **Spring (Java)** | Enterprise yetkinlik | Netflix, LinkedIn, Atlassian |
+| **Laravel / Symfony** | Sürətli dev + PHP ekosistemi | Çox SME; böyük tech PHP-ni Hack-ə köçürdü |
+| **Phoenix (Elixir)** | Miqyasda soft real-time | Discord (bəzi hissələr) |
+| **Go stdlib** | Az resurs, paralellik | Uber (hissə), Dropbox Magic Pocket, Cloudflare |
 
-## Arxitektura təkamülü pattern-ləri (ümumi hekayə arkları)
-
-Demək olar ki, hər case bu hekayələrdən birinə uyğundur:
+### "Arxitektura təkamülü pattern-ləri"
 
 1. **"Sadə başladıq, sadə qaldıq"** — Stack Overflow, Basecamp, Wikipedia
 2. **"Monolitdən SOA-ya böyüdük"** — Amazon, Airbnb, Shopify (qismən)
 3. **"Daha sürətli dildə yenidən yazdıq"** — Twitter (Ruby→Scala), Dropbox (Py→Go), Discord (Py→Rust)
 4. **"Orijinal dildə qaldıq, öz runtime-ımızı qurduq"** — Facebook (PHP→Hack+HHVM)
 5. **"İlk gündən polyglot"** — Uber, Netflix
+6. **"Server → Cloud miqrasiyası"** — Atlassian (on illik yol)
 
-## Müsahibələrin üçün
+---
+
+## Müsahibədə istinad etmək
 
 "How would you design X?" soruşulanda:
+
 1. Oxşar problemi həll edən bir şirkəti söylə.
 2. Onların məhdudiyyətlərini və seçimlərini izah et.
 3. SƏNİN məhdudiyyətlərini (fərqli ola bilər) və seçimlərini söylə.
 4. Hype ilə yox, trade-off-larla müdafiə et.
 
 Nümunə cavab template:
-> "For a notifications system, I'd start with the approach LinkedIn uses — Kafka as the event log, Samza/workers for fan-out, because our read:write ratio is 100:1 and we need replay. But unlike LinkedIn, we're at much smaller scale, so I'd skip Samza and use a simple Laravel queue with Redis first, and plan the Kafka migration for when we hit ~X events/sec."
+> "For a notifications system, I'd start with the approach LinkedIn uses — Kafka as the event log, workers for fan-out, because our read:write ratio is 100:1 and we need replay. But unlike LinkedIn, we're at much smaller scale, so I'd skip Kafka and use a simple Laravel queue with Redis first, and plan the Kafka migration for when we hit ~X events/sec."
 
-Bu göstərir ki, sən reference-i bilirsən VƏ onu adapt edə bilirsən.
+Bu göstərir ki, sən reference-i bilirsən VƏ onu adapt edə bilərsən.
+
+---
 
 ## İndeks
 
-1. [Meta / Facebook](meta-facebook.md)
-2. [Wikipedia](wikipedia.md)
-3. [Slack](slack.md)
-4. [Etsy](etsy.md)
-5. [Shopify](shopify.md)
-6. [Basecamp / 37signals](basecamp.md)
-7. [Stack Overflow](stackoverflow.md)
-8. [GitHub](github.md)
-9. [Tumblr](tumblr.md)
-10. [Netflix](netflix.md)
-11. [Uber](uber.md)
-12. [Airbnb](airbnb.md)
-13. [Amazon](amazon.md)
-14. [Twitter / X](twitter.md)
-15. [LinkedIn](linkedin.md)
-16. [Pinterest](pinterest.md)
-17. [Instagram](instagram.md)
-18. [WhatsApp](whatsapp.md)
-19. [Discord](discord.md)
-20. [Figma](figma.md)
-21. [Spotify](spotify.md)
-22. [Dropbox](dropbox.md)
-23. [Notion](notion.md)
-24. [Reddit](reddit.md)
-25. [Booking.com](booking.md)
-26. [Zalando](zalando.md)
-27. [Google](google.md)
-28. [Stripe](stripe.md)
-29. [Cloudflare](cloudflare.md)
-30. [TikTok / ByteDance](tiktok.md)
-31. [Twitch](twitch.md)
-32. [DoorDash](doordash.md)
-33. [Şirkətlər arası dərslər](lessons-learned.md)
+### Senior ⭐⭐⭐
+1. [Basecamp](01-basecamp.md)
+2. [Stack Overflow](02-stackoverflow.md)
+3. [Wikipedia](03-wikipedia.md)
+4. [Tumblr](04-tumblr.md)
+5. [Notion](05-notion.md)
+6. [Booking.com](06-booking.md)
+7. [WhatsApp](07-whatsapp.md)
+
+### Lead ⭐⭐⭐⭐
+8. [Instagram](08-instagram.md)
+9. [Reddit](09-reddit.md)
+10. [Shopify](10-shopify.md)
+11. [GitHub](11-github.md)
+12. [Etsy](12-etsy.md)
+13. [Slack](13-slack.md)
+14. [Meta / Facebook](14-meta-facebook.md)
+15. [Twitter / X](15-twitter.md)
+16. [Stripe](16-stripe.md)
+17. [Discord](17-discord.md)
+18. [Figma](18-figma.md)
+19. [Spotify](19-spotify.md)
+20. [Dropbox](20-dropbox.md)
+21. [Atlassian](21-atlassian.md)
+22. [Zalando](22-zalando.md)
+
+### Architect ⭐⭐⭐⭐⭐
+23. [Amazon](23-amazon.md)
+24. [Netflix](24-netflix.md)
+25. [Uber](25-uber.md)
+26. [Airbnb](26-airbnb.md)
+27. [LinkedIn](27-linkedin.md)
+28. [Pinterest](28-pinterest.md)
+29. [DoorDash](29-doordash.md)
+30. [Cloudflare](30-cloudflare.md)
+31. [TikTok / ByteDance](31-tiktok.md)
+32. [Twitch](32-twitch.md)
+33. [Google](33-google.md)
+
+### Sintez
+34. [Şirkətlər arası dərslər](34-lessons-learned.md)
