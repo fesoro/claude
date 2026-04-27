@@ -1,8 +1,13 @@
 # Database Design Patterns & Real-World Systems
 
-## Mündəricat
+Real sistemlərin database arxitekturası. Hər fayl konkret bir tətbiqin schema dizaynını, DB seçimini və **niyə bu seçim edilib** sualına cavab verir.
 
-### Ümumi Tətbiq Dizaynları
+**Toplam: 33 fayl** (16 ümumi tətbiq + 16 tanınmış sistem + 1 seçim bələdçisi)
+
+---
+
+## Ümumi Tətbiq Dizaynları
+
 | Fayl | Tətbiq | Tövsiyə olunan DB |
 |------|--------|-------------------|
 | [01-blog-cms.md](01-blog-cms.md) | Blog / CMS | PostgreSQL + Redis |
@@ -22,7 +27,10 @@
 | [15-online-learning.md](15-online-learning.md) | Online təhsil | PostgreSQL + Redis + S3 |
 | [16-job-board.md](16-job-board.md) | İş elanları | PostgreSQL + Elasticsearch |
 
-### Tanınmış Sistemlərin DB Dizaynları
+---
+
+## Tanınmış Sistemlərin DB Dizaynları
+
 | Fayl | Sistem | Actual DB Stack |
 |------|--------|-----------------|
 | [17-netflix.md](17-netflix.md) | Netflix | Cassandra + MySQL + CockroachDB |
@@ -42,8 +50,13 @@
 | [31-tiktok.md](31-tiktok.md) | TikTok | TiDB + ClickHouse + Cassandra |
 | [32-shopify.md](32-shopify.md) | Shopify | MySQL (Vitess) + Redis |
 
-### DB Seçim Bələdçisi
-| [33-db-selection-guide.md](33-db-selection-guide.md) | Hansı DB-ni seçmək lazımdır? CAP, PACELC, consistency models |
+---
+
+## DB Seçim Bələdçisi
+
+| Fayl | Mövzu |
+|------|-------|
+| [33-db-selection-guide.md](33-db-selection-guide.md) | Hansı DB-ni seçmək lazımdır? CAP, PACELC, consistency model-ləri |
 
 ---
 

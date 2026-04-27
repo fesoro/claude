@@ -1,6 +1,8 @@
-# PHP / Laravel Use Cases
+# Backend Use Cases
 
-Real Laravel layihəsindəki konkret problem-həll ssenariləri. Hər fayl bir produksiyon problemi götürür, **niyə yaranır** izah edir, **step-by-step həll** göstərir.
+Real backend layihələrindəki konkret problem-həll ssenariləri. Hər fayl bir produksiyon problemi götürür, **niyə yaranır** izah edir, **step-by-step həll** göstərir.
+
+Kod nümunələri **PHP/Laravel** ilə yazılmışdır, lakin mövzular **language-agnostic**-dir — prinsiplər hər backend texnologiyasına tətbiq olunur.
 
 **Toplam: 60 use case**
 
@@ -130,7 +132,7 @@ Real Laravel layihəsindəki konkret problem-həll ssenariləri. Hər fayl bir p
 
 ```
 Ödəniş problemi?        → 16, 17, 18, 19, 20, 21
-Cache problemi?         → 23, 25 (bax: topics/122-caching-strategies-deep-dive.md)
+Cache problemi?         → 23, 25
 Multi-tenancy?          → 27, 28
 Fayl/upload?            → 5, 6
 Real-time?              → 9, 38, 39

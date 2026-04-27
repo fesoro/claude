@@ -30,6 +30,9 @@ Bu qovluq backend developer-in (PHP/Laravel) bilməli olduğu DevOps mövzuları
 | 15 | [15-gcp-basics.md](15-gcp-basics.md) | GCP Əsasları — Compute, GKE, Cloud SQL, IAM |
 | 16 | [16-azure-basics.md](16-azure-basics.md) | Azure Əsasları — VM, AKS, App Service, Entra ID |
 | 17 | [17-backup-strategies.md](17-backup-strategies.md) | Backup Strategiyaları — DB/fayl backup, disaster recovery |
+| 38 | [38-logging-monitoring.md](38-logging-monitoring.md) | Logging & Monitoring — structured logs, metrics, alerting |
+| 39 | [39-cicd-deployment.md](39-cicd-deployment.md) | CI/CD Deployment — pipeline design, artifact, deploy stages |
+| 40 | [40-twelve-factor-app.md](40-twelve-factor-app.md) | Twelve-Factor App — 12 faktor metodologiyası, Laravel tətbiqi |
 
 ### ⭐⭐⭐ Senior
 
@@ -49,6 +52,11 @@ Bu qovluq backend developer-in (PHP/Laravel) bilməli olduğu DevOps mövzuları
 | 29 | [29-container-security.md](29-container-security.md) | Container Security — image scanning, pod security, RBAC |
 | 30 | [30-performance-tuning.md](30-performance-tuning.md) | Performance Tuning — Linux, PHP-FPM, OPcache, MySQL |
 | 31 | [31-incident-response.md](31-incident-response.md) | Incident Response — on-call, SEV1-4, runbook, postmortem |
+| 41 | [41-zero-downtime-deployment.md](41-zero-downtime-deployment.md) | Zero-Downtime Deployment — rolling, blue-green, feature flags |
+| 42 | [42-observability.md](42-observability.md) | Observability — pillars (metrics/logs/traces), maturity model |
+| 43 | [43-grafana.md](43-grafana.md) | Grafana — dashboards, alerts, Loki, Tempo inteqrasiyası |
+| 44 | [44-opentelemetry.md](44-opentelemetry.md) | OpenTelemetry — SDK, Collector, auto-instrumentation, Laravel |
+| 47 | [47-deployment-strategies.md](47-deployment-strategies.md) | Deployment Strategies — canary, shadow, A/B, traffic splitting |
 
 ### ⭐⭐⭐⭐ Lead
 
@@ -60,20 +68,26 @@ Bu qovluq backend developer-in (PHP/Laravel) bilməli olduğu DevOps mövzuları
 | 35 | [35-gitops.md](35-gitops.md) | GitOps — Argo CD, Flux CD, progressive delivery |
 | 36 | [36-finops.md](36-finops.md) | FinOps — cloud cost, RI/SP, spot, right-sizing, Kubecost |
 | 37 | [37-multi-cloud.md](37-multi-cloud.md) | Multi-Cloud — active-active, DR, Crossplane, hybrid |
+| 45 | [45-chaos-engineering.md](45-chaos-engineering.md) | Chaos Engineering — Praktik (Gremlin, LitmusChaos, runbook) |
+| 46 | [46-sla-slo-sli.md](46-sla-slo-sli.md) | SLA / SLO / SLI — praktik hesablama, error budget, burn rate |
+| 48 | [48-dora-metrics.md](48-dora-metrics.md) | DORA Metrics — deploy frequency, lead time, MTTR, change failure |
 
 ## Reading Paths
 
 ### Backend Dev (PHP/Laravel) — DevOps Əsasları
-01 → 02 → 03 → 04 → 07 → 08 → 11 → 13 → 14 → 17 → 18 → 19 → 27 → 28 → 31
+01 → 02 → 03 → 04 → 07 → 08 → 11 → 13 → 14 → 17 → 38 → 39 → 40 → 18 → 19 → 27 → 28 → 31
 
 ### CI/CD Mütəxəssisi
-03 → 04 → 05 → 06 → 23 → 24 → 25 → 35
+03 → 04 → 05 → 06 → 39 → 23 → 24 → 25 → 35 → 48
 
 ### Monitoring & Observability
-18 → 19 → 20 → 21 → 22 → 31 → 34
+18 → 19 → 20 → 21 → 22 → 38 → 42 → 43 → 44 → 31 → 34 → 46
 
 ### Cloud & Infrastructure
 02 → 14 → 15 → 16 → 23 → 24 → 25 → 26 → 37
 
 ### SRE / Reliability
-27 → 28 → 30 → 31 → 33 → 34 → 35 → 36
+27 → 28 → 30 → 31 → 33 → 34 → 35 → 36 → 41 → 45 → 46 → 47 → 48
+
+### Twelve-Factor & Deployment
+40 → 39 → 41 → 47 → 27 → 35

@@ -92,6 +92,14 @@ PHP/Laravel developer üçün Docker-dən Kubernetes-ə qədər praktik material
 
 ---
 
+### Kubernetes Deep Dive (52) — Lead ⭐⭐⭐⭐
+
+| # | Fayl | Mövzu | Səviyyə |
+|---|------|-------|---------|
+| 52 | [kubernetes-deep-dive.md](52-kubernetes-deep-dive.md) | K8s dərin: RBAC, network policy, CRD, operator pattern, multi-tenancy | ⭐⭐⭐⭐ Lead |
+
+---
+
 ## Oxuma Yolları
 
 ### Docker-ə başlamaq (Junior → Middle)

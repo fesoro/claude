@@ -58,6 +58,7 @@ PHP/Laravel developer üçün software testing learning path. Junior-dan Lead s�
 | 34 | [Regression, Smoke & Sanity](34-regression-smoke-sanity.md) | Differences and pipeline stages |
 | 35 | [Concurrency & Race Testing](35-concurrency-race-testing.md) | Race conditions, deadlocks, locks, async jobs |
 | 36 | [GraphQL Testing](36-graphql-testing.md) | Lighthouse, schema, N+1, field permissions |
+| 42 | [Integration & Contract Testing](42-integration-contract-testing.md) | Pact, provider/consumer, schema validation, API contracts |
 
 ---
 

@@ -56,6 +56,7 @@ PHP/Laravel developer üçün Git — əsaslardan komanda workflow-larına, böy
 | 29 | [29-codeowners-branch-protection.md](29-codeowners-branch-protection.md) | CODEOWNERS & Branch Protection — ownership qaydaları, məcburi review |
 | 30 | [30-git-performance-large-repos.md](30-git-performance-large-repos.md) | Git Performance in Large Repos — partial clone, sparse checkout, fsmonitor |
 | 31 | [31-git-maintenance.md](31-git-maintenance.md) | Git Maintenance — gc, repack, prune, fsck, commit-graph |
+| 33 | [33-git-advanced.md](33-git-advanced.md) | Git Advanced — rerere, notes, replace, alternates, grafts |
 
 ### ⭐⭐⭐⭐⭐ Architect
 
