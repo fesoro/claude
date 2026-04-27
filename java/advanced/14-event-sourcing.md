@@ -1,6 +1,6 @@
-# 14 — Event Sourcing — Java ilə Geniş İzah
+# Event Sourcing — Java ilə Geniş İzah (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

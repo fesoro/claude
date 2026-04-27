@@ -1,6 +1,6 @@
-# 09 — SOLID Prinsipləri — Java ilə Geniş İzah
+# SOLID Prinsipləri — Java ilə Geniş İzah (Senior)
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

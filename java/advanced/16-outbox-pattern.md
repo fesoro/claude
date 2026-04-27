@@ -1,6 +1,6 @@
-# 16 — Outbox Pattern — Java ilə Geniş İzah
+# Outbox Pattern — Java ilə Geniş İzah (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

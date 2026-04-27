@@ -1,6 +1,6 @@
-# 20 — gRPC ilə Java/Spring — Geniş İzah
+# gRPC ilə Java/Spring — Geniş İzah (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

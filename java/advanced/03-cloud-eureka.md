@@ -1,6 +1,6 @@
-# 03 — Spring Cloud Eureka
+# Spring Cloud Eureka (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

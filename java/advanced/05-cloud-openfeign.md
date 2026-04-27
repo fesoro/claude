@@ -1,6 +1,6 @@
-# 05 — Spring Cloud OpenFeign
+# Spring Cloud OpenFeign (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

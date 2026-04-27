@@ -1,6 +1,6 @@
-# 04 — Spring Cloud Config
+# Spring Cloud Config (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
-# 17 — API Gateway Patterns — Geniş İzah
+# API Gateway Patterns — Geniş İzah (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

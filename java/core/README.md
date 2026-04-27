@@ -19,7 +19,7 @@ Java dili, JVM, core API-lər, tooling, design patterns, testing əsasları, res
 | 7 | I/O & Tooling | 57-61 | Middle ⭐⭐ | I/O, NIO, Maven, Gradle, debugging |
 | 8 | Concurrency | 62-71 | Senior ⭐⭐⭐ | Threads, locks, atomics, CompletableFuture, virtual threads |
 | 9 | JVM & Memory | 72-79 | Senior ⭐⭐⭐ → Lead ⭐⭐⭐⭐ | Architecture, GC, JIT, profiling |
-| 10 | Advanced Features | 80-87 | Senior ⭐⭐⭐ → Lead ⭐⭐⭐⭐ | Reflection, sealed, pattern matching, JPMS |
+| 10 | Advanced Features | 80-87 | Senior ⭐⭐⭐ → Lead ⭐⭐⭐⭐ | Reflection, sealed, pattern matching, unnamed vars/classes, gatherers, JPMS |
 | 11 | Design Patterns | 88-90 | Senior ⭐⭐⭐ | GoF patterns |
 | 12 | Testing Basics | 91-95 | Middle ⭐⭐ → Senior ⭐⭐⭐ | JUnit5, AssertJ, Mockito |
 | 13 | Practical Java | 96-97 | Middle ⭐⭐ → Senior ⭐⭐⭐ | Resource management, Maven multi-module |
@@ -49,7 +49,7 @@ Java dili, JVM, core API-lər, tooling, design patterns, testing əsasları, res
 
 | # | Mövzu | Səv. |
 |---|-------|------|
-| [05](05-variables-data-types.md) | 8 primitive, reference tiplər, literal-lər, `var`, default dəyərlər | Junior ⭐ |
+| [05](05-variables-data-types.md) | 8 primitive, reference tiplər, literal-lər, `var`, autoboxing, Integer cache, BigDecimal | Junior ⭐ |
 | [06](06-operators.md) | Arithmetic/logical/bitwise/ternary, precedence, `5/2` tələsi | Junior ⭐ |
 | [07](07-control-flow.md) | if/else, classic switch, switch expression, pattern matching | Junior ⭐ |
 | [08](08-loops.md) | for/while/do-while/for-each, labeled break/continue | Junior ⭐ |
@@ -169,6 +169,8 @@ Java dili, JVM, core API-lər, tooling, design patterns, testing əsasları, res
 | [82](82-sealed-classes.md) | Java 17 sealed classes, permits, exhaustive patterns | Senior ⭐⭐⭐ |
 | [83](83-pattern-matching.md) | pattern matching for switch/instanceof, record patterns | Senior ⭐⭐⭐ |
 | [84](84-sequenced-collections.md) | Java 21 SequencedCollection, first/last, reversed | Senior ⭐⭐⭐ |
+| [85](85-unnamed-variables-unnamed-classes.md) | Java 22-23: unnamed `_`, unnamed class, instance main — boilerplate azaltma | Senior ⭐⭐⭐ |
+| [86](86-gatherers.md) | Java 22-23: Stream Gatherers — custom stateful intermediate ops, windowing, scan | Lead ⭐⭐⭐⭐ |
 | [87](87-modules-jpms.md) | Java 9+ modules, module-info.java, requires/exports | Senior ⭐⭐⭐ |
 
 ## Phase 11: Design Patterns (88-90)
@@ -207,4 +209,4 @@ Java dili, JVM, core API-lər, tooling, design patterns, testing əsasları, res
 
 **Sonrakı qovluq →** [spring/](../spring/) — Spring Framework, Boot, Data, Security (100 mövzu)
 
-*98 fayl | Son yenilənmə: 2026-04-27*
+*100 fayl | Son yenilənmə: 2026-04-27*

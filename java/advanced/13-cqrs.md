@@ -1,6 +1,6 @@
-# 13 — CQRS Pattern — Java ilə Geniş İzah
+# CQRS Pattern — Java ilə Geniş İzah (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

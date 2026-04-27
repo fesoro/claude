@@ -1,6 +1,6 @@
-# 07 — Distributed Tracing: Micrometer Tracing + OpenTelemetry — Geniş İzah
+# Distributed Tracing: Micrometer Tracing + OpenTelemetry — Geniş İzah (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 > **Qeyd:** Spring Cloud Sleuth Spring Boot 3.x-də deprecated edilib. Yerinə Micrometer Tracing (Brave backend) yaxud OpenTelemetry SDK istifadə olunur.
 

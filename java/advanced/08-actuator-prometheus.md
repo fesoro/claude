@@ -1,6 +1,6 @@
-# 08 — Spring Actuator + Prometheus — Geniş İzah
+# Spring Actuator + Prometheus — Geniş İzah (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

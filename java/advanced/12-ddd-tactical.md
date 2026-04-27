@@ -1,6 +1,6 @@
-# 12 — DDD Tactical Patterns — Java ilə Geniş İzah
+# DDD Tactical Patterns — Java ilə Geniş İzah (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

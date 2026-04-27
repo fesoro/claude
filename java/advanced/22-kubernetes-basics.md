@@ -1,6 +1,6 @@
-# 22 — Kubernetes Java Basics — Geniş İzah
+# Kubernetes Java Basics — Geniş İzah (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

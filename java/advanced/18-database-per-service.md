@@ -1,6 +1,6 @@
-# 18 — Database per Service Pattern — Geniş İzah
+# Database per Service Pattern — Geniş İzah (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

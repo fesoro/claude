@@ -1,6 +1,6 @@
-# 21 — Docker & Spring Boot — Geniş İzah
+# Docker & Spring Boot — Geniş İzah (Senior)
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

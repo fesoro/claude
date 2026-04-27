@@ -1,6 +1,6 @@
-# 11 — Hexagonal Architecture (Ports & Adapters) — Geniş İzah
+# Hexagonal Architecture (Ports & Adapters) — Geniş İzah (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

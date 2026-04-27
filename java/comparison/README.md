@@ -2,7 +2,7 @@
 
 Bu folder Java və Spring Framework-ü **PHP/Laravel dünyası ilə müqayisə edərək** öyrənmək üçündür. Hər bir mövzu iki hissədən ibarətdir: Java/Spring tərəfi və onun PHP/Laravel ekvivalenti. Bu sənə artıq bildiyin Laravel bilikləri üzərindən Spring-ə keçid etməyə kömək edəcək.
 
-**Cəmi: 139 fayl** (47 dil səviyyəsi + 92 framework səviyyəsi) — sadədən mürəkkəbə doğru sıralanıb. Fayl nömrələri level-ə görə artır.
+**Cəmi: 141 fayl** (48 dil səviyyəsi + 93 framework səviyyəsi) — sadədən mürəkkəbə doğru sıralanıb. Fayl nömrələri level-ə görə artır.
 
 ## Seviyyə göstəriciləri
 
@@ -10,10 +10,10 @@ Hər fayl içində **`> **Seviyye:** X ⭐`** etiketi var.
 
 | Göstərici | Kimə uyğundur |
 |-----------|--------------|
-| ⭐ **Beginner** | Java/Spring-ə yeni başlayanlar (əsas syntax, OOP, REST API) |
-| ⭐⭐ **Intermediate** | Junior/Mid — gündəlik iş mövzuları (collections, JPA, security, testing) |
-| ⭐⭐⭐ **Advanced** | Senior backend — framework internals, concurrency, observability |
-| ⭐⭐⭐⭐ **Expert** | Staff/Principal — JVM internals, distributed systems, reactive, native |
+| ⭐ **Junior** | Java/Spring-ə yeni başlayanlar (əsas syntax, OOP, REST API) |
+| ⭐⭐ **Middle** | Junior/Mid — gündəlik iş mövzuları (collections, JPA, security, testing) |
+| ⭐⭐⭐ **Senior** | Senior backend — framework internals, concurrency, observability |
+| ⭐⭐⭐⭐ **Lead** | Staff/Principal — JVM internals, distributed systems, reactive, native |
 
 ---
 
@@ -28,9 +28,9 @@ Hər fayl içində **`> **Seviyye:** X ⭐`** etiketi var.
 
 ---
 
-## Languages (Java vs PHP — Dil Səviyyəsi, 47 fayl)
+## Languages (Java vs PHP — Dil Səviyyəsi, 48 fayl)
 
-### ⭐ Beginner (01–14, 46–47) — Java syntax və OOP əsasları
+### ⭐ Junior (01–14, 46–47) — Java syntax və OOP əsasları
 
 Sıfırdan başlayanlar üçün dil fundamentalları.
 
@@ -52,8 +52,9 @@ Sıfırdan başlayanlar üçün dil fundamentalları.
 | 14 | Enum-lar | [14-enums.md](languages/14-enums.md) |
 | 46 | Pass by value vs reference | [46-pass-by-value-reference.md](languages/46-pass-by-value-reference.md) |
 | 47 | Method overloading vs overriding | [47-method-overloading-vs-overriding.md](languages/47-method-overloading-vs-overriding.md) |
+| 48 | Metodlar və funksiyalar — Java vs PHP | [48-methods-and-functions.md](languages/48-methods-and-functions.md) |
 
-### ⭐⭐ Intermediate (15–30) — gündəlik iş mövzuları
+### ⭐⭐ Middle (15–30) — gündəlik iş mövzuları
 
 Collection-lar, exception handling, streams, modern Java (records/sealed).
 
@@ -76,7 +77,7 @@ Collection-lar, exception handling, streams, modern Java (records/sealed).
 | 29 | Testing idiomları (JUnit/Mockito vs PHPUnit/Pest) | [29-testing-idioms.md](languages/29-testing-idioms.md) |
 | 30 | Sequenced collections və Stream Gatherers (Modern Java) | [30-sequenced-collections-stream-gatherers.md](languages/30-sequenced-collections-stream-gatherers.md) |
 
-### ⭐⭐⭐ Advanced (31–40) — senior backend səviyyə
+### ⭐⭐⭐ Senior (31–40) — senior backend səviyyə
 
 Sealed types, pattern matching, reflection, concurrency, async.
 
@@ -93,7 +94,7 @@ Sealed types, pattern matching, reflection, concurrency, async.
 | 39 | Virtual threads dərindən (Loom) | [39-virtual-threads-deep.md](languages/39-virtual-threads-deep.md) |
 | 40 | NIO.2 — channels və buffers | [40-nio2-channels-buffers.md](languages/40-nio2-channels-buffers.md) |
 
-### ⭐⭐⭐⭐ Expert (41–45) — JVM internals, staff səviyyə
+### ⭐⭐⭐⭐ Lead (41–45) — JVM internals, staff səviyyə
 
 | # | Mövzu | Fayl |
 |---|-------|------|
@@ -105,9 +106,9 @@ Sealed types, pattern matching, reflection, concurrency, async.
 
 ---
 
-## Frameworks (Spring vs Laravel — Framework Səviyyəsi, 91 fayl)
+## Frameworks (Spring vs Laravel — Framework Səviyyəsi, 93 fayl)
 
-### ⭐ Beginner (01–20) — Spring Boot-a giriş
+### ⭐ Junior (01–20) — Spring Boot-a giriş
 
 Hello World → ilk controller → REST API → validation. Laravel-dən gələnlər üçün ən asan başlanğıc.
 
@@ -134,7 +135,7 @@ Hello World → ilk controller → REST API → validation. Laravel-dən gələn
 | 19 | Validation | [19-validation.md](frameworks/19-validation.md) |
 | 20 | Error handling | [20-error-handling.md](frameworks/20-error-handling.md) |
 
-### ⭐⭐ Intermediate (21–48) — gündəlik iş mövzuları
+### ⭐⭐ Middle (21–48) — gündəlik iş mövzuları
 
 Database, transactions, security, testing, queue, cache — production-da hər gün görüləcək mövzular.
 
@@ -169,7 +170,7 @@ Database, transactions, security, testing, queue, cache — production-da hər g
 | 47 | Health checks və monitoring | [47-health-checks-and-monitoring.md](frameworks/47-health-checks-and-monitoring.md) |
 | 48 | Deployment | [48-deployment.md](frameworks/48-deployment.md) |
 
-### ⭐⭐⭐ Advanced (49–72) — senior backend səviyyə
+### ⭐⭐⭐ Senior (49–72) — senior backend səviyyə
 
 AOP, bean lifecycle, transactions deep, resilience, observability, testcontainers.
 
@@ -191,6 +192,7 @@ AOP, bean lifecycle, transactions deep, resilience, observability, testcontainer
 | 62 | Observability və OpenTelemetry | [62-observability-opentelemetry.md](frameworks/62-observability-opentelemetry.md) |
 | 63 | Problem Details (RFC 7807/9457) | [63-problem-details-rfc7807.md](frameworks/63-problem-details-rfc7807.md) |
 | 64 | HTTP Interface (@HttpExchange) və RestClient | [64-http-interface-and-restclient.md](frameworks/64-http-interface-and-restclient.md) |
+| 93 | HTTP Client-lər: RestClient vs RestTemplate vs WebClient — Spring vs Laravel HTTP Facade | [93-restclient-vs-webclient.md](frameworks/93-restclient-vs-webclient.md) |
 | 65 | Spring HATEOAS və Spring Data REST | [65-spring-hateoas-data-rest.md](frameworks/65-spring-hateoas-data-rest.md) |
 | 66 | Spring Session və distributed sessions | [66-spring-session-and-distributed-sessions.md](frameworks/66-spring-session-and-distributed-sessions.md) |
 | 67 | Spring Security OAuth2 Resource Server | [67-spring-security-oauth2-resource-server.md](frameworks/67-spring-security-oauth2-resource-server.md) |
@@ -200,7 +202,7 @@ AOP, bean lifecycle, transactions deep, resilience, observability, testcontainer
 | 71 | Spring Shell və CLI framework-ləri | [71-spring-shell-and-cli-frameworks.md](frameworks/71-spring-shell-and-cli-frameworks.md) |
 | 72 | Jakarta EE migration (javax → jakarta) | [72-jakarta-ee-migration.md](frameworks/72-jakarta-ee-migration.md) |
 
-### ⭐⭐⭐⭐ Expert (73–88) — distributed, reactive, native
+### ⭐⭐⭐⭐ Lead (73–88) — distributed, reactive, native
 
 Microservices, Spring Cloud, reactive, Kafka, Batch, GraphQL, AI, Modulith, AOT.
 
@@ -222,7 +224,7 @@ Microservices, Spring Cloud, reactive, Kafka, Batch, GraphQL, AI, Modulith, AOT.
 | 87 | Spring Modulith | [87-spring-modulith.md](frameworks/87-spring-modulith.md) |
 | 88 | Spring Boot AOT və GraalVM Native Image | [88-spring-boot-aot-native-image.md](frameworks/88-spring-boot-aot-native-image.md) |
 
-### ⭐⭐ Intermediate (89–92) — Spring tələləri (PHP/Laravel devs üçün kritik)
+### ⭐⭐ Middle (89–92) — Spring tələləri (PHP/Laravel devs üçün kritik)
 
 | # | Mövzu | Fayl |
 |---|-------|------|
@@ -241,8 +243,8 @@ Microservices, Spring Cloud, reactive, Kafka, Batch, GraphQL, AI, Modulith, AOT.
 2. **Frameworks ⭐ 01–20** (Spring Boot ilk addımlar, REST API, validation) — 1–2 həftə
 3. **Languages ⭐⭐ 15–30** (collections, streams, modern Java) — 2–3 həftə
 4. **Frameworks ⭐⭐ 21–92** (JPA, transactions, security, testing, queue, Spring gotchas) — 3–4 həftə
-5. **Advanced/Expert** mövzularını işin tələb etdiyi ardıcıllıqla oxu.
+5. **Senior/Lead** mövzularını işin tələb etdiyi ardıcıllıqla oxu. HTTP clients üçün 64 + 93-ü birlikdə oxu.
 
 **Junior Java developer (Spring yenisi)?** → Frameworks 01–20 → 21–48 kifayətdir başlanğıc üçün.
 
-**Senior interview-a hazırlaşır?** → Advanced və Expert bölmələri (həm Languages 31–45, həm Frameworks 49–88).
+**Senior interview-a hazırlaşır?** → Senior və Lead bölmələri (həm Languages 31–45, həm Frameworks 49–88).

@@ -1,6 +1,6 @@
-# Spring Framework & Boot — 99 Mövzu (01-99)
+# Spring Framework & Boot — 103 Mövzu (01-103)
 
-Spring Boot, Core Container, MVC/REST, Data/JPA, Security, AOP, integration, Spring testing və Modern Java. Middle ⭐⭐ səviyyədən Lead ⭐⭐⭐⭐-ə qədər.
+Spring Boot, Core Container, MVC/REST, Data/JPA, Security, AOP, integration, Spring testing, Modern Java və HTTP Clients. Middle ⭐⭐ səviyyədən Lead ⭐⭐⭐⭐-ə qədər.
 
 **Şərt:** [../core/](../core/) qovluğundakı Java fundamentals (OOP, Collections, Generics, Lambdas, Maven/Gradle, Exceptions) bilinməlidir.
 
@@ -20,7 +20,8 @@ Spring Boot, Core Container, MVC/REST, Data/JPA, Security, AOP, integration, Spr
 | 6 | Security | 53-63 | Middle ⭐⭐ → Lead ⭐⭐⭐⭐ | Authentication, JWT, OAuth2, CORS, session |
 | 7 | Integration & Messaging | 64-84 | Middle ⭐⭐ → Lead ⭐⭐⭐⭐ | Cache, Redis, Mongo, Kafka, RabbitMQ, WebSocket, Batch, GraphQL, AI, WebFlux |
 | 8 | Spring Testing | 85-89 | Senior ⭐⭐⭐ | @SpringBootTest, WebMvcTest, DataJpaTest, Testcontainers, Security Testing |
-| 9 | Modern Spring & Java | 90-99 | Middle ⭐⭐ → Lead ⭐⭐⭐⭐ | Servlet, Transaction propagation, Optional, Lombok, ProblemDetail, Circular dep, Virtual threads, Records, Sealed classes, Observability |
+| 9 | Modern Spring & Java | 90-100 | Middle ⭐⭐ → Senior ⭐⭐⭐ | Servlet, Transaction propagation, Optional, Lombok, ProblemDetail, Circular dep, Virtual threads, Records, Sealed classes, Observability, Graceful Shutdown |
+| 10 | HTTP Clients | 101-103 | Middle ⭐⭐ → Senior ⭐⭐⭐ | RestClient, @HttpExchange deklarativ client, @RestClientTest |
 
 ---
 
@@ -178,9 +179,17 @@ Spring Boot, Core Container, MVC/REST, Data/JPA, Security, AOP, integration, Spr
 | [99](99-observability-architecture.md) | Structured logging, MDC, Micrometer metrics, OpenTelemetry, production stack | Lead ⭐⭐⭐⭐ |
 | [100](100-graceful-shutdown.md) | server.shutdown=graceful, SmartLifecycle, Kubernetes preStop/readiness | Senior ⭐⭐⭐ |
 
+## Phase 10: HTTP Clients (101-103)
+
+| # | Mövzu | Səv. |
+|---|-------|------|
+| [101](101-restclient.md) | RestClient — Spring 6.1+ fluent sinxron HTTP client, RestTemplate-in yerini tutur | Middle ⭐⭐ |
+| [102](102-httpexchange.md) | @HttpExchange — deklarativ HTTP client interface, Spring-native OpenFeign alternativi | Senior ⭐⭐⭐ |
+| [103](103-rest-client-test.md) | @RestClientTest — HTTP client test slice, MockRestServiceServer | Senior ⭐⭐⭐ |
+
 ---
 
 **← Əvvəlki:** [core/](../core/) — Java dili əsasları (99 mövzu)
 **Sonrakı →** [advanced/](../advanced/) — Cloud, architecture, deployment (26 mövzu)
 
-*100 fayl | Son yenilənmə: 2026-04-27*
+*103 fayl | Son yenilənmə: 2026-04-27*

@@ -1,6 +1,6 @@
-# 01 — Spring Cloud Nədir və Ekosistem
+# Spring Cloud Nədir və Ekosistem (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

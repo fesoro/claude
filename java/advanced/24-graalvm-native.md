@@ -1,6 +1,6 @@
-# 24 — Spring Native & GraalVM — Geniş İzah
+# Spring Native & GraalVM — Geniş İzah (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

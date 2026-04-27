@@ -1,6 +1,6 @@
-# 06 — Spring Cloud Resilience4j
+# Spring Cloud Resilience4j (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
-# 15 — Saga Pattern — Java ilə Geniş İzah
+# Saga Pattern — Java ilə Geniş İzah (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

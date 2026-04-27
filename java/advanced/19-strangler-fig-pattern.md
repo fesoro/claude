@@ -1,6 +1,6 @@
-# 19 — Strangler Fig Pattern — Geniş İzah
+# Strangler Fig Pattern — Geniş İzah (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

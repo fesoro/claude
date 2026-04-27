@@ -1,6 +1,6 @@
 # Java / Spring Boot Examples — Praktiki Mini Layihələr
 
-Java və Spring Boot konseptlərini real ssenarilər üzərindən göstərən **9 müstəqil, işlək mini layihə**.
+Java və Spring Boot konseptlərini real ssenarilər üzərindən göstərən **10 müstəqil, işlək mini layihə**.
 
 ## Layihələr
 
@@ -15,13 +15,14 @@ Java və Spring Boot konseptlərini real ssenarilər üzərindən göstərən **
 | 07 | [Task Scheduler](./07-task-scheduler/) | Background Jobs | ⭐⭐⭐⭐ Lead | `@Scheduled`, job tracking, metrics |
 | 08 | [E-Commerce DDD](./08-ecommerce-ddd/) | DDD + CQRS | ⭐⭐⭐⭐ Lead | Aggregates, Value Objects, domain events |
 | 09 | [Microservices Demo](./09-microservices-demo/) | 2 servis + Kafka | ⭐⭐⭐⭐ Lead | Order→Notification, REST + Kafka, Docker Compose |
+| 10 | [CQRS + Event Sourcing](./10-cqrs-event-sourcing/) | Bank Account | ⭐⭐⭐⭐⭐ Architect | Event Store, Aggregate, Projection, Replay |
 
 ## Tələblər
 
 - Java 21+
 - Maven 3.9+
 - H2 in-memory DB — **01-08 üçün əlavə quraşdırma lazım deyil**
-- Docker — **09 üçün (Kafka + PostgreSQL)**
+- Docker — **09 üçün (Kafka + PostgreSQL), 10 üçün (PostgreSQL)**
 
 ## Sürətli Başlanğıc
 

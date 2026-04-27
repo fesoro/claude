@@ -1,6 +1,6 @@
-# 02 — Spring Cloud Gateway
+# Spring Cloud Gateway (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat

@@ -1,6 +1,6 @@
-# 23 — GitHub Actions Java CI/CD — Geniş İzah
+# GitHub Actions Java CI/CD — Geniş İzah (Senior)
 
-> **Seviyye:** Advanced ⭐⭐⭐
+> **Seviyye:** Senior ⭐⭐⭐
 
 
 ## Mündəricat

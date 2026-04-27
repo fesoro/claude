@@ -1,6 +1,6 @@
-# 10 — Clean Architecture — Geniş İzah
+# Clean Architecture — Geniş İzah (Lead)
 
-> **Seviyye:** Expert ⭐⭐⭐⭐
+> **Seviyye:** Lead ⭐⭐⭐⭐
 
 
 ## Mündəricat
