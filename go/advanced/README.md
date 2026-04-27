@@ -1,6 +1,6 @@
-# Go Advanced — 27 Mövzu (01-27)
+# Go Advanced — 41 Mövzu (01-41)
 
-Production-ready arxitektura: advanced concurrency, design patterns, gRPC, security, resilience, observability, microservices, clean architecture. Senior ⭐⭐⭐-dan Architect ⭐⭐⭐⭐⭐-ə qədər.
+Production-ready arxitektura: advanced concurrency, design patterns, gRPC, security, resilience, observability, microservices, clean architecture, DDD/CQRS/Event Sourcing, Saga, K8s, CI/CD. Senior ⭐⭐⭐-dan Architect ⭐⭐⭐⭐⭐-ə qədər.
 
 **Ön şərt:** `core/` + `backend/` tamamlanmış olmalıdır.
 
@@ -15,6 +15,9 @@ Production-ready arxitektura: advanced concurrency, design patterns, gRPC, secur
 | 3 | Sistem & Auth | 06-12 | Lead ⭐⭐⭐⭐ | WebSocket, security, caching, DI, JWT, gRPC |
 | 4 | Resilience & Testing | 13-20 | Lead ⭐⭐⭐⭐ | Singleflight, OAuth2, event bus, fuzz, circuit breaker, GraphQL |
 | 5 | Arxitektura & İnfrastruktur | 21-27 | Architect ⭐⭐⭐⭐⭐ | Profiling, memory, Docker, observability, microservices |
+| 6 | Architecture Patterns I | 28-34 | Lead–Architect ⭐⭐⭐⭐⭐ | SOLID, Hexagonal, DDD, CQRS, Event Sourcing, Saga, Outbox |
+| 7 | Architecture Patterns II | 35-37 | Lead ⭐⭐⭐⭐ | API Gateway, DB-per-service, Strangler Fig |
+| 8 | Ops & Komandalı İş | 38-41 | Senior–Lead ⭐⭐⭐⭐ | Kubernetes, CI/CD, Multi-tenancy, ADR |
 
 ---
 
@@ -77,6 +80,43 @@ Production-ready arxitektura: advanced concurrency, design patterns, gRPC, secur
 | [25](25-message-queues.md) | Message Queues | Kafka, RabbitMQ, NATS — consumer, DLQ, idempotency |
 | [26](26-microservices.md) | Microservices | Service discovery, health check, saga pattern, API gateway |
 | [27](27-clean-architecture.md) | Clean Architecture | Hexagonal, ports & adapters, dependency rule, DI |
+
+---
+
+---
+
+## Faza 6: Architecture Patterns I (28-34) — Lead ⭐⭐⭐⭐ → Architect ⭐⭐⭐⭐⭐
+
+| # | Fayl | Mövzu |
+|---|------|-------|
+| [28](28-solid-principles.md) | SOLID Prinsipləri | Go kontekstində S-O-L-I-D, interface-lərlə tətbiq |
+| [29](29-hexagonal-architecture.md) | Hexagonal Architecture | Ports & Adapters, domain/ports/adapters qovluq strukturu |
+| [30](30-ddd-tactical.md) | DDD Tactical Patterns | Entity, Value Object, Aggregate, Domain Event, Repository |
+| [31](31-cqrs.md) | CQRS | Command/Query ayrılması, Command Bus, read/write model |
+| [32](32-event-sourcing.md) | Event Sourcing | Event store, aggregate reconstruction, snapshot, EventStore interface |
+| [33](33-saga-pattern.md) | Saga Pattern | Distributed transaction, Choreography vs Orchestration, kompensasiya |
+| [34](34-outbox-pattern.md) | Outbox Pattern | Transactional outbox, FOR UPDATE SKIP LOCKED, CDC/Debezium |
+
+---
+
+## Faza 7: Architecture Patterns II (35-37) — Lead ⭐⭐⭐⭐
+
+| # | Fayl | Mövzu |
+|---|------|-------|
+| [35](35-api-gateway-patterns.md) | API Gateway Patterns | Reverse proxy, auth middleware, BFF aggregation, Traefik |
+| [36](36-database-per-service.md) | Database per Service | DB seçimi per service, API composition, event-driven sync |
+| [37](37-strangler-fig-pattern.md) | Strangler Fig Pattern | PHP→Go miqrasiya, percentage routing, anti-corruption layer |
+
+---
+
+## Faza 8: Ops & Komandalı İş (38-41) — Senior ⭐⭐⭐ → Lead ⭐⭐⭐⭐
+
+| # | Fayl | Mövzu |
+|---|------|-------|
+| [38](38-kubernetes-basics.md) | Kubernetes Basics | Pod, Deployment, Service, ConfigMap, HPA, health probe-lar |
+| [39](39-github-actions-cicd.md) | GitHub Actions CI/CD | ci.yml, cd.yml, GHCR, golangci-lint, staging/prod deploy |
+| [40](40-multi-tenancy.md) | Multi-tenancy | DB-per-tenant, schema-per-tenant, row-level isolation, middleware |
+| [41](41-adr-architecture-decision-records.md) | ADR | Architecture Decision Records, lifecycle, 3 real nümunə |
 
 ---
 

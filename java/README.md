@@ -6,14 +6,14 @@ Bu folder Java dili, Spring Framework və distributed sistemlər üçün lazım 
 
 ```
 java/
-├── core/        — Java dili, JVM, Collections, Concurrency (99 fayl)
-├── spring/      — Spring Boot, MVC, Data/JPA, Security, Modern Java (100 fayl)
-├── advanced/    — Spring Cloud, Architecture, Production Engineering (26 fayl)
+├── core/        — Java dili, JVM, Collections, Concurrency (100 fayl)
+├── spring/      — Spring Boot, MVC, Data/JPA, Security, Modern Java (108 fayl)
+├── advanced/    — Spring Cloud, Architecture, Production Engineering (27 fayl)
 ├── comparison/  — Java/Spring vs PHP/Laravel müqayisəsi (138 fayl)
 └── examples/    — 9 işlək mini layihə: Hello Spring → Microservices Demo
 ```
 
-**Cəmi: 364 fayl + 9 kod nümunəsi** — sıfırdan expert səviyyəyə qədər.
+**Cəmi: 374 fayl + 9 kod nümunəsi** — sıfırdan expert səviyyəyə qədər.
 
 ---
 
@@ -60,7 +60,7 @@ Bütün alt qovluqlarda mövzular sadədən mürəkkəbə sıralanıb. Hər fayl
 
 ---
 
-## [core/](core/) — Java Dili və JVM (99 fayl)
+## [core/](core/) — Java Dili və JVM (100 fayl)
 
 Java syntax, OOP, Collections, Streams, Generics, Concurrency, JVM, Design Patterns, Testing əsasları.
 
@@ -80,12 +80,13 @@ Java syntax, OOP, Collections, Streams, Generics, Concurrency, JVM, Design Patte
 12. Testing Basics (91-95) — JUnit5, AssertJ, Mockito
 13. Practical Java (96-97) — resource management, Maven multi-module
 14. Modern Concurrency & Perf (98-99) — Structured Concurrency, JMH
+15. Performance Patterns (100) — Object Pool, Commons Pool2
 
 Detallı cədvəl: [core/README.md](core/README.md)
 
 ---
 
-## [spring/](spring/) — Spring Boot & Framework (100 fayl)
+## [spring/](spring/) — Spring Boot & Framework (108 fayl)
 
 Spring Boot onboarding, IoC container, MVC/REST, Spring Data JPA, Security, AOP, messaging, Spring Testing.
 
@@ -99,6 +100,9 @@ Spring Boot onboarding, IoC container, MVC/REST, Spring Data JPA, Security, AOP,
 6. Security (53-63) — auth, JWT, OAuth2, CORS, session
 7. Integration & Messaging (64-84) — cache, Redis, Mongo, Kafka, RabbitMQ, WebSocket, Batch, GraphQL, AI, WebFlux
 8. Spring Testing (85-89) — @SpringBootTest, WebMvcTest, DataJpaTest, Testcontainers, Security Testing
+9. Modern Spring & Java (90-100) — virtual threads, records, sealed, observability, graceful shutdown
+10. HTTP Clients (101-103) — RestClient, @HttpExchange, @RestClientTest
+11. Production Patterns (104-108) — SSE, Webhook delivery, Background jobs, Fuzz testing, Singleflight
 
 **Şərt:** [core/](core/) qovluğundakı Java fundamentals (OOP, Collections, Generics, Lambdas, Maven/Gradle).
 
@@ -106,7 +110,7 @@ Detallı cədvəl: [spring/README.md](spring/README.md)
 
 ---
 
-## [advanced/](advanced/) — Cloud, Architecture, Production Engineering (26 fayl)
+## [advanced/](advanced/) — Cloud, Architecture, Production Engineering (27 fayl)
 
 Mikroservis ekosistemi, distributed architecture pattern-ləri, production deployment. Advanced ⭐⭐⭐ → Expert ⭐⭐⭐⭐ səviyyə.
 

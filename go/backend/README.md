@@ -1,4 +1,4 @@
-# Go Backend — 32 Mövzu (01-32)
+# Go Backend — 33 Mövzu (01-33)
 
 Go ilə praktiki backend development: HTTP server/client, database, ORM, project structure, testing, real-world patterns. Middle ⭐⭐-dan Senior ⭐⭐⭐-ə qədər.
 
@@ -14,7 +14,7 @@ Go ilə praktiki backend development: HTTP server/client, database, ORM, project
 | 2 | Database | 05-06 | Middle ⭐⭐ | database/sql, ORM, sqlx, GORM |
 | 3 | Konfigurasiya & Patterns | 07-10 | Middle ⭐⭐ | Config, data structures, functional options, templates |
 | 4 | Sistem & Alətlər | 11-19 | Senior ⭐⭐⭐ | TCP, processes, files, rate limiting, testing, project, repo |
-| 5 | Production Patterns | 20-32 | Senior ⭐⭐⭐ | Validation, migrations, cron, versioning, email, webhook, SSE, pagination |
+| 5 | Production Patterns | 20-33 | Senior ⭐⭐⭐ | Validation, migrations, cron, versioning, email, webhook, SSE, pagination, idempotency |
 
 ---
 
@@ -82,6 +82,7 @@ Go ilə praktiki backend development: HTTP server/client, database, ORM, project
 | [30](30-sse-server-sent-events.md) | SSE | `http.Flusher`, real-time push, reconnect |
 | [31](31-swagger-openapi.md) | Swagger & OpenAPI | `swaggo/swag`, annotation, Swagger UI, spec generation |
 | [32](32-pagination.md) | Pagination | Offset, cursor, keyset — performans müqayisəsi |
+| [33](33-idempotency-pattern.md) | Idempotency Pattern | Idempotency-Key header, Redis SET NX, atomic replay prevention |
 
 ---
 

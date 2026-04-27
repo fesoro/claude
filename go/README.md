@@ -3,7 +3,7 @@
 PHP/Laravel developer üçün Go dilini sıfırdan professional arxitektura səviyyəsinə qədər öyrənmə yolu. Hər mövzu real layihə təcrübəsindən gələn praktik biliklər, trade-off analizi və kod nümunələri ilə çatdırılır.
 
 **Hədəf auditoriya:** 5+ il PHP/Laravel təcrübəsi olan developer, Go-ya keçid etmək istəyir  
-**Ümumi mövzu sayı:** 95 mövzu + 8 praktiki layihə  
+**Ümumi mövzu sayı:** 110 mövzu + 8 praktiki layihə  
 **Proqramlaşdırma dili:** Go (Golang), kod nümunələri `go` bloklarında
 
 ---
@@ -13,8 +13,8 @@ PHP/Laravel developer üçün Go dilini sıfırdan professional arxitektura səv
 | Folder | Mövzu sayı | Səviyyə | Qısa Məzmun |
 |--------|-----------|---------|-------------|
 | [`core/`](./core/) | 36 | ⭐ Junior → ⭐⭐⭐ Senior | Dil əsasları, interface, error, concurrency, dil dərinliyi |
-| [`backend/`](./backend/) | 32 | ⭐⭐ Middle → ⭐⭐⭐ Senior | HTTP, database, API, production patterns |
-| [`advanced/`](./advanced/) | 27 | ⭐⭐⭐ Senior → ⭐⭐⭐⭐⭐ Architect | Patterns, security, observability, microservices |
+| [`backend/`](./backend/) | 33 | ⭐⭐ Middle → ⭐⭐⭐ Senior | HTTP, database, API, production patterns |
+| [`advanced/`](./advanced/) | 41 | ⭐⭐⭐ Senior → ⭐⭐⭐⭐⭐ Architect | Patterns, security, DDD, CQRS, Saga, K8s, CI/CD, architecture |
 | [`examples/`](./examples/) | 8 layihə | ⭐ → ⭐⭐⭐⭐ | İşlək mini layihələr (stdlib only) |
 
 ---
@@ -46,8 +46,10 @@ examples/02, 05, 07 → REST API, URL shortener, scraper
 ```
 core/27-32        → Advanced concurrency basics
 advanced/01-12    → Mutex, patterns, gRPC, security
-advanced/20-27    → Resilience, testing, GraphQL
-advanced/13-19    → Architecture, observability, microservices
+advanced/13-20    → Resilience, testing, GraphQL
+advanced/21-27    → Architecture, observability, microservices
+advanced/28-37    → DDD, CQRS, Event Sourcing, Saga, Outbox, API Gateway
+advanced/38-41    → Kubernetes, CI/CD, Multi-tenancy, ADR
 ```
 
 ---

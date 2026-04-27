@@ -1,4 +1,4 @@
-# Spring Framework & Boot — 103 Mövzu (01-103)
+# Spring Framework & Boot — 108 Mövzu (01-108)
 
 Spring Boot, Core Container, MVC/REST, Data/JPA, Security, AOP, integration, Spring testing, Modern Java və HTTP Clients. Middle ⭐⭐ səviyyədən Lead ⭐⭐⭐⭐-ə qədər.
 
@@ -22,6 +22,7 @@ Spring Boot, Core Container, MVC/REST, Data/JPA, Security, AOP, integration, Spr
 | 8 | Spring Testing | 85-89 | Senior ⭐⭐⭐ | @SpringBootTest, WebMvcTest, DataJpaTest, Testcontainers, Security Testing |
 | 9 | Modern Spring & Java | 90-100 | Middle ⭐⭐ → Senior ⭐⭐⭐ | Servlet, Transaction propagation, Optional, Lombok, ProblemDetail, Circular dep, Virtual threads, Records, Sealed classes, Observability, Graceful Shutdown |
 | 10 | HTTP Clients | 101-103 | Middle ⭐⭐ → Senior ⭐⭐⭐ | RestClient, @HttpExchange deklarativ client, @RestClientTest |
+| 11 | Production Patterns | 104-108 | Senior ⭐⭐⭐ → Lead ⭐⭐⭐⭐ | SSE, Webhook delivery, Background jobs, Fuzz testing, Singleflight |
 
 ---
 
@@ -187,9 +188,19 @@ Spring Boot, Core Container, MVC/REST, Data/JPA, Security, AOP, integration, Spr
 | [102](102-httpexchange.md) | @HttpExchange — deklarativ HTTP client interface, Spring-native OpenFeign alternativi | Senior ⭐⭐⭐ |
 | [103](103-rest-client-test.md) | @RestClientTest — HTTP client test slice, MockRestServiceServer | Senior ⭐⭐⭐ |
 
+## Phase 11: Production Patterns (104-108)
+
+| # | Mövzu | Səv. |
+|---|-------|------|
+| [104](104-sse-server-sent-events.md) | SSE — SseEmitter (MVC) + Flux\<ServerSentEvent\> (WebFlux), Redis Pub/Sub multi-instance | Senior ⭐⭐⭐ |
+| [105](105-webhook-delivery.md) | Webhook Delivery — HMAC imzalama, exponential backoff retry, receiver verification | Senior ⭐⭐⭐ |
+| [106](106-background-jobs-patterns.md) | Background Jobs — @Scheduled+ShedLock, @Async, Jobrunr, Kafka consumer patterns | Senior ⭐⭐⭐ |
+| [107](107-fuzz-testing.md) | Fuzz Testing — jqwik property-based, jazzer coverage-guided, MockMvc bulk testing | Lead ⭐⭐⭐⭐ |
+| [108](108-singleflight-request-coalescing.md) | Singleflight / Request Coalescing — ConcurrentHashMap+CF, Caffeine AsyncLoadingCache | Lead ⭐⭐⭐⭐ |
+
 ---
 
 **← Əvvəlki:** [core/](../core/) — Java dili əsasları (99 mövzu)
-**Sonrakı →** [advanced/](../advanced/) — Cloud, architecture, deployment (26 mövzu)
+**Sonrakı →** [advanced/](../advanced/) — Cloud, architecture, deployment (27 mövzu)
 
-*103 fayl | Son yenilənmə: 2026-04-27*
+*108 fayl | Son yenilənmə: 2026-04-27*

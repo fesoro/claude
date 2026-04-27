@@ -1,4 +1,4 @@
-# Core Java — 99 Mövzu (01-99)
+# Core Java — 100 Mövzu (01-100)
 
 Java dili, JVM, core API-lər, tooling, design patterns, testing əsasları, resource management və Maven multi-module. Sıfırdan başlayıb Senior ⭐⭐⭐ səviyyəyə qədər.
 
@@ -24,6 +24,7 @@ Java dili, JVM, core API-lər, tooling, design patterns, testing əsasları, res
 | 12 | Testing Basics | 91-95 | Middle ⭐⭐ → Senior ⭐⭐⭐ | JUnit5, AssertJ, Mockito |
 | 13 | Practical Java | 96-97 | Middle ⭐⭐ → Senior ⭐⭐⭐ | Resource management, Maven multi-module |
 | 14 | Modern Concurrency & Perf | 98-99 | Lead ⭐⭐⭐⭐ | Structured Concurrency, Scoped Values, JMH |
+| 15 | Performance Patterns | 100 | Lead ⭐⭐⭐⭐ | Object Pool, resource pooling, Commons Pool2 |
 
 ---
 
@@ -205,8 +206,14 @@ Java dili, JVM, core API-lər, tooling, design patterns, testing əsasları, res
 | [98](98-structured-concurrency-scoped-values.md) | Java 21 StructuredTaskScope, ShutdownOnFailure/Success, ScopedValue vs ThreadLocal | Lead ⭐⭐⭐⭐ |
 | [99](99-jmh-benchmarking.md) | JMH setup, @Benchmark, @State, Blackhole, dead code elimination, flamegraph | Lead ⭐⭐⭐⭐ |
 
+## Phase 15: Performance Patterns (100)
+
+| # | Mövzu | Səv. |
+|---|-------|------|
+| [100](100-object-pool-pattern.md) | Object Pool Pattern — Commons Pool2, DIY BlockingQueue pool, HikariCP internals, sync.Pool müqayisəsi | Lead ⭐⭐⭐⭐ |
+
 ---
 
-**Sonrakı qovluq →** [spring/](../spring/) — Spring Framework, Boot, Data, Security (100 mövzu)
+**Sonrakı qovluq →** [spring/](../spring/) — Spring Framework, Boot, Data, Security (108 mövzu)
 
 *100 fayl | Son yenilənmə: 2026-04-27*
