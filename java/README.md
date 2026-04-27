@@ -9,7 +9,7 @@ java/
 ├── core/        — Java dili, JVM, Collections, Concurrency (99 fayl)
 ├── spring/      — Spring Boot, MVC, Data/JPA, Security, Modern Java (100 fayl)
 ├── advanced/    — Spring Cloud, Architecture, Production Engineering (26 fayl)
-├── comparison/  — Java/Spring vs PHP/Laravel müqayisəsi (139 fayl)
+├── comparison/  — Java/Spring vs PHP/Laravel müqayisəsi (138 fayl)
 └── examples/    — 9 işlək mini layihə: Hello Spring → Microservices Demo
 ```
 

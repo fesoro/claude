@@ -105,7 +105,7 @@ Sealed types, pattern matching, reflection, concurrency, async.
 
 ---
 
-## Frameworks (Spring vs Laravel — Framework Səviyyəsi, 92 fayl)
+## Frameworks (Spring vs Laravel — Framework Səviyyəsi, 91 fayl)
 
 ### ⭐ Beginner (01–20) — Spring Boot-a giriş
 
@@ -216,8 +216,7 @@ Microservices, Spring Cloud, reactive, Kafka, Batch, GraphQL, AI, Modulith, AOT.
 | 80 | Spring Cloud Stream (Kafka/RabbitMQ abstraction) | [80-spring-cloud-stream.md](frameworks/80-spring-cloud-stream.md) |
 | 81 | Spring for Apache Kafka | [81-spring-kafka.md](frameworks/81-spring-kafka.md) |
 | 82 | Spring Batch | [82-spring-batch.md](frameworks/82-spring-batch.md) |
-| 83 | GraphQL support (ümumi müqayisə) | [83-graphql-support.md](frameworks/83-graphql-support.md) |
-| 84 | Spring for GraphQL (dərin) | [84-spring-graphql.md](frameworks/84-spring-graphql.md) |
+| 84 | Spring for GraphQL vs Lighthouse — dərin müqayisə | [84-spring-graphql.md](frameworks/84-spring-graphql.md) |
 | 85 | Spring Authorization Server | [85-spring-authorization-server.md](frameworks/85-spring-authorization-server.md) |
 | 86 | Spring AI (LLM və RAG) | [86-spring-ai.md](frameworks/86-spring-ai.md) |
 | 87 | Spring Modulith | [87-spring-modulith.md](frameworks/87-spring-modulith.md) |

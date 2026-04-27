@@ -169,7 +169,6 @@ Java dili, JVM, core API-lər, tooling, design patterns, testing əsasları, res
 | [82](82-sealed-classes.md) | Java 17 sealed classes, permits, exhaustive patterns | Senior ⭐⭐⭐ |
 | [83](83-pattern-matching.md) | pattern matching for switch/instanceof, record patterns | Senior ⭐⭐⭐ |
 | [84](84-sequenced-collections.md) | Java 21 SequencedCollection, first/last, reversed | Senior ⭐⭐⭐ |
-| [86](86-foreign-memory-api.md) | Java 22 FFM API, native memory access | Lead ⭐⭐⭐⭐ |
 | [87](87-modules-jpms.md) | Java 9+ modules, module-info.java, requires/exports | Senior ⭐⭐⭐ |
 
 ## Phase 11: Design Patterns (88-90)
@@ -208,4 +207,4 @@ Java dili, JVM, core API-lər, tooling, design patterns, testing əsasları, res
 
 **Sonrakı qovluq →** [spring/](../spring/) — Spring Framework, Boot, Data, Security (100 mövzu)
 
-*99 fayl | Son yenilənmə: 2026-04-27*
+*98 fayl | Son yenilənmə: 2026-04-27*
