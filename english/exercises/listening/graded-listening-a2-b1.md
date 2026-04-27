@@ -154,6 +154,164 @@ Bu məşqlər real iş mühitindəki söhbətləri simulyasiya edir. Transkripsi
 
 ---
 
+## Track 4 — Code Review Discussion (B1)
+**Topic:** Two developers reviewing a pull request
+
+**Emma:** Hey Carlos, I finished reviewing your PR. Got a few minutes to go through my comments?
+
+**Carlos:** Sure, yeah. I was wondering what you thought.
+
+**Emma:** Overall, the logic is solid. I just had a couple of things. First — the function name `processData`. It's a bit generic. Since it's specifically transforming the user input before saving, something like `sanitizeUserInput` would make the intent clearer.
+
+**Carlos:** That makes sense. I'll rename it.
+
+**Emma:** Good. The other thing — in the loop on line fifty-eight, you're running a database query inside the loop. If there are a hundred records, that's a hundred queries. It will be fine in testing, but in production it could be slow.
+
+**Carlos:** Ah, I see the problem. Should I load the data before the loop and pass it in?
+
+**Emma:** Exactly. Eager loading would work well here. Check how we do it in the order service — there's a similar pattern there.
+
+**Carlos:** Got it. And are you happy with the test coverage?
+
+**Emma:** The happy path is well tested. I'd like to see at least one test for the case where the input is empty — just to make sure it doesn't throw an unexpected error.
+
+**Carlos:** I'll add that now. So once I fix these three things, you'll approve?
+
+**Emma:** Yes, push the changes and re-request my review. Shouldn't take long.
+
+---
+
+### Questions — Track 4
+
+**A. True / False / Not Given**
+
+1. Emma thinks the overall logic in the PR is incorrect.
+2. Carlos should rename the function to `cleanUserInput`.
+3. The database query inside the loop could cause performance problems in production.
+4. Emma suggests Carlos look at the order service for an example.
+5. The current test coverage includes a test for empty input.
+
+**B. Fill in the blanks. Write NO MORE THAN TWO WORDS.**
+
+6. Emma says the function name is too __________.
+7. Running a query inside a loop could be slow if there are many __________.
+8. Emma recommends using __________ loading to fix the performance issue.
+9. Carlos needs to add a test for the case where the input is __________.
+10. Carlos must re-request Emma's review after __________ the changes.
+
+---
+
+## Track 5 — Remote Onboarding Call (B1)
+**Topic:** New developer's first call with team lead
+
+**Alex:** Welcome, glad to have you on board. This call is just to run through the basics so you're not lost on day one.
+
+**New Dev:** Thanks, I appreciate it. I have a few questions, but please go ahead.
+
+**Alex:** Sure. So — we're fully remote, and the team is spread across three time zones. We don't have fixed hours, but we do ask that everyone is available for a three-hour overlap window, which is two to five p.m. Central European Time. Outside of that, async is fine.
+
+**New Dev:** That works for me. What tools do you use?
+
+**Alex:** Slack for communication — we try to keep decisions documented in threads, not in DMs. Jira for task tracking. Every ticket should have a status update at least once a day. And GitHub for code — you'll need to open a PR for anything, even small fixes. No pushing directly to main.
+
+**New Dev:** Got it. And what does the first week look like?
+
+**Alex:** The first two days, just read the documentation and set up your local environment. There are instructions in the onboarding repo. Day three, you'll have a call with the product team to understand what we're building and why. From day four you'll start picking up small tickets — we'll label them "good first issue" in Jira.
+
+**New Dev:** And for meetings?
+
+**Alex:** We have a team standup on Monday and Wednesday at three p.m. CET, and a sprint review every two weeks on Friday. Everything else is async by default.
+
+**New Dev:** Perfect. This all makes sense.
+
+---
+
+### Questions — Track 5
+
+**A. Choose the correct answer (A, B, or C).**
+
+1. What are the core overlap hours?
+   - A. 9 a.m. to 12 p.m. CET
+   - B. 2 p.m. to 5 p.m. CET
+   - C. 10 a.m. to 1 p.m. CET
+
+2. Where should team decisions be documented?
+   - A. In direct messages
+   - B. In Slack threads
+   - C. In email
+
+3. What happens on day three of onboarding?
+   - A. The new developer starts picking up tickets
+   - B. The new developer sets up the local environment
+   - C. The new developer has a call with the product team
+
+4. What does "good first issue" mean in this context?
+   - A. Tickets that are already done
+   - B. Small, beginner-friendly tickets
+   - C. Tickets with no deadline
+
+5. How often does the full team have a standup?
+   - A. Every day
+   - B. Twice a week
+   - C. Once a week
+
+**B. Short answer. Write NO MORE THAN THREE WORDS AND/OR A NUMBER.**
+
+6. How many time zones does the team work across?
+7. What tool is used for task tracking?
+8. How often should Jira tickets be updated?
+9. Where are the local environment setup instructions?
+10. How often does the sprint review happen?
+
+---
+
+## Track 6 — Salary Negotiation (B1-B2)
+**Topic:** Developer discussing a job offer with HR
+
+**HR:** Hi, thanks for getting back to us. I wanted to follow up on the offer we sent over. Have you had a chance to review it?
+
+**Developer:** I have, yes. I'm really excited about the role. One thing I wanted to discuss is the base salary — it's a bit lower than I was expecting based on the market.
+
+**HR:** I understand. Our base for this level is set at sixty-two thousand. We've tried to be competitive within our structure. Is there a specific number you had in mind?
+
+**Developer:** I was thinking around sixty-eight thousand. That's in line with what I've seen for senior roles in this area.
+
+**HR:** I hear you. I'll be honest — we don't have much room to move on the base. What I can do is flag it for the hiring manager. But I don't want to overpromise.
+
+**Developer:** I appreciate the honesty. Are there other components we could discuss? Remote allowance, for example?
+
+**HR:** Yes, actually. We offer a five-hundred-euro annual remote work allowance for equipment and internet. That's on top of the base. And performance reviews happen every six months, so there's an opportunity to increase the base at the first review if things go well.
+
+**Developer:** That's good to know. And on the start date — the offer says the first of next month. Is there any flexibility there?
+
+**HR:** We'd ideally like someone in by then, but if you need an extra week, that's manageable. Just let us know.
+
+**Developer:** Alright. Can I have until end of this week to give you a final answer?
+
+**HR:** Of course. We'll hold the offer until Friday.
+
+---
+
+### Questions — Track 6
+
+**A. True / False / Not Given**
+
+1. The developer is unhappy with the role itself.
+2. The HR manager says the base salary cannot be changed at all.
+3. The remote work allowance is paid monthly.
+4. Performance reviews happen twice a year.
+5. The company cannot wait beyond the original start date under any circumstances.
+
+**B. Fill in the blanks. Write NO MORE THAN THREE WORDS AND/OR A NUMBER.**
+
+6. The offered base salary is __________ thousand euros.
+7. The developer asked for a base salary of __________ thousand euros.
+8. The remote work allowance is __________ euros per year.
+9. The developer asked for the final answer deadline to be __________.
+10. The company will hold the offer until __________.
+
+---
+
 ## Answers
 
 ### Track 1:
@@ -200,3 +358,48 @@ Bu məşqlər real iş mühitindəki söhbətləri simulyasiya edir. Transkripsi
 8. FALSE (hasn't done a production deployment)
 9. TRUE
 10. FALSE (everyone's been welcoming)
+
+### Track 4:
+**A:**
+1. FALSE (she says the logic is solid)
+2. FALSE (Emma suggests `sanitizeUserInput`, not `cleanUserInput`)
+3. TRUE
+4. TRUE
+5. FALSE (Carlos needs to add this test)
+
+**B:**
+6. generic
+7. records
+8. eager
+9. empty
+10. pushing
+
+### Track 5:
+**A:**
+1. B
+2. B
+3. C
+4. B
+5. B
+
+**B:**
+6. Three (time zones)
+7. Jira
+8. Once a day / daily
+9. (In the) onboarding repo
+10. Every two weeks
+
+### Track 6:
+**A:**
+1. FALSE (she is excited about the role)
+2. NOT GIVEN (HR says "not much room" and will flag it — not a definitive no)
+3. FALSE (it is annual, not monthly)
+4. TRUE
+5. FALSE (HR says an extra week is manageable)
+
+**B:**
+6. sixty-two (62)
+7. sixty-eight (68)
+8. five hundred (500)
+9. end of (this) week / Friday
+10. Friday

@@ -96,3 +96,40 @@ Use STAR to structure answers to "Tell me about a time when..." questions.
 - Saying you have no weaknesses
 - Answering too briefly or too long (aim for 1–2 minutes per answer)
 - Using very informal language or filler words ("like", "you know", "um")
+
+---
+
+## 6. Remote Job Interview — Specific Questions
+
+Bu suallar xüsusən **remote pozisiyalara** olan müsahibələrdə soruşulur.
+
+### "How do you handle working across time zones?"
+> "I'm comfortable adapting my schedule for overlap hours. I prefer to document my work thoroughly so that colleagues in different time zones can pick up context without waiting for me. I use async tools like Slack and Notion effectively."
+
+### "How do you communicate when you're blocked?"
+> "I try to resolve blockers independently for a reasonable time — usually 30-60 minutes. If I'm still stuck, I write a clear message explaining what I've tried and what I need, so the person helping me can do so asynchronously."
+
+### "How do you stay productive working from home?"
+> "I maintain a structured routine — fixed start time, dedicated workspace, and regular breaks. I also use time-blocking to manage focused work vs communication time."
+
+### "Tell me about your experience with async communication."
+> "In my current role, much of our team communication is async. I've learned to write detailed status updates, clear questions, and thorough PR descriptions so that communication doesn't become a bottleneck."
+
+### "What tools do you use for remote collaboration?"
+> "I've worked with Slack for async messaging, Jira/Linear for task tracking, GitHub for code review, Notion/Confluence for documentation, and Zoom/Google Meet for synchronous calls when needed."
+
+### "Do you have experience with remote teams?"
+> "Yes — [describe your experience]. I've found that proactive communication and over-documentation are key to remote team success."
+
+---
+
+## 7. Remote Interview — Red Flags to Avoid
+
+Remote işəgötürənlər bu cavablardan çəkinirlər:
+
+| Zəif cavab | Güclü cavab |
+|------------|-------------|
+| "I prefer to ask questions verbally" | "I document my questions clearly before asking" |
+| "I work better with constant feedback" | "I'm comfortable working independently with periodic check-ins" |
+| "I find remote work isolating" | "I've adapted to async communication and find it efficient" |
+| "I'm still setting up my workspace" | "I have a dedicated, professional home office setup" |

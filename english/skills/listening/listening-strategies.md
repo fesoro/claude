@@ -139,15 +139,34 @@ Inferencing üçün: **tone** (ton), **pace** (sürət), **pauses** (fasilələr
 - **YouTube:** Real English, BBC Learning English
 - **Apps:** Elsa Speak (tələffüz), Speechling (dictation)
 
+Ətraflı bax: [tech-talks-listening.md](tech-talks-listening.md)
+
 ---
 
-## 8. IELTS Listening Tips
+## 8. A2/B1 Gündəlik Praktika Planı (Daily Practice Plan)
 
-Bax: [ielts-listening.md](ielts-listening.md) — tam IELTS strategiyaları
+Hər gün 20-30 dəqiqə. Müxtəlif aktivlik → müxtəlif listening növü inkişaf edir.
 
-**Qısa xatırlatma:**
-- Sualları öncədən oxu (10-30 saniyəlik fasilə)
-- Cavab sırayla gəlir — geri qalmasan
-- Spelling məsələsini ciddi al (xüsusən Section 1)
-- Yalnız eşitdiyin sözü yaz — öz sözünü əlavə etmə
-- Cavablar çox vaxt paraphrase edilmiş formada gəlir
+| Gün | Aktivlik | Müddət | Material |
+|-----|----------|--------|----------|
+| **Bazar ertəsi** | Diktə (Dictation) | 20 dəq | ESLPod, BBC 6 Minute English |
+| **Çərşənbə axşamı** | Shadowing | 20 dəq | Rachel's English, EnglishPod |
+| **Çərşənbə** | Graded listening exercise | 25 dəq | British Council learnenglish.org |
+| **Cümə axşamı** | Tech talk | 30 dəq | Fireship, TechWorld with Nana |
+| **Cümə** | Podcast | 25 dəq | Software Engineering Daily, Changelog |
+| **Şənbə** | Free listening (seçim sənindi) | 20 dəq | Serial, film, YouTube — zövqlə |
+| **Bazar** | Həftəlik review | 15 dəq | Qeydləri oxu, çətin sözləri təkrar et |
+
+**Sessiya qaydası:**
+- Diktə günündə: [dictation-practice-guide.md](dictation-practice-guide.md) metodunu izlə
+- Shadowing günündə: [shadowing-complete-guide.md](shadowing-complete-guide.md) 6 addımını tətbiq et
+- Tech talk günündə: [tech-talks-listening.md](tech-talks-listening.md) 4 addımlı metodu istifadə et
+
+**İrəliləyişi izləmə (Progress tracking):**
+
+Hər həftənin sonunda bu 3 sualı cavabla:
+1. Bu həftə nə qədər % anladım (subtitle olmadan)?
+2. Diktədə xəta sayı azaldımı?
+3. Hansı aksent/mövzu hələ çətindir?
+
+Cavabları qısa qeyd et — 1 ay sonra qayıt, fərqi gör.

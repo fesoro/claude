@@ -130,3 +130,39 @@ Aşağıdakı cümlələrdəki boşluqları yuxarıdakı ifadələrlə doldurun:
 8. trade-off
 9. signed off
 10. follow up
+
+---
+
+## 8. Async Remote Communication
+
+Remote teamlərdə video zəng olmadan yazılı şəkildə kommunikasiya:
+
+| İfadə | Məna (Az) | Misal |
+|-------|-----------|-------|
+| async update | sinxron olmayan yenilik | "I'll post an async update in Slack." |
+| EOD / EOW | end of day / end of week | "I'll finish this by EOD." |
+| LGTM | looks good to me | "LGTM, approved." |
+| FYI | for your information | "FYI, the staging server is down." |
+| ASAP | as soon as possible | "We need this fixed ASAP." |
+| heads up | xəbərdarlıq | "Just a heads up — the API is changing." |
+| loop in | əlavə etmək (söhbətə) | "Please loop in the QA team." |
+| circle back | geri dönmək, sonra danışmaq | "Let's circle back on this tomorrow." |
+| bandwidth | vaxt/resurs (texniki yox) | "I don't have bandwidth for that this week." |
+| over to you | sənin növbən | "I've finished my part — over to you." |
+| on my radar | yadımda var | "That's on my radar — I'll get to it." |
+| ping | qısa mesaj atmaq | "Ping me when it's ready." |
+| thread | söhbət zənciri | "Let's keep this in the thread." |
+| bump | yuxarı qaldırmaq (diqqəti çəkmək) | "Bumping this — any update?" |
+
+---
+
+## 9. Time Zone & Schedule Phrases
+
+| İfadə | Məna (Az) | Misal |
+|-------|-----------|-------|
+| overlap hours | üst-üstə düşən iş saatları | "Our overlap is 10am-2pm EST." |
+| UTC | koordinatlı universal vaxt | "The deploy runs at 03:00 UTC." |
+| by [time] your time | sənin saat ilə | "Can you finish this by 5pm your time?" |
+| I'm offline after... | ...dan sonra yoxam | "I'm offline after 6pm CET." |
+| async-first | əvvəl yazılı/sinxronsuz | "We're an async-first team." |
+| I'll pick this up tomorrow | sabah davam edəcəm | "It's late here — I'll pick this up tomorrow." |

@@ -203,6 +203,69 @@ Müsahibdə hər şeyi bilmək lazım deyil. Vacib olan **düşünmə tərzinizi
 
 ---
 
+## 8. Müsahibəçi ilə Real Vaxtda İnteraksiyon
+
+### Müsahibəçi sözünü kəsəndə:
+```
+"Good point — let me address that."
+"Actually, that's exactly what I was about to get to."
+"You're right — I was oversimplifying. Let me revise."
+"That's a fair concern. The reason I chose this was [X], 
+but if [Y] is a priority, then [alternative] would work better."
+```
+
+### Sıradakı addıma keçmək istəyəndə:
+```
+"Should I go deeper here, or shall I move on to [next component]?"
+"I can spend more time on this if useful — or would you prefer 
+I continue with the high-level design first?"
+"I'll keep this at a high level for now and come back 
+if you want to drill in."
+```
+
+### Diaqram çəkərkən (whiteboard / screen share):
+```
+"Let me draw this out."
+"On the left we have the client, and on the right the backend."
+"This arrow represents a synchronous call."
+"This dashed line is asynchronous — via a queue."
+"Let me label the components as we go."
+```
+
+### Aydın olmayan tələbi netleşdirmək:
+```
+"Just to confirm — when you say 'scale', are you thinking 
+millions of users, or more like tens of thousands?"
+"Should I focus on the storage layer, or is the 
+read path more interesting to you?"
+"Are you looking for a production-grade design, 
+or is a reasonable sketch sufficient?"
+```
+
+---
+
+## 9. Ən Çox Düşdüyün Tələlər
+
+### Tələ 1: Sual vermədən başlamaq
+❌ "Okay, so I'll design a Twitter-like system..."
+✅ "Before I start, let me ask a few clarifying questions."
+
+### Tələ 2: Çox dərindən başlamaq
+❌ Dərhal database schema-ya keçmək
+✅ "Let me start at a high level and we can drill down."
+
+### Tələ 3: Bir seçimi trade-off-suz qəbul etmək
+❌ "I'll use PostgreSQL."
+✅ "I'd use PostgreSQL here because it's relational and 
+we need transactions — though at massive scale, we'd 
+revisit that."
+
+### Tələ 4: Susmaq
+❌ 2 dəqiqə susaraq düşünmək
+✅ "Let me think through this out loud — there are a few options..."
+
+---
+
 ## Məşq: Öz sistem dizaynınızı danışın
 
 Aşağıdakı 3 sualı seçin və hər birini 15-20 dəqiqəyə yüksək səslə izah edin:
