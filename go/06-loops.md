@@ -2,20 +2,20 @@
 
 ## İcmal
 
-Go-da yalnız bir döngü konstruksiyası var: `for`. PHP-dəki `while`, `do-while`, `foreach` Go-da yoxdur — hamısının işini `for` görür. Bu sadəlik ilk baxışda məhdudiyyət kimi görünə bilər, amma əslində dilin filosofiyasını əks etdirir: bir şeyi bir yolla etmək. `for range` isə PHP-dəki `foreach`-in funksional ekvivalentidir — massivlər, slice-lar, map-lər, string-lər üzərindən keçmək üçün.
+Go-da yalnız bir döngü konstruksiyası var: `for`. `while`, `do-while`, `foreach` kimi ayrı açar sözlər yoxdur — hamısının işini `for` görür. Bu sadəlik dilin filosofiyasını əks etdirir: bir şeyi bir yolla etmək. `for range` isə massivlər, slice-lar, map-lər, string-lər üzərindən keçmək üçün istifadə olunur.
 
 ## Niyə Vacibdir
 
-Backend developer üçün döngülər hər yerdədir: API cavablarını parse etmək, verilənlər bazası sətirləri üzərindən keçmək, toplu əməliyyatlar etmək. Go-nun `for range` sintaksisi PHP-dəki `foreach`-dən daha güclüdür: blank identifier (`_`) ilə lazımsız dəyişkənləri ignore etmək mümkündür, etiketlərlə (`label`) iç-içə döngülərdən xarici döngüyü dayandırmaq mümkündür.
+Backend developer üçün döngülər hər yerdədir: API cavablarını parse etmək, verilənlər bazası sətirləri üzərindən keçmək, toplu əməliyyatlar etmək. Go-nun `for range` sintaksisi güclüdür: blank identifier (`_`) ilə lazımsız dəyişkənləri ignore etmək mümkündür, etiketlərlə (`label`) iç-içə döngülərdən xarici döngüyü dayandırmaq mümkündür.
 
 ## Əsas Anlayışlar
 
-- **Klassik `for`** — `for init; condition; post { }` — PHP-dəki `for` kimi
-- **`while` kimi `for`** — `for condition { }` — PHP-dəki `while`-ın ekvivalenti
-- **Sonsuz döngü** — `for { }` — `break` ilə dayandırılır; PHP-dəki `while(true)` kimi
-- **`for range`** — kolleksiyalar üzərindən keçmə; PHP-dəki `foreach` kimi
-- **`break`** — döngüdən çıxmaq; PHP ilə eyni
-- **`continue`** — növbəti iterasiyaya keçmək; PHP ilə eyni
+- **Klassik `for`** — `for init; condition; post { }` — C-stilindəki klassik döngü
+- **`while` kimi `for`** — `for condition { }` — yalnız şərt olan döngü
+- **Sonsuz döngü** — `for { }` — `break` ilə dayandırılır
+- **`for range`** — kolleksiyalar üzərindən keçmə
+- **`break`** — döngüdən çıxmaq
+- **`continue`** — növbəti iterasiyaya keçmək
 - **Label** — etiketli `break`/`continue`; iç-içə döngülərdə xarici döngüyü idarə etmək
 - **Blank identifier `_`** — `for _, v := range slice` — index-i ignore etmək üçün
 
@@ -26,12 +26,6 @@ Backend developer üçün döngülər hər yerdədir: API cavablarını parse et
 - `for range` map — konfiqurasiya key-value cütlərini oxumaq
 - Sonsuz döngü + `break` — worker process, WebSocket message loop
 - `continue` — validation: yanlış elementləri atla, düzgünləri emal et
-
-**PHP ilə fərqi:**
-- PHP: `foreach ($items as $key => $value)` → Go: `for key, value := range items`
-- PHP: `foreach ($items as $item)` → Go: `for _, item := range items` (index lazım deyil)
-- PHP-də `while`, `do-while` var; Go-da yalnız `for`
-- Go-da `for range` string üzərindən rune-larla gəzir, baytlarla deyil
 
 **Trade-off-lar:**
 - `for range` — oxunaqlı, amma hər iterasiyada dəyər kopyalanır; böyük struct-lar üçün pointer istifadə edin
@@ -53,7 +47,7 @@ package main
 import "fmt"
 
 func main() {
-    // 1. Klassik for — C/PHP kimi
+    // 1. Klassik for — C kimi
     for i := 0; i < 5; i++ {
         fmt.Println("i =", i)
     }
@@ -93,7 +87,7 @@ package main
 import "fmt"
 
 func main() {
-    // Slice üzərindən — PHP: foreach ($items as $key => $value)
+    // Slice üzərindən
     meyveler := []string{"alma", "armud", "nar", "üzüm"}
 
     for index, deger := range meyveler {
@@ -179,6 +173,15 @@ xarici:
 3. Word frequency counter: `words := []string{...}` verilmiş sözlər siyahısından hər sözün neçə dəfə keçdiyini `map[string]int` ilə say. `for range` istifadə et.
 
 4. Retry loop: bir funksiya 3 cəhd edir, uğur qazanarsa `break`, qaçırsa növbəti cəhdə keçir. Bütün cəhdlər uğursuz olarsa xəta log edir. `for i := 0; i < maxRetry; i++` strukturunu istifadə et.
+
+## PHP ilə Müqayisə
+
+- PHP: `foreach ($items as $key => $value)` → Go: `for key, value := range items`
+- PHP: `foreach ($items as $item)` → Go: `for _, item := range items` (index lazım deyil)
+- PHP-də `while`, `do-while` var; Go-da yalnız `for` (amma eyni davranışı simulyasiya edir)
+- Go-da `for range` string üzərindən rune-larla gəzir, baytlarla deyil — Azərbaycan hərfləri üçün vacib
+- PHP-də label yoxdur; Go-da `break label` ilə iç-içə döngülərdən çıxmaq mümkündür
+- Map üzərindən `for range`: PHP-də sıra saxlanır; Go-da sıra qarantiya deyil
 
 ## Əlaqəli Mövzular
 

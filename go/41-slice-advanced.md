@@ -4,8 +4,6 @@
 
 Go slice-ı sadə bir array wrapper deyil — backing array, uzunluq (`len`) və tutum (`cap`) üçlüyündən ibarət bir header-dir. Bu daxili quruluşu anlamadan yazdığın kod həm düzgün işləməyə bilər, həm de lazımsız memory allocation baş verə bilər. `append` edge cases-ləri, `copy` davranışı, slice-ların bir-birini "gördüyü" hallar — bütün bunlar Go-da performans açısından kritik bilikdir.
 
-PHP developer üçün: PHP `array` yenidən atananda daima copy olunur (copy-on-write). Go slice-ı isə referans kimi davranır — iki dəyişkən eyni underlying array-ı göstərə bilər. Bu fərq bug-ların əsas mənbəyidir.
-
 ## Niyə Vacibdir
 
 - `append` lazımsız istifadəsi N kvadrat mürəkkəblik yaradır (her append-də kopyalama)
@@ -479,6 +477,10 @@ func splitAndProcess(data []int) ([]int, []int) {
 **Tapşırıq 4 — Stream Processing**
 
 1M integer-dan ibarət slice-ı 10K-lıq chunk-lara bölüb hər chunk-ı goroutine-də paralel emal et. Nəticəni toplayıb qaytart. `sync.WaitGroup` + channel istifadə et.
+
+## PHP ilə Müqayisə
+
+PHP `array` yenidən atananda daima copy olunur (copy-on-write). Go slice-ı isə referans kimi davranır — iki dəyişkən eyni underlying array-ı göstərə bilər. Bu fərq bug-ların əsas mənbəyidir.
 
 ## Əlaqəli Mövzular
 

@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Pointer — dəyişkenin yaddaş ünvanını saxlayan dəyişkendir. `&` operatoru dəyişkenin ünvanını alır, `*` operatoru isə həmin ünvandakı dəyəri oxuyur/dəyişdirir. PHP developer üçün pointer əvvəlcə anlaşılmaz görünə bilər — PHP-də pointer yoxdur, obyektlər avtomatik reference kimi ötürülür. Go-da isə struct-lar default dəyər kimi ötürülür — dəyişdirmək üçün pointer lazımdır.
+Pointer — dəyişkenin yaddaş ünvanını saxlayan dəyişkendir. `&` operatoru dəyişkenin ünvanını alır, `*` operatoru isə həmin ünvandakı dəyəri oxuyur/dəyişdirir. Go-da struct-lar default dəyər kimi ötürülür — dəyişdirmək üçün pointer lazımdır.
 
 ## Niyə Vacibdir
 
@@ -29,12 +29,6 @@ Pointer-ləri başa düşmək olmadan Go-da struct metodlarını düzgün yazmaq
 - Böyük struct-ları kopyalamaqdan qaçmaq: `func process(u *User)` — kopya yaratmır
 - Constructor return: `func NewService(...) *Service` — pointer qaytarır
 
-**PHP ilə fərqi:**
-- PHP obyektlər həmişə reference kimi ötürülür: `function f(User $u) { $u->name = "..."; }` — orijinalı dəyişdirir
-- Go-da struct value kimi ötürülür: `func f(u User)` — kopya; dəyişdirmək üçün `func f(u *User)` lazımdır
-- PHP-də `null` hər tip üçün mümkündür; Go-da yalnız pointer, slice, map, interface `nil` ola bilər
-- PHP-də pointer yoxdur; Go-da explicit `&` və `*` istifadə olunur
-
 **Trade-off-lar:**
 - Pointer: orijinalı dəyişdirmək üçün; amma `nil` yoxlaması lazım olur
 - Value: daha təhlükəsiz (nil panic yoxdur), amma böyük struct-lar üçün yavaş (kopya)
@@ -42,7 +36,7 @@ Pointer-ləri başa düşmək olmadan Go-da struct metodlarını düzgün yazmaq
 
 **Common mistakes:**
 - Nil pointer dereference: `var u *User; fmt.Println(u.Name)` → panic; həmişə nil yoxla
-- `&` unutmaq: `func f(u User)` — kopya; dəyişdirmək istəyirsiniz, amma işləmir
+- `&` unutmaq: `func f(u User)` — kopya; dəyişdirmək istəyirsiz, amma işləmir
 - Map/slice üçün pointer istifadə: lazımsızdır, bunlar artıq reference tipidir
 
 ## Nümunələr
@@ -188,11 +182,20 @@ func main() {
 
 1. **Swap funksiyası**: `swap(a, b *int)` — pointer istifadə edərək iki dəyişkenin yerini dəyiş. `swap` sonrası dəyişkənlərin dəyərini yoxla.
 
-2. **Optional field-lər**: API request struct-u yarat: `type UpdateUserRequest struct { Name *string; Email *string; Age *int }`. Yalnız nil olmayan sahələri "yenilə" (log et). PHP-dəki nullable type hint ilə müqayisə et.
+2. **Optional field-lər**: API request struct-u yarat: `type UpdateUserRequest struct { Name *string; Email *string; Age *int }`. Yalnız nil olmayan sahələri "yenilə" (log et).
 
 3. **Counter struct**: `Counter` struct yarat: `count int`. Pointer receiver ilə `Increment()`, `Decrement()`, `Reset()`, `Value() int` metodları yaz. Eyni counter-i iki fərqli yerə pointer kimi ötür — hər ikisi eyni sayacı görməlidir.
 
 4. **Nil safety pattern**: `func getUserByID(id int) *User` — istifadəçi tapılmasa `nil` qaytarır. Çağırıcı `nil` yoxlaması olmadan `user.Name` çağırarsa panic verir. Nil-safe helper: `func safeName(u *User) string` yaz.
+
+## PHP ilə Müqayisə
+
+- PHP obyektlər həmişə reference kimi ötürülür: `function f(User $u) { $u->name = "..."; }` — orijinalı dəyişdirir
+- Go-da struct value kimi ötürülür: `func f(u User)` — kopya; dəyişdirmək üçün `func f(u *User)` lazımdır
+- PHP-də `null` hər tip üçün mümkündür; Go-da yalnız pointer, slice, map, interface `nil` ola bilər
+- PHP-də pointer konsepti yoxdur; Go-da explicit `&` və `*` istifadə olunur
+- PHP nullable type hints (`?string`) → Go `*string` pointer tipi — eyni məqsəd, fərqli sintaksis
+- PHP-də `$obj->method()` həmişə reference üzərindədir; Go-da pointer receiver açıq yazılır
 
 ## Əlaqəli Mövzular
 

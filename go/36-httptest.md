@@ -4,8 +4,6 @@
 
 `net/http/httptest` paketi Go standart kitabxanasının bir hissəsidir. Həqiqi TCP port açmadan HTTP handler-ləri test etməyə imkan verir. İki əsas tipi var: `httptest.NewRecorder()` — handler-i yaddaşda icra edir; `httptest.NewServer()` — həqiqi TCP server başladır, xarici HTTP client-ləri test üçün istifadə olunur.
 
-PHP/Laravel-də handler testləri `$this->getJson('/api/users')` şəklindəydi — Laravel özü request/response simulyasiya edirdi. Go-da isə `httptest.NewRecorder()` ilə `http.ResponseWriter`-i simulyasiya edirsən, `http.Request`-i əl ilə qurursan — daha açıq, amma daha çox boilerplate.
-
 ## Niyə Vacibdir
 
 - HTTP handler-ləri real TCP bağlantısı olmadan test edilə bilər — sürətli, izolyasiyalı
@@ -46,15 +44,6 @@ r := httptest.NewRequest("GET", "/path", nil)
 - `NewServer()` → integration test: real HTTP client, middleware, TLS — hamısı iştirak edir
 
 ## Praktik Baxış
-
-**PHP/Laravel ilə müqayisə:**
-
-| Laravel | Go httptest |
-|---|---|
-| `$this->getJson('/users')` | `req := httptest.NewRequest("GET","/users",nil)` + `rr := httptest.NewRecorder()` + `handler(rr, req)` |
-| `$response->assertStatus(200)` | `assert.Equal(t, 200, rr.Code)` |
-| `$response->assertJson([...])` | `json.Unmarshal(rr.Body.Bytes(), &result)` |
-| `Http::fake()` | `httptest.NewServer(...)` |
 
 **Trade-off-lar:**
 
@@ -511,6 +500,17 @@ func BenchmarkHelloHandler(b *testing.B) {
 **Tapşırıq 4 — Race Detector**
 
 `go test -race ./...` ilə testləri işlət. Handler-in global state istifadə etdiyini fərz et — race-i tap və düzəlt.
+
+## PHP ilə Müqayisə
+
+PHP/Laravel-də handler testləri `$this->getJson('/api/users')` şəklindəydi — Laravel özü request/response simulyasiya edirdi. Go-da isə `httptest.NewRecorder()` ilə `http.ResponseWriter`-i simulyasiya edirsən, `http.Request`-i əl ilə qurursan — daha açıq, amma daha çox boilerplate.
+
+| Laravel | Go httptest |
+|---|---|
+| `$this->getJson('/users')` | `req := httptest.NewRequest("GET","/users",nil)` + `rr := httptest.NewRecorder()` + `handler(rr, req)` |
+| `$response->assertStatus(200)` | `assert.Equal(t, 200, rr.Code)` |
+| `$response->assertJson([...])` | `json.Unmarshal(rr.Body.Bytes(), &result)` |
+| `Http::fake()` | `httptest.NewServer(...)` |
 
 ## Əlaqəli Mövzular
 

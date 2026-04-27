@@ -4,8 +4,6 @@
 
 gRPC — Google tərəfindən yaradılmış, HTTP/2 üzərində işləyən, Protocol Buffers (protobuf) serialization-lı RPC framework-dür. Microservice-lər arası daxili əlaqə üçün REST-dən 5–10x sürətli, type-safe, streaming dəstəkli alternativdir.
 
-PHP REST API ilə müqayisədə: JSON → Protobuf (binary, ~3-10x kiçik), HTTP/1.1 → HTTP/2 (multiplexing), manual validation → proto schema, manual client → generated client. Laravel-də gRPC üçün `spiral/roadrunner-grpc` istifadə olunur, amma Go bu sahədə birinci sinifdədir.
-
 ## Niyə Vacibdir
 
 - **Binary protocol**: JSON-a nisbətən 3–10x kiçik payload, daha sürətli serialization
@@ -664,6 +662,10 @@ grpcurl -plaintext -d '{"id":1}' localhost:50051 user.v1.UserService/GetUser
 
 **Tapşırıq 5 — Retry interceptor:**
 Client-side retry interceptor yazın: `codes.Unavailable`, `codes.ResourceExhausted` xətalarını exponential backoff ilə max 3 dəfə yenidən cəhd etsin.
+
+## PHP ilə Müqayisə
+
+PHP REST API ilə müqayisədə: JSON → Protobuf (binary, ~3-10x kiçik), HTTP/1.1 → HTTP/2 (multiplexing), manual validation → proto schema, manual client → generated client. Laravel-də gRPC üçün `spiral/roadrunner-grpc` istifadə olunur, amma Go bu sahədə birinci sinifdədir — `google.golang.org/grpc` standart kitabxana kimi yetişkin, aktiv saxlanılır. PHP gRPC streaming tam dəstəkləmir (bidirectional streaming yoxdur); Go-da 4 RPC növünün hamısı dəstəklənir.
 
 ## Əlaqəli Mövzular
 

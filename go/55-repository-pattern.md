@@ -2,14 +2,13 @@
 
 ## İcmal
 
-Repository pattern — data access logic-i biznes logic-dən ayıran arxitektura pattern-idir. Go-da interface vasitəsilə tətbiq olunur: `UserRepository` interface müəyyən edilir, `PostgresUserRepository` onu implement edir. Test zamanı in-memory implementation istifadə olunur. PHP/Laravel-in Eloquent ORM-indən fərqli olaraq Go-da bu ayrım əl ilə yazılır, lakin daha güclü testability verir.
+Repository pattern — data access logic-i biznes logic-dən ayıran arxitektura pattern-idir. Go-da interface vasitəsilə tətbiq olunur: `UserRepository` interface müəyyən edilir, `PostgresUserRepository` onu implement edir. Test zamanı in-memory implementation istifadə olunur.
 
 ## Niyə Vacibdir
 
 - **Testability:** Service layer-i real DB olmadan, in-memory repo ilə test etmək
 - **Swap:** PostgreSQL → MySQL → MongoDB — Service layer-i dəyişmədən
 - **Separation of concerns:** SQL handler-də yox, repository-də
-- **Laravel ilə müqayisə:** Laravel `UserRepository` optional (Eloquent əvəz edir), Go-da interface məcburidir
 - **Qatların ayrılması** — handler, service, repository hər biri ayrıca test oluna bilər
 
 ## Əsas Anlayışlar
@@ -83,39 +82,6 @@ type UserFilter struct {
     OrderBy   string
 }
 ```
-
-### PHP Laravel ilə Müqayisə
-
-```php
-// PHP Laravel — Eloquent aktiv birbaşa Service-də
-class UserService {
-    public function getActiveUsers() {
-        return User::where('active', true)->get(); // ORM birbaşa
-    }
-}
-
-// Interface istifadə variantı
-class UserService {
-    public function __construct(private UserRepositoryInterface $repo) {}
-    
-    public function getActiveUsers() {
-        return $this->repo->findActive();
-    }
-}
-```
-
-```go
-// Go — interface məcburidir
-type UserService struct {
-    repo UserRepository // interface — başqa yol yoxdur
-}
-
-func (s *UserService) GetActiveUsers(ctx context.Context) ([]*User, error) {
-    return s.repo.FindAll(ctx, UserFilter{IsActive: boolPtr(true)})
-}
-```
-
-**Fərq:** PHP-də Eloquent model test-də real DB-yə gedir (in-memory SQLite istifadə edirlər). Go-da interface ilə real DB-siz test mümkündür.
 
 ## Praktik Baxış
 
@@ -696,46 +662,6 @@ func TestUserService_ListActive(t *testing.T) {
     require.NoError(t, err)
     assert.Len(t, users, 2) // yalnız A və B
 }
-
-func main() {
-    // Demo run
-    ctx := context.Background()
-
-    // Production — real DB
-    // db, _ := sql.Open("postgres", os.Getenv("DATABASE_URL"))
-    // repo := NewPostgresUserRepository(db)
-
-    // Demo — in-memory
-    repo := NewInMemoryUserRepository()
-    emailSvc := &mockEmailSender{}
-    svc := NewUserService(repo, emailSvc)
-
-    // İstifadə
-    user, err := svc.Register(ctx, RegisterInput{
-        Name:  "Orkhan Şükürlü",
-        Email: "orkhan@example.com",
-    })
-    if err != nil {
-        fmt.Println("Xəta:", err)
-        return
-    }
-
-    fmt.Printf("User yaradıldı: ID=%d, Name=%s\n", user.ID, user.Name)
-
-    // Tap
-    found, err := svc.GetByID(ctx, user.ID)
-    if err != nil {
-        fmt.Println("Xəta:", err)
-        return
-    }
-    fmt.Printf("Tapıldı: %s (%s)\n", found.Name, found.Email)
-
-    // Aktiv olanlar
-    users, _ := svc.ListActive(ctx, 1, 10)
-    fmt.Printf("Aktiv user sayı: %d\n", len(users))
-
-    fmt.Printf("Email göndərildi: %v\n", emailSvc.sent)
-}
 ```
 
 ## Praktik Tapşırıqlar
@@ -754,6 +680,44 @@ func main() {
 
 **Tapşırıq 5 — Benchmark:**
 In-memory vs PostgreSQL repository performance-ını `testing.B` ilə ölçün. 10,000 FindByID sorğusu üçün fərqi müşahidə edin.
+
+## PHP ilə Müqayisə
+
+Laravel-də Eloquent ORM model-i birbaşa service-də istifadə etmək adi bir yanaşmadır. Go-da isə interface məcburidir — bu fərqli testability imkanları yaradır.
+
+```php
+// PHP Laravel — Eloquent aktiv birbaşa Service-də
+class UserService {
+    public function getActiveUsers() {
+        return User::where('active', true)->get(); // ORM birbaşa
+    }
+}
+
+// Interface istifadə variantı
+class UserService {
+    public function __construct(private UserRepositoryInterface $repo) {}
+    
+    public function getActiveUsers() {
+        return $this->repo->findActive();
+    }
+}
+```
+
+```go
+// Go — interface məcburidir
+type UserService struct {
+    repo UserRepository // interface — başqa yol yoxdur
+}
+
+func (s *UserService) GetActiveUsers(ctx context.Context) ([]*User, error) {
+    return s.repo.FindAll(ctx, UserFilter{IsActive: boolPtr(true)})
+}
+```
+
+**Əsas fərqlər:**
+- PHP-də Eloquent model test-də real DB-yə gedir (in-memory SQLite istifadə edirlər)
+- Go-da interface ilə real DB-siz test mümkündür — daha sürətli, daha etibarlı
+- Laravel `UserRepository` optional (Eloquent əvəz edir); Go-da interface məcburidir
 
 ## Əlaqəli Mövzular
 

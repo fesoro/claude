@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Go-da interface bir növ müqavilədir: hansı metodların olması lazım olduğunu müəyyən edir. PHP-dən fərqli olaraq, Go-da interface-i implement etmək üçün heç nə yazmaq lazım deyil — struct həmin metodlara sahib olduqda **avtomatik olaraq** interface-i implement etmiş sayılır. Bu "implicit implementation" adlanır. Kiçik, konkret interface-lər Go-nun ən güclü dizayn prinsiplərindən biridir.
+Go-da interface bir növ müqavilədir: hansı metodların olması lazım olduğunu müəyyən edir. Go-da interface-i implement etmək üçün heç nə yazmaq lazım deyil — struct həmin metodlara sahib olduqda **avtomatik olaraq** interface-i implement etmiş sayılır. Bu "implicit implementation" adlanır. Kiçik, konkret interface-lər Go-nun ən güclü dizayn prinsiplərindən biridir.
 
 ## Niyə Vacibdir
 
@@ -39,27 +39,14 @@ Interface-lər dependency injection, testability və loosely coupled kod üçün
 - Pointer receiver-li metodlar olan struct-ı value kimi interface-ə vermək — compile xətası
 - Interface-i test etmədən yaratmaq — real ehtiyac olmadan interface yaratmayın
 
-**PHP ilə fərqi:**
-
-| PHP | Go |
-|-----|-----|
-| `class Foo implements Bar` — açıq yazılır | Heç nə yazılmır — avtomatik |
-| `interface Bar { public function method(): void; }` | `type Bar interface { Method() }` |
-| `instanceof` ilə yoxlama | Type assertion: `v, ok := x.(Bar)` |
-| Abstract class mövcuddur | Yoxdur — interface + struct composition |
-| Interface `null` ola bilər | Interface nil ola bilər (lakin nil pointer tuzağı var) |
-
 ## Nümunələr
 
-### Nümunə 1: Implicit implementation — PHP vs Go fərqi
+### Nümunə 1: Implicit implementation
 
 ```go
 package main
 
 import "fmt"
-
-// PHP-də yazarsınız: class Kare implements Sekil
-// Go-da interface-i "implement etmək" üçün sadəcə metodlar kifayətdir
 
 type Sekil interface {
     Sahe() float64
@@ -248,7 +235,7 @@ func main() {
     fmt.Println(err) // validasiya xətası: email — boş ola bilməz
 
     // Type assertion — interface-dən konkret tipə
-    var s interface{} = Daire{Radius: 5} // əvvəlki nümunədən
+    var s interface{} = Daire{Radius: 5}
 
     // Panic-siz yoxlama (comma-ok pattern)
     if d, ok := s.(Daire); ok {
@@ -321,6 +308,16 @@ func main() {
 4. **Middleware zənciri:** HTTP middleware üçün `Handler interface { ServeHTTP(req, res) }` yarat. `LoggingMiddleware` və `AuthMiddleware` implementasiyaları yaz, onları zəncirə yığ.
 
 5. **Plugin sistemi:** `Plugin interface { Name() string; Execute(data []byte) ([]byte, error) }` yarat. `GzipPlugin` və `JSONValidatorPlugin` implementasiyaları yaz.
+
+## PHP ilə Müqayisə
+
+| PHP | Go |
+|-----|-----|
+| `class Foo implements Bar` — açıq yazılır | Heç nə yazılmır — avtomatik |
+| `interface Bar { public function method(): void; }` | `type Bar interface { Method() }` |
+| `instanceof` ilə yoxlama | Type assertion: `v, ok := x.(Bar)` |
+| Abstract class mövcuddur | Yoxdur — interface + struct composition |
+| Interface `null` ola bilər | Interface nil ola bilər (lakin nil pointer tuzağı var) |
 
 ## Əlaqəli Mövzular
 

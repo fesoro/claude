@@ -666,6 +666,10 @@ groups:
 - Production: Grafana Loki, Elasticsearch, Datadog
 - Log-a həssas məlumat yazma: parol, token, PII (Personal Identifiable Information)
 
+## PHP ilə Müqayisə
+
+PHP/Laravel-də monitoring adətən xarici servislər vasitəsilə qurulur: Laravel Telescope (development), Datadog APM, New Relic. Go-da isə `prometheus/client_golang` standart seçimdir — `/metrics` endpoint-i birbaşa Prometheus tərəfindən scrape edilir, agent yükləmə lazım deyil. `log/slog` (Go 1.21+) structured logging üçün standart kitabxanadır; Laravel-də Monolog eyni rolu oynayır. OpenTelemetry Go-da birinci sinif dəstəyə malikdir; PHP-də `open-telemetry/opentelemetry-php` aktiv inkişaf mərhələsindədir, amma Go ilə müqayisədə daha az yetişkindir.
+
 ## Əlaqəli Mövzular
 
 - [68-profiling-and-benchmarking.md](68-profiling-and-benchmarking.md) — pprof ilə performance profiling

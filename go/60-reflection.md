@@ -6,8 +6,6 @@
 
 **Amma:** reflection yavaşdır, tip təhlükəsizliyini azaldır, kodun oxunaqlılığını pisləşdirir. Bu mövzunun əsas məqsədi reflection-ı NƏ VAXT işlətmək, nə vaxt işlətməmək olduğunu öyrətməkdir.
 
-PHP-dəki `ReflectionClass`, `ReflectionMethod` ilə müqayisə edilə bilər — amma Go-da compile-time tip sistemi var, buna görə reflection istifadəsi daha məhdud olmalıdır.
-
 ## Niyə Vacibdir
 
 - JSON/YAML/XML serialization-ı necə işləyir başa düşmək
@@ -545,6 +543,10 @@ Struct-dan bütün `json` tag-larını oxuyub, `map[string]string{fieldName: jso
 
 **Tapşırıq 4 — Benchmark:**
 Reflection ilə struct field oxuma vs birbaşa field access arasında benchmark yazın. Nə qədər yavaşdır? Cache etmək nə qədər kömək edir?
+
+## PHP ilə Müqayisə
+
+PHP-dəki `ReflectionClass`, `ReflectionMethod` ilə müqayisə edilə bilər — hər ikisi runtime-da tip məlumatını oxuyur, struct/class sahələrini dinamik idarə edir. Lakin Go-da compile-time tip sistemi var, buna görə reflection istifadəsi daha məhdud olmalıdır. PHP-dəki `ReflectionProperty::setValue()` Go-da `reflect.Value.Set()` ilə uyğundur, amma Go pointer vasitəsilə işləyir. Ən əsas fərq: Go-da generics (1.18+) reflection-ın bir çox istifadə halını replace edir — PHP-də bu imkan yoxdur.
 
 ## Əlaqəli Mövzular
 

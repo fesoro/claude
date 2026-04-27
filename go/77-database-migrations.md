@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Database migration — sxem dəyişikliklərini versiyonlamaq, tətbiq etmək və geri qaytarmaq sistemidir. Go-da iki əsas alət: **goose** (sadə, SQL-first) və **golang-migrate** (daha geniş driver dəstəyi). PHP/Laravel-in `php artisan migrate` əmrinin Go ekvivalenti.
+Database migration — sxem dəyişikliklərini versiyonlamaq, tətbiq etmək və geri qaytarmaq sistemidir. Go-da iki əsas alət: **goose** (sadə, SQL-first) və **golang-migrate** (daha geniş driver dəstəyi).
 
 ## Niyə Vacibdir
 
@@ -295,6 +295,27 @@ Mövcud `users` cədvəlinə `phone` sütunu əlavə edin. `up` migration test e
 
 **Tapşırıq 4:**
 CI/CD pipeline: GitHub Actions-da `goose up` əmrini migration addımı kimi əlavə edin. Migration xəta verərsə deploy dayanmalıdır.
+
+## PHP ilə Müqayisə
+
+Laravel `php artisan migrate` əmri migration-ları tətbiq edir. Go-da `goose up` eyni funksiyanı yerinə yetirir — sintaksis fərqli, konsept eyni.
+
+```bash
+# Laravel
+php artisan migrate
+php artisan migrate:rollback
+php artisan migrate:status
+
+# Go (goose)
+goose -dir migrations postgres "$DATABASE_URL" up
+goose -dir migrations postgres "$DATABASE_URL" down
+goose -dir migrations postgres "$DATABASE_URL" status
+```
+
+**Əsas fərqlər:**
+- Laravel migration faylları PHP-dir (`Schema::create()`); goose SQL-dir (ya da Go)
+- Laravel `php artisan make:migration` skeleton yaradır; goose `goose create` SQL fayl yaradır
+- `go:embed` ilə migration-ları binary-ə daxil etmək Laravel-də yoxdur
 
 ## Əlaqəli Mövzular
 

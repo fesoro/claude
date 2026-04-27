@@ -51,7 +51,7 @@ type User struct {
 
 ### Embedded Struct (Composition)
 
-PHP-dən fərqli olaraq Go-da inheritance yoxdur. Bunun əvəzinə composition istifadə edilir:
+Go-da inheritance yoxdur — composition onun yerinə keçir:
 
 ```go
 type Animal struct {
@@ -374,6 +374,36 @@ type ClientConfig struct {
 
 **Tapşırıq 4 — Layout analizi:**
 `unsafe.Sizeof` istifadə edərək 5 müxtəlif struct-ın ölçüsünü hesablayın. Field-ləri yenidən sıralayıb ölçünü kiçildin.
+
+## PHP ilə Müqayisə
+
+PHP-də `extends` ilə sinif miras alınır. Go-da inheritance mexanizmi yoxdur — composition istifadə olunur:
+
+```php
+// PHP
+class AdminUser extends User {
+    public function deleteAll() { ... }
+}
+
+$u = new AdminUser();
+$u->getName(); // User-dən miras
+```
+
+```go
+// Go — composition ilə eyni effekt
+type User struct { Ad string }
+func (u User) GetAd() string { return u.Ad }
+
+type AdminUser struct {
+    User              // embed — "inherit" deyil, promotion
+    Permission string
+}
+
+u := AdminUser{User: User{Ad: "Orkhan"}, Permission: "admin"}
+u.GetAd() // User.GetAd() çağırılır — promoted method
+```
+
+**Əsas fərq:** Go embedding-də "is-a" münasibəti yoxdur — `AdminUser` `User` tipi deyil. Yalnız metodlar promoted olur. PHP-dəki `$this->parentMethod()` Go-da `u.User.GetAd()` kimi explicit çağırılır.
 
 ## Əlaqəli Mövzular
 

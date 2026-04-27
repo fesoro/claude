@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Go standart kitabxanası XML parsing və URL idarəsi üçün tam dəstək verir. `encoding/xml` — struct tag-larla XML marshal/unmarshal, `net/url` — URL parsing, query parametrləri, encoding. PHP Laravel-dən fərqli olaraq Go-da bu əməliyyatlar üçün xarici kitabxana lazım deyil. Legacy sistemlərlə inteqrasiya (bank API-ləri, SOAP), sitemap generasiyası, RSS feed, webhook URL validasiyası üçün vacibdir.
+Go standart kitabxanası XML parsing və URL idarəsi üçün tam dəstək verir. `encoding/xml` — struct tag-larla XML marshal/unmarshal, `net/url` — URL parsing, query parametrləri, encoding. Xarici kitabxana lazım deyil. Legacy sistemlərlə inteqrasiya (bank API-ləri, SOAP), sitemap generasiyası, RSS feed, webhook URL validasiyası üçün vacibdir.
 
 ## Niyə Vacibdir
 
@@ -520,6 +520,39 @@ Uzun URL-i qısa koda map edən in-memory URL shortener API yazın. Redirect zam
 
 **Tapşırıq 4 — Query Parser Middleware:**
 HTTP request-dən query parametrlərini parse edib, pagination məlumatını (`page`, `limit`, `sort`, `order`) standart struct-a çevirən middleware yazın.
+
+## PHP ilə Müqayisə
+
+PHP/Laravel-də XML üçün `SimpleXML`, `DOMDocument`, `XMLReader` kimi built-in sinifler var. URL üçün `parse_url()`, `http_build_query()` funksiyaları istifadə olunur:
+
+```php
+// PHP — XML parsing
+$xml = simplexml_load_string($xmlString);
+echo $xml->title;
+
+// PHP — URL building
+$params = ['page' => 2, 'limit' => 10, 'search' => 'Orkhan Şükürlü'];
+$url = 'https://api.example.com/users?' . http_build_query($params);
+
+// PHP — URL parsing
+$parts = parse_url('https://example.com/path?key=value');
+echo $parts['host']; // example.com
+```
+
+```go
+// Go — XML parsing
+var product Product
+xml.Unmarshal([]byte(xmlStr), &product)
+
+// Go — URL building (type-safe, injection-safe)
+u, _ := url.Parse("https://api.example.com/users")
+q := u.Query()
+q.Set("page", "2")
+q.Set("search", "Orkhan Şükürlü") // avtomatik encode
+u.RawQuery = q.Encode()
+```
+
+**Fərq:** PHP-nin `http_build_query` Go-nun `url.Values.Encode()`-un analoqu. Go-da `net/url` paketi URL-i struct kimi idarə edir — string manipulyasiya riski yoxdur. PHP-nin `SimpleXML`-i oxumaq üçün rahatdır, amma Go-nun struct tag yanaşması daha type-safe-dir.
 
 ## Əlaqəli Mövzular
 

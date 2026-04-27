@@ -2,12 +2,12 @@
 
 ## İcmal
 
-Functional Options — Go-da konfiqurasiya üçün ən populyar pattern-dir. `WithTimeout(5*time.Second)`, `WithMaxRetries(3)` kimi funksiyalar vasitəsilə struct-ı konfiqurasiya etmək imkanı verir. Bu pattern PHP-dəki constructor dependency injection-ın əvəzidir, lakin Go-ya xas olan idiomatic üsuldur. `grpc-go`, `zap`, `gorm` kimi məşhur kitabxanalar bu pattern-i istifadə edir.
+Functional Options — Go-da konfiqurasiya üçün ən populyar pattern-dir. `WithTimeout(5*time.Second)`, `WithMaxRetries(3)` kimi funksiyalar vasitəsilə struct-ı konfiqurasiya etmək imkanı verir. `grpc-go`, `zap`, `gorm` kimi məşhur kitabxanalar bu pattern-i istifadə edir.
 
 ## Niyə Vacibdir
 
-- Go-da constructor-a optional parametr vermək mümkün deyil (PHP-dəki `= null` yoxdur)
-- Çoxlu constructor overload-lar mümkün deyil (PHP-dəki method overloading yoxdur)
+- Go-da constructor-a optional parametr vermək mümkün deyil
+- Çoxlu constructor overload-lar mümkün deyil
 - Yeni seçim əlavə etmək mövcud API-ni pozmur (backward compatible)
 - Test zamanı yalnız lazım olan seçimləri override etmək asan olur
 - `New(host, port, timeout, retries, logger, tls, ...)` kimi uzun signature-dan qaçmaq
@@ -78,32 +78,6 @@ server := NewServer("localhost",
     WithTimeout(60*time.Second),
 )
 ```
-
-### PHP ilə Müqayisə
-
-```php
-// PHP — named parameters (8.0+) və ya constructor promotion
-class Server {
-    public function __construct(
-        private string $host,
-        private int $port = 8080,
-        private int $timeout = 30,
-        private ?Logger $logger = null,
-    ) {}
-}
-
-$server = new Server(host: 'localhost', port: 9090);
-```
-
-```go
-// Go — functional options (PHP named params əvəzi)
-server := NewServer("localhost",
-    WithPort(9090),
-    // timeout default olaraq qalır
-)
-```
-
-**Fərq:** PHP-də default value birbaşa constructor-da verilir. Go-da default-lar struct initialization-da verilir, options yalnız dəyişiklik edir.
 
 ### Validation ilə Options
 
@@ -550,6 +524,35 @@ Bu "preset" option-ları yazın.
 
 **Tapşırıq 5 — Real Test:**
 `NewHTTPClient` üçün test yazın. `httptest.NewServer` ilə fake server yaradın. Default timeout-ların düzgün işlədiyini yoxlayın.
+
+## PHP ilə Müqayisə
+
+PHP-də constructor-a default parametrlər vermək birbaşa mümkündür. Go-da bu mexanizm yoxdur — functional options bu boşluğu doldurmaq üçün istifadə olunur:
+
+```php
+// PHP — named parameters (8.0+) və ya constructor promotion
+class Server {
+    public function __construct(
+        private string $host,
+        private int $port = 8080,
+        private int $timeout = 30,
+        private ?Logger $logger = null,
+    ) {}
+}
+
+$server = new Server(host: 'localhost', port: 9090);
+// timeout default (30) qalır, logger null-dır
+```
+
+```go
+// Go — functional options (PHP named params əvəzi)
+server := NewServer("localhost",
+    WithPort(9090),
+    // timeout default olaraq qalır — 30s
+)
+```
+
+**Fərq:** PHP-də default value birbaşa constructor signature-da verilir. Go-da default-lar struct initialization-da verilir, options yalnız dəyişiklik edir. Yeni parametr əlavəsi PHP-də constructor signature-ı dəyişdirir (breaking change ola bilər), Go-da yeni `WithXxx` funksiyası əlavə etmək API-ni pozmur.
 
 ## Əlaqəli Mövzular
 

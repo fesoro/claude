@@ -4,8 +4,6 @@
 
 Cache — database/API yükünü azaltmaq, latency-ni düşürmək üçün tez-tez istifadə edilən məlumatı yaddaşda saxlamaq üsuludur. Go-da in-memory cache üçün `sync.Map`, `sync.RWMutex` + map, `github.com/allegro/bigcache` istifadə edilir. Distributed cache üçün Redis `github.com/redis/go-redis/v9` paketi ilə işlənir.
 
-Laravel-dəki `Cache::remember()` sadə sintaksis verir, amma Go-da cache strategy-ləri daha çox nəzarət imkanı ilə qurulur.
-
 ## Niyə Vacibdir
 
 - N+1 sorğu problemi cache ilə həll oluna bilər
@@ -529,6 +527,10 @@ Cache için hit rate, miss rate, eviction count metrikalarını toplayın. `expv
 
 **Tapşırıq 5 — Stale-while-revalidate:**
 TTL bitdikdə köhnə məlumatı qaytarın, arxa planda yeniləyin (stale-while-revalidate pattern). Race condition olmasın.
+
+## PHP ilə Müqayisə
+
+Laravel-dəki `Cache::remember()` sadə sintaksis verir — Go-da eyni pattern `Remember()` helper funksiyası ilə əldə edilir, amma generics ilə type-safe olur. Laravel `cache.php` driver-ləri (file, database, redis, memcached) konfiqurasiya ilə dəyişdirilir; Go-da isə bunu özünüz interface arxasında abstaktlaşdırırsınız — daha çox nəzarət imkanı, amma daha çox kod. Singleflight pattern PHP-nin analogu yoxdur — Laravel-də hər request izolə olduğu üçün cache stampede başqa şəkildə idarə olunur (əsasən `atomic` DB locks ilə).
 
 ## Əlaqəli Mövzular
 

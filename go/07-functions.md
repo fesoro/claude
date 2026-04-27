@@ -2,11 +2,11 @@
 
 ## İcmal
 
-Go-dakı funksiyalar bir neçə xüsusiyyətilə PHP-dən fərqlənir: **birden çox dəyər qaytarmaq** (multiple return values), **adlı qaytarma** (named return), **variadic parametrlər** (`...`), **first-class funksiyalar** (funksiyalar dəyər kimi) və **`defer`** mexanizmi. Bu xüsusiyyətlər xüsusilə Go-nun idiomatik error handling pattern-ini formalaşdırır: `result, err := someFunc()`.
+Go-dakı funksiyalar bir neçə güclü xüsusiyyətə malikdir: **birden çox dəyər qaytarmaq** (multiple return values), **adlı qaytarma** (named return), **variadic parametrlər** (`...`), **first-class funksiyalar** (funksiyalar dəyər kimi) və **`defer`** mexanizmi. Bu xüsusiyyətlər xüsusilə Go-nun idiomatik error handling pattern-ini formalaşdırır: `result, err := someFunc()`.
 
 ## Niyə Vacibdir
 
-PHP-də exception ilə error handling olur — `try/catch`. Go-da isə funksiyalar `(result, error)` cütü qaytarır. Bu pattern Go-da hər yerdədir: verilənlər bazası sorğuları, HTTP istəkləri, fayl əməliyyatları. Bu pattern-i başa düşmək Go kodunu oxumağın əsasıdır. Bundan əlavə, `defer` resursları düzgün bağlamaq üçün (fayl, database connection) çox vacibdir.
+Go-da funksiyalar `(result, error)` cütü qaytarır. Bu pattern Go-da hər yerdədir: verilənlər bazası sorğuları, HTTP istəkləri, fayl əməliyyatları. Bu pattern-i başa düşmək Go kodunu oxumağın əsasıdır. Bundan əlavə, `defer` resursları düzgün bağlamaq üçün (fayl, database connection) çox vacibdir.
 
 ## Əsas Anlayışlar
 
@@ -14,10 +14,10 @@ PHP-də exception ilə error handling olur — `try/catch`. Go-da isə funksiyal
 - **Multiple return** — `func bölmə(a, b int) (int, int)` — Go-nun ən güclü xüsusiyyətlərindən biri
 - **Named return** — `func hesabla(a, b int) (cem, ferq int)` — adlı qaytarma dəyişkənləri
 - **Naked return** — adlı qaytarmada `return` yalnız yazılır — dəyərləri addan götürür
-- **Variadic** — `func topla(eded ...int)` — istənilən sayda parametr; PHP-dəki `...$args` kimi
+- **Variadic** — `func topla(eded ...int)` — istənilən sayda parametr
 - **First-class function** — funksiyalar dəyər kimi ötürülə, dəyişkənə saxlanıla bilər
-- **Anonymous function** — `func() { ... }()` — lambda/closure; PHP-dəki `fn() =>` kimi
-- **Closure** — daxili funksiya xarici scope-a çatır; PHP-dəki `use` olmadan işləyir
+- **Anonymous function** — `func() { ... }()` — lambda/closure
+- **Closure** — daxili funksiya xarici scope-a çatır; `use` yazmadan işləyir
 - **`defer`** — funksiya bitəndə icra edilir; LIFO (son daxil olan birinci çıxır) sırası
 
 ## Praktik Baxış
@@ -28,13 +28,6 @@ PHP-də exception ilə error handling olur — `try/catch`. Go-da isə funksiyal
 - `defer db.Close()` — database connection-ı təmizləmək
 - Anonymous funksiya + closure — middleware, handler wrapper-lər
 - Variadic — `log.Printf(format, args...)` kimi logging funksiyaları
-
-**PHP ilə fərqi:**
-- PHP: `function f($a, $b)` qaytarma tipi yoxdur; Go-da məcburidir
-- PHP exception → Go multiple return `(result, error)` pattern-i
-- PHP `...$args` → Go `args ...int`; PHP-dəki kimi `...` ilə genişləndirilir
-- PHP closure-da `use ($var)` lazımdır; Go-da daxili funksiya avtomatik xarici dəyişkənə çatır
-- PHP-də `defer` yoxdur; destructor və ya `finally` istifadə olunur
 
 **Trade-off-lar:**
 - Named return — oxunaqlıdır, amma `return` birdən çox yerdə olarsa qarışıqlıq yarada bilər
@@ -214,9 +207,18 @@ func main() {
 
 2. Retry funksiyası: `withRetry(fn func() error, maxAttempts int) error` — funksiyayı `maxAttempts` dəfə çağırır; uğur qazanırsa dərhal qaytarır, hamısı uğursuz olarsa son xətanı qaytarır. `defer` ilə attempt sayını log et.
 
-3. Functional pipeline: `map`, `filter`, `reduce` funksiyaları yaz — PHP-dəki `array_map`, `array_filter`, `array_reduce` kimi. Higher-order funksiyaları istifadə et.
+3. Functional pipeline: `map`, `filter`, `reduce` funksiyaları yaz — higher-order funksiyaları istifadə et.
 
 4. Middleware wrapper: `func withLogging(fn func(string) string) func(string) string` — orijinal funksiyaya giriş/çıxış zamanını log edən closure qaytarır. Closure-un necə işlədiyini izah et.
+
+## PHP ilə Müqayisə
+
+- PHP: `function f($a, $b)` — qaytarma tipi yoxdur (PHP 7.0+-da var, amma məcburi deyil); Go-da məcburidir
+- PHP exception ilə error handling → Go multiple return `(result, error)` pattern-i
+- PHP `...$args` → Go `args ...int`; PHP-dəki kimi `...` ilə genişləndirilir
+- PHP closure-da `use ($var)` lazımdır; Go-da daxili funksiya avtomatik xarici dəyişkənə çatır
+- PHP-də `defer` yoxdur; destructor (`__destruct`) və ya `finally` istifadə olunur
+- Go-da funksiya birinci dərəcəli dəyərdir; PHP-də `Closure` class-ı ilə mümkündür, amma daha verbose
 
 ## Əlaqəli Mövzular
 

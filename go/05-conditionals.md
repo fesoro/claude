@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Go-da şərt idarəetməsi üçün `if/else if/else` və `switch` konstruksiyaları var. PHP ilə müqayisədə iki əsas fərq var: şərt ətrafında mötərizə `()` yoxdur, açılan `{` mötərizə həmişə eyni sətirdə olmalıdır. `switch` isə Go-da PHP-dəkindən güclüdür: `break` yazmaq lazım deyil, expressionless switch `if/else` zəncirinin yerini tuta bilər, tip yoxlama (`type switch`) daxili olaraq dəstəklənir.
+Go-da şərt idarəetməsi üçün `if/else if/else` və `switch` konstruksiyaları var. İki əsas sintaksis xüsusiyyəti: şərt ətrafında mötərizə `()` yoxdur, açılan `{` mötərizə həmişə eyni sətirdə olmalıdır. `switch` isə güclüdür: `break` yazmaq lazım deyil, expressionless switch `if/else` zəncirinin yerini tuta bilər, tip yoxlama (`type switch`) daxili olaraq dəstəklənir.
 
 ## Niyə Vacibdir
 
@@ -14,7 +14,7 @@ Real backend kodunda şərt yoxlamaları hər yerdədir: request validation, err
 - **`if init; condition`** — şərtdən əvvəl qısa elan; dəyişkən yalnız blok daxilindədir
 - **`switch`** — Go-da `break` avtomatikdır; hər case-dən sonra saxlanır
 - **`fallthrough`** — növbəti case-ə davam etmək üçün (nadir istifadə)
-- **Expressionless switch** — `switch {}` forması; birlikdə `if/else` zəncirinin daha oxunaqlı alternatividir
+- **Expressionless switch** — `switch {}` forması; `if/else` zəncirinin daha oxunaqlı alternatividir
 - **Type switch** — `switch v := x.(type)` — interface dəyərinin tipini yoxlayır
 - **`case` bir neçə dəyər** — `case "Şənbə", "Bazar":` — vergüllə bir neçə dəyər
 
@@ -25,12 +25,6 @@ Real backend kodunda şərt yoxlamaları hər yerdədir: request validation, err
 - HTTP status yoxlama: `if resp.StatusCode != 200 { ... }`
 - Tip yoxlama JSON parsing zamanı: `type switch` ilə `interface{}` dəyərini yoxlamaq
 - Konfiqurasiya yoxlama: expressionless switch ilə çoxlu şərtləri oxunaqlı formada yazmaq
-
-**PHP ilə fərqi:**
-- PHP: `if ($a > 0) {` → Go: `if a > 0 {` (mötərizə yoxdur)
-- PHP: `switch ($x) { case 1: echo "bir"; break; }` → Go-da `break` lazım deyil
-- PHP: `switch` yalnız bərabərlik yoxlayır; Go-dakı expressionless switch hər şərti yoxlaya bilər
-- Go-da `else if` iki sözlə yazılır (PHP-dəki `elseif` kompakt forması yoxdur)
 
 **Trade-off-lar:**
 - `if/else` — sadə, amma uzun zəncirlər çirkin görünür
@@ -188,6 +182,15 @@ func main() {
 3. JSON parser: `interface{}` dəyərini qəbul edən, tip switch ilə `string`, `float64`, `bool`, `[]interface{}`, `map[string]interface{}` tiplərini ayırd edən funksiya yaz.
 
 4. Güzəştli qiymət hesablayıcı: `switch` + `expressionless switch` istifadə edərək, müştəri səviyyəsinə (`"silver"`, `"gold"`, `"platinum"`) görə endirim faizini qaytaran funksiya yaz.
+
+## PHP ilə Müqayisə
+
+- PHP: `if ($a > 0) {` → Go: `if a > 0 {` (mötərizə yoxdur)
+- PHP: `switch ($x) { case 1: echo "bir"; break; }` → Go-da `break` lazım deyil
+- PHP: `switch` yalnız bərabərlik yoxlayır; Go-dakı expressionless switch hər şərti yoxlaya bilər
+- Go-da `else if` iki sözlə yazılır (PHP-dəki `elseif` kompakt forması yoxdur)
+- Go-da `type switch` — PHP-dəki `instanceof` + `gettype()` kombinasiyasının daha güclü versiyası
+- PHP-də `switch` case-lər arasında `break` olmadan düşür (fall-through default); Go-da əksinə — explicit `fallthrough` lazımdır
 
 ## Əlaqəli Mövzular
 

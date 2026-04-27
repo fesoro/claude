@@ -6,12 +6,12 @@ Go-da fayl əməliyyatları `os` və `bufio` paketləri vasitəsilə aparılır.
 
 ## Niyə Vacibdir
 
-Backend developer gündəlik fayl əməliyyatları ilə üzləşir: konfiqurasiya faylları oxumaq, log fayllarına yazmaq, CSV/JSON import etmək, temporary fayl yaratmaq. Go-nun `defer file.Close()` pattern-i PHP-dəki `fclose($handle)` çağırışını unutmağa qarşı mükəmməl müdafiədir. `os.IsNotExist(err)` — fayl yoxlama pattern-i isə PHP-dəki `file_exists()` funksiyasının daha güvənli ekvivalentidir.
+Backend developer gündəlik fayl əməliyyatları ilə üzləşir: konfiqurasiya faylları oxumaq, log fayllarına yazmaq, CSV/JSON import etmək, temporary fayl yaratmaq. `defer file.Close()` pattern-i faylı bağlamağı unutmağa qarşı mükəmməl müdafiədir. `os.IsNotExist(err)` fayl yoxlama pattern-i isə daha güvənli yanaşmadır.
 
 ## Əsas Anlayışlar
 
-- **`os.WriteFile`** — bütöv faylı birdən yaz; PHP-dəki `file_put_contents()`
-- **`os.ReadFile`** — bütöv faylı birdən oxu; PHP-dəki `file_get_contents()`
+- **`os.WriteFile`** — bütöv faylı birdən yaz
+- **`os.ReadFile`** — bütöv faylı birdən oxu
 - **`os.Create`** — yeni fayl yarat (varsa silir, yenidən yaradır); `*os.File` qaytarır
 - **`os.Open`** — faylı yalnız oxumaq üçün aç; yoxsa xəta qaytarır
 - **`os.OpenFile`** — flag-larla (O_RDWR, O_APPEND, O_CREATE) aç
@@ -32,14 +32,6 @@ Backend developer gündəlik fayl əməliyyatları ilə üzləşir: konfiqurasiy
 - CSV import: `bufio.Scanner` ilə sətir-sətir oxu, parse et, DB-ə yaz
 - Fayl upload: multi-part form-dan faylı `os.Create` ilə saxla
 - Static file serve: faylın mövcudluğunu yoxla, uyğun content-type ilə göndər
-
-**PHP ilə fərqi:**
-- PHP: `file_get_contents()` / `file_put_contents()` → Go: `os.ReadFile()` / `os.WriteFile()`
-- PHP: `fopen($path, 'a')` → Go: `os.OpenFile(path, os.O_APPEND|os.O_WRONLY, 0644)`
-- PHP: `fgets($handle)` → Go: `bufio.NewScanner(file); scanner.Scan(); scanner.Text()`
-- PHP: `file_exists()` → Go: `os.Stat(path); os.IsNotExist(err)`
-- PHP-də `fclose` unutmaq ola bilər; Go-da `defer file.Close()` bunu avtomatikləşdirir
-- PHP-dəki `\n` → Go-da `\n` (Unix) — platform fərqinə diqqət
 
 **Trade-off-lar:**
 - `os.ReadFile` — sadə, amma böyük faylı birdən yaddaşa oxuyur; GB-lıq fayl üçün istifadə etməyin
@@ -247,6 +239,22 @@ func main() {
 3. **CSV importer**: İstifadəçi məlumatlarını CSV fayldan oxu, validiasiya et (email formatı yoxla, yaş > 0), etibarlıları `valid.csv`, etibarsızları `invalid.csv`-yə yaz.
 
 4. **File watcher simulyasiyası**: `checkFile(path string)` — hər saniyə faylın ölçüsünü yoxlayır; dəyişsə log edir. 5 saniyə işlədikdən sonra dayanır. (`time.Sleep`, `os.Stat`)
+
+## PHP ilə Müqayisə
+
+| PHP funksiyası | Go ekvivalenti |
+|----------------|----------------|
+| `file_get_contents()` | `os.ReadFile()` |
+| `file_put_contents()` | `os.WriteFile()` |
+| `fopen($path, 'a')` | `os.OpenFile(path, os.O_APPEND\|os.O_WRONLY, 0644)` |
+| `fgets($handle)` | `bufio.Scanner + scanner.Scan() + scanner.Text()` |
+| `file_exists()` | `os.Stat(path); os.IsNotExist(err)` |
+| `mkdir()` | `os.Mkdir()` / `os.MkdirAll()` |
+| `unlink()` | `os.Remove()` |
+
+- PHP-də `fclose` unutmaq ola bilər; Go-da `defer file.Close()` bunu avtomatikləşdirir
+- Go-da `os.ReadFile` xəta qaytarır — explicit yoxlama lazımdır; PHP-də `false` qaytarır
+- PHP-dəki `\n` → Go-da `\n` (Unix) — platform fərqinə diqqət; Windows-da `\r\n` ola bilər
 
 ## Əlaqəli Mövzular
 

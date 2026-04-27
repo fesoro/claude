@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Go-da JSON işləmək üçün standart `encoding/json` paketi istifadə olunur. Struct tag-ləri ilə JSON field adları, omitempty davranışı və gizli sahələr idarə edilir. Paket reflection istifadə etdiyindən tipin məlum olması performans baxımından önəmlidir. PHP-nin `json_encode/json_decode`-undan fərqli olaraq, Go-da marshal/unmarshal əməliyyatları strongly-typed struct-larla işləyir və xəta idarəetməsi açıq şəkildə aparılır.
+Go-da JSON işləmək üçün standart `encoding/json` paketi istifadə olunur. Struct tag-ləri ilə JSON field adları, omitempty davranışı və gizli sahələr idarə edilir. Paket reflection istifadə etdiyindən tipin məlum olması performans baxımından önəmlidir. Go-da marshal/unmarshal əməliyyatları strongly-typed struct-larla işləyir və xəta idarəetməsi açıq şəkildə aparılır.
 
 ## Niyə Vacibdir
 
@@ -42,16 +42,6 @@ Müasir backend servislərin demək olar ki, hamısı JSON API-lərdir. HTTP req
 - JSON rəqəmini `interface{}` ilə decode edib `int` assert etmək — həmişə `float64` gəlir
 - `json.Unmarshal` xətasını yoxlamamaq — struct boş qala bilər
 - Pointer field-lər üçün unmarshal zamanı nil pointer dereference
-
-**PHP ilə fərqi:**
-
-| PHP | Go |
-|-----|-----|
-| `json_encode($arr)` — istənilən tip | `json.Marshal(v)` — struct tag-lərlə idarə |
-| `json_decode($str, true)` — associative array | `json.Unmarshal(data, &s)` — typed struct |
-| `#[JsonSerialize]` attribute-u (PHP 8) | `MarshalJSON()` metodu |
-| `$obj->field` null olsa problem yoxdur | `omitempty` açıq yazılmalıdır |
-| Avtomatik `camelCase` → `snake_case` yoxdur | Struct tag ilə açıq yazılır |
 
 ## Nümunələr
 
@@ -351,18 +341,6 @@ func main() {
 
     bildirisiIslaParse(emailBild)
     bildirisiIslaParse(smsBild)
-
-    // json.Number — böyük ID-lər üçün
-    import_str := `{"id": 9007199254740993, "qiymet": 19.99}`
-    dec := json.NewDecoder(strings.NewReader(import_str))
-    dec.UseNumber()
-
-    var data map[string]interface{}
-    dec.Decode(&data)
-
-    idNum := data["id"].(json.Number)
-    idInt64, _ := idNum.Int64()
-    fmt.Println("Böyük ID:", idInt64) // 9007199254740993 (dəqiq)
 }
 ```
 
@@ -377,6 +355,17 @@ func main() {
 4. **Config loader:** JSON konfiqürasiya faylını (`config.json`) `json.Decoder` ilə oxuyan funksiya yaz. Sahə yoxdursa default dəyər istifadə etsin. Mühit dəyişkənlərini struct tag custom annotation ilə override etsin.
 
 5. **JSON stream processor:** Böyük JSON array-ı (məsələn 100k sətir log) yaddaşa tamamilə yükləmədən `json.Decoder` + `dec.Token()` ilə sətir-sətir oxu. Yalnız `level == "ERROR"` olan sətirləri çap et.
+
+## PHP ilə Müqayisə
+
+| PHP | Go |
+|-----|-----|
+| `json_encode($arr)` — istənilən tip | `json.Marshal(v)` — struct tag-lərlə idarə |
+| `json_decode($str, true)` — associative array | `json.Unmarshal(data, &s)` — typed struct |
+| `#[JsonSerialize]` attribute-u (PHP 8) | `MarshalJSON()` metodu |
+| `$obj->field` null olsa problem yoxdur | `omitempty` açıq yazılmalıdır |
+| Avtomatik `camelCase` → `snake_case` yoxdur | Struct tag ilə açıq yazılır |
+| `json_decode` rəqəmləri float və ya int avtomatik seçir | `interface{}` ilə decode — həmişə `float64` |
 
 ## Əlaqəli Mövzular
 

@@ -2,14 +2,14 @@
 
 ## İcmal
 
-`testcontainers-go` — test zamanı Docker konteynerləri proqramatik olaraq başlatmaq üçün kitabxanadır. PostgreSQL, Redis, Kafka, Elasticsearch — real servislərlə test et, mock-ları unut. PHP/Laravel-in `RefreshDatabase` + SQLite yanaşmasından fərqli olaraq, production-a uyğun real servislər istifadə edilir.
+`testcontainers-go` — test zamanı Docker konteynerləri proqramatik olaraq başlatmaq üçün kitabxanadır. PostgreSQL, Redis, Kafka, Elasticsearch — real servislərlə test et, mock-ları unut. Production-a uyğun real servislər istifadə edilir: constraint, index, transaction davranışı real mühitdə yoxlanır.
 
 ## Niyə Vacibdir
 
 - Mock repository ilə unit test — "kod çalışır" deyir, amma SQL səhv ola bilər
 - Real PostgreSQL ilə test — constraint, index, transaction davranışı test edilir
 - "Works on my machine" problemi aradan qalxır — CI/CD-də eyni konteyner
-- Laravel `RefreshDatabase` + SQLite kombinasiyası: PostgreSQL-specific feature-ları testdə çalışmır
+- PostgreSQL-specific feature-lar (triggers, stored proc, advisory locks) düzgün test edilir
 
 ## Əsas Anlayışlar
 
@@ -368,6 +368,43 @@ func TestExpensiveIntegration(t *testing.T) {
 
 **Tapşırıq 3:**
 Redis + PostgreSQL birlikdə: `UserService.GetUser` testi — ilk sorğu DB-dən, ikinci Redis-dən gəlsin. Bunu test edin.
+
+## PHP ilə Müqayisə
+
+Laravel-in `RefreshDatabase` trait-i hər test üçün DB-ni sıfırlayır. SQLite in-memory ilə sürətli işləyir, amma PostgreSQL-specific feature-ları test etmir.
+
+```php
+// Laravel — RefreshDatabase + SQLite (yavaş, amma asan)
+class UserRepositoryTest extends TestCase
+{
+    use RefreshDatabase; // Hər test üçün DB sıfırlanır
+
+    public function test_create_user(): void
+    {
+        $user = User::create(['name' => 'Orxan', 'email' => 'orxan@test.com']);
+        $this->assertDatabaseHas('users', ['email' => 'orxan@test.com']);
+    }
+}
+```
+
+```go
+// Go — testcontainers ilə real PostgreSQL
+func TestUserRepository_Create(t *testing.T) {
+    db := setupPostgres(t) // Real PostgreSQL konteyner
+
+    repo := NewUserRepository(db)
+    err := repo.Create(context.Background(), &User{Name: "Orxan", Email: "orxan@test.com"})
+
+    require.NoError(t, err)
+    // UNIQUE constraint, trigger-lər, PostgreSQL-specific davranış — hamısı test edilir
+}
+```
+
+**Əsas fərqlər:**
+- Laravel `RefreshDatabase`: SQLite və ya real DB — konfiqurasiyadan asılı; testcontainers: həmişə real PostgreSQL
+- Laravel: migration avtomatik çalışır; Go: `goose.Up()` əl ilə çağırılır
+- Laravel SQLite limiti: `JSON_ARRAYAGG`, `uuid_generate_v4()`, advisory lock kimi PostgreSQL feature-ları işləmir
+- Testcontainers: Docker daemon tələb edir; Laravel: PHP prosesi daxilindədir
 
 ## Əlaqəli Mövzular
 

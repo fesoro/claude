@@ -6,8 +6,6 @@ Build tags (build constraint-lər) — faylın müəyyən şərtlər altında ko
 
 Go 1.17-dən əvvəl `// +build linux` formatı işlədilirdi. Yeni format `//go:build linux`-dur — daha aydın, boolean operatorlarla.
 
-PHP-də bu yoxdur — hər mühit `config.php` ilə idarə olunur. Go-da isə build zamanı fərqli kod birləşdirilir — runtime yük yoxdur, binary incədir.
-
 ## Niyə Vacibdir
 
 - Cross-platform CLI alətlər: bir kodla Linux, macOS, Windows binary yaratmaq
@@ -542,6 +540,10 @@ GitHub Actions matrix strategy ilə `linux/amd64`, `darwin/arm64`, `windows/amd6
 
 **Tapşırıq 5 — CGO-free Docker:**
 `CGO_ENABLED=0` ilə static binary qurun. `scratch` Docker image-da işləyin. Image ölçüsünü ölçün.
+
+## PHP ilə Müqayisə
+
+PHP-də build tag konsepti yoxdur — hər mühit `config.php`, `.env` faylı, yaxud `APP_ENV` dəyişəni ilə idarə olunur; kod runtime-da if/else ilə seçim edir. Go-da isə build zamanı fərqli kod birləşdirilir — runtime yük yoxdur, binary incədir, istifadəsiz platforma kodu binary-a daxil edilmir. PHP feature flag-lari `config('features.premium')` kimi runtime yoxlama ilə işləyir; Go-da `//go:build premium` tag-ı ilə compile-time seçim edilir — yanlış build konfiqurasiyası birbaşa kompilyasiya xətasına çevrilir.
 
 ## Əlaqəli Mövzular
 

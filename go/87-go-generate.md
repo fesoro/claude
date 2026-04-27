@@ -2,7 +2,7 @@
 
 ## İcmal
 
-`go generate` — Go fayllarındakı xüsusi şərh direktivi ilə xarici alətləri çalışdırır. Özü heç nə generasiya etmir — `stringer`, `mockery`, `sqlc`, `protoc` kimi alətlərə körpü rolunu oynayır. PHP-nin Artisan `make:` komandaları kimi, amma daha güclü — source faylından tam tip-təhlükəsiz kod yaradır.
+`go generate` — Go fayllarındakı xüsusi şərh direktivi ilə xarici alətləri çalışdırır. Özü heç nə generasiya etmir — `stringer`, `mockery`, `sqlc`, `protoc` kimi alətlərə körpü rolunu oynayır. Source faylından tam tip-təhlükəsiz kod yaradır, boilerplate yazma yükünü aradan qaldırır.
 
 ## Niyə Vacibdir
 
@@ -91,7 +91,7 @@ import "strconv"
 
 func _() {
     // An "invalid array index" compiler error signifies that the constant values have changed.
-    var x [1]struct{}
+    var x [[1]struct{}
     _ = x[StatusPending-0]
     _ = x[StatusPaid-1]
     // ...
@@ -345,6 +345,34 @@ package main
 
 **Tapşırıq 3:**
 `sqlc` quraşdırın. `users` cədvəli üçün 5 sorğu yazın (CRUD + list). Generateilmiş kodu repository-də istifadə edin.
+
+## PHP ilə Müqayisə
+
+Laravel Artisan `make:` komandaları stub faylları yaradır — şablon əsasında. Go-nun `go generate` isə source fayldan tip-təhlükəsiz kod yaradır: interface-dən mock, SQL-dən Go struct.
+
+```php
+// Laravel Artisan make: — şablon əsasında fayl yaradır
+php artisan make:model User -m        // User.php + migration stub
+php artisan make:repository UserRepository  // Stub faylı (əl ilə yazılmış şablon)
+php artisan make:request CreateUserRequest  // FormRequest stub
+
+// Nəticə: şablon → sən doldurursan (tip yoxlaması yoxdur)
+```
+
+```go
+// Go generate — source-dan real kod yaradır
+//go:generate mockery --name=UserRepository  // Interface → tam mock implementasiyası
+//go:generate sqlc generate                  // SQL → tip-təhlükəsiz Go struct + funksiyalar
+//go:generate stringer -type=Status          // iota → String() metodu
+
+// Nəticə: mövcud kod → yeni kod (tip-təhlükəsiz, compile vaxtında yoxlanır)
+```
+
+**Əsas fərqlər:**
+- Laravel `make:`: boş şablon yaradır, sən doldurursan; Go `generate`: mövcud koddan real implementasiya yaradır
+- Laravel stub: runtime-da tip yoxlaması yoxdur; Go generated kod: compile vaxtında yoxlanır
+- Laravel: `php artisan` — framework əmri; Go `go generate`: standart tool chain, framework lazım deyil
+- `sqlc` vs Eloquent: `sqlc` SQL-dən tip-təhlükəsiz struct yaradır; Eloquent runtime-da sorğu qurur (tip yoxlaması yoxdur)
 
 ## Əlaqəli Mövzular
 

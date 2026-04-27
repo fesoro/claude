@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Go-da fayl yükləmə `multipart/form-data` ilə işləyir — `net/http` paketi tam dəstək verir. Kiçik fayllar RAM-da, böyük fayllar diskə stream edilir. S3 və digər object storage-ə yükləmə də bu əsasın üzərindədir. PHP/Laravel-in `$request->file()` + `Storage::put()` kombinasiyasının Go ekvivalenti.
+Go-da fayl yükləmə `multipart/form-data` ilə işləyir — `net/http` paketi tam dəstək verir. Kiçik fayllar RAM-da, böyük fayllar diskə stream edilir. S3 və digər object storage-ə yükləmə də bu əsasın üzərindədir.
 
 ## Niyə Vacibdir
 
@@ -361,6 +361,37 @@ MinIO Docker ilə lokal yüklə: `docker run -p 9000:9000 minio/minio server /da
 
 **Tapşırıq 3:**
 Çoxlu fayl endpoint-i: maksimum 5 fayl, hər biri max 5MB. Yüklənmiş faylların URL-lərini JSON array kimi qaytar.
+
+## PHP ilə Müqayisə
+
+Laravel `$request->file()` + `Storage::put()` fayl yükləməni abstrakt edir. Go-da eyni işi `net/http` + `io.Copy` birliyi görür — daha az abstraktsiya, daha çox control.
+
+```php
+// Laravel
+$path = $request->file('avatar')->store('avatars', 's3');
+$url = Storage::disk('s3')->url($path);
+
+// Content-type yoxlama — manual
+$mimeType = $request->file('avatar')->getMimeType();
+if (!in_array($mimeType, ['image/jpeg', 'image/png'])) {
+    return response()->json(['error' => 'Invalid type'], 422);
+}
+```
+
+```go
+// Go
+file, header, _ := r.FormFile("avatar")
+buf := make([]byte, 512)
+file.Read(buf)
+contentType := http.DetectContentType(buf) // real content-type yoxla
+file.Seek(0, io.SeekStart)
+// S3-ə yüklə...
+```
+
+**Əsas fərqlər:**
+- Laravel `Storage` facade S3/GCS/local abstraction verir; Go-da hər driver üçün SDK
+- Laravel `$request->file()->validate()` — Go-da manual content-type yoxlama
+- Go streaming default olaraq işləyir; Laravel büyük faylları da RAM-a yükləyir
 
 ## Əlaqəli Mövzular
 

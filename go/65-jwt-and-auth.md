@@ -4,8 +4,6 @@
 
 Authentication (kimlik doğrulama) hər web servisinin vacib hissəsidir. Bu mövzuda JWT strukturu, `golang-jwt/jwt/v5` ilə token yaratma/doğrulama, stateless middleware, refresh token pattern, OAuth2 flow (Google ilə giriş), TLS konfiqurasiyası öyrəniləcək.
 
-Laravel Sanctum/Passport-dan fərqli olaraq Go-da hər şeyi özünüz qurursunuz — bu daha çox nəzarət, amma daha çox məsuliyyət deməkdir.
-
 ## Niyə Vacibdir
 
 - Stateless JWT — horizontal scaling üçün idealdır (session store lazım deyil)
@@ -519,6 +517,10 @@ Refresh token işləndikdə yeni refresh token da yarat (rotation). Köhnə refr
 
 **Tapşırıq 5 — RS256 JWKS endpoint:**
 `/auth/.well-known/jwks.json` endpoint-i — public key-i JWKS formatında qaytarsın. Digər servisler buradan public key alsın.
+
+## PHP ilə Müqayisə
+
+Laravel Sanctum/Passport-dan fərqli olaraq Go-da hər şeyi özünüz qurursunuz — bu daha çox nəzarət, amma daha çox məsuliyyət deməkdir. Laravel Sanctum token-ləri DB-də saxlayır (`personal_access_tokens` cədvəli) — Go-da bunu özünüz Redis-də implementasiya edirsiniz. Laravel Passport OAuth2 server kimi işləyir; Go-da `golang.org/x/oauth2` client tərəfini, server tərəfini isə `ory/fosite` kimi kitabxanalar ilə qurursunuz. RS256 microservice ssenarisi Laravel-in çox-servis mühitində Passport-la mürəkkəb olur — Go-da bu daha asan idarə olunur.
 
 ## Əlaqəli Mövzular
 

@@ -4,7 +4,7 @@
 
 Microservices — böyük sistemi kiçik, müstəqil xidmətlərə bölmək arxitektura yanaşmasıdır. Hər xidmetin öz database-i, öz deploy prosesi, öz komandası ola bilər. Go bu arxitektura üçün ideal dildir: kiçik binary, sürətli startup, az yaddaş, güclü concurrency.
 
-Architect səviyyəsində yalnız microservice yazmaq deyil — service decomposition qərarları, communication pattern seçimi, service discovery, circuit breaker, saga pattern, data consistency strategiyası bilinməlidir. PHP/Laravel-dən gələnlər üçün bu ən böyük düşüncə dəyişikliyi (mental shift) tələb edən mövzudur.
+Architect səviyyəsində yalnız microservice yazmaq deyil — service decomposition qərarları, communication pattern seçimi, service discovery, circuit breaker, saga pattern, data consistency strategiyası bilinməlidir.
 
 ## Niyə Vacibdir
 
@@ -726,6 +726,10 @@ func (h *ServiceHealth) ReadyHandler(w http.ResponseWriter, r *http.Request) {
 - Blue-Green: köhnə + yeni eyni anda, switch edilir
 - Canary: yeni versiyaya trafixin 5% → 10% → 100% yönləndirilməsi
 - Rolling update: pod-lar ardıcıl yenilənir (Kubernetes default)
+
+## PHP ilə Müqayisə
+
+PHP/Laravel-dən gələnlər üçün microservices ən böyük düşüncə dəyişikliyi (mental shift) tələb edən mövzudur. Laravel-in monolit arxitekturasında — bir codebase, bir database, bir deploy. Microservice-lərdə isə 5-50 ayrı servis, hər biri öz database-i, öz deploy pipeline-ı ilə idarə olunur. PHP-nin hər-request-yeni-proses modeli microservice-lərarası state paylaşımını avtomatik həll edir; Go-da uzun yaşayan proses kimi diqqətli state idarəsi lazımdır. Saga pattern PHP-nin distributed transaction problemini Go-dakından daha tez-tez qarşılaşdığı bir problemdir — çünki Laravel ekosistemi uzun müddət monolitik qalmışdır. Go microservice-lərin startup vaxtı (millisaniyələr) PHP-FPM-dən (yüz millisaniyələr) əhəmiyyətli dərəcədə azdır — bu container orchestration-da kritik üstünlükdür.
 
 ## Əlaqəli Mövzular
 

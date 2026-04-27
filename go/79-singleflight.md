@@ -4,8 +4,6 @@
 
 `golang.org/x/sync/singleflight` — eyni key üçün eyni anda çoxlu gözləyən goroutine-i bir dəfə işlədib nəticəni hamısına paylaşır. **Thundering herd** (ildırım sürüsü) probleminə — cache miss zamanı hamı eyni anda DB-ni döyəcləyir — birbaşa həll.
 
-PHP-də bu problem queue ilə aradan qaldırılır. Go-da `singleflight` eyni prosesin içində, sıfır latency overhead ilə işləyir.
-
 ## Niyə Vacibdir
 
 - Cache expire olur → 1000 goroutine eyni anda DB-yə sorğu edir
@@ -284,6 +282,38 @@ Redis cache + singleflight birləşdir. Cache miss olarsa singleflight DB-ni yal
 
 **Tapşırıq 3:**
 `group.Forget` ilə "cache invalidation" endpoint-i yaz: admin `/admin/cache/invalidate/:key` çağıranda növbəti sorğu DB-dən təzə məlumat alır.
+
+## PHP ilə Müqayisə
+
+PHP-də bu problem adətən Redis-based lock ilə ya da queue-ya köçürərək həll edilir. Go-da `singleflight` eyni prosesin içində, sıfır latency overhead ilə işləyir.
+
+```php
+// PHP — Redis lock ilə thundering herd qarşısı
+$lock = Cache::lock('user:'.$id, 10);
+if ($lock->get()) {
+    $user = DB::table('users')->find($id);
+    Cache::put('user:'.$id, $user, 300);
+    $lock->release();
+} else {
+    // Lock ala bilmədik — gözlə ya da cache-dən al
+    sleep(0.1);
+    $user = Cache::get('user:'.$id);
+}
+```
+
+```go
+// Go — singleflight (daha sadə, eyni proses daxilində)
+result, _, _ := group.Do("user:"+id, func() (interface{}, error) {
+    user := db.GetUser(id)
+    redis.Set("user:"+id, user, 5*time.Minute)
+    return user, nil
+})
+```
+
+**Əsas fərqlər:**
+- PHP lock: Redis round-trip lazımdır; Go singleflight: yalnız memory
+- PHP-də eyni server prosesi olsa belə, hər request ayrı PHP prosesidir — singleflight mümkün deyil
+- Go-da goroutine-lər eyni proses içindədir — singleflight ideal işləyir
 
 ## Əlaqəli Mövzular
 

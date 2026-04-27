@@ -6,12 +6,10 @@ WebSocket — HTTP-dən başlayan, sonra ikitərəfli (full-duplex) davamlı TCP
 
 Go-da WebSocket üçün ən populyar kitabxana `github.com/gorilla/websocket`-dir (arxivlənib, amma stable). Müasir alternativ `nhooyr.io/websocket`-dir. Bu mövzuda Hub pattern, hər client üçün goroutine arxitekturası, production-da diqqət etməli məqamlar öyrəniləcək.
 
-PHP-də WebSocket üçün Ratchet/Swoole kimi ayrıca server tələb olunur. Go-da isə WebSocket handler standart HTTP serveri ilə eyni prosesdə işləyir, yüz minlərlə eyni anda əlaqəni dəstəkləyə bilər.
-
 ## Niyə Vacibdir
 
 - REST polling-dən 10–100x az şəbəkə yükü — server push
-- Laravel Echo/Pusher kimi xarici servislər əvəzinə öz WebSocket serverinizi yazın
+- Öz WebSocket serverinizi yazın — xarici servisə ehtiyac yoxdur
 - Goroutine-per-connection modeli — Node.js callback hell-i yoxdur
 - Go runtime ilə 100K+ eyni anda əlaqə mümkündür
 
@@ -462,6 +460,10 @@ Exponential backoff ilə avtomatik reconnect edən WebSocket client yazın. Max 
 
 **Tapşırıq 5 — Private messaging:**
 Hub-a `DirectMessage(from, to string, data []byte) error` metodu əlavə edin. Yalnız hədəf client-ə göndərsin.
+
+## PHP ilə Müqayisə
+
+PHP-də WebSocket üçün Ratchet/Swoole kimi ayrıca server tələb olunur — standart PHP-FPM WebSocket dəstəkləmir. Laravel Echo isə Pusher/Soketi kimi xarici servisə ehtiyac duyur. Go-da isə WebSocket handler standart HTTP serveri ilə eyni prosesdə işləyir — ayrıca runtime, xarici servis, extension lazım deyil. Yüz minlərlə eyni anda əlaqəni dəstəkləyə bilər, hər client üçün yalnız 2 goroutine (~16KB yaddaş).
 
 ## Əlaqəli Mövzular
 

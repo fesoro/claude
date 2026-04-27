@@ -448,6 +448,10 @@ go build -gcflags="-m -m" ./...  # daha ətraflı
 6. Goroutine-ləri lazım olmadıqda yaratmayın (stack overhead)
 7. `[]byte` əvəzinə `string` konversiyasını minimuma endirin
 
+## PHP ilə Müqayisə
+
+PHP-də profiling üçün Xdebug (`xdebug.profiler_enable=1`) və Blackfire.io kimi xarici alətlər tələb olunur — Go-da isə `net/http/pprof` standart kitabxanadır, xarici alət lazım deyil. PHP hər request-i yeni proses kimi işlədiyindən memory leak PHP-FPM restart ilə gizlənir; Go-da uzun müddətli proses olduğuna görə real memory leak-lər `pprof` ilə dəqiq aşkarlanır. Benchmarking PHP-də `microtime()` ilə əllə ölçülür; Go-da `testing.B` framework-i statistikasını özü idarə edir — `b.N` dəqiq ölçmə üçün optimal iteration sayını müəyyən edir.
+
 ## Əlaqəli Mövzular
 
 - [69-memory-management.md](69-memory-management.md) — GC internals, heap/stack, escape analysis

@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Go-da xəta idarəetməsi PHP-nin `try/catch` mexanizmindən kökündən fərqlənir. Go-da xətalar sadəcə dəyərlərdir — funksiyalar xətanı son qaytarma dəyəri kimi qaytarır, çağıran isə dərhal yoxlayır. Bu yanaşma explicit (açıq) nəzarəti təmin edir: xəta heç vaxt "gizli" qalmır. Go 1.13-dən etibarən `%w` ilə xəta sarma (wrapping), `errors.Is` və `errors.As` ilə dərinlikli yoxlama mümkündür.
+Go-da xəta idarəetməsi fərqli bir yanaşmaya əsaslanır: Go-da xətalar sadəcə dəyərlərdir — funksiyalar xətanı son qaytarma dəyəri kimi qaytarır, çağıran isə dərhal yoxlayır. Bu yanaşma explicit (açıq) nəzarəti təmin edir: xəta heç vaxt "gizli" qalmır. Go 1.13-dən etibarən `%w` ilə xəta sarma (wrapping), `errors.Is` və `errors.As` ilə dərinlikli yoxlama mümkündür.
 
 ## Niyə Vacibdir
 
@@ -37,19 +37,8 @@ Düzgün xəta idarəetməsi production-da sistemin sağlamlığını müəyyən
 **Ümumi səhvlər:**
 - Xətanı yoxlamadan `_` ilə atmaq — ən pis anti-pattern
 - `fmt.Errorf("xəta: %v", err)` — `%v` wrap etmir; `errors.Is/As` işləmír; `%w` istifadə edin
-- Hər qatda eyni xətanı loglamaq — logging yalnız ən yuxarı qatda olsun, aşağıda yalnız warp edin
+- Hər qatda eyni xətanı loglamaq — logging yalnız ən yuxarı qatda olsun, aşağıda yalnız wrap edin
 - Custom error type üçün pointer receiver əvəzinə value receiver — `errors.As` işləmir
-
-**PHP ilə fərqi:**
-
-| PHP | Go |
-|-----|-----|
-| `try { ... } catch (Exception $e)` | `result, err := func(); if err != nil { ... }` |
-| Exception avtomatik "bubble up" edir | Xəta əl ilə qaytarılır və yoxlanır |
-| `throw new ValidationException(...)` | `return nil, &ValidationError{...}` |
-| `$e->getMessage()` | `err.Error()` |
-| `catch (\Illuminate\Validation\ValidationException $e)` | `errors.As(err, &validationErr)` |
-| Stack trace avtomatik | Əl ilə `debug.Stack()` çağırılmalı |
 
 ## Nümunələr
 
@@ -82,7 +71,6 @@ func yasYoxla(yas int) error {
 }
 
 func main() {
-    // PHP-dəki try/catch əvəzinə: dərhal yoxla
     netice, err := bol(10, 0)
     if err != nil {
         fmt.Println("Xəta:", err)
@@ -148,7 +136,7 @@ func main() {
     if err != nil {
         fmt.Println("Xəta:", err)
 
-        // errors.As — konkret tipi çıxarır; PHP-dəki catch(ValidationException) kimidir
+        // errors.As — konkret tipi çıxarır
         var valErr *ValidationError
         if errors.As(err, &valErr) {
             fmt.Printf("Sahə: %s, Kod: %d\n", valErr.Field, valErr.Code)
@@ -323,6 +311,17 @@ func main() {
 4. **Error chain analizi:** Xəta zəncirini tam açan `UnwrapAll(err error) []error` funksiyası yaz. `errors.Unwrap` ilə iterasiya et, hər xəta qatını slice-a əlavə et.
 
 5. **Database error mapping:** `*pq.Error` (PostgreSQL) tipindən `AppError`-a çevirmə funksiyası yaz. Unique violation → `ErrConflict`, foreign key → `ErrNotFound`, digər → `ErrInternal`.
+
+## PHP ilə Müqayisə
+
+| PHP | Go |
+|-----|-----|
+| `try { ... } catch (Exception $e)` | `result, err := func(); if err != nil { ... }` |
+| Exception avtomatik "bubble up" edir | Xəta əl ilə qaytarılır və yoxlanır |
+| `throw new ValidationException(...)` | `return nil, &ValidationError{...}` |
+| `$e->getMessage()` | `err.Error()` |
+| `catch (\Illuminate\Validation\ValidationException $e)` | `errors.As(err, &validationErr)` |
+| Stack trace avtomatik | Əl ilə `debug.Stack()` çağırılmalı |
 
 ## Əlaqəli Mövzular
 

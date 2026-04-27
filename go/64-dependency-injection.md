@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Dependency Injection (DI) — bir komponentin asılı olduğu digər komponentləri xaricdən almasıdır. Go-da DI heç bir framework olmadan da mükəmməl işləyir: interface + constructor funksiya + manual wiring. Laravel-in `app()->make()` service container-indən fərqli olaraq Go-da compile-time type safety var.
+Dependency Injection (DI) — bir komponentin asılı olduğu digər komponentləri xaricdən almasıdır. Go-da DI heç bir framework olmadan da mükəmməl işləyir: interface + constructor funksiya + manual wiring.
 
 Bu mövzuda manual DI, Google Wire (compile-time DI), Uber Fx (runtime DI) müqayisəsi, interface-based dizayn, testability, mock strategiyası öyrəniləcək.
 
@@ -74,7 +74,7 @@ handler := http.NewHandler(service)
 - Manual DI: şəffaf, debugging asan, amma böyük layihədə əllə idarə çətindir
 - Wire: generated kod oxunur, amma `wire.go` faylı ayrıca saxlanmalıdır
 - Fx: çox "magic", stack trace-də DI çərçivəsi görünür, debug çətindir
-- Container pattern (Laravel-ə bənzər): Go-da ümumiyyətlə tövsiyə edilmir — type safety itirilir
+- Container pattern: Go-da ümumiyyətlə tövsiyə edilmir — type safety itirilir
 
 ### Anti-pattern-lər
 
@@ -583,6 +583,10 @@ Mövcud layihənizə `wire` əlavə edin. `wire.go` ilə `InitializeApp() *http.
 
 **Tapşırıq 4 — Interface segregation:**
 `UserService` üçün HTTP handler yazın. Handler `UserCreator` və `UserFinder` interfeyslərindən asılı olsun — tam `UserService`-dən deyil.
+
+## PHP ilə Müqayisə
+
+Laravel-in `app()->make()` service container-indən fərqli olaraq Go-da compile-time type safety var — yanlış tip inject etsəniz kod kompilyasiya olmur. Laravel container runtime-da interface-ə implementasiya bind edir (`app()->bind(UserRepository::class, PostgresUserRepo::class)`); Go-da eyni effekt interface tipindən istifadə + constructor injection ilə əldə edilir. Wire Google-ın bu problemi compile-time həll etmək üçün yaratdığı vasitədir — Laravel container-ın compile-time analoqu. Uber Fx isə Laravel Service Provider-a daha yaxındır: runtime, lifecycle hooks, modular.
 
 ## Əlaqəli Mövzular
 

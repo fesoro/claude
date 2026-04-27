@@ -4,8 +4,6 @@
 
 12-Factor App metodologiyasına görə konfiqurasiya mühitdən (environment) gəlməlidir — heç vaxt koda yazılmamalıdır. Go-da konfiqurasiyaların idarəsi üçün bir neçə yanaşma var: standart `os.Getenv`, `godotenv` (.env faylı parser), `viper` (multi-source config), `envconfig` (struct-based parsing). Doğru seçim layihənin mürəkkəbliyindən asılıdır.
 
-PHP/Laravel-də `.env` + `config/` qovluğu + `env()` helper funksiyası istifadə olunurdu. Go-da eyni anlayış var, amma magic daha azdır — öz config struct-unu özün qurursan.
-
 ## Niyə Vacibdir
 
 - Fərqli mühitlər (dev, staging, production) üçün eyni binary fərqli davranmalıdır
@@ -524,6 +522,10 @@ viper.OnConfigChange(func(e fsnotify.Event) {
     log.Println("Config dəyişdi:", e.Name)
 })
 ```
+
+## PHP ilə Müqayisə
+
+PHP/Laravel-də `.env` + `config/` qovluğu + `env()` helper funksiyası istifadə olunurdu. Go-da eyni anlayış var, amma magic daha azdır — öz config struct-unu özün qurursan.
 
 ## Əlaqəli Mövzular
 

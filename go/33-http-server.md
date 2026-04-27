@@ -2,9 +2,7 @@
 
 ## İcmal
 
-Go-da HTTP server yaratmaq üçün standart `net/http` paketi istifadə olunur — xarici framework lazım deyil. `http.Handler` interfeysi, `ServeMux` router-i, graceful shutdown mexanizmi və production-a hazır server konfiqurasiyası bu mövzunun əsasını təşkil edir.
-
-PHP/Laravel-də `php-fpm` + `nginx` birlikdə işləyirdi. Go-da isə bütün bu funksionallıq tək bir binary daxilindədir — öz HTTP server-ini özün yazırsan.
+Go-da HTTP server yaratmaq üçün standart `net/http` paketi istifadə olunur — xarici framework lazım deyil. `http.Handler` interfeysi, `ServeMux` router-i, graceful shutdown mexanizmi və production-a hazır server konfiqurasiyası bu mövzunun əsasını təşkil edir. Go-da bütün bu funksionallıq tək bir binary daxilindədir — öz HTTP server-ini özün yazırsan.
 
 ## Niyə Vacibdir
 
@@ -336,6 +334,10 @@ Aşağıdakı middleware-ləri yaz və chain et:
 GET /health → {"status":"ok","uptime":"2h30m"}
 GET /ready → DB ping et, DB down isə 503 qaytar
 ```
+
+## PHP ilə Müqayisə
+
+PHP/Laravel-də `php-fpm` + `nginx` birlikdə işləyirdi. Go-da isə bütün bu funksionallıq tək bir binary daxilindədir — öz HTTP server-ini özün yazırsan.
 
 ## Əlaqəli Mövzular
 

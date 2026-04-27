@@ -4,8 +4,6 @@
 
 Go-da yaddaş idarəetməsi avtomatikdir — Garbage Collector (GC) lazımsız obyektləri silir. Lakin "avtomatik" "nəzarətsiz" demək deyil. Architect səviyyəsində GC-nin necə işlədiyini, heap/stack ayrımını, escape analysis-i və yaddaş optimallaşdırma texnikalarını dərin başa düşmək production performansını əhəmiyyətli dərəcədə artırır.
 
-Memory management — PHP/Laravel-dən gələn developer üçün ən böyük mental shift-dən biridir. PHP hər request üçün yeni proses açır və bitdikdə hər şey silinir. Go-da isə proses uzun müddət işləyir, yaddaş idarəsi ciddi həyat yolu izləyir.
-
 ## Niyə Vacibdir
 
 - Memory leak Go-da mümkündür — GC hər şeyi sehrlə silmir
@@ -460,6 +458,10 @@ func main() {
 - Lazım olduqca 2x böyüyür (contiguous stack)
 - Maksimum default: 1GB (runtime.MAXSTACKSIZE)
 - Çox goroutine → çox yaddaş → OOM riski
+
+## PHP ilə Müqayisə
+
+Memory management PHP/Laravel-dən gələn developer üçün ən böyük mental shift-dən biridir. PHP hər request üçün yeni proses açır — request bitdikdə hər şey avtomatik silinir, memory leak praktiki cəhətdən yoxdur (PHP-FPM restart etsə də). Go-da isə proses uzun müddət işləyir — GC var, amma memory leak mümkündür (goroutine leak, global slice, timer leak). PHP-də `unset()` dəyişkəni növbəti GC cycle-da sililəcəyi zaman serbəst buraxır; Go-da GC tri-color mark-and-sweep ilə işləyir, `GOGC` ilə tənzimlənir. Struct alignment PHP-nin dünya görünüşündə yoxdur — Go-da ciddi performans fərqi yarada bilir.
 
 ## Əlaqəli Mövzular
 

@@ -4,8 +4,6 @@
 
 Go-da `database/sql` paketi bütün relational database-lər üçün universal interface-dir. Driver-lər (PostgreSQL, MySQL, SQLite) bu interface-i implement edir. Əsas konseptlər: `sql.DB` (connection pool), `sql.Rows` (nəticə seti), `sql.Tx` (transaction), `sql.Stmt` (prepared statement) və NULL dəyərlərin idarəsi.
 
-PHP/Laravel-də PDO bu rolu oynayırdı, Eloquent isə üstündə ORM idi. Go-da `database/sql` PDO-nun analoqu, `sqlx` və `GORM` isə üstündəki qatlardır.
-
 ## Niyə Vacibdir
 
 - Go web servislərin böyük əksəriyyəti relational DB ilə işləyir
@@ -431,6 +429,10 @@ E-commerce sifarişi: `orders` + `order_items` + `inventory` cədvəllərinə at
 **Tapşırıq 4 — Batch Insert**
 
 1000 istifadəçini bir transaction-da `VALUES ($1,$2), ($3,$4)...` formatında insert et. Performansı tək-tək insert ilə müqayisə et.
+
+## PHP ilə Müqayisə
+
+PHP/Laravel-də PDO bu rolu oynayırdı, Eloquent isə üstündə ORM idi. Go-da `database/sql` PDO-nun analoqu, `sqlx` və `GORM` isə üstündəki qatlardır.
 
 ## Əlaqəli Mövzular
 

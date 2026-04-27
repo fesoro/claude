@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Rekursiya — funksiyayın özünü çağırmasıdır. Hər rekursiv funksiyada mütləq **dayandırma şərti** (base case) olmalıdır — əks halda sonsuz rekursiya → stack overflow. Go-da stack dinamik olaraq böyüyür (başlanğıcda ~8KB, lazım olduqda 1GB-a qədər), bu PHP-dəkindən fərqlidir. Rekursiya mürəkkəb ağac-bazalı strukturları (fayl sistemi, JSON, DOM) sadə kodla emal etmək üçün güclü vasitədir.
+Rekursiya — funksiyayın özünü çağırmasıdır. Hər rekursiv funksiyada mütləq **dayandırma şərti** (base case) olmalıdır — əks halda sonsuz rekursiya → stack overflow. Go-da stack dinamik olaraq böyüyür (başlanğıcda ~8KB, lazım olduqda 1GB-a qədər). Rekursiya mürəkkəb ağac-bazalı strukturları (fayl sistemi, JSON, DOM) sadə kodla emal etmək üçün güclü vasitədir.
 
 ## Niyə Vacibdir
 
@@ -26,12 +26,6 @@ Backend developer üçün rekursiya bilavasitə lazım olduğu ssenarilər var: 
 - JSON ağac parse: `interface{}` üzərindən rekursiv gəzmək
 - Fibonacci memoization: `sync.Map` ilə concurrent-safe memo
 - Directory tree: terminal-da `tree` komutu çıxışı kimi
-
-**PHP ilə fərqi:**
-- PHP: `function fib($n) { return $n <= 1 ? $n : fib($n-1) + fib($n-2); }` — eyni syntax demək olar
-- PHP max recursion `xdebug.max_nesting_level` ilə məhdudlaşır (default 256); Go-da dinamik böyüyür
-- PHP-də memoization üçün `static $memo = []` istifadə olunur; Go-da `map` parametr kimi ötürülür
-- Go-da tail call optimization yoxdur; dərin rekursiya lazımsa iterativ versiyaya çevirin
 
 **Trade-off-lar:**
 - Rekursiya vs İterasiya: rekursiya oxunaqlı, amma overhead-li; iterasiya effektiv, amma mürəkkəb
@@ -259,6 +253,14 @@ func main() {
 3. **Hanoi qüllələri**: `hanoi(n int, menbe, hedef, komekci string)` — 3 disk üçün bütün hərəkətləri çap et, neçə hərəkət lazım olduğunu say. Formul `2^n - 1`.
 
 4. **Memoization ilə kombinasiya**: `C(n, k) = C(n-1, k-1) + C(n-1, k)` rekursiyanı memoization ilə implement et. `C(20, 10)` dəyərini hesabla. Naiv vs memo sürətini müqayisə et.
+
+## PHP ilə Müqayisə
+
+- PHP: `function fib($n) { return $n <= 1 ? $n : fib($n-1) + fib($n-2); }` — sintaksis demək olar eynidir
+- PHP max recursion `xdebug.max_nesting_level` ilə məhdudlaşır (default 256); Go-da dinamik böyüyür (GB-a qədər)
+- PHP-də memoization üçün `static $memo = []` istifadə olunur; Go-da `map` parametr kimi ötürülür və ya closure-da saxlanılır
+- Go-da tail call optimization yoxdur; dərin rekursiya lazımsa iterativ versiyaya çevirin
+- Hər iki dildə rekursiyanın core konsepti eynidiır: base case + recursive case
 
 ## Əlaqəli Mövzular
 

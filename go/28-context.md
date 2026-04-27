@@ -21,16 +21,6 @@ Real layihədə HTTP sorğusu gələndə bir çox asinxron əməliyyat başlana 
 
 ## Praktik Baxış
 
-**PHP ilə müqayisə:**
-
-```
-PHP                          →  Go
-set_time_limit(30)           →  context.WithTimeout(ctx, 30*time.Second)
-ignore_user_abort(false)     →  <-ctx.Done()  (client disconnected)
-CancellationToken (yoxdur)   →  context.WithCancel()
-Request global               →  ctx.Value(key) — ancaq request data üçün
-```
-
 **Context zənciri:**
 
 ```
@@ -428,6 +418,18 @@ if err := g.Wait(); err != nil {
     // Biri fail etdikdə ctx avtomatik ləğv olunur
 }
 ```
+
+## PHP ilə Müqayisə
+
+```
+PHP                          →  Go
+set_time_limit(30)           →  context.WithTimeout(ctx, 30*time.Second)
+ignore_user_abort(false)     →  <-ctx.Done()  (client disconnected)
+CancellationToken (yoxdur)   →  context.WithCancel()
+Request global               →  ctx.Value(key) — ancaq request data üçün
+```
+
+PHP-də request lifetime avtomatik idarə olunur (Apache/FPM prosesini öldürür). Go-da hər sorğu üçün context əl ilə qurulur — bu daha çox nəzarət, amma daha çox məsuliyyət deməkdir.
 
 ## Əlaqəli Mövzular
 

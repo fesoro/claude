@@ -2,8 +2,6 @@
 
 ## İcmal
 
-Go proqramlarını Docker ilə konteynerləşdirmək PHP/Laravel-dən əhəmiyyətli dərəcədə fərqlidir. Go statik binary kompilyasiya edir — runtime, PHP-FPM, Apache/Nginx, extension-lar lazım deyil. Nəticə: 10-20 MB-lıq, özlüyündə işləyən, ultra-sürətli startup olan konteyner.
-
 Bu fəsil production-ready Docker strategiyasını, multi-stage build-ləri, distroless image-ları, Kubernetes deployment-ını, health check-ləri, rolling update strategiyasını və CI/CD pipeline-ını əhatə edir.
 
 ## Niyə Vacibdir
@@ -580,6 +578,10 @@ coverage.out
 **Cross-compilation üstünlüyü:**
 - Go-nun ən böyük üstünlüklərindən biri: `GOOS=linux GOARCH=arm64 go build`
 - Mac-da ARM64 Linux binary build et — CI/CD qurulmadan local test mümkün
+
+## PHP ilə Müqayisə
+
+Go proqramlarını Docker ilə konteynerləşdirmək PHP/Laravel-dən əhəmiyyətli dərəcədə fərqlidir. Go statik binary kompilyasiya edir — runtime, PHP-FPM, Apache/Nginx, extension-lar lazım deyil. PHP Laravel Dockerfile-ı adətən `php:8.x-fpm` base image-ı ilə başlayır, Nginx, Composer, PHP extension-ları (pdo, redis, mbstring...) quraşdırılır — nəticə 300MB–1GB image. Go-da eyni funksionallıq 10–20MB binary + distroless base ilə əldə edilir. Cross-compilation Go-nun ən böyük üstünlüklərindən biridir: PHP bu imkanı təqdim etmir.
 
 ## Əlaqəli Mövzular
 

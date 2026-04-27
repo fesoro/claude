@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Go-da `init()` funksiyası proqram başlayarkən `main()`-dən əvvəl avtomatik işləyir — paket səviyyəsindəki dəyişkənləri hazırlamaq, bağlantı yoxlamaq, registrasiya əməliyyatları üçün nəzərdə tutulub. Go Modules isə asılılıq idarəetmə sistemidir: `go.mod` faylı modulu, `go.sum` isə kriptqrafik hash-ləri saxlayır. PHP-nin Composer-i ilə eyni rol oynayır, lakin module versioning daha ciddi tətbiq edilir.
+Go-da `init()` funksiyası proqram başlayarkən `main()`-dən əvvəl avtomatik işləyir — paket səviyyəsindəki dəyişkənləri hazırlamaq, bağlantı yoxlamaq, registrasiya əməliyyatları üçün nəzərdə tutulub. Go Modules isə asılılıq idarəetmə sistemidir: `go.mod` faylı modulu, `go.sum` isə kriptqrafik hash-ləri saxlayır.
 
 ## Niyə Vacibdir
 
@@ -40,18 +40,6 @@ Böyük layihələrdə paket inisializasiyası, database pool qurulması, konfiq
 - Çox sayda `init()` call sırası — anlaşılmaz initialization flow
 - `go.sum`-u `.gitignore`-a əlavə etmək — security riski
 - Major versiya `v2+` import yolunu dəyişdiyini bilməmək (`github.com/foo/bar/v2`)
-
-**PHP ilə fərqi:**
-
-| PHP (Composer) | Go (Modules) |
-|----------------|--------------|
-| `composer.json` | `go.mod` |
-| `composer.lock` | `go.sum` |
-| `composer install` | `go mod download` |
-| `composer require pkg` | `go get pkg` |
-| `composer dump-autoload` | — (Go-da avtomatik) |
-| `vendor/` qovluğu | `vendor/` qovluğu (opsional) |
-| `__construct()` | `init()` + explicit init funksiyası |
 
 ## Nümunələr
 
@@ -293,6 +281,18 @@ import (
 4. **Init sıra testi:** A, B, C paketlərini yarat. A, B-ni; B, C-ni import etsin. Hər paketdə `init()` funksiyası `fmt.Println` ilə paket adını çap etsin. İcra sırasını müşahidə et.
 
 5. **Vendor mode CI:** `go mod vendor` ilə vendor qovluğunu yarat. `go build -mod=vendor` ilə build et. Offline mühitdə (internet yox) build işlədiyini sübut et.
+
+## PHP ilə Müqayisə
+
+| PHP (Composer) | Go (Modules) |
+|----------------|--------------|
+| `composer.json` | `go.mod` |
+| `composer.lock` | `go.sum` |
+| `composer install` | `go mod download` |
+| `composer require pkg` | `go get pkg` |
+| `composer dump-autoload` | — (Go-da avtomatik) |
+| `vendor/` qovluğu | `vendor/` qovluğu (opsional) |
+| `__construct()` | `init()` + explicit init funksiyası |
 
 ## Əlaqəli Mövzular
 

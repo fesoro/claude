@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Go-da daxili validation yoxdur — `go-playground/validator` paketi sənaye standartıdır. Struct tag-ları ilə deklarativ validation, custom validator dəstəyi, HTTP middleware ilə inteqrasiya. PHP/Laravel-in Form Request sinifinin Go ekvivalenti.
+Go-da daxili validation yoxdur — `go-playground/validator` paketi sənaye standartıdır. Struct tag-ları ilə deklarativ validation, custom validator dəstəyi, HTTP middleware ilə inteqrasiya.
 
 ## Niyə Vacibdir
 
@@ -325,6 +325,41 @@ HTTP handler yazın: validation xətaları 422 status ilə strukturlu JSON qayta
 
 **Tapşırıq 3:**
 Custom validator: IBAN formatı (AZ00AAAA000000000000000000) yoxlayan validator yaz.
+
+## PHP ilə Müqayisə
+
+Laravel Form Request sinifi validation qaydalarını `rules()` metodunda müəyyən edir. Go-da eyni iş struct tag-ları ilə görülür — daha kompakt, amma daha az çevik.
+
+```php
+// Laravel Form Request
+class RegisterRequest extends FormRequest {
+    public function rules(): array {
+        return [
+            'name'     => 'required|min:2|max:100',
+            'email'    => 'required|email',
+            'password' => 'required|min:8',
+            'age'      => 'required|integer|min:18|max:120',
+            'role'     => 'required|in:admin,user,guest',
+        ];
+    }
+}
+```
+
+```go
+// Go — struct tag-ları ilə
+type RegisterRequest struct {
+    Name     string `json:"name"     validate:"required,min=2,max=100"`
+    Email    string `json:"email"    validate:"required,email"`
+    Password string `json:"password" validate:"required,min=8"`
+    Age      int    `json:"age"      validate:"gte=18,lte=120"`
+    Role     string `json:"role"     validate:"required,oneof=admin user guest"`
+}
+```
+
+**Əsas fərqlər:**
+- Laravel: validation xətaları avtomatik redirect edir (web) ya da 422 JSON qaytarır (API)
+- Go: xəta cavabını özün formatlayırsan — daha çox control
+- Laravel: `messages()` metodu ilə xəta mesajları — Go-da custom function lazımdır
 
 ## Əlaqəli Mövzular
 

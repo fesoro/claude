@@ -4,8 +4,6 @@
 
 Go-da iki populyar yüksək səviyyəli database kitabxanası var: `sqlx` — standart `database/sql`-un genişləndirilmiş versiyası, SQL özün yazırsan amma struct mapping avtomatikdir; `GORM` — tam ORM, SQL yazmadan CRUD əməliyyatları mümkündür. İkisinin arasındakı seçim layihənin tələbindən asılıdır.
 
-PHP/Laravel-də Eloquent ORM aktiv record pattern-i istifadə edirdi — `User::find(1)`, `User::where('age', '>', 25)->get()`. GORM-da oxşar sintaksis var: `db.Where("age > ?", 25).Find(&users)`. Amma Go-dakı tip sistemi bu abstraksiyaları daha şəffaf edir.
-
 ## Niyə Vacibdir
 
 - Raw `database/sql` ilə `rows.Scan(&u.ID, &u.Ad, &u.Email, ...)` — sütun sayı artdıqca çox yorucu olur
@@ -478,6 +476,10 @@ Mövcud schema-ya yeni sütun əlavə et:
 1. `AutoMigrate` ilə əlavə et — işləyir
 2. Bir sütunu sil — AutoMigrate silmir! Niyə?
 3. Eyni dəyişikliyi `golang-migrate` up/down faylı ilə yaz
+
+## PHP ilə Müqayisə
+
+PHP/Laravel-də Eloquent ORM aktiv record pattern-i istifadə edirdi — `User::find(1)`, `User::where('age', '>', 25)->get()`. GORM-da oxşar sintaksis var: `db.Where("age > ?", 25).Find(&users)`. Amma Go-dakı tip sistemi bu abstraksiyaları daha şəffaf edir.
 
 ## Əlaqəli Mövzular
 

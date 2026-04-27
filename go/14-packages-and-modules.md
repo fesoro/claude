@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Go-da kod **paket** (package) adlanan vahidlərə bölünür. Hər Go faylı bir paketə aiddir. **Modul** isə bir neçə paketin toplandığı layihədir — `go.mod` faylı ilə idarə olunur. PHP-dəki `composer.json` ↔ `go.mod`, `vendor/` ↔ `$GOPATH/pkg/mod`. Go-nun standart kitabxanası zengindir: `fmt`, `strings`, `strconv`, `math`, `sort`, `time`, `os`, `encoding/json` — bunların hamısı xarici dependency olmadan işləyir.
+Go-da kod **paket** (package) adlanan vahidlərə bölünür. Hər Go faylı bir paketə aiddir. **Modul** isə bir neçə paketin toplandığı layihədir — `go.mod` faylı ilə idarə olunur. Go-nun standart kitabxanası zengindir: `fmt`, `strings`, `strconv`, `math`, `sort`, `time`, `os`, `encoding/json` — bunların hamısı xarici dependency olmadan işləyir.
 
 ## Niyə Vacibdir
 
@@ -23,18 +23,18 @@ Go modullar sistemi (Go Modules, `go mod`) 2019-dan bəri standart paket idarəe
 
 ## Standart Kitabxana — Vacib Paketlər
 
-| Paket | Məqsəd | PHP ekvivalenti |
-|-------|---------|-----------------|
-| `fmt` | Formatlaşdırma, çap | `printf`, `sprintf` |
-| `strings` | String əməliyyatları | `str_*`, `mb_*` |
-| `strconv` | Tip çevrilmələri | `intval`, `floatval` |
-| `math` | Riyazi funksiyalar | `abs`, `ceil`, `sqrt` |
-| `sort` | Sıralama | `usort`, `sort` |
-| `time` | Vaxt əməliyyatları | `date`, `strtotime` |
-| `os` | Əməliyyat sistemi | `getenv`, `file_*` |
-| `encoding/json` | JSON | `json_encode/decode` |
-| `math/rand` | Təsadüfi ədəd | `rand`, `mt_rand` |
-| `net/http` | HTTP server/client | Laravel routing + Guzzle |
+| Paket | Məqsəd |
+|-------|---------|
+| `fmt` | Formatlaşdırma, çap |
+| `strings` | String əməliyyatları |
+| `strconv` | Tip çevrilmələri |
+| `math` | Riyazi funksiyalar |
+| `sort` | Sıralama |
+| `time` | Vaxt əməliyyatları |
+| `os` | Əməliyyat sistemi |
+| `encoding/json` | JSON |
+| `math/rand` | Təsadüfi ədəd |
+| `net/http` | HTTP server/client |
 
 ## Praktik Baxış
 
@@ -43,13 +43,6 @@ Go modullar sistemi (Go Modules, `go mod`) 2019-dan bəri standart paket idarəe
 - `encoding/json` — API response serialize/deserialize
 - `sort.Slice` — xüsusi sıralama məntiqi ilə
 - `time.Now`, `time.Format` — log, timestamp, deadline hesablamaları
-
-**PHP ilə fərqi:**
-- PHP: `composer require vendor/package` → Go: `go get github.com/vendor/package`
-- PHP: `use App\Models\User;` → Go: `import "myapp/models"` (fayl yolu ilə)
-- PHP-də `public`/`private` class level; Go-da export paket level — ad böyük/kiçik hərflə
-- PHP-də `composer.lock` → Go-da `go.sum`
-- PHP-də `vendor/` qovluğu — Go-da default olaraq `$GOPATH/pkg/mod/` (vendor mümkün, amma nadir)
 
 **Trade-off-lar:**
 - Standart kitabxana vs xarici paket: standart kitabxana daimi, uyğun, amma bəzən verbose
@@ -216,8 +209,6 @@ func main() {
     u := NewUserInfo(1, "Orkhan")
     fmt.Printf("User: %+v\n", u)
 
-    // fmt.Println işləyir — fmt paketi import edilib
-
     // Xarici paket istifadəsi:
     // go get github.com/gin-gonic/gin
     // import "github.com/gin-gonic/gin"
@@ -241,6 +232,23 @@ func main() {
 3. **time əməliyyatları**: `time.Now()` ilə indiki vaxtı al. `time.Parse` ilə `"2024-01-15"` stringini parse et. İki tarix arasındakı günü hesabla. `time.Format` ilə müxtəlif formatlarda göstər.
 
 4. **Mini CLI**: `os.Args` ilə command-line arqumentlər al. `command`, `--flag=value` formatını parse et. `strings.HasPrefix("--")` ilə flag-ları ayır. `fmt.Printf` ilə nəticəni formatla.
+
+## PHP ilə Müqayisə
+
+| PHP | Go |
+|-----|-----|
+| `composer.json` | `go.mod` |
+| `composer.lock` | `go.sum` |
+| `vendor/` | `$GOPATH/pkg/mod/` |
+| `composer require vendor/package` | `go get github.com/vendor/package` |
+| `use App\Models\User;` | `import "myapp/models"` (fayl yolu ilə) |
+| `composer install` | `go mod download` |
+| `public`/`private` (class level) | Böyük/kiçik hərflə (paket level) |
+
+- PHP-də `public`/`private` class level; Go-da export paket level — ad böyük/kiçik hərflə müəyyənlənir
+- PHP-də `use` ilə class import; Go-da `import` ilə paket import (fayl deyil, paket)
+- PHP-dəki namespace → Go-da paket adı
+- Go standart kitabxanası PHP-nin `composer require` etdiyi çox şeyi built-in edir
 
 ## Əlaqəli Mövzular
 

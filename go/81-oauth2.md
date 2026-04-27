@@ -2,7 +2,7 @@
 
 ## İcmal
 
-OAuth2 — üçüncü tərəf xidmətlər vasitəsilə autentifikasiya (Google, GitHub, Facebook) üçün standart protokoldur. Go-da `golang.org/x/oauth2` paketi bu protokolu implement edir. OpenID Connect (OIDC) — OAuth2 üzərinə qurulan identity layer-dir. PHP/Laravel-in `Socialite` paketinin Go ekvivalenti.
+OAuth2 — üçüncü tərəf xidmətlər vasitəsilə autentifikasiya (Google, GitHub, Facebook) üçün standart protokoldur. Go-da `golang.org/x/oauth2` paketi bu protokolu implement edir. OpenID Connect (OIDC) — OAuth2 üzərinə qurulan identity layer-dir.
 
 ## Niyə Vacibdir
 
@@ -345,6 +345,34 @@ GitHub OAuth2 əlavə edin. Eyni user fərqli provider ilə giriş etdikdə (eyn
 
 **Tapşırıq 3:**
 Token refresh strategiyası: access_token expire olmadan 5 dəqiqə əvvəl avtomatik yenilə. Bunu background goroutine ilə et.
+
+## PHP ilə Müqayisə
+
+Laravel Socialite paketi OAuth2 provider-lərini abstrakt edir. Go-da `golang.org/x/oauth2` eyni işi görür — daha az abstraktsiya, daha çox açıqlıq.
+
+```php
+// Laravel Socialite
+Route::get('/auth/google/redirect', function () {
+    return Socialite::driver('google')->redirect();
+});
+
+Route::get('/auth/google/callback', function () {
+    $user = Socialite::driver('google')->user();
+    // $user->email, $user->name, $user->token
+});
+```
+
+```go
+// Go — golang.org/x/oauth2
+// Login: googleOAuthConfig.AuthCodeURL(state)
+// Callback: googleOAuthConfig.Exchange(ctx, code)
+//           getGoogleUser(ctx, token)
+```
+
+**Əsas fərqlər:**
+- Laravel Socialite: provider-lər hazır konfiqurasiya ilə gəlir; Go-da `ClientID`, `ClientSecret`, `Scopes` əl ilə
+- Laravel: `Socialite::driver()->user()` bütün axını idarə edir; Go-da hər addım açıqdır
+- State/CSRF yoxlaması Go-da manual; Laravel Socialite daxildir
 
 ## Əlaqəli Mövzular
 

@@ -55,17 +55,6 @@ Tarix-vaxt səhvləri — billing, scheduling, audit log, token expiry kimi krit
 - Shadowing: `if err, ok := ...; err != nil { err := ... }` — daxili `err` xarici-ni gizlədir
 - `:=` əvəzinə `=` unudaraq loop dəyişkəninin paylaşılması (Go 1.22-dən əvvəl)
 
-**PHP ilə fərqi:**
-
-| PHP | Go |
-|-----|-----|
-| `date('Y-m-d')` | `time.Now().Format("2006-01-02")` |
-| `time()` — Unix timestamp | `time.Now().Unix()` |
-| `new DateTime('+1 hour')` | `time.Now().Add(time.Hour)` |
-| `$dt->diff($dt2)` | `t1.Sub(t2)` → `Duration` |
-| `DateTimeZone('Asia/Baku')` | `time.LoadLocation("Asia/Baku")` |
-| PHP-də scope daha geniş (`global` keyword) | Go-da strict block scope |
-
 ## Nümunələr
 
 ### Nümunə 1: Cari vaxt, timestamp, format
@@ -383,6 +372,18 @@ func main() {
    ```
 
 5. **Audit log timestamp:** `AuditLog` struct-ı yarat (action, userID, createdAt). `createdAt` həmişə UTC olsun. 30 gündən köhnə olan log-ları filter edən funksiya yaz.
+
+## PHP ilə Müqayisə
+
+| PHP | Go |
+|-----|-----|
+| `date('Y-m-d')` | `time.Now().Format("2006-01-02")` |
+| `time()` — Unix timestamp | `time.Now().Unix()` |
+| `new DateTime('+1 hour')` | `time.Now().Add(time.Hour)` |
+| `$dt->diff($dt2)` | `t1.Sub(t2)` → `Duration` |
+| `DateTimeZone('Asia/Baku')` | `time.LoadLocation("Asia/Baku")` |
+| PHP-də scope daha geniş (`global` keyword) | Go-da strict block scope |
+| `date('Y-m-d H:i:s')` formatı | `"2006-01-02 15:04:05"` reference time formatı |
 
 ## Əlaqəli Mövzular
 

@@ -4,8 +4,6 @@
 
 `golang.org/x/sync/errgroup` — bir qrup goroutine-i birlikdə idarə etmək, xəta halında hamısını ləğv etmək üçün istifadə olunur. Standart `sync.WaitGroup`-dan fərqi: xəta qaytarma və context ilə avtomatik ləğvetmə dəstəyi.
 
-PHP/Laravel-də paralel əməliyyat üçün job/queue lazımdır. Go-da `errgroup` ilə eyni prosesdə, sadə kod ilə paralel işlər görülür.
-
 ## Niyə Vacibdir
 
 - N müstəqil sorğunu ardıcıl yox, paralel çağırmaq → latency N dəfə deyil, ən yavaşı qədər olur
@@ -275,6 +273,17 @@ JSONPlaceholder-dən üç endpoint paralel sorğula: `/users/1`, `/posts?userId=
 
 **Tapşırıq 3:**
 `WaitGroup` + error channel ilə yazılmış kodu `errgroup`-a köçür. Kod sətri sayını müqayisə et.
+
+## PHP ilə Müqayisə
+
+PHP/Laravel-də paralel əməliyyat üçün job/queue lazımdır: işlər `Queue::push()` ilə kuyruqa göndərilir, ayrı worker prosesi onları icra edir. Bu fərqli proses/request deməkdir. Go-da `errgroup` ilə eyni prosesdə, sadə kod ilə paralel işlər görülür — əlavə infrastruktur (Redis, Horizon, worker daemon) tələb etmir.
+
+```
+PHP/Laravel                          →  Go
+Queue::push(new FetchUserJob)        →  g.Go(func() error { return fetchUser(ctx) })
+Queue::push(new FetchOrdersJob)      →  g.Go(func() error { return fetchOrders(ctx) })
+// ayrı worker prosesi icra edir     →  g.Wait() — eyni prosesdə
+```
 
 ## Əlaqəli Mövzular
 

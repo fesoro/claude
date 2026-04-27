@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Go-da pointer-lər sadə address saxlamaqdan daha mürəkkəb rol oynayır. Pointer receiver vs value receiver seçimi method set-i müəyyən edir, interface implementasiyanı təsir edir, performansa birbaşa təsir edir. Bu mövzu PHP developer-in ən çox çaşqınlıq yaşadığı sahələrdən biridir — PHP-də hər şey avtomatik keçirilir, Go-da isə açıq seçim tələb olunur.
+Go-da pointer-lər sadə address saxlamaqdan daha mürəkkəb rol oynayır. Pointer receiver vs value receiver seçimi method set-i müəyyən edir, interface implementasiyanı təsir edir, performansa birbaşa təsir edir. Bu mövzu Go developer-in ən çox çaşqınlıq yaşadığı sahələrdən biridir — Go-da açıq seçim tələb olunur.
 
 ## Niyə Vacibdir
 
@@ -10,7 +10,7 @@ Go-da pointer-lər sadə address saxlamaqdan daha mürəkkəb rol oynayır. Poin
 - **Performance** — böyük struct-ları kopyalamaqdan qaçmaq
 - **Nil pointer** — production-da `panic` törədən ən tez-tez rast gəlinən xəta
 - **Double pointer** — funksiya daxilindən pointer-in özünü dəyişmək lazım gəldikdə
-- **PHP ilə fərq** — PHP-də `&$var` optional-dır, Go-da semantik məna daşıyır
+- **Semantik məna** — Go-da pointer açıq göstərilməlidir
 
 ## Əsas Anlayışlar
 
@@ -138,30 +138,6 @@ fmt.Println(*pa == *pb) // true — dəyərləri müqayisə
 ```
 
 ## Praktik Baxış
-
-### PHP ilə Müqayisə
-
-```php
-// PHP — pass by reference optional-dır
-function increment(&$val) {
-    $val++;
-}
-
-$x = 5;
-increment($x); // $x indi 6
-```
-
-```go
-// Go — açıq pointer
-func increment(val *int) {
-    *val++
-}
-
-x := 5
-increment(&x) // x indi 6
-```
-
-**Əsas fərq:** PHP-də object-lər avtomatik reference ilə ötürülür. Go-da struct-lar default olaraq copy edilir — pointer açıq göstərilməlidir.
 
 ### Performance Baxımından
 
@@ -430,6 +406,32 @@ Double pointer istifadə edərək `lazyLoad(ptr **Database, dsn string)` funksiy
 
 **Tapşırıq 4 — Performance Benchmark:**
 `testing.B` ilə value receiver vs pointer receiver-in performance-ını ölçün. 1000 byte-lıq struct üçün fərqi müşahidə edin.
+
+## PHP ilə Müqayisə
+
+PHP-də `&$var` optional-dır — obyektlər avtomatik reference ilə ötürülür. Go-da struct-lar default olaraq copy edilir — pointer açıq göstərilməlidir:
+
+```php
+// PHP — pass by reference optional-dır
+function increment(&$val) {
+    $val++;
+}
+
+$x = 5;
+increment($x); // $x indi 6
+```
+
+```go
+// Go — açıq pointer
+func increment(val *int) {
+    *val++
+}
+
+x := 5
+increment(&x) // x indi 6
+```
+
+**Əsas fərq:** PHP-də object-lər avtomatik reference ilə ötürülür. Go-da struct-lar default olaraq copy edilir — pointer açıq göstərilməlidir. PHP-dəki `&$var` isteğe bağlıdır, Go-da isə `&` operatoru semantik məna daşıyır.
 
 ## Əlaqəli Mövzular
 

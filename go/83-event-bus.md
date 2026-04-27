@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Event Bus — komponentlər arasında loose coupling yaratmaq üçün publish-subscribe pattern-in tətbiqidir. Domain Event-lər business hadisələrini əks etdirir: `UserRegistered`, `OrderPlaced`, `PaymentFailed`. PHP/Laravel-in `Event::dispatch()` + `Listener` sisteminin Go ekvivalenti — amma həm sinxron, həm asinxron variantı var.
+Event Bus — komponentlər arasında loose coupling yaratmaq üçün publish-subscribe pattern-in tətbiqidir. Domain Event-lər business hadisələrini əks etdirir: `UserRegistered`, `OrderPlaced`, `PaymentFailed`.
 
 ## Niyə Vacibdir
 
@@ -354,6 +354,38 @@ func TestRegister_PublishesEvent(t *testing.T) {
 
 **Tapşırıq 3:**
 Asinxron EventBus-a retry məntiqi əlavə edin: handler 3 dəfə xəta versə dead-letter queue-ya düşsün.
+
+## PHP ilə Müqayisə
+
+Laravel `Event::dispatch()` + `Listener` sistemi eyni publish-subscribe modelini tətbiq edir. Go-da eyni konsept interface-lər ilə manual implement edilir.
+
+```php
+// Laravel — event dispatch
+event(new UserRegistered($user));
+
+// Listener — app/Providers/EventServiceProvider.php
+protected $listen = [
+    UserRegistered::class => [
+        SendWelcomeEmail::class,
+        TrackAnalytics::class,
+        AuditLog::class,
+    ],
+];
+```
+
+```go
+// Go — event bus ilə
+bus.Subscribe("user.registered", emailSubscriber.OnUserRegistered)
+bus.Subscribe("user.registered", analyticsSubscriber.OnUserRegistered)
+bus.Subscribe("user.registered", auditSubscriber.OnUserRegistered)
+
+bus.Publish(ctx, domain.UserRegistered{...})
+```
+
+**Əsas fərqlər:**
+- Laravel: listener-lər avtomatik kəşf olunur (auto-discovery); Go: əl ilə subscribe edilir
+- Laravel: `ShouldQueue` ilə listener asinxron olur; Go: `go func()` ilə
+- Laravel Horizon: queue monitoring; Go-da özün metric əlavə edirsən
 
 ## Əlaqəli Mövzular
 

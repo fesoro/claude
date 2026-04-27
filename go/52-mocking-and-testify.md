@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Go-da test etmə filosofiyası PHP-nin PHPUnit/Mockery-sindən fərqlidir: Go interface-based mocking istifadə edir, magic method-lar yoxdur. `testify` — Go-nun ən populyar test kitabxanasıdır (assert, mock, suite). `testify/mock` avtomatik mock generasiyası, `httptest` HTTP handler-lərin test edilməsi üçün standartdır. Düzgün test arxitekturası interface-lərdən asılıdır — konkret tip-dən yox.
+Go-da test etmə filosofiyası interface-based mocking istifadə edir — magic method-lar yoxdur. `testify` — Go-nun ən populyar test kitabxanasıdır (assert, mock, suite). `testify/mock` avtomatik mock generasiyası, `httptest` HTTP handler-lərin test edilməsi üçün standartdır. Düzgün test arxitekturası interface-lərdən asılıdır — konkret tip-dən yox.
 
 ## Niyə Vacibdir
 
@@ -10,7 +10,6 @@ Go-da test etmə filosofiyası PHP-nin PHPUnit/Mockery-sindən fərqlidir: Go in
 - **testify/assert** standart `testing` paketindən daha aydın xəta mesajları verir
 - **testify/mock** — DB, email, cache kimi xarici asılıqlıqları izolə edir
 - **httptest** — real HTTP server başlatmadan handler-ləri test etmək
-- **PHP Mockery ilə fərq** — Go-da mock class avtomatik deyil, interface-i implement etmək lazımdır
 
 ## Əsas Anlayışlar
 
@@ -29,30 +28,6 @@ type UserService struct {
 type UserService struct {
     repo  *PostgresUserRepo // konkret — mock olmur
     email *SMTPSender       // konkret — mock olmur
-}
-```
-
-**PHP Mockery ilə müqayisə:**
-
-```php
-// PHP Mockery — class-ı birbaşa mock edə bilər
-$mock = Mockery::mock(UserRepository::class);
-$mock->shouldReceive('find')->andReturn($user);
-```
-
-```go
-// Go — interface lazımdır, sonra mock yaranır
-type UserRepository interface {
-    FindByID(id int) (*User, error)
-}
-
-// Manual mock
-type MockUserRepo struct {
-    user *User
-    err  error
-}
-func (m *MockUserRepo) FindByID(id int) (*User, error) {
-    return m.user, m.err
 }
 ```
 
@@ -588,6 +563,37 @@ func TestUserServiceSuite(t *testing.T) {
 
 **Tapşırıq 4 — Integration Test:**
 `testify/suite` + `httptest.NewServer` ilə tam integration test yazın. Real HTTP sorğuları göndərin, mock middleware ilə auth test edin.
+
+## PHP ilə Müqayisə
+
+PHP Mockery class-ı birbaşa mock edə bilir (reflection vasitəsilə). Go-da interface lazımdır — bu əvvəlcə məhdudiyyət kimi görünür, amma dizaynı məcburi yaxşılaşdırır.
+
+```php
+// PHP Mockery — class-ı birbaşa mock edə bilər
+$mock = Mockery::mock(UserRepository::class);
+$mock->shouldReceive('find')->andReturn($user);
+```
+
+```go
+// Go — interface lazımdır, sonra mock yaranır
+type UserRepository interface {
+    FindByID(id int) (*User, error)
+}
+
+// Manual mock
+type MockUserRepo struct {
+    user *User
+    err  error
+}
+func (m *MockUserRepo) FindByID(id int) (*User, error) {
+    return m.user, m.err
+}
+```
+
+**Əsas fərqlər:**
+- PHP Mockery: class-a magic method injection edir — interface gerekmez
+- Go: interface olmadan mock mümkün deyil — bu interface-driven dizaynı məcbur edir
+- `testify/suite`-nin `SetupTest`/`TearDownTest` — PHPUnit-in `setUp`/`tearDown`-una bənzər
 
 ## Əlaqəli Mövzular
 

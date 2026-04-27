@@ -2,11 +2,11 @@
 
 ## İcmal
 
-Go-dakı `map` — açar-dəyər (key-value) cütlərini saxlayan hash table strukturudur. PHP-dəki associative array, Python-dakı dict, JavaScript-dəki object-in ekvivalentidir. Go-da map-in əsas xüsusiyyəti: açarın mövcudluğunu yoxlamaq üçün iki dəyərli oxuma (`val, ok := m[key]`) istifadə olunur — bu PHP-dəki `isset()` kontrolunun daha güvənli alternatividir.
+Go-dakı `map` — açar-dəyər (key-value) cütlərini saxlayan hash table strukturudur. Go-da map-in əsas xüsusiyyəti: açarın mövcudluğunu yoxlamaq üçün iki dəyərli oxuma (`val, ok := m[key]`) istifadə olunur. Map reference tipidir — kopyalandıqda eyni yaddaşa istinad edilir.
 
 ## Niyə Vacibdir
 
-Backend kodunda map-lər hər yerdədir: JSON object parse etmək, HTTP header-lər, cache saxlamaq, group-by əməliyyatları, frequency counter, konfiqurasiya. Map-in reference tipi olduğunu bilmək vacibdir — PHP-dəki array-ın copy-on-write davranışından fərqli olaraq, Go-da map kopyalandıqda eyni yaddaşa istinad edilir.
+Backend kodunda map-lər hər yerdədir: JSON object parse etmək, HTTP header-lər, cache saxlamaq, group-by əməliyyatları, frequency counter, konfiqurasiya. Map-in reference tipi olduğunu bilmək vacibdir — map kopyalandıqda eyni yaddaşa istinad edilir, bu davranışı bilməmək gizli buqlara yol aça bilər.
 
 ## Əsas Anlayışlar
 
@@ -17,7 +17,7 @@ Backend kodunda map-lər hər yerdədir: JSON object parse etmək, HTTP header-l
 - **Silmə** — `delete(m, key)` — mövcud olmayan açarı silmək xəta vermir
 - **Uzunluq** — `len(m)` — element sayı
 - **Iteration** — `for k, v := range m` — sıra qarantiya deyil! Hər dəfə fərqli ola bilər
-- **Reference tipi** — `m2 := m1` hər ikisi eyni yaddaşa baxır; PHP array-dan fərqli
+- **Reference tipi** — `m2 := m1` hər ikisi eyni yaddaşa baxır
 - **Nil map** — elan edilib, `nil`-dir; oxumaq işləyir (zero value qaytarır), amma yazmaq panic verir
 
 ## Praktik Baxış
@@ -28,13 +28,6 @@ Backend kodunda map-lər hər yerdədir: JSON object parse etmək, HTTP header-l
 - `map[int]User` — ID üzrə cache/lookup
 - Frequency counter — `map[string]int` ilə sözlər, kateqoriyalar sayılır
 - Group-by — `map[string][]User` — istifadəçiləri rola görə qruplaşdırmaq
-
-**PHP ilə fərqi:**
-- PHP: `$arr["key"]` — açar yoxdursa `null` qaytarır + notice; Go-da zero value qaytarır, xəta yox
-- PHP: `isset($arr["key"])` → Go: `_, ok := m["key"]; ok`
-- PHP: `unset($arr["key"])` → Go: `delete(m, "key")`
-- PHP `array` iteration sıralıdır; Go map iteration sırası naməlumdur
-- PHP array kopyalananda ayrı kopya olur; Go map reference-dır
 
 **Trade-off-lar:**
 - Sıra lazımdırsa — açarları slice-a götür, sort et, sonra map-dən oxu
@@ -73,7 +66,7 @@ func main() {
     fmt.Println("Eli-nin yaşı:", yaslar["Eli"]) // 25
     fmt.Println("Mövcud olmayan:", yaslar["Aydin"]) // 0 (zero value, xəta yox)
 
-    // Mövcudluq yoxlama — PHP-dəki isset() ekvivalenti
+    // Mövcudluq yoxlama
     yas, varMi := yaslar["Eli"]
     if varMi {
         fmt.Println("Tapıldı:", yas)
@@ -131,7 +124,7 @@ func main() {
         fmt.Printf("%-8s: %.2f\n", k, qiymetler[k])
     }
 
-    // Reference xüsusiyyəti — PHP-dən fərq!
+    // Reference xüsusiyyəti
     original := map[string]int{"a": 1, "b": 2}
     kopia := original // eyni map-ə istinad!
     kopia["a"] = 999
@@ -229,6 +222,15 @@ func main() {
    }
    unset($config['db']);
    ```
+
+## PHP ilə Müqayisə
+
+- PHP: `$arr["key"]` — açar yoxdursa `null` qaytarır + notice; Go-da zero value qaytarır, xəta yox
+- PHP: `isset($arr["key"])` → Go: `_, ok := m["key"]; ok`
+- PHP: `unset($arr["key"])` → Go: `delete(m, "key")`
+- PHP `array` iteration sıralıdır; Go map iteration sırası naməlumdur
+- PHP array kopyalananda ayrı kopya olur (copy-on-write); Go map reference-dır — eyni yaddaş
+- PHP-dəki associative array həm list, həm map rolunu oynayır; Go-da bunlar ayrı tiplərdir
 
 ## Əlaqəli Mövzular
 

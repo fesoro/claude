@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Go-da vaxt əsaslı tapşırıqlar üçün `robfig/cron` paketi standartdır. Standard Unix cron ifadələrini dəstəkləyir, goroutine-lərdə işlər icra edir, graceful shutdown-u dəstəkləyir. PHP/Laravel-in `Kernel.php → $schedule->command()` sisteminin Go ekvivalenti.
+Go-da vaxt əsaslı tapşırıqlar üçün `robfig/cron` paketi standartdır. Standard Unix cron ifadələrini dəstəkləyir, goroutine-lərdə işlər icra edir, graceful shutdown-u dəstəkləyir.
 
 ## Niyə Vacibdir
 
@@ -372,6 +372,31 @@ Overlapping qarşısını alan job runner yaz. Bir iş hələ çalışırsa növ
 
 **Tapşırıq 3:**
 HTTP endpoint-i ilə dinamik scheduler: `POST /jobs` — yeni job əlavə et, `DELETE /jobs/:name` — sil, `GET /jobs` — siyahı.
+
+## PHP ilə Müqayisə
+
+Laravel `Kernel.php` içindəki `$schedule->command()` sistemi `app/Console/Kernel.php`-də mərkəzləşdirilmiş job konfiqurasiyası verir. Go-da `robfig/cron` eyni funksiyanı kod içindən idarə edir.
+
+```php
+// Laravel — app/Console/Kernel.php
+protected function schedule(Schedule $schedule): void {
+    $schedule->command('report:nightly')->dailyAt('02:00');
+    $schedule->command('cache:refresh')->everyFiveMinutes();
+    $schedule->job(new SendWeeklyDigest)->weekly()->mondays()->at('08:00');
+}
+```
+
+```go
+// Go — robfig/cron
+c.AddFunc("0 0 2 * * *", generateNightlyReport) // hər gün 02:00
+c.AddFunc("@every 5m", refreshCache)
+c.AddFunc("0 0 8 * * 1", sendWeeklyDigest) // bazar ertəsi 08:00
+```
+
+**Əsas fərqlər:**
+- Laravel: ayrı `php artisan schedule:run` process (crontab-dan çağırılır); Go: tətbiq içindədir
+- Laravel: job overlap Laravel Mutex ilə idarə olunur; Go: özün lock yazmalısan
+- Laravel: panic recovery daxildir; Go: özün `recover()` əlavə etməlisən
 
 ## Əlaqəli Mövzular
 

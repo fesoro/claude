@@ -4,8 +4,6 @@
 
 Go-da iki fərqli "embedding" anlayışı var: **Struct/Interface Embedding** — Go-nun inheritance-ə alternativ mexanizmi, composition vasitəsilə bir tipin metodlarını digərinə ötürür; **`go:embed` direktivi** — faylları (HTML, CSS, SQL, şəkil) compile zamanı binary-yə daxil edir, deploy zamani ayrı fayl lazım olmur.
 
-PHP OOP-dən gələn developer üçün struct embedding ən çaşdırıcı Go konseptlərindən biridir. `extends` yoxdur, amma methodları "miras alan" bir struct yazmaq mümkündür — sadəcə mexanizm fərqlidir.
-
 ## Niyə Vacibdir
 
 **Struct Embedding:**
@@ -72,33 +70,6 @@ var templates embed.FS
 ```
 
 ## Praktik Baxış
-
-**PHP `extends` vs Go embedding:**
-
-```php
-// PHP
-class AdminUser extends User {
-    public function deleteAll() { ... }
-}
-$u = new AdminUser();
-$u->getName(); // User-dən miras
-```
-
-```go
-// Go — composition ilə eyni effekt
-type User struct { Ad string }
-func (u User) GetAd() string { return u.Ad }
-
-type AdminUser struct {
-    User              // embed — "inherit" deyil, promotion
-    Permission string
-}
-
-u := AdminUser{User: User{Ad: "Orkhan"}, Permission: "admin"}
-u.GetAd() // User.GetAd() çağırılır — promoted method
-```
-
-**Əsas fərq:** Go embedding-də "is-a" münasibəti yoxdur — `AdminUser` `User` tipi deyil. Yalnız metodlar promoted olur.
 
 **`go:embed` üstünlükləri vs fayl sistemi:**
 
@@ -495,6 +466,35 @@ type SafeMap[K comparable, V any] struct {
 ```
 
 `Get`, `Set`, `Delete`, `Keys` metodları yaz. Generic istifadə et. Goroutine-safe olsun.
+
+## PHP ilə Müqayisə
+
+OOP-dən gələn developer üçün struct embedding ən çaşdırıcı Go konseptlərindən biridir. PHP-də `extends` ilə sinif miras alınır, Go-da isə bu mexanizm yoxdur — composition istifadə olunur.
+
+```php
+// PHP
+class AdminUser extends User {
+    public function deleteAll() { ... }
+}
+$u = new AdminUser();
+$u->getName(); // User-dən miras
+```
+
+```go
+// Go — composition ilə eyni effekt
+type User struct { Ad string }
+func (u User) GetAd() string { return u.Ad }
+
+type AdminUser struct {
+    User              // embed — "inherit" deyil, promotion
+    Permission string
+}
+
+u := AdminUser{User: User{Ad: "Orkhan"}, Permission: "admin"}
+u.GetAd() // User.GetAd() çağırılır — promoted method
+```
+
+**Əsas fərq:** Go embedding-də "is-a" münasibəti yoxdur — `AdminUser` `User` tipi deyil. Yalnız metodlar promoted olur.
 
 ## Əlaqəli Mövzular
 

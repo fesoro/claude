@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Go-da logging üçün bir neçə yanaşma mövcuddur: standart `log` paketi, Go 1.21 ilə gələn müasir `log/slog` paketi və üçüncü tərəf kitabxanalar (zap, zerolog). PHP-də `Monolog` standartlaşmışdırsa, Go-da `slog` get-gedə o rolu oynayır.
+Go-da logging üçün bir neçə yanaşma mövcuddur: standart `log` paketi, Go 1.21 ilə gələn müasir `log/slog` paketi və üçüncü tərəf kitabxanalar (zap, zerolog). `slog` get-gedə production standartına çevrilir.
 
 ## Niyə Vacibdir
 
@@ -18,17 +18,6 @@ Production tətbiqlərdə log keyfiyyəti debuggingin çətinliyini birbaşa mü
 - **Log rotation** — böyük faylların avtomatik idarə edilməsi (lumberjack kimi kitabxanalarla)
 
 ## Praktik Baxış
-
-**PHP Monolog ilə müqayisə:**
-
-```
-PHP Monolog           →  Go slog
-$logger->info(...)    →  slog.Info(...)
-$logger->error(...)   →  slog.Error(...)
-Handler               →  slog.Handler interface
-Formatter             →  JSONHandler / TextHandler
-Channel               →  Logger.With("service", "orders")
-```
 
 **Nə vaxt hansını seçmək:**
 
@@ -274,7 +263,7 @@ func main() {
 // zap — Uber tərəfindən, iki mode: sugared (rahat) və core (sürətli)
 // go get go.uber.org/zap
 
-// Sugared (PHP Monolog-a oxşar):
+// Sugared (rahat istifadə):
 // logger, _ := zap.NewProduction()
 // sugar := logger.Sugar()
 // sugar.Infow("Sifariş", "id", 123, "məbləğ", 99.99)
@@ -464,6 +453,17 @@ func main() {
 // go get gopkg.in/natefinish/lumberjack.v2
 // jack := &lumberjack.Logger{Filename: "app.log", MaxSize: 100, MaxBackups: 3, Compress: true}
 // handler := slog.NewJSONHandler(jack, nil)
+```
+
+## PHP ilə Müqayisə
+
+```
+PHP Monolog           →  Go slog
+$logger->info(...)    →  slog.Info(...)
+$logger->error(...)   →  slog.Error(...)
+Handler               →  slog.Handler interface
+Formatter             →  JSONHandler / TextHandler
+Channel               →  Logger.With("service", "orders")
 ```
 
 ## Əlaqəli Mövzular

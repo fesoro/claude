@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Goroutine-lər Go-nun ən güclü xüsusiyyətidir. Go-nun concurrency modeli **CSP (Communicating Sequential Processes)** prinsipinə əsaslanır: `"Do not communicate by sharing memory; instead, share memory by communicating."` PHP-dəki paralel iş (pcntl, ReactPHP) ilə müqayisədə goroutine-lər son dərəcə yüngüldür — bir goroutine cəmi ~2KB stack yaddaşı istifadə edir.
+Goroutine-lər Go-nun ən güclü xüsusiyyətidir. Go-nun concurrency modeli **CSP (Communicating Sequential Processes)** prinsipinə əsaslanır: `"Do not communicate by sharing memory; instead, share memory by communicating."` Goroutine-lər son dərəcə yüngüldür — bir goroutine cəmi ~2KB stack yaddaşı istifadə edir.
 
 ## Niyə Vacibdir
 
@@ -20,17 +20,6 @@ Real layihələrdə eyni anda minlərlə müştəriyə xidmət etmək, backgroun
 - **race condition** — iki goroutine-in eyni yaddaş sahəsinə eyni anda yazması
 
 ## Praktik Baxış
-
-**PHP ilə müqayisə:**
-
-```
-PHP                             →  Go
-pcntl_fork()                    →  go func() {}()
-ReactPHP EventLoop              →  goroutine + channel
-parallel\run()                  →  go func() {}()
-Swoole coroutine                →  goroutine
-$channel->recv()                →  <-ch
-```
 
 **Goroutine vs Thread:**
 
@@ -380,7 +369,7 @@ import (
 )
 
 // Düzgün — context ilə dayandırılabilir goroutine
-func arxa plan işi(ctx context.Context) {
+func arxaIslem(ctx context.Context) {
     for {
         select {
         case <-ctx.Done():
@@ -396,7 +385,7 @@ func main() {
     ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
     defer cancel()
 
-    go arxa plan işi(ctx)
+    go arxaIslem(ctx)
 
     <-ctx.Done() // 2 saniyə gözlə
     time.Sleep(100 * time.Millisecond) // goroutine-nin dayandığından əmin ol
@@ -487,6 +476,19 @@ m.Range(func(k, v any) bool {    // iterate
     return true // false — dayan
 })
 ```
+
+## PHP ilə Müqayisə
+
+```
+PHP                             →  Go
+pcntl_fork()                    →  go func() {}()
+ReactPHP EventLoop              →  goroutine + channel
+parallel\run()                  →  go func() {}()
+Swoole coroutine                →  goroutine
+$channel->recv()                →  <-ch
+```
+
+PHP-də həqiqi goroutine analoqunu əldə etmək üçün `pcntl`, `ReactPHP` və ya `Swoole` kimi əlavə kitabxanalar lazımdır. Go-da concurrency dil səviyyəsindədir.
 
 ## Əlaqəli Mövzular
 

@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Go-da regular expression dəstəyi standart `regexp` paketi vasitəsilə təmin olunur. Paket RE2 sintaksisini istifadə edir — bu PCRE deyil, buna görə bəzi pattern-lər (məsələn lookahead/lookbehind) dəstəklənmir. Əvəzinə performans zəmanəti var: RE2 heç vaxt eksponensial vaxt sərf etmir. PHP-nin `preg_*` funksiyalarından fərqli olaraq, Go-da regex obyekti əvvəlcədən compile edilir və yenidən istifadə olunur.
+Go-da regular expression dəstəyi standart `regexp` paketi vasitəsilə təmin olunur. Paket RE2 sintaksisini istifadə edir — bu PCRE deyil, buna görə bəzi pattern-lər (məsələn lookahead/lookbehind) dəstəklənmir. Əvəzinə performans zəmanəti var: RE2 heç vaxt eksponensial vaxt sərf etmir. Go-da regex obyekti əvvəlcədən compile edilir və yenidən istifadə olunur.
 
 ## Niyə Vacibdir
 
@@ -39,12 +39,6 @@ Real layihələrdə regexp-dən istifadə çox geniş yayılıb: email/telefon/U
 - Hər request-də `regexp.Compile` çağırmaq — çox bahalıdır; paketi global dəyişkən kimi saxlayın
 - `FindString` ilə `FindStringSubmatch` qarışdırmaq — groups lazımsa ikincini istifadə edin
 - Raw string literal `` ` `` əvəzinə `"..."` istifadə edib `\\d` yazmağı unutmaq
-
-**PHP ilə fərqi:**
-- PHP-də `preg_match('/pattern/', $str)` — Go-da `re.MatchString(str)`
-- PHP-də PCRE (lookahead/lookbehind var) — Go-da RE2 (yoxdur)
-- PHP-də `preg_replace_callback` — Go-da `ReplaceAllStringFunc`
-- Go-da compile ayrı addımdır; PHP-də avtomatikdir (amma PHP içerdə cache edir)
 
 ## Nümunələr
 
@@ -215,6 +209,13 @@ func main() {
 4. **Markdown link extractor:** Markdown fayldan `[text](url)` formatındakı bütün linkləri çıxar, text və url-i ayrıca struct-da saxla.
 
 5. **Sensitive data masking:** Log mesajlarında `password=...`, `token=...`, `api_key=...` kimi sahələri `password=***` formatında gizlət.
+
+## PHP ilə Müqayisə
+
+- PHP-də `preg_match('/pattern/', $str)` — Go-da `re.MatchString(str)`
+- PHP-də PCRE (lookahead/lookbehind var) — Go-da RE2 (yoxdur)
+- PHP-də `preg_replace_callback` — Go-da `ReplaceAllStringFunc`
+- Go-da compile ayrı addımdır; PHP-də avtomatikdir (amma PHP içerdə cache edir)
 
 ## Əlaqəli Mövzular
 

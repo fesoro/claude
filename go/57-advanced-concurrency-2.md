@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Bu mövzu production Go servisinin concurrency arxitekturasını əhatə edir: `errgroup` ilə xəta idarəetmə, semaphore pattern ilə resurs məhdudlaşdırma, worker pool ilə iş növbəsi, stateful goroutine ilə shared state-in alternativ idarəetməsi. PHP-də bu pattern-lər demək olar ki yoxdur çünki hər request izolə olunmuş proses kimi işləyir.
+Bu mövzu production Go servisinin concurrency arxitekturasını əhatə edir: `errgroup` ilə xəta idarəetmə, semaphore pattern ilə resurs məhdudlaşdırma, worker pool ilə iş növbəsi, stateful goroutine ilə shared state-in alternativ idarəetməsi.
 
 ## Niyə Vacibdir
 
@@ -456,6 +456,10 @@ func processAll(items []string) []string {
 
 **Tapşırıq 4 — Graceful shutdown:**
 Worker pool yaradın. `SIGTERM` siqnalı gəldikdə: yeni iş qəbul etməyi dayandırın, cari işlər bitsin, sonra çıxın.
+
+## PHP ilə Müqayisə
+
+PHP-də bu pattern-lər demək olar ki yoxdur çünki hər request izolə olunmuş proses kimi işləyir. Go-da isə eyni process daxilindəki goroutine-lər paylaşılan resursları (DB connection pool, semaphore, worker pool) birlikdə idarə edir — bu məhz Go-nun güclü tərəfidir.
 
 ## Əlaqəli Mövzular
 

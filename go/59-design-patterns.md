@@ -2,37 +2,23 @@
 
 ## İcmal
 
-Go dizayn pattern-ləri PHP/Java-dan fərqlidir. Go-da miras yoxdur, interface implicit implement olunur, struct embedding komposisiya yaradır. Bu fərqlər klassik GoF pattern-lərinin bir hissəsini lazımsız edir, digər hissəsini isə köklü şəkildə dəyişdirir.
+Go dizayn pattern-ləri klassik GoF pattern-lərindən fərqlidir. Go-da miras yoxdur, interface implicit implement olunur, struct embedding komposisiya yaradır. Bu fərqlər klassik pattern-lərin bir hissəsini lazımsız edir, digər hissəsini isə köklü şəkildə dəyişdirir.
 
-Bu mövzuda Go-ya xas pattern-lər: Functional Options, Singleton (sync.Once ilə), Factory (interface ilə), Observer (channel ilə), Middleware chain, Repository, Service Layer öyrəniləcək. PHP-dəki `__construct` injection ilə Go-nun constructor funksiyaları arasındakı oxşarlıqları da müzakirə edəcəyik.
+Bu mövzuda Go-ya xas pattern-lər: Functional Options, Singleton (sync.Once ilə), Factory (interface ilə), Observer (channel ilə), Middleware chain, Repository, Service Layer öyrəniləcək.
 
 ## Niyə Vacibdir
 
 - Go-da həddən artıq mürəkkəb pattern tətbiqi — **over-engineering** sayılır
 - Interface minimal olmalıdır — bir metod kifayətdir (`io.Reader`, `error` interfeysi)
 - Kodun testability-si pattern seçimini müəyyənləşdirir
-- Functional Options — Laravel `config()` array-indən daha güclü, type-safe alternativ
+- Functional Options — type-safe, genişləndirilə bilən konfiqurasiya pattern-i
 - Middleware pattern — Go HTTP stack-inin özəyidir
 
 ## Əsas Anlayışlar
 
-### PHP vs Go — pattern fərqləri
-
-| Pattern | PHP yanaşması | Go yanaşması |
-|---------|--------------|--------------|
-| Singleton | `static $instance` | `sync.Once` |
-| Factory | `abstract class`, `if/switch` | `interface` + switch |
-| Dependency Injection | Constructor injection, container | Constructor function + interface |
-| Observer | Interface implement | function type / channel |
-| Builder | Fluent interface chain | Functional Options |
-| Decorator | Class extend/implement | Function wrapping |
-
 ### Interface implicit implementation
 
 ```go
-// PHP-də explicit:
-// class Dog implements Animal { ... }
-
 // Go-da implicit:
 type Animal interface {
     Sound() string
@@ -46,9 +32,6 @@ func (d Dog) Sound() string { return "Hav" }
 ### Komposisiya vs miras
 
 ```go
-// PHP-də miras:
-// class AdminUser extends User { }
-
 // Go-da embedding (komposisiya):
 type User struct { Name string }
 type AdminUser struct {
@@ -644,6 +627,21 @@ Logger middleware üçün `httptest` istifadə edərək test yazın. Log məzmun
 
 **Tapşırıq 4 — Repository mock:**
 `ProductRepository` interfeysi üçün mock yaradın. `ProductService.Purchase` üçün test yazın: stok kifayətsiz halı, DB xətası halı.
+
+## PHP ilə Müqayisə
+
+Go dizayn pattern-ləri PHP/Java-dan köklü şəkildə fərqlənir. Go-da miras yoxdur — `class AdminUser extends User` yerinə struct embedding istifadə olunur. Interface-lər PHP-dəki kimi explicit `implements` tələb etmir — implicit implementation ilə tip sistemi daha çevikdir.
+
+| Pattern | PHP yanaşması | Go yanaşması |
+|---------|--------------|--------------|
+| Singleton | `static $instance` | `sync.Once` |
+| Factory | `abstract class`, `if/switch` | `interface` + switch |
+| Dependency Injection | Constructor injection, container | Constructor function + interface |
+| Observer | Interface implement | function type / channel |
+| Builder | Fluent interface chain | Functional Options |
+| Decorator | Class extend/implement | Function wrapping |
+
+PHP-dəki `__construct` injection ilə Go-nun constructor funksiyaları arasında oxşarlıq var — hər ikisində dependency-lər konstruktor vasitəsilə ötürülür. Lakin Go-da compile-time type safety var, runtime container yoxdur. Functional Options pattern isə PHP-dəki `config()` array-indən daha güclü və type-safe alternativdir — yanlış konfiqurasiya compile zamanı tutulur.
 
 ## Əlaqəli Mövzular
 

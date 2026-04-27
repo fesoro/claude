@@ -4,8 +4,6 @@
 
 Go-da xarici API-lərə sorğu göndərmək üçün standart `net/http` paketinin `http.Client` tipi istifadə olunur. Default client-dən fərqli olaraq, production-da öz client-ini yaratmalısan: timeout, retry, connection pooling, custom transport — bunların hamısı `http.Client` və `http.Transport` vasitəsilə konfiqurasiya olunur.
 
-PHP/Laravel-də `Http::get()` — Guzzle HTTP client-i sarmalayan bir facade idi. Go-da birbaşa standart kitabxana ilə işləyirsan, amma sən özün retry, timeout, error handling logic-i yazmalısan.
-
 ## Niyə Vacibdir
 
 - Hər microservice xarici API-lərə sorğu göndərir — bu unavoidable-dır
@@ -357,6 +355,10 @@ Bir siyahıdakı 10 URL-i eyni anda yüklə:
 - Hər nəticəni channel-ə göndər
 - Xəta olan URL-ləri log-a yaz, uğurluları say
 - Eyni zamanda maksimum 3 sorğu — semaphore ilə
+
+## PHP ilə Müqayisə
+
+PHP/Laravel-də `Http::get()` — Guzzle HTTP client-i sarmalayan bir facade idi. Go-da birbaşa standart kitabxana ilə işləyirsan, amma sən özün retry, timeout, error handling logic-i yazmalısan.
 
 ## Əlaqəli Mövzular
 

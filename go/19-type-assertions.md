@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Go-da iki fərqli tip transformasiya mexanizmi mövcuddur: **type assertion** interface-dən konkret tipə çatmaq üçün, **type conversion** isə bir konkret tipi başqa konkret tipə çevirmək üçündür. PHP-dəki `(int)$val` cast-dan fərqli olaraq, Go-da bu iki əməliyyat aydın şəkildə ayrılmışdır və compiler ciddi tip nəzarəti aparır — avtomatik tip çevirmə yoxdur.
+Go-da iki fərqli tip transformasiya mexanizmi mövcuddur: **type assertion** interface-dən konkret tipə çatmaq üçün, **type conversion** isə bir konkret tipi başqa konkret tipə çevirmək üçündür. Go-da bu iki əməliyyat aydın şəkildə ayrılmışdır və compiler ciddi tip nəzarəti aparır — avtomatik tip çevirmə yoxdur.
 
 ## Niyə Vacibdir
 
@@ -32,23 +32,13 @@ Interface-lərlə işləyəndə (xüsusən `any`/`interface{}` parametrli funksi
 **Trade-off-lar:**
 - Type assertion hər yerdə — kod çirklənir; generics (Go 1.18+) daha yaxşı alternativdir
 - `interface{}` əvəzinə konkret tip istifadəsi — type safety saxlanılır
-- Float → int konversiyası yuvarlama etmir, kəsir — bu PHP-dəki `intval()` davranışından fərqlənir
+- Float → int konversiyası yuvarlama etmir, kəsir
 
 **Ümumi səhvlər:**
 - `ok` yoxlamadan birbaşa assertion — JSON rəqəmlərini `int` ilə assert etmək (həmişə `float64` gəlir)
 - `[]interface{}` ilə `[]string` eyni deyil — avtomatik çevirmə yoxdur, dövrə lazımdır
 - Float64 → int zamanı yuvarlama gözləmək — `int(3.99) == 3`, `4` deyil
 - int64 → int32 overflow-u yoxlamamaq
-
-**PHP ilə fərqi:**
-
-| PHP | Go |
-|-----|-----|
-| `(int)$val` — implicit, zəif yoxlama | `int(val)` — explicit, compile-time yoxlama |
-| `$obj instanceof Foo` | `_, ok := iface.(Foo)` |
-| `intval("42abc")` → `42` | `strconv.Atoi("42abc")` → xəta qaytarır |
-| Massiv → string çevirmə "Array" verir | `[]byte(str)` düzgün çevirmə |
-| `settype($var, "float")` | `float64(intVar)` |
 
 ## Nümunələr
 
@@ -307,6 +297,17 @@ func main() {
 4. **Type-safe event system:** `Event interface { Type() string }` yarat. `UserCreated`, `OrderPlaced`, `PaymentFailed` tipləri implement etsin. `Dispatcher` hər event tipini type switch ilə handle etsin.
 
 5. **Overflow yoxlaması:** `SafeInt32(v int64) (int32, error)` funksiyası yaz — `math.MinInt32` və `math.MaxInt32` həddindən kənardırsa xəta qaytarsın.
+
+## PHP ilə Müqayisə
+
+| PHP | Go |
+|-----|-----|
+| `(int)$val` — implicit, zəif yoxlama | `int(val)` — explicit, compile-time yoxlama |
+| `$obj instanceof Foo` | `_, ok := iface.(Foo)` |
+| `intval("42abc")` → `42` | `strconv.Atoi("42abc")` → xəta qaytarır |
+| Massiv → string çevirmə "Array" verir | `[]byte(str)` düzgün çevirmə |
+| `settype($var, "float")` | `float64(intVar)` |
+| Float → int: `intval()` yuvarlama etmir | `int(3.99) == 3` — eyni davranış |
 
 ## Əlaqəli Mövzular
 

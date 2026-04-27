@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Go 1.18 (2022) ilə gələn Generics — eyni kodu müxtəlif tiplər üçün ayrı-ayrı yazmaq problemini həll edir. PHP-də `mixed` tip və ya docblock ilə edildiyini Go artıq kompilyasiya zamanı tip yoxlaması ilə etməyə imkan verir.
+Go 1.18 (2022) ilə gələn Generics — eyni kodu müxtəlif tiplər üçün ayrı-ayrı yazmaq problemini həll edir. Kompilyasiya zamanı tip yoxlaması ilə type-safe, reusable funksiyalar və data strukturları yazmağa imkan verir.
 
 ## Niyə Vacibdir
 
@@ -19,37 +19,6 @@ Generic olmadan ya `interface{}` / `any` istifadə edirsiniz (type safety itirir
 - **`~`** (tilde) — bu tipin özü VƏ ondan törəmiş bütün tiplər
 
 ## Praktik Baxış
-
-**PHP Generics (yoxdur) ilə müqayisə:**
-
-```php
-// PHP — type safety yoxdur:
-function first(array $items): mixed {
-    return $items[0] ?? null; // return tipi bilinmir
-}
-
-// PHP 8+ docblock ilə (editor hint, runtime yoxlama yox):
-/** @template T
- *  @param T[] $items
- *  @return T|null
- */
-function first(array $items): mixed { ... }
-```
-
-```go
-// Go generics — compile time type safety:
-func First[T any](items []T) (T, bool) {
-    if len(items) == 0 {
-        var zero T
-        return zero, false
-    }
-    return items[0], true
-}
-
-// İstifadə — tip çıxarılır:
-First([]int{1, 2, 3})      // T = int
-First([]string{"a", "b"}) // T = string
-```
 
 **Ne vaxt generics, ne vaxt interface:**
 
@@ -415,7 +384,7 @@ func main() {
 }
 ```
 
-### Nümunə 7: Generic Result tipi (PHP Either monad bənzəri)
+### Nümunə 7: Generic Result tipi
 
 ```go
 package main
@@ -524,6 +493,35 @@ Map([]int{1,2,3}, func(n int) string { return fmt.Sprint(n) })
 // Bəzən açıq yazılmalı:
 First[string]([]string{}) // boş slice üçün
 ```
+
+## PHP ilə Müqayisə
+
+```php
+// PHP — type safety yoxdur:
+function first(array $items): mixed {
+    return $items[0] ?? null; // return tipi bilinmir
+}
+
+// PHP 8+ docblock ilə (editor hint, runtime yoxlama yox):
+/** @template T
+ *  @param T[] $items
+ *  @return T|null
+ */
+function first(array $items): mixed { ... }
+```
+
+```go
+// Go generics — compile time type safety:
+func First[T any](items []T) (T, bool) {
+    if len(items) == 0 {
+        var zero T
+        return zero, false
+    }
+    return items[0], true
+}
+```
+
+PHP-də `mixed` tip və ya docblock yalnız editor hint-dir; runtime-da yoxlanmır. Go generics kompilyasiya zamanı tip yoxlaması aparır — yanlış tip istifadəsi build xətası verir.
 
 ## Əlaqəli Mövzular
 

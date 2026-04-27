@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Fuzz testing — proqrama avtomatik olaraq gözlənilməz, random input göndərərək crash, panic və ya yanlış davranış axtarır. Go 1.18-dən `go test -fuzz` built-in dəstəkdir — xarici alət lazım deyil. PHP-də yoxdur; Java-nın JQF, Rust-ın cargo-fuzz ilə müqayisə edilir.
+Fuzz testing — proqrama avtomatik olaraq gözlənilməz, random input göndərərək crash, panic və ya yanlış davranış axtarır. Go 1.18-dən `go test -fuzz` built-in dəstəkdir — xarici alət lazım deyil.
 
 ## Niyə Vacibdir
 
@@ -336,6 +336,48 @@ CSV parser yazın: `"a,b,c"` → `[]string{"a","b","c"}`. Fuzz testi ilə crash 
 
 **Tapşırıq 3:**
 Tapılan corpus faylını `testdata/fuzz/` qovluğuna commit edin. `go test -run=FuzzXxx` ilə normal test kimi işləyin — CI-da da keçməlidir.
+
+## PHP ilə Müqayisə
+
+PHP-nin native fuzz testing dəstəyi yoxdur. Java-nın JQF, Rust-ın `cargo-fuzz` alətləri var. Go 1.18-dən built-in dəstəklənir — xarici alət lazım deyil.
+
+```php
+// PHP — fuzz testing yoxdur
+// Alternativ: PHP-Fuzzer (üçüncü tərəf, aktiv deyil)
+// composer require nikic/php-fuzzer
+
+// Adətən istifadə olunan: property-based testing
+// composer require eris/eris
+
+// Eris ilə property test (fuzz deyil, amma bənzər)
+$this->forAll(
+    Generator\string()
+)->then(function (string $input) {
+    $result = parseEmail($input);
+    // assert...
+});
+```
+
+```go
+// Go — built-in fuzz, xarici alət lazım deyil
+func FuzzParseEmail(f *testing.F) {
+    f.Add("user@example.com")
+    f.Add("invalid")
+
+    f.Fuzz(func(t *testing.T, input string) {
+        // Panic olmamalıdır
+        _, _ = NewEmail(input)
+    })
+}
+
+// go test -fuzz=FuzzParseEmail -fuzztime=60s
+```
+
+**Əsas fərqlər:**
+- PHP: native fuzz yoxdur — üçüncü tərəf alət lazımdır; Go: `go test -fuzz` built-in
+- PHP property-based testing (Eris): developer müəyyən etdiyi diapazon; Go fuzzer: avtomatik mutasiya — heç düşünmədiyiniz input-ları tapır
+- Go corpus: tapılan crash-lar `testdata/fuzz/` qovluğuna yazılır, növbəti testlərdə avtomatik çalışır
+- Java JQF / Rust cargo-fuzz: Go-ya bənzər built-in fuzzing dəstəyi
 
 ## Əlaqəli Mövzular
 

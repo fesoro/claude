@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Go-da `enum` açar sözü yoxdur. Əvəzinə `iota` sabitləri, xüsusi tip (named type) və metodların kombinasiyası ilə enum emulasiya olunur. Bu yanaşma daha çevikdir: enum-lara metodlar əlavə etmək, JSON serialize/deserialize, bit-flag kombinasiyalar, string-based enum-lar — hamısı eyni pattern-lər çərçivəsindədir. PHP 8.1-in `enum` açar sözündən fərqli olaraq, Go-da enum daha çox "convention" üzərindədir.
+Go-da `enum` açar sözü yoxdur. Əvəzinə `iota` sabitləri, xüsusi tip (named type) və metodların kombinasiyası ilə enum emulasiya olunur. Bu yanaşma daha çevikdir: enum-lara metodlar əlavə etmək, JSON serialize/deserialize, bit-flag kombinasiyalar, string-based enum-lar — hamısı eyni pattern-lər çərçivəsindədir.
 
 ## Niyə Vacibdir
 
@@ -31,23 +31,12 @@ Sifariş statusu, istifadəçi rolu, ödəniş növü, bildiriş tipi — real l
 - `iota` enum — rəqəm dəyəri; DB-yə rəqəm yazılır; sıra dəyişsə köhnə datalara uyğunsuzluq
 - String enum — daha oxunaqlı, DB-yə mətn yazılır; migration problemi yoxdur
 - Bit flags — kompakt, lakin debugging çətinləşir; kiçik permission sistemi üçün yaxşıdır
-- PHP 8.1 enum-dan fərqli olaraq Go-da keçərsiz dəyər qarşısı compile-time alına bilmir
 
 **Ümumi səhvlər:**
 - `iota` sıralamasını dəyişmək — mövcud DB datalara uyğunsuzluq
 - `String()` metodu olmadan `%d` əvəzinə `%s` ilə çap etmək — rəqəm çıxır
 - `0` dəyərli enum-u mənalı dəyər kimi istifadə etmək — sıfır dəyər default olduğu üçün anlamı dəyişir
 - JSON unmarshal zamanı keçərsiz dəyər yoxlamamaq
-
-**PHP ilə fərqi:**
-
-| PHP | Go |
-|-----|-----|
-| `enum Status: string { case Active = 'active'; }` | `type Status string; const StatusActive Status = "active"` |
-| `Status::Active->value` | `string(StatusActive)` |
-| `Status::from('active')` — built-in | Əl ilə map ilə lookup |
-| `Status::cases()` — bütün case-lər | Əl ilə slice |
-| Compiler keçərsiz case bloklar | Runtime yoxlama lazımdır |
 
 ## Nümunələr
 
@@ -393,6 +382,17 @@ func main() {
 4. **State machine:** Sifariş üçün `OrderStatus` state machine yarat. `CanTransitionTo` metodu ilə keçid qaydaları tətbiq et. Yanlış keçiddə `ErrInvalidTransition` qaytarsın.
 
 5. **Exhaustive switch lint:** Go-da compiler `switch` tam olmadığında xəbərdarlıq etmir. Enum üçün `Default()` metodu yaz — hər switch blokunun `default` case-i bu dəyəri qaytarsın. Bu pattern-i izah et.
+
+## PHP ilə Müqayisə
+
+| PHP | Go |
+|-----|-----|
+| `enum Status: string { case Active = 'active'; }` | `type Status string; const StatusActive Status = "active"` |
+| `Status::Active->value` | `string(StatusActive)` |
+| `Status::from('active')` — built-in | Əl ilə map ilə lookup |
+| `Status::cases()` — bütün case-lər | Əl ilə slice |
+| Compiler keçərsiz case bloklar | Runtime yoxlama lazımdır |
+| PHP 8.1 enum açar sözü var | Go-da yalnız convention — `iota` + named type |
 
 ## Əlaqəli Mövzular
 

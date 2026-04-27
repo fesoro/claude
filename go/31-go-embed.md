@@ -20,15 +20,6 @@ Deployment sadələşir: artıq `public/`, `templates/`, `config/` qovluqların�
 
 ## Praktik Baxış
 
-**PHP ilə müqayisə:**
-
-```
-PHP                                →  Go
-file_get_contents("config.json")   →  //go:embed config.json; var cfg []byte
-__DIR__."/templates/..."            →  embed.FS
-Packaging: composer + assets       →  Bir binary, hər şey içəridə
-```
-
 **Ne vaxt embed istifadə etmək:**
 
 | Ssenari | Seçim |
@@ -446,6 +437,17 @@ var assetsFS embed.FS
 //go:embed testdata/fixture.json
 var testFixture []byte
 ```
+
+## PHP ilə Müqayisə
+
+```
+PHP                                →  Go
+file_get_contents("config.json")   →  //go:embed config.json; var cfg []byte
+__DIR__."/templates/..."            →  embed.FS
+Packaging: composer + assets       →  Bir binary, hər şey içəridə
+```
+
+PHP-də statik fayllar həmişə disk-dən oxunur; deployment zamanı fayl strukturunu saxlamaq lazımdır. Go-da `//go:embed` ilə fayllar compile vaxtında binary-ə daxil edilir — deployment yalnız bir binary faylı köçürməkdən ibarətdir.
 
 ## Əlaqəli Mövzular
 

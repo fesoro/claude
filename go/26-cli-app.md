@@ -6,7 +6,7 @@ Go CLI alətlər yaratmaq üçün ideal dildir: Docker, Kubernetes, Terraform, H
 
 ## Niyə Vacibdir
 
-Backend developer olaraq tez-tez köməkçi alətlər lazım olur: migration runner, data importer, cron job, deploy script. Go ilə bu alətləri statik binary kimi paylaşmaq olur — heç bir runtime dependency tələb etmir. PHP Artisan command-larından fərqli olaraq, Go CLI binary-ləri hər yerdə işləyir.
+Backend developer olaraq tez-tez köməkçi alətlər lazım olur: migration runner, data importer, cron job, deploy script. Go ilə bu alətləri statik binary kimi paylaşmaq olur — heç bir runtime dependency tələb etmir.
 
 ## Əsas Anlayışlar
 
@@ -18,17 +18,6 @@ Backend developer olaraq tez-tez köməkçi alətlər lazım olur: migration run
 - **Exit code** — 0 uğurlu, 1+ xəta (CI/CD pipeline-larda vacibdir)
 
 ## Praktik Baxış
-
-**PHP Artisan ilə müqayisə:**
-
-```
-PHP Artisan              →  Go CLI
-php artisan make:model   →  ./mytool generate model
-$this->argument('name')  →  flag.String("name", "", "...")
-$this->option('force')   →  flag.Bool("force", false, "...")
-$this->info("OK")        →  fmt.Println("\033[32mOK\033[0m")
-$this->error("Fail")     →  fmt.Fprintln(os.Stderr, "Fail")
-```
 
 **Ne vaxt flag, ne vaxt cobra:**
 
@@ -384,6 +373,19 @@ SQL migration fayllarını oxuyub run edən CLI yazın. Subcommand-lar: `migrate
 // ./migrator -dsn "postgres://..." migrate down --steps 2
 // ./migrator migrate status
 ```
+
+## PHP ilə Müqayisə
+
+```
+PHP Artisan              →  Go CLI
+php artisan make:model   →  ./mytool generate model
+$this->argument('name')  →  flag.String("name", "", "...")
+$this->option('force')   →  flag.Bool("force", false, "...")
+$this->info("OK")        →  fmt.Println("\033[32mOK\033[0m")
+$this->error("Fail")     →  fmt.Fprintln(os.Stderr, "Fail")
+```
+
+Go CLI binary-ləri PHP Artisan-dan fərqli olaraq heç bir runtime tələb etmədən işləyir — statik binary kimi paylaşılır.
 
 ## Əlaqəli Mövzular
 

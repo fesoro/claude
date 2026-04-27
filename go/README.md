@@ -5,7 +5,7 @@
 PHP/Laravel developer üçün Go dilini sıfırdan professional arxitektura səviyyəsinə qədər öyrənmə yolu. Hər mövzu real layihə təcrübəsindən gələn praktik biliklər, trade-off analizi və kod nümunələri ilə çatdırılır.
 
 **Hədəf auditoriya:** 5+ il PHP/Laravel təcrübəsi olan developer, Go-ya keçid etmək istəyir  
-**Ümumi fayl sayı:** 88 mövzu + README  
+**Ümumi fayl sayı:** 95 mövzu + README  
 **Proqramlaşdırma dili:** Go (Golang), kod nümunələri `go` bloklarında
 
 ---
@@ -63,7 +63,7 @@ Interface, error handling, concurrency əsasları, test yazma, Go-ya xas pattern
 
 ---
 
-### ⭐⭐⭐ Senior (33-55, 76-78, 80, 82, 85-87) — Real layihə inkişafı
+### ⭐⭐⭐ Senior (33-55, 76-78, 80, 82, 85-87, 89-90, 93-94) — Real layihə inkişafı
 
 HTTP server/client, database, test, layihə strukturu, production patterns.
 
@@ -100,12 +100,16 @@ HTTP server/client, database, test, layihə strukturu, production patterns.
 | 85 | [85-email-smtp.md](85-email-smtp.md) | Email / SMTP — gomail, HTML şablon, async göndərmə, MailHog |
 | 86 | [86-webhook.md](86-webhook.md) | Webhook — qəbul etmək, imza yoxlama, retry, idempotency |
 | 87 | [87-go-generate.md](87-go-generate.md) | go generate — stringer, mockery, sqlc, kod generasiyası |
+| 89 | [89-background-jobs.md](89-background-jobs.md) | Background Jobs — asynq, task queue, priority, retry, asynqmon |
+| 90 | [90-sse-server-sent-events.md](90-sse-server-sent-events.md) | Server-Sent Events — SSE, real-time push, broadcast hub |
+| 93 | [93-swagger-openapi.md](93-swagger-openapi.md) | OpenAPI / Swagger — swaggo/swag, annotation, UI, spec-first |
+| 94 | [94-pagination.md](94-pagination.md) | Pagination — offset, cursor-based, keyset, generic wrapper |
 
 ---
 
-### ⭐⭐⭐⭐ Lead (56-67, 79, 81, 83, 84, 88) — İleri mövzular
+### ⭐⭐⭐⭐ Lead (56-67, 79, 81, 83, 84, 88, 91-92, 95) — İleri mövzular
 
-Advanced concurrency, design patterns, WebSocket, gRPC, security, caching, JWT.
+Advanced concurrency, design patterns, WebSocket, gRPC, security, caching, JWT, resilience patterns.
 
 | # | Fayl | Mövzu |
 |---|------|-------|
@@ -126,6 +130,9 @@ Advanced concurrency, design patterns, WebSocket, gRPC, security, caching, JWT.
 | 83 | [83-event-bus.md](83-event-bus.md) | Event Bus — domain events, pub-sub, sinxron/asinxron |
 | 84 | [84-testcontainers.md](84-testcontainers.md) | Testcontainers — real PostgreSQL/Redis ilə inteqrasiya testi |
 | 88 | [88-fuzz-testing.md](88-fuzz-testing.md) | Fuzz Testing — go test -fuzz, corpus, parser/validator testi |
+| 91 | [91-circuit-breaker-and-retry.md](91-circuit-breaker-and-retry.md) | Circuit Breaker, Retry — gobreaker, exponential backoff, jitter |
+| 92 | [92-sync-pool.md](92-sync-pool.md) | sync.Pool — object pooling, GC pressure azaldma, benchmark |
+| 95 | [95-graphql.md](95-graphql.md) | GraphQL — gqlgen, schema-first, resolver, DataLoader, N+1 |
 
 ---
 
@@ -182,13 +189,16 @@ Həftə 13-14 (Architect): 68 → 74
 REST API qurmaq, database, auth, deployment — praktik yol:
 
 ```
-Əsaslar:  01-11, 14, 17-18, 20
-HTTP API: 27-28, 33-36, 39
-Database: 37-38
-Auth:     62, 65
-Testing:  24, 36, 52
-Deploy:   53, 54, 70
-Prod:     71, 68
+Əsaslar:    01-11, 14, 17-18, 20
+HTTP API:   27-28, 33-36, 39
+Database:   37-38
+Auth:       62, 65
+Pagination: 94
+Swagger:    93
+Background: 89
+Testing:    24, 36, 52
+Deploy:     53, 54, 70
+Prod:       71, 68
 ```
 
 ---
@@ -220,13 +230,15 @@ HTTP/gRPC:   33-35, 67
 Database:    37-38
 Config:      39
 Auth/Sec:    62, 65
-Testing:     24, 36, 52
+Resilience:  91 (circuit breaker + retry)
+Testing:     24, 36, 52, 84
 Graceful:    48, 53
 Arch:        54, 55, 74
 Deploy:      70
 Monitoring:  71, 68, 69
 Messaging:   72
 Microservice: 73
+Background:  89
 ```
 
 ---
@@ -241,11 +253,16 @@ Microservice: 73
 | PHP-FPM (hər request yeni proses) | Tək proses, goroutine ilə concurrency |
 | Laravel Eloquent ORM | sqlx, GORM (və ya raw SQL) |
 | `.env` + Laravel Config | os.Getenv, Viper |
-| Laravel Queue + Horizon | Goroutine, Kafka/RabbitMQ |
+| Laravel Queue + Horizon | asynq + asynqmon (→ 89) |
 | Artisan CLI | Cobra |
 | Namespace | Package |
 | `null` | Nil pointer, zero value |
 | Laravel DI Container | Manual DI və ya Wire/Fx |
+| `paginate()`, `cursorPaginate()` | Offset/cursor/keyset (→ 94) |
+| l5-swagger | swaggo/swag (→ 93) |
+| Guzzle retry middleware | backoff + gobreaker (→ 91) |
+| rebing/graphql-laravel | gqlgen schema-first (→ 95) |
+| SSE (ob_flush+flush) | net/http + http.Flusher (→ 90) |
 
 ---
 

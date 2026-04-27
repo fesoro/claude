@@ -21,18 +21,6 @@ Real layihələrdə `http.Request.Body` bir `io.Reader`-dir — bu onu fayldan, 
 
 ## Praktik Baxış
 
-**PHP ilə müqayisə:**
-
-```
-PHP                        →  Go
-fread($handle, 8192)       →  reader.Read(buf)
-fwrite($handle, $data)     →  writer.Write(data)
-stream_get_contents($f)    →  io.ReadAll(reader)
-stream_copy_to_stream()    →  io.Copy(dst, src)
-$request->getBody()        →  r.Body (io.ReadCloser)
-GzipStream                 →  gzip.NewReader(reader)
-```
-
 **Composition nümunəsi:**
 
 ```
@@ -381,6 +369,20 @@ HTTP middleware yazın: request body-ni oxusun, log-a yazsın, sonra yenidən bo
 // r.Body = io.NopCloser(&body) // body-ni yenidən qur
 // slog.Info("Request body", "body", body.String())
 ```
+
+## PHP ilə Müqayisə
+
+```
+PHP                        →  Go
+fread($handle, 8192)       →  reader.Read(buf)
+fwrite($handle, $data)     →  writer.Write(data)
+stream_get_contents($f)    →  io.ReadAll(reader)
+stream_copy_to_stream()    →  io.Copy(dst, src)
+$request->getBody()        →  r.Body (io.ReadCloser)
+GzipStream                 →  gzip.NewReader(reader)
+```
+
+PHP stream funksiyaları prosedural-dır; Go-da `io.Reader` / `io.Writer` interfeyslərini implement edən istənilən struct eyni `io.Copy`, `json.NewDecoder` kimi funksiyalarla işləyir — bu daha güclü kompozisiyaya imkan verir.
 
 ## Əlaqəli Mövzular
 

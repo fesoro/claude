@@ -6,7 +6,6 @@ Go standart kitabxanası slice, map, channel kimi əsas data structure-ları tə
 
 ## Niyə Vacibdir
 
-- PHP-nin `SplStack`, `SplQueue` kimi hazır siniflərindən fərqli olaraq Go-da bunlar əl ilə yazılır
 - Generics (Go 1.18+) ilə type-safe, reusable data structure-lar mümkündür
 - `container/heap` interface-i `sort.Interface`-ə bənzər — özünün implementasiyasını tələb edir
 - Algorithm interview-larında və real layihələrdə (job queue, event buffer, cache) istifadə olunur
@@ -510,6 +509,33 @@ Graph-da topological sort (DFS) ilə package dependency-lərini resolve edin. Ci
 
 **Tapşırıq 5 — Deduplication Pipeline:**
 Set istifadə edərək böyük data stream-dən duplicate-ları filtrləyən pipeline yazın. Concurrent-safe olsun (`sync.RWMutex` ilə).
+
+## PHP ilə Müqayisə
+
+PHP-nin `SplStack`, `SplQueue`, `SplDoublyLinkedList` kimi hazır sinifləri var. Go-da bu strukturlar əl ilə yazılır — standart kitabxanada yoxdur:
+
+```php
+// PHP — hazır SplStack
+$stack = new SplStack();
+$stack->push("birinci");
+$stack->push("ikinci");
+echo $stack->pop(); // "ikinci"
+
+// PHP — SplPriorityQueue
+$pq = new SplPriorityQueue();
+$pq->insert("task", 10);
+```
+
+```go
+// Go — öz implementasiyanı yaz
+type Stack[T any] struct {
+    items []T
+}
+func (s *Stack[T]) Push(v T) { s.items = append(s.items, v) }
+func (s *Stack[T]) Pop() (T, bool) { ... }
+```
+
+**Fərq:** PHP hazır OOP class-larla data structure-ları təqdim edir. Go-da generics ilə öz type-safe implementasiyanı yazmaq idiomatikdir. Bu Go-nun minimalist dizayn fəlsəfəsinin nəticəsidir.
 
 ## Əlaqəli Mövzular
 

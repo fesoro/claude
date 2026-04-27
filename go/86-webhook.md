@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Webhook — bir sistemin hadisə baş verdikdə digər sistemə HTTP POST ilə bildiriş göndərməsidir. Go-da iki tərəf var: **webhook qəbul etmək** (Stripe, GitHub, Mailgun sizi çağırır) və **webhook göndərmək** (siz client-ləri çağırırsınız). PHP/Laravel-in webhook handling-indən daha sürətli — tək proses, goroutine ilə asinxron emal.
+Webhook — bir sistemin hadisə baş verdikdə digər sistemə HTTP POST ilə bildiriş göndərməsidir. Go-da iki tərəf var: **webhook qəbul etmək** (Stripe, GitHub, Mailgun sizi çağırır) və **webhook göndərmək** (siz client-ləri çağırırsınız).
 
 ## Niyə Vacibdir
 
@@ -431,6 +431,56 @@ Webhook göndərən servis yaz: exponential backoff (1s→2s→4s→max 60s), 5 
 
 **Tapşırıq 3:**
 Idempotency: eyni `X-GitHub-Delivery` ID ilə iki dəfə gələn webhook-u yalnız bir dəfə işlə. Redis `SET NX` ilə implement et.
+
+## PHP ilə Müqayisə
+
+Laravel-də webhook qəbul etmək üçün route yazılır, imza yoxlama manual edilir. Go-da eyni axın, amma goroutine ilə asinxron emal daha sadədir.
+
+```php
+// Laravel — Stripe webhook qəbul etmək
+Route::post('/webhook/stripe', function (Request $request) {
+    $payload = $request->getContent();
+    $sig = $request->header('Stripe-Signature');
+
+    try {
+        $event = \Stripe\Webhook::constructEvent($payload, $sig, config('stripe.webhook_secret'));
+    } catch (\Exception $e) {
+        return response('Yanlış imza', 401);
+    }
+
+    // Sync emal (queue-ya göndərmək üçün → dispatch(new HandleStripeEvent($event)))
+    match ($event->type) {
+        'payment_intent.succeeded' => handlePayment($event->data->object),
+        default => null,
+    };
+
+    return response('OK', 200);
+});
+```
+
+```go
+// Go — goroutine ilə asinxron emal
+func (h *PaymentEventHandler) Handle(w http.ResponseWriter, r *http.Request) {
+    body, _ := io.ReadAll(r.Body)
+
+    // İmza yoxla
+    event, err := webhook.ConstructEvent(body, r.Header.Get("Stripe-Signature"), secret)
+    if err != nil {
+        http.Error(w, "Yanlış imza", http.StatusUnauthorized)
+        return
+    }
+
+    w.WriteHeader(http.StatusOK) // Dərhal 200 qaytar
+
+    go h.processEvent(event) // Asinxron emal
+}
+```
+
+**Əsas fərqlər:**
+- Laravel: queue driver (Redis/database) ilə persistent async; Go: goroutine — in-process, process restart-da itirilir
+- Laravel `Webhook::constructEvent()`: Stripe SDK daxilindədir; Go-da eyni
+- İmza yoxlama: hər ikisində manual HMAC-SHA256 (Stripe SDK yardımı ilə)
+- Laravel `php artisan stripe:listen` (Stripe CLI): webhook-ları lokal test edir; Go-da eyni CLI istifadə olunur
 
 ## Əlaqəli Mövzular
 

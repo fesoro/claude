@@ -2,11 +2,11 @@
 
 ## İcmal
 
-Go-dakı operatorlar PHP ilə çox oxşardır: riyazi (`+`, `-`, `*`, `/`, `%`), müqayisə (`==`, `!=`, `>`, `<`), məntiqi (`&&`, `||`, `!`), təyinat (`=`, `+=`, `-=`) operatorları. Lakin mühüm fərqlər var: artırım/azaltma (`++`, `--`) yalnız statement-dir, ifadə deyil — dəyər qaytarmır. PHP-dəki `$i++` və `++$i` fərqi Go-da mövcud deyil.
+Go-dakı operatorlar çoxu dillərlə oxşardır: riyazi (`+`, `-`, `*`, `/`, `%`), müqayisə (`==`, `!=`, `>`, `<`), məntiqi (`&&`, `||`, `!`), təyinat (`=`, `+=`, `-=`) operatorları. Mühüm xüsusiyyət: artırım/azaltma (`++`, `--`) yalnız statement-dir, ifadə deyil — dəyər qaytarmır. `$i++` və `++$i` arasındakı ayrım Go-da mövcud deyil.
 
 ## Niyə Vacibdir
 
-Operatorlar bütün proqramlarda istifadə olunur: hesablama, şərt yoxlama, bit manipulyasiyası. Go-da bir neçə operator PHP-dən fərqli davranır və bu fərqləri bilmək runtime xətalarını azaldır. Xüsusilə tam ədəd bölməsi (`a/b` hər zaman tam ədəd qaytarır) və modulus operatoru real layihələrdə tez-tez istifadə olunur.
+Operatorlar bütün proqramlarda istifadə olunur: hesablama, şərt yoxlama, bit manipulyasiyası. Go-da bir neçə operator başqa dillərdən fərqli davranır. Xüsusilə tam ədəd bölməsi (`a/b` hər zaman tam ədəd qaytarır) və modulus operatoru real layihələrdə tez-tez istifadə olunur.
 
 ## Əsas Anlayışlar
 
@@ -25,12 +25,6 @@ Operatorlar bütün proqramlarda istifadə olunur: hesablama, şərt yoxlama, bi
 - Bit operatorları — permission flag-ları: `UserPerm & ReadFlag != 0`
 - `+=` — counter artırma, toplama akkumulyatoru
 - `&&`, `||` — input validasiya şərtlərini birləşdirmə
-
-**PHP ilə fərqi:**
-- PHP: `$i++` ifadə kimi işləyir — `$a = $i++` yazılır; Go-da `a = i++` compile error
-- PHP: `"5" == 5` → true (tip çevrilməsi); Go-da `"5" == 5` → compile error
-- PHP-dəki `===` Go-da yoxdur — Go-da `==` həmişə həm tip, həm dəyər yoxlayır
-- PHP: `10 / 3 = 3.333...`; Go: `10 / 3 = 3` (tam ədəd bölməsi)
 
 **Trade-off-lar:**
 - Tam ədəd bölməsini float üçün istəyirsinizsə, əvvəlcə çevirməlisiniz: `float64(a) / float64(b)`
@@ -164,6 +158,14 @@ func main() {
    $a++;
    echo $a;         // 11
    ```
+
+## PHP ilə Müqayisə
+
+- PHP: `$i++` ifadə kimi işləyir — `$a = $i++` yazılır; Go-da `a = i++` compile error
+- PHP: `"5" == 5` → true (tip çevrilməsi); Go-da `"5" == 5` → compile error
+- PHP-dəki `===` Go-da yoxdur — Go-da `==` həmişə həm tip, həm dəyər yoxlayır
+- PHP: `10 / 3 = 3.333...`; Go: `10 / 3 = 3` (tam ədəd bölməsi)
+- Go-da `++sayi` (prefix artırım) yoxdur; PHP-də həm `$i++`, həm `++$i` işləyir
 
 ## Əlaqəli Mövzular
 

@@ -2,26 +2,26 @@
 
 ## İcmal
 
-Go-da `string` immutable (dəyişdirilməz) UTF-8 bayt ardıcıllığıdır. String əməliyyatları üçün `strings` paketi, tip çevrilmələri üçün `strconv` paketi istifadə olunur. `strings.Builder` — çoxlu string birləşdirməni effektiv etmək üçün; `fmt.Sprintf` — formatlaşdırılmış string yaratmaq üçün. PHP-dən fərqli olaraq, Go-da string-in içindəki simvolu dəyişdirmək üçün `[]byte`-a çevirmək lazımdır.
+Go-da `string` immutable (dəyişdirilməz) UTF-8 bayt ardıcıllığıdır. String əməliyyatları üçün `strings` paketi, tip çevrilmələri üçün `strconv` paketi istifadə olunur. `strings.Builder` — çoxlu string birləşdirməni effektiv etmək üçün; `fmt.Sprintf` — formatlaşdırılmış string yaratmaq üçün. String-in içindəki simvolu dəyişdirmək üçün `[]byte`-a çevirmək lazımdır.
 
 ## Niyə Vacibdir
 
-Backend developer hər gün string-lərlə işləyir: URL parsing, JSON keys, log mesajları, validation, CSV parse. PHP-dəki `str_contains`, `str_replace`, `explode`, `implode`, `intval`, `floatval` funksiyalarının Go ekvivalentlərini bilmək birinci gündən lazım olacaq. Bundan əlavə, Azərbaycan hərflərinin (`ə`, `ş`, `ğ`) düzgün emalı üçün `rune` konseptini başa düşmək vacibdir.
+Backend developer hər gün string-lərlə işləyir: URL parsing, JSON keys, log mesajları, validation, CSV parse. Bu paketlərin funksiyalarını bilmək birinci gündən lazım olacaq. Bundan əlavə, Azərbaycan hərflərinin (`ə`, `ş`, `ğ`) düzgün emalı üçün `rune` konseptini başa düşmək vacibdir.
 
 ## Əsas Anlayışlar
 
-- **`strings.Contains`** — alt-string yoxlama; PHP-dəki `str_contains()`
-- **`strings.HasPrefix/HasSuffix`** — başlanğıc/son yoxlama; PHP-dəki `str_starts_with()`
-- **`strings.Split`** — ayırma; PHP-dəki `explode()`
-- **`strings.Join`** — birləşdirmə; PHP-dəki `implode()`
-- **`strings.Replace/ReplaceAll`** — əvəzetmə; PHP-dəki `str_replace()`
-- **`strings.ToUpper/ToLower`** — PHP-dəki `strtoupper/strtolower`
-- **`strings.TrimSpace`** — PHP-dəki `trim()`
+- **`strings.Contains`** — alt-string yoxlama
+- **`strings.HasPrefix/HasSuffix`** — başlanğıc/son yoxlama
+- **`strings.Split`** — ayırma
+- **`strings.Join`** — birləşdirmə
+- **`strings.Replace/ReplaceAll`** — əvəzetmə
+- **`strings.ToUpper/ToLower`** — böyük/kiçik hərf çevirməsi
+- **`strings.TrimSpace`** — baş/son boşluqları sil
 - **`strings.Builder`** — effektiv string birləşdirmə; `+` operatoru loop içindən qaçın
-- **`strconv.Atoi`** — string → int; PHP-dəki `intval()` + xəta qaytarır
-- **`strconv.Itoa`** — int → string; PHP-dəki `(string)$int`
-- **`strconv.ParseFloat`** — string → float64; PHP-dəki `floatval()` + xəta
-- **`fmt.Sprintf`** — formatlaşdırılmış string; PHP-dəki `sprintf()`
+- **`strconv.Atoi`** — string → int; xəta qaytarır
+- **`strconv.Itoa`** — int → string
+- **`strconv.ParseFloat`** — string → float64; xəta qaytarır
+- **`fmt.Sprintf`** — formatlaşdırılmış string yaratmaq
 
 ## Praktik Baxış
 
@@ -31,13 +31,6 @@ Backend developer hər gün string-lərlə işləyir: URL parsing, JSON keys, lo
 - Query string build: `strings.Builder` ilə
 - Config dəyərini int-ə çevirmə: `strconv.Atoi(os.Getenv("PORT"))`
 - Log formatı: `fmt.Sprintf("[%s] %s: %s", level, timestamp, message)`
-
-**PHP ilə fərqi:**
-- PHP: `str_replace("a", "b", $str)` → Go: `strings.ReplaceAll(str, "a", "b")`
-- PHP: `intval("42")` səssiz `0` qaytarır yanlışa; Go: `strconv.Atoi("abc")` xəta qaytarır
-- PHP: `$str[0]` simvol qaytarır; Go: `str[0]` bayt qaytarır (Azərbaycan hərfləri üçün yanlış!)
-- PHP: `strlen("Şəhər")` = 9 (bayt); Go: `len("Şəhər")` = 9; PHP `mb_strlen` = Go `len([]rune(s))`
-- PHP-də `"a" . "b"` → Go-da `"a" + "b"` (eyni, amma loop-da `strings.Builder` istifadə edin)
 
 **Trade-off-lar:**
 - `+` ilə string birləşdirmə — azdırsa (2-3 dəfə) qəbul edilə bilər; çoxsa `strings.Builder` istifadə edin
@@ -248,7 +241,7 @@ func main() {
 
 2. **Config parser**: `PORT=8080`, `DB_HOST=localhost` formatında konfiq faylı parse et. `strings.Split` ilə `=`-dan böl, key-value map-ə yığ. Port-u `strconv.Atoi` ilə int-ə çevir.
 
-3. **Slug yaradıcı**: `slugify(title string) string` — PHP-dəki `Str::slug()` kimi; boşluqları `-`-yə çevir, kiçik hərfə çevir, xüsusi simvolları sil. Azərbaycan hərflərini ASCII ekvivalentinə çevir.
+3. **Slug yaradıcı**: `slugify(title string) string` — boşluqları `-`-yə çevir, kiçik hərfə çevir, xüsusi simvolları sil. Azərbaycan hərflərini ASCII ekvivalentinə çevir.
 
 4. **CSV → struct**: Aşağıdakı CSV-ni parse et — `strings.Split`, `strconv.Atoi`, `strconv.ParseFloat` istifadə et:
    ```
@@ -256,6 +249,29 @@ func main() {
    1,Laptop,1299.99
    2,Telefon,699.99
    ```
+
+## PHP ilə Müqayisə
+
+| PHP funksiyası | Go ekvivalenti |
+|----------------|----------------|
+| `str_contains()` | `strings.Contains()` |
+| `str_starts_with()` | `strings.HasPrefix()` |
+| `str_ends_with()` | `strings.HasSuffix()` |
+| `str_replace()` | `strings.ReplaceAll()` |
+| `explode()` | `strings.Split()` |
+| `implode()` | `strings.Join()` |
+| `strtoupper()` | `strings.ToUpper()` |
+| `strtolower()` | `strings.ToLower()` |
+| `trim()` | `strings.TrimSpace()` |
+| `intval()` | `strconv.Atoi()` (xəta qaytarır!) |
+| `floatval()` | `strconv.ParseFloat()` (xəta qaytarır!) |
+| `sprintf()` | `fmt.Sprintf()` |
+| `mb_strlen()` | `len([]rune(s))` |
+
+- PHP: `intval("abc")` → 0 (səssiz); Go: `strconv.Atoi("abc")` → xəta (explicit)
+- PHP: `$str[0]` simvol qaytarır; Go: `str[0]` bayt qaytarır (Azərbaycan hərfləri üçün yanlış!)
+- PHP-də `"a" . "b"` → Go-da `"a" + "b"` (eyni, amma loop-da `strings.Builder` istifadə edin)
+- PHP `strlen("Şəhər")` = 9 (bayt); Go `len("Şəhər")` = 9 — eyni davranış
 
 ## Əlaqəli Mövzular
 

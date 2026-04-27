@@ -4,8 +4,6 @@
 
 Go channel-ləri sadə növbə deyil — onlar ilə mürəkkəb data flow arxitekturası qurula bilər. Bu mövzu real layihələrdə işlədilən channel pattern-lərini əhatə edir: pipeline (mərhələ zənciri), fan-out/fan-in (iş paylaşması), done channel (ləğv etmə), tee (kopyalama), bridge (kanal kanalı). Bu pattern-lər Go-nun "CSP" (Communicating Sequential Processes) paradiqmasının praktik tətbiqidir.
 
-PHP-də bu tip paralel data processing ya həddən artıq mürəkkəb, ya da mümkün deyil. Go-da isə bu pattern-lər idiomatic kod sayılır.
-
 ## Niyə Vacibdir
 
 - **Pipeline** — ETL, image processing, log processing üçün modular, testable zəncir
@@ -519,6 +517,10 @@ URL-ləri pipeline ilə crawl edən sistem: fetch → parse links → filter →
 
 **Tapşırıq 5 — Pipeline benchmark:**
 Buffered (N=10, N=100) və unbuffered pipeline arasında throughput fərqini ölçün. Nə vaxt buffering kömək edir?
+
+## PHP ilə Müqayisə
+
+PHP-də bu tip paralel data processing ya həddən artıq mürəkkəb, ya da mümkün deyil. Go-da isə bu pattern-lər idiomatic kod sayılır — pipeline, fan-out/fan-in, tee dil-səviyyəsindəki channel primitivi üzərindən qurulur.
 
 ## Əlaqəli Mövzular
 

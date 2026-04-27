@@ -6,11 +6,11 @@ Go standart kitabxanasında iki güclü template paketi var: `text/template` —
 
 ## Niyə Vacibdir
 
-- PHP-nin Blade, Twig-indən fərqli olaraq bu paket Go-ya daxildir, xarici dependency lazım deyil
 - `html/template` XSS-i avtomatik prevent edir — security-critical
 - Code generasiyası üçün (`go generate`) mükəmməl
 - Email template-ləri, Kubernetes manifests, Helm chart-lar Go template sintaksisi istifadə edir
 - `text/template` ilə Makefile, Dockerfile, konfiqurasiya faylları generate etmək olar
+- Xarici dependency olmadan — standart kitabxanaya daxildir
 
 ## Əsas Anlayışlar
 
@@ -444,6 +444,34 @@ Template ilə sadə Markdown konversiya edin: `**bold**`, `# Başlıq`, `- siyah
 
 **Tapşırıq 4 — Benchmark:**
 Template-i bir dəfə parse edib 1000 dəfə execute etmə vs hər dəfə parse edib execute etmə — `testing.B` ilə ölçün.
+
+## PHP ilə Müqayisə
+
+PHP-də Blade (Laravel) və Twig (Symfony) kimi template mühərrikləri xarici paketlərdir. Go-da `text/template` və `html/template` standart kitabxanaya daxildir:
+
+```php
+{{-- Blade sintaksisi --}}
+@foreach ($users as $user)
+    <p>{{ $user->name }}</p>
+@endforeach
+
+@if ($total > 100)
+    <p>Pulsuz çatdırılma!</p>
+@endif
+```
+
+```go
+// Go template sintaksisi
+{{range .Users}}
+    <p>{{.Name}}</p>
+{{end}}
+
+{{if gt .Total 100.0}}
+    <p>Pulsuz çatdırılma!</p>
+{{end}}
+```
+
+**Fərq:** Blade/Twig daha zəngin logic dəstəyi verir (class method call, filter chain). Go template-i qəsdən məhdudlaşdırılıb — mürəkkəb logic template-dən Go koduna köçürülməlidir. `html/template`-in XSS auto-escape funksiyası Blade-dəki `{{ }}` vs `{!! !!}` fərqinə bənzəyir.
 
 ## Əlaqəli Mövzular
 

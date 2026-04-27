@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Go-da iki ardıcıl məlumat strukturu var: **array** (massiv) — sabit ölçülü; və **slice** — dinamik ölçülü, Go-da ən çox istifadə olunan struktur. PHP-dəki `$arr = [1, 2, 3]` Go-da `slice` ilə qarşılıqlıdır. Array nadiren birbaşa istifadə olunur; həmişə demək olar ki, slice istifadə olunur. Slice-ın daxilindəki `len` (mövcud element sayı) və `cap` (ayrılmış yaddaş) arasındakı fərqi anlamaq performance-ın açarıdır.
+Go-da iki ardıcıl məlumat strukturu var: **array** (massiv) — sabit ölçülü; və **slice** — dinamik ölçülü, Go-da ən çox istifadə olunan struktur. Array nadiren birbaşa istifadə olunur; həmişə demək olar ki, slice istifadə olunur. Slice-ın daxilindəki `len` (mövcud element sayı) və `cap` (ayrılmış yaddaş) arasındakı fərqi anlamaq performance-ın açarıdır.
 
 ## Niyə Vacibdir
 
@@ -19,7 +19,7 @@ Slice-lar Go backend kodunun əsasını təşkil edir: verilənlər bazasından 
 - **Slicing** — `s[1:4]` — index 1, 2, 3 elementləri; orijinal array-ı paylaşır (shallow!)
 - **Nil slice** — elan edilib, `nil`-dir; `var s []int` → `s == nil` true
 - **Boş slice** — `[]int{}` — mövcuddur, amma boş; `== nil` false-dur
-- **2D slice** — `[][]int` — matris üçün; PHP-dəki nested array kimi
+- **2D slice** — `[][]int` — matris üçün
 
 ## Praktik Baxış
 
@@ -28,13 +28,6 @@ Slice-lar Go backend kodunun əsasını təşkil edir: verilənlər bazasından 
 - Batch emal — böyük siyahını hissələrə bölmək üçün slicing
 - Filter — `for range` + `append` ilə şərtə uyğun elementlər
 - Stack implementasiyası — `append` ilə push, slicing ilə pop
-
-**PHP ilə fərqi:**
-- PHP `array` həm sıralanmış siyahı (slice), həm lüğət (map) rolunu oynayır; Go-da bunlar ayrıdır
-- PHP `array_push($arr, $val)` → Go `slice = append(slice, val)`
-- PHP `array_slice($arr, 1, 3)` → Go `slice[1:4]`
-- PHP `in_array($val, $arr)` → Go-da bu built-in yoxdur; `for range` ilə yoxlayın
-- Slice kopyalandığında eyni underlying array-ı paylaşır — PHP-dəki copy-on-write fərqlidir
 
 **Trade-off-lar:**
 - Slicing shallow-dır: `s2 := s1[1:3]` dəyişdirsəniz `s1`-ə də təsir edir; tam kopya üçün `copy` istifadə edin
@@ -190,6 +183,15 @@ func main() {
    $doubled = array_map(fn($n) => $n * 2, $numbers);
    $evens = array_filter($doubled, fn($n) => $n % 4 === 0);
    ```
+
+## PHP ilə Müqayisə
+
+- PHP `array` həm sıralanmış siyahı (slice), həm lüğət (map) rolunu oynayır; Go-da bunlar ayrıdır (`[]T` vs `map[K]V`)
+- PHP `array_push($arr, $val)` → Go `slice = append(slice, val)` (nəticəni saxlamaq məcburidir!)
+- PHP `array_slice($arr, 1, 3)` → Go `slice[1:4]`
+- PHP `in_array($val, $arr)` → Go-da bu built-in yoxdur; `for range` ilə yoxlayın
+- Slice kopyalandığında eyni underlying array-ı paylaşır — PHP-dəki copy-on-write fərqlidir
+- PHP-də `$arr[]= $val` → Go-da `slice = append(slice, val)`
 
 ## Əlaqəli Mövzular
 

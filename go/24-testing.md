@@ -6,7 +6,7 @@ Go-da test yazmaq üçün xarici framework lazım deyil — standart `testing` p
 
 ## Niyə Vacibdir
 
-PHP/Laravel-dəki `PHPUnit`-dən fərqli olaraq, Go-da test framework qurulumu sıfırdır — sadəcə `go test ./...` yetər. Table-driven testlər kodu daha az, əhatəni daha çox edir. CI/CD pipeline-da `go test -race` ilə race condition avtomatik tapılır. `go test -cover` ilə coverage görünür. Bu alətlər birlikdə məhsuldar test mühiti yaradır.
+Go-da test framework qurulumu sıfırdır — sadəcə `go test ./...` yetər. Table-driven testlər kodu daha az, əhatəni daha çox edir. CI/CD pipeline-da `go test -race` ilə race condition avtomatik tapılır. `go test -cover` ilə coverage görünür. Bu alətlər birlikdə məhsuldar test mühiti yaradır.
 
 ## Əsas Anlayışlar
 
@@ -43,18 +43,6 @@ PHP/Laravel-dəki `PHPUnit`-dən fərqli olaraq, Go-da test framework qurulumu s
 - Subtest-siz table-driven — `t.Run` olmadan ilk uğursuzluqdan sonra nə uğursuz olduğunu anlamaq çətindir
 - `t.Helper()` çağırmamaq — xəta köməkçi funksiyada deyil, test funksiyasında göstərilməlidir
 - Global state istifadəsi — paralel testlərdə race condition verir
-
-**PHP ilə fərqi:**
-
-| PHPUnit | Go testing |
-|---------|------------|
-| `class FooTest extends TestCase` | `func TestFoo(t *testing.T)` |
-| `$this->assertEquals($expected, $actual)` | `if got != want { t.Errorf(...) }` |
-| `@dataProvider` annotation | Table-driven: `[]struct{...}{}` + `t.Run` |
-| `setUp()` / `tearDown()` | `TestMain` / `t.Cleanup` |
-| `$this->getMockBuilder(...)` | Interface mock — manual və ya `testify/mock` |
-| `vendor/bin/phpunit` | `go test ./...` (built-in) |
-| PHPUnit-ü ayrıca install etmək lazımdır | Standart kitabxana |
 
 ## Nümunələr
 
@@ -135,7 +123,7 @@ func TestEmailYoxla(t *testing.T) {
         {
             ad:       "düzgün email",
             email:    "orkhan@mail.az",
-            gozlened: true,
+            gozlenen: true,
         },
         {
             ad:       "@ yoxdur",
@@ -166,7 +154,7 @@ func TestEmailYoxla(t *testing.T) {
             netice := EmailYoxla(tt.email)
             if netice != tt.gozlenen {
                 t.Errorf("EmailYoxla(%q) = %v; gözlənən %v",
-                    tt.email, netice, tt.gozlened)
+                    tt.email, netice, tt.gozlenen)
             }
         })
     }
@@ -429,6 +417,18 @@ go test -timeout 30s ./...
 4. **Benchmark müqayisəsi:** String concatenation üçün `+` operatoru, `fmt.Sprintf`, `strings.Builder`, `bytes.Buffer` metodlarını benchmark et. Ən sürətlisini müəyyənləşdir.
 
 5. **Integration test skippinq:** `TestMain`-də DB bağlantısı yoxdursa testləri `t.Skip("DB mövcud deyil")` ilə atla. `-short` flag ilə integration testlər atlanmalıdır.
+
+## PHP ilə Müqayisə
+
+| PHPUnit | Go testing |
+|---------|------------|
+| `class FooTest extends TestCase` | `func TestFoo(t *testing.T)` |
+| `$this->assertEquals($expected, $actual)` | `if got != want { t.Errorf(...) }` |
+| `@dataProvider` annotation | Table-driven: `[]struct{...}{}` + `t.Run` |
+| `setUp()` / `tearDown()` | `TestMain` / `t.Cleanup` |
+| `$this->getMockBuilder(...)` | Interface mock — manual və ya `testify/mock` |
+| `vendor/bin/phpunit` | `go test ./...` (built-in) |
+| PHPUnit-ü ayrıca install etmək lazımdır | Standart kitabxana |
 
 ## Əlaqəli Mövzular
 

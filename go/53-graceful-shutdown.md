@@ -11,7 +11,6 @@ Graceful shutdown — tətbiqin dayandırılma siqnalı aldıqda anında öldür
 - **systemd:** `systemctl stop` → SIGTERM (TimeoutStopSec) → SIGKILL
 - **Data integrity:** Yarımçıq DB transaction-lar
 - **User experience:** HTTP 502 əvəzinə sorğu tamamlanır
-- PHP-də FPM process manager bu işi görür, Go-da özün yazmaq lazımdır
 
 ## Əsas Anlayışlar
 
@@ -117,10 +116,6 @@ http.HandleFunc("/health/ready", func(w http.ResponseWriter, r *http.Request) {
 ```
 
 ## Praktik Baxış
-
-### PHP Laravel ilə Müqayisə
-
-PHP-FPM-də worker process-lər PHP Supervisor/Octane tərəfindən idarə olunur. Laravel Octane SIGTERM tutub mövcud request-i tamamlayır. Go-da bu logic özün yazılır — daha çox control, daha çox məsuliyyət.
 
 ### Layihə Strukturunda Yerləşdirmə
 
@@ -556,6 +551,17 @@ HTTP + gRPC server eyni tətbiqdə çalışır. Hər ikisini graceful shutdown e
 
 **Tapşırıq 4 — Test:**
 `httptest.NewServer` ilə graceful shutdown test edin. Shutdown zamanı aktiv sorğunun tamamlandığını yoxlayın.
+
+## PHP ilə Müqayisə
+
+PHP-FPM-də worker process-lər PHP-FPM / Supervisor / Octane tərəfindən idarə olunur. Laravel Octane SIGTERM tutub mövcud request-i tamamlayır. Go-da bu logic özün yazılır — daha çox control, daha çox məsuliyyət.
+
+| Aspekt | PHP (FPM/Octane) | Go |
+|--------|------------------|----|
+| Signal handling | FPM/Supervisor edir | Özün yazırsan |
+| Worker lifecycle | Process manager idarə edir | `sync.WaitGroup` ilə |
+| Graceful stop | Konfiqurasiya ilə | `server.Shutdown(ctx)` |
+| Timeout | `pm.process_idle_timeout` | `context.WithTimeout` |
 
 ## Əlaqəli Mövzular
 

@@ -2,7 +2,7 @@
 
 ## İcmal
 
-API versioning — breaking change-ləri köhnə clientlərə görünməz etmək strategiyasıdır. Go-nun standart `net/http` paketi versioning üçün bütün alətlərə malikdir. PHP/Laravel-in `/api/v1/...` route gruplarının Go ekvivalenti, amma daha çevik.
+API versioning — breaking change-ləri köhnə clientlərə görünməz etmək strategiyasıdır. Go-nun standart `net/http` paketi versioning üçün bütün alətlərə malikdir.
 
 ## Niyə Vacibdir
 
@@ -342,6 +342,32 @@ V1 `/api/v1/users` (name sahəsi) və V2 `/api/v2/users` (first_name + last_name
 
 **Tapşırıq 3:**
 Versiya log middleware yaz: hər köhnə versiya sorğusu log-a yazılsın (path, user-agent, timestamp). Bu məlumatla "kim hələ v1 istifadə edir" sualına cavab ver.
+
+## PHP ilə Müqayisə
+
+Laravel `/api/v1/...` route grupları ilə versioning ən çox istifadə olunan yanaşmadır. Go-da eyni konsept `http.ServeMux` ilə tətbiq olunur.
+
+```php
+// Laravel — route qrupları ilə versioning
+Route::prefix('v1')->group(function () {
+    Route::get('/users/{id}', [UserControllerV1::class, 'show']);
+});
+
+Route::prefix('v2')->group(function () {
+    Route::get('/users/{id}', [UserControllerV2::class, 'show']);
+});
+```
+
+```go
+// Go — ServeMux ilə
+mux.HandleFunc("GET /v1/users/{id}", getUserV1)
+mux.HandleFunc("GET /v2/users/{id}", getUserV2)
+```
+
+**Əsas fərqlər:**
+- Laravel: route groups, middleware, controller — strukturlaşdırılmış; Go: düz handler-lər
+- Shared business logic: hər ikisində service layer ilə — eyni yanaşma
+- Deprecation header-ları Go-da manual; Laravel-də middleware ilə əlavə etmək daha asan
 
 ## Əlaqəli Mövzular
 

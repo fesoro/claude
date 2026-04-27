@@ -2,11 +2,11 @@
 
 ## İcmal
 
-Go statik tipli dildir: hər dəyişkenin tipi compile-time-da məlumdur. Əsas tiplər: tam ədədlər (`int`, `int8`...`int64`, `uint`...), onluq ədədlər (`float32`, `float64`), mətn (`string`), məntiqi (`bool`), simvol tipləri (`byte`, `rune`). Go-da PHP-dən fərqli olaraq avtomatik tip çevrilməsi yoxdur — bütün çevrilmələr açıq şəkildə yazılmalıdır.
+Go statik tipli dildir: hər dəyişkenin tipi compile-time-da məlumdur. Əsas tiplər: tam ədədlər (`int`, `int8`...`int64`, `uint`...), onluq ədədlər (`float32`, `float64`), mətn (`string`), məntiqi (`bool`), simvol tipləri (`byte`, `rune`). Go-da avtomatik tip çevrilməsi yoxdur — bütün çevrilmələr açıq şəkildə yazılmalıdır.
 
 ## Niyə Vacibdir
 
-PHP-də tip sistemi çox elastikdir: `"42" + 8 = 50` işləyir. Bu rahatlıq bəzən gizli buqlara yol açır. Go-da `"42" + 8` compile error verir — xəta production-a çatmadan aşkarlanır. Backend developer üçün bu xüsusilə vacibdir: pul hesablamaları, ID-lər, API parametrləri — bunların hamısı düzgün tiplərlə modelləşdirilməlidir.
+Güclü tip sistemi backend developer üçün xüsusilə vacibdir: pul hesablamaları, ID-lər, API parametrləri — bunların hamısı düzgün tiplərlə modelləşdirilməlidir. Tip xətaları production-a çatmadan build zamanında aşkarlanır, bu da gizli buqların qarşısını alır.
 
 ## Əsas Anlayışlar
 
@@ -15,7 +15,7 @@ PHP-də tip sistemi çox elastikdir: `"42" + 8 = 50` işləyir. Bu rahatlıq bə
 - **`uint`** — yalnız müsbət tam ədəd; neqativ ola bilməyən dəyərlər üçün (yaş, say)
 - **`float64`** — default onluq tip; `float32`-dən 2 dəfə dəqiq
 - **`string`** — immutable (dəyişdirilməz) UTF-8 bayt ardıcıllığı; backtick `` ` `` ilə multiline
-- **`bool`** — yalnız `true` və ya `false`; PHP-dəki truthy/falsy yoxdur
+- **`bool`** — yalnız `true` və ya `false`; truthy/falsy konsepti yoxdur
 - **`byte`** — `uint8` ilə eynidi; ASCII simvolu saxlamaq üçün
 - **`rune`** — `int32` ilə eynidi; Unicode simvolu (tam hərfi) saxlamaq üçün
 - **`len(string)`** — bayt sayını qaytarır, simvol sayını yox! Azərbaycan hərfləri 2 bayt tutur
@@ -27,12 +27,6 @@ PHP-də tip sistemi çox elastikdir: `"42" + 8 = 50` işləyir. Bu rahatlıq bə
 - Pul məbləği üçün `int64` (qəpik kimi) — `float64` ilə pul hesablamayın!
 - API response field-ləri üçün `string`, `bool`, `int64`
 - Flag/permission bitləri üçün `uint8` və ya `uint32`
-
-**PHP ilə fərqi:**
-- PHP: `$a = "5"; $b = 3; echo $a + $b;` → `8` (işləyir)
-- Go: `a := "5"; b := 3; c := a + b` → compile error
-- PHP `strlen("Şəhər")` → bayt sayı qaytara bilər; Go `len("Şəhər")` → bayt sayı qaytarır
-- PHP-də `true == 1` → true; Go-da `bool` heç vaxt `int` ilə müqayisə edilə bilməz
 
 **Trade-off-lar:**
 - `float64` pul hesablamaları üçün uyğun deyil — tam saylarla (qəpik) işləyin
@@ -156,7 +150,16 @@ func main() {
 
 3. Pul hesablaması: `100.10` AZN ilə `0.10` AZN-i `float64` ilə topla — nəticəyə bax. Sonra hər ikisini `int64` (qəpikdə: `10010` + `10`) ilə topla — fərqi müzakirə et.
 
-4. `int8` overflow testı: `var x int8 = 127; x++` nə qaytarır? `-128`! Bunu PHP-dəki davranışla müqayisə et.
+4. `int8` overflow testı: `var x int8 = 127; x++` nə qaytarır? `-128`! Bunu Go-nun digər tam ədəd tipləri ilə müqayisə et.
+
+## PHP ilə Müqayisə
+
+- PHP: `$a = "5"; $b = 3; echo $a + $b;` → `8` (işləyir); Go: `a := "5"; b := 3; c := a + b` → compile error
+- PHP `strlen("Şəhər")` → bayt sayı qaytara bilər; Go `len("Şəhər")` → bayt sayı qaytarır (eyni)
+- PHP `mb_strlen("Şəhər")` → simvol sayı; Go `len([]rune("Şəhər"))` → simvol sayı
+- PHP-də `true == 1` → true; Go-da `bool` heç vaxt `int` ilə müqayisə edilə bilməz
+- PHP tip sistemi çox elastikdir: `"42" + 8 = 50` işləyir; Go-da `"42" + 8` compile error
+- PHP-də avtomatik tip çevrilməsi gizli buqlara yol aça bilər; Go-da bütün çevrilmələr açıq yazılır
 
 ## Əlaqəli Mövzular
 

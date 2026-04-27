@@ -4,8 +4,6 @@
 
 Go 1.22-dən standart `http.ServeMux` method filteri (`GET /users`) və path parametrləri (`/users/{id}`) dəstəkləyir. Middleware isə `func(http.Handler) http.Handler` imzasına sahib olan funksiyalardır — handler-ləri zərflərərək əvvəl/sonra logic icra edirlər. Chi router isə standart kitabxanadan daha zəngin middleware ekosistemi, route qrupları, named parametrlər və s. verir.
 
-PHP/Laravel-də middleware `app/Http/Middleware` sinfləri idi, route-lar `routes/web.php`-də qeydiyyatdan keçirdi. Go-da həmin anlayışlar eynidir — fərq yalnız sintaksisdədir.
-
 ## Niyə Vacibdir
 
 - Logging, auth, CORS, rate limiting, recovery — hər HTTP handler-ə ayrıca yazılsa kod duplicate olur, middleware isə bunu mərkəzləşdirir
@@ -411,6 +409,10 @@ POST   /posts/{id}/comments → şərh əlavə et (auth)
 - Hər sorğuya UUID request ID əlavə et (həm header-dən oxu, həm yenisini yarat)
 - Bütün log mesajlarında request ID göstər
 - Response header-ə `X-Request-ID` yaz
+
+## PHP ilə Müqayisə
+
+PHP/Laravel-də middleware `app/Http/Middleware` sinfləri idi, route-lar `routes/web.php`-də qeydiyyatdan keçirdi. Go-da həmin anlayışlar eynidir — fərq yalnız sintaksisdədir.
 
 ## Əlaqəli Mövzular
 

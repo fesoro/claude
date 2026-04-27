@@ -4,8 +4,6 @@
 
 Təhlükəsizlik sonradan əlavə edilə bilməz — arxitekturadan başlamalıdır. Bu mövzuda Go-da ən tez-tez rast gəlinən zəifliklər və onlardan qorunma üsulları: SQL injection, XSS, CSRF, bcrypt, rate limiting, input validation, TLS, `crypto/rand`, HMAC, AES-GCM əhatə olunur.
 
-PHP/Laravel-dən fərqli olaraq Go-nun standart kitabxanası çox güclüdür — `crypto/*` paketlər professional kriptoqrafiya üçün yetərlidir. `html/template` XSS-dən avtomatik qoruyur, amma yalnız o paket istifadə etdikdə.
-
 ## Niyə Vacibdir
 
 - OWASP Top 10-un 90%-i düzgün biliklə qarşısı alına bilər
@@ -633,6 +631,10 @@ Cost 10, 12, 14 üçün `bcrypt.GenerateFromPassword` benchmark yazın. Hər cos
 
 **Tapşırıq 5 — Constant-time comparison:**
 `strings.Compare`, `==`, `hmac.Equal` arasında timing fərqini `time.Now()` ilə ölçün. Niyə `hmac.Equal` vacibdir?
+
+## PHP ilə Müqayisə
+
+PHP/Laravel-dən fərqli olaraq Go-nun standart kitabxanası kriptoqrafiya üçün çox güclüdür — `crypto/*` paketlər professional kriptoqrafiya üçün yetərlidir, xarici kitabxana lazım deyil. `html/template` XSS-dən avtomatik qoruyur (Laravel Blade-in `{{ }}` sintaksisinin analoqu). CSRF üçün Laravel-dəki `VerifyCsrfToken` middleware özünüz yazılır — Go-da framework-dən gəlmir, bu daha çevik amma daha çox məsuliyyət tələb edir.
 
 ## Əlaqəli Mövzular
 

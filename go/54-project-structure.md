@@ -2,7 +2,7 @@
 
 ## İcmal
 
-Go layihə strukturu PHP/Laravel-dən əsaslı şəkildə fərqlənir. Laravel MVC pattern-i, `app/Http/Controllers`, `app/Models` kimi direktiv strukturu tətbiq edir. Go-da `cmd/`, `internal/`, `pkg/` — ən geniş yayılmış strukturdur, lakin layihənin ölçüsünə görə dəyişir. Yanlış struktur seçimi — böyük layihədə refactoring çətinliyi, kiçik layihədə artıq mürəkkəblik.
+Go layihə strukturu `cmd/`, `internal/`, `pkg/` — ən geniş yayılmış strukturdur, lakin layihənin ölçüsünə görə dəyişir. Yanlış struktur seçimi — böyük layihədə refactoring çətinliyi, kiçik layihədə artıq mürəkkəblik.
 
 ## Niyə Vacibdir
 
@@ -10,7 +10,6 @@ Go layihə strukturu PHP/Laravel-dən əsaslı şəkildə fərqlənir. Laravel M
 - **`cmd/`** — bir layihədə bir neçə binary (`api`, `worker`, `cli`) mümkündür
 - **Paket dizaynı** — import cycle, testability, reusability-ə birbaşa təsir edir
 - **Layered architecture** — handler → service → repository bölgüsü boilerplate azaldır
-- PHP-nin auto-discovery (Composer, Laravel service container)-dən fərqli olaraq Go-da hər şey açıq import edilir
 
 ## Əsas Anlayışlar
 
@@ -23,7 +22,7 @@ Go layihə strukturu PHP/Laravel-dən əsaslı şəkildə fərqlənir. Laravel M
 | `pkg/` | Reusable utility-lər | İstənilən paket |
 | `api/` | OpenAPI/proto sxemləri | Referans |
 | `migrations/` | SQL migration faylları | DB tool-ları |
-| `config/` | Konfigurasiya faylları | Deployment |
+| `config/` | Konfiqurasiya faylları | Deployment |
 
 ### `internal/` Paketi
 
@@ -106,27 +105,6 @@ func (r *userRepository) FindByID(ctx context.Context, id int) (*User, error) { 
 Bu Clean Architecture-ın əsas prinsipidir: domain heç bir xarici paketi import etmir.
 
 ## Praktik Baxış
-
-### PHP Laravel ilə Müqayisə
-
-```
-Laravel                          Go (orta layihə)
-─────────────────────────────    ──────────────────────────────
-app/Http/Controllers/           internal/handler/
-app/Models/                     internal/domain/ + internal/model/
-app/Services/                   internal/service/
-app/Repositories/               internal/repository/
-routes/api.php                  internal/handler/router.go
-config/                         config/ + internal/config/
-database/migrations/            migrations/
-composer.json                   go.mod
-app/Providers/                  cmd/api/main.go (composition root)
-```
-
-**Əsas fərqlər:**
-1. Go-da auto-discovery yoxdur — hər şey açıq import
-2. Laravel service container — Go-da manual DI
-3. Laravel convention → Go explicit architecture
 
 ### Ne vaxt hansı strukturu seçmək?
 
@@ -481,6 +459,28 @@ Flat struktur (`main.go` + `handler.go` + `storage.go`) olan layihəni `internal
 
 **Tapşırıq 4 — Package Analysis:**
 `go list ./...` ilə bütün paketləri siyahılayın. `go vet ./...` keçirin. `golangci-lint` quraşdırın.
+
+## PHP ilə Müqayisə
+
+```
+Laravel                          Go (orta layihə)
+─────────────────────────────    ──────────────────────────────
+app/Http/Controllers/           internal/handler/
+app/Models/                     internal/domain/ + internal/model/
+app/Services/                   internal/service/
+app/Repositories/               internal/repository/
+routes/api.php                  internal/handler/router.go
+config/                         config/ + internal/config/
+database/migrations/            migrations/
+composer.json                   go.mod
+app/Providers/                  cmd/api/main.go (composition root)
+```
+
+**Əsas fərqlər:**
+1. Go-da auto-discovery yoxdur — hər şey açıq import edilir
+2. Laravel service container — Go-da manual DI (composition root pattern)
+3. Laravel convention-based → Go explicit architecture
+4. Go-da `internal/` kompilyator tərəfindən enforce olunur — Laravel-də analog yoxdur
 
 ## Əlaqəli Mövzular
 

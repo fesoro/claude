@@ -6,7 +6,7 @@ Go-da dəyişkən elan etməyin bir neçə üsulu var: `var` açar sözü, qısa
 
 ## Niyə Vacibdir
 
-PHP-dən fərqli olaraq Go-da dəyişkən tipləri compile-time-da yoxlanılır. Bu o deməkdir ki, tip xətaları production-da deyil, build zamanında aşkar olunur. Bundan əlavə, Go-nun `zero value` konsepti — elan edilib dəyər verilməmiş dəyişkənlərin avtomatik başlanğıc dəyəri alması — `undefined` xətalarını aradan qaldırır.
+Go-da dəyişkən tipləri compile-time-da yoxlanılır. Bu o deməkdir ki, tip xətaları production-da deyil, build zamanında aşkar olunur. Bundan əlavə, Go-nun `zero value` konsepti — elan edilib dəyər verilməmiş dəyişkənlərin avtomatik başlanğıc dəyəri alması — `undefined` xətalarını aradan qaldırır.
 
 ## Əsas Anlayışlar
 
@@ -16,7 +16,7 @@ PHP-dən fərqli olaraq Go-da dəyişkən tipləri compile-time-da yoxlanılır.
 - **`iota`** — `const` blokunda avtomatik artan sayıcı; enum yaratmaq üçün istifadə olunur
 - **Zero values** — `int` → `0`, `float64` → `0.0`, `string` → `""`, `bool` → `false`, pointer/slice/map → `nil`
 - **Unused variable** — Go-da elan edilib istifadə edilməyən dəyişkən compile error verir
-- **`_` (blank identifier)** — dəyəri ignore etmək üçün; PHP-dəki `$_` kimi
+- **`_` (blank identifier)** — dəyəri ignore etmək üçün
 
 ## Praktik Baxış
 
@@ -24,12 +24,6 @@ PHP-dən fərqli olaraq Go-da dəyişkən tipləri compile-time-da yoxlanılır.
 - Konfiqurasiya dəyərləri üçün `const` — port nömrəsi, timeout, max retry sayı
 - HTTP handler-lərdə cavab almaq üçün `:=` — ən məşhur istifadə forması
 - Paket səviyyəsində `var` — global state (nadir, amma zəruri hallarda)
-
-**PHP ilə fərqi:**
-- PHP: `$ad = "Orkhan";` — tip yoxdur, istənilən zaman dəyişdirilə bilər
-- Go: `ad := "Orkhan"` — tipi string-dir, başqa tipə dəyişdirilə bilməz
-- PHP-də elan edilməmiş dəyişkən `null` qaytarır; Go-da compile error verir
-- PHP-də `define('MAX', 100)` → Go-da `const Max = 100`
 
 **Trade-off-lar:**
 - `var` — açıq, oxunaqlı, amma verbose
@@ -160,6 +154,15 @@ func main() {
    $isAdmin = true;
    echo "User: $name, age: $age, admin: " . ($isAdmin ? "yes" : "no");
    ```
+
+## PHP ilə Müqayisə
+
+- PHP: `$ad = "Orkhan";` — tip yoxdur, istənilən zaman dəyişdirilə bilər
+- Go: `ad := "Orkhan"` — tipi string-dir, başqa tipə dəyişdirilə bilməz
+- PHP-də elan edilməmiş dəyişkən `null` qaytarır; Go-da compile error verir
+- PHP-də `define('MAX', 100)` → Go-da `const Max = 100`
+- PHP-də `$_` — Go-da `_` (blank identifier) eyni məqsəd daşıyır
+- Go-da elan edilib istifadə edilməyən dəyişkən compile error verir; PHP-də mümkündür
 
 ## Əlaqəli Mövzular
 
