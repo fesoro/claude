@@ -176,10 +176,11 @@ Spring Boot, Core Container, MVC/REST, Data/JPA, Security, AOP, integration, Spr
 | [97](97-records-as-dtos.md) | Records DTO kimi, Jackson, MapStruct, compact constructor, generic records | Senior ⭐⭐⭐ |
 | [98](98-sealed-classes-domain.md) | Sealed classes, pattern matching switch, Result pattern, domain modeling | Senior ⭐⭐⭐ |
 | [99](99-observability-architecture.md) | Structured logging, MDC, Micrometer metrics, OpenTelemetry, production stack | Lead ⭐⭐⭐⭐ |
+| [100](100-graceful-shutdown.md) | server.shutdown=graceful, SmartLifecycle, Kubernetes preStop/readiness | Senior ⭐⭐⭐ |
 
 ---
 
-**← Əvvəlki:** [core/](../core/) — Java dili əsasları (97 mövzu)
-**Sonrakı →** [advanced/](../advanced/) — Cloud, architecture, deployment (24 mövzu)
+**← Əvvəlki:** [core/](../core/) — Java dili əsasları (99 mövzu)
+**Sonrakı →** [advanced/](../advanced/) — Cloud, architecture, deployment (26 mövzu)
 
-*99 fayl | Son yenilənmə: 2026-04-26*
+*100 fayl | Son yenilənmə: 2026-04-27*

@@ -1,0 +1,38 @@
+server:
+  port: 8081
+  shutdown: graceful
+
+spring:
+  application:
+    name: order-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/orders_db
+    username: orders_user
+    password: orders_pass
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all              # Bütün replica-lar təsdiq etsin
+      retries: 3
+      properties:
+        enable.idempotence: true   # Duplicate göndərmə önlə
+
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+
+kafka:
+  topics:
+    order-created: order.created
+
+logging:
+  level:
+    com.example.order: DEBUG

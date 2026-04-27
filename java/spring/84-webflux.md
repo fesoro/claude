@@ -313,6 +313,184 @@ public class UserService {
 
 ---
 
+## Schedulers: publishOn vs subscribeOn
+
+```java
+// subscribeOn — subscription tərəfini dəyişir (mənbənin işlədiyi thread)
+// publishOn  — downstream operator-ların işlədiyi thread-i dəyişir
+
+Mono<String> pipeline = Mono.fromCallable(() -> {
+    System.out.println("Source: " + Thread.currentThread().getName());
+    return readFromFile(); // Blocking I/O
+})
+.subscribeOn(Schedulers.boundedElastic()) // ← mənbəni bu scheduler-da çalışdır
+.map(content -> {
+    System.out.println("Map 1: " + Thread.currentThread().getName()); // boundedElastic
+    return content.toUpperCase();
+})
+.publishOn(Schedulers.parallel()) // ← buradan sonra parallel scheduler
+.map(content -> {
+    System.out.println("Map 2: " + Thread.currentThread().getName()); // parallel
+    return content.trim();
+});
+
+// Schedulers növləri:
+// Schedulers.immediate()        — cari thread
+// Schedulers.single()           — tək thread (sıralı əməliyyatlar)
+// Schedulers.parallel()         — CPU core sayı qədər thread (CPU-bound)
+// Schedulers.boundedElastic()   — thread pool (blocking I/O üçün)
+// Schedulers.fromExecutor(exec) — custom executor
+```
+
+```java
+// Məcburi blocking kod-u WebFlux-da istifadə etmək
+@Service
+public class LegacyIntegrationService {
+
+    // ❌ Yanlış: event loop thread-ini blokla
+    public Mono<Data> getDataWrong() {
+        return Mono.just(legacyJdbcCall()); // JDBC blocking!
+    }
+
+    // ✅ Doğru: boundedElastic scheduler-da icdla et
+    public Mono<Data> getDataCorrect() {
+        return Mono.fromCallable(() -> legacyJdbcCall())
+                   .subscribeOn(Schedulers.boundedElastic());
+    }
+}
+```
+
+---
+
+## Error Handling
+
+```java
+// onErrorResume — alternativ Mono/Flux qaytarır
+Mono<User> userMono = userRepository.findById(id)
+    .onErrorResume(UserNotFoundException.class,
+        e -> Mono.just(User.anonymous()))                     // Default user
+    .onErrorResume(DatabaseException.class,
+        e -> cacheService.getCachedUser(id));                 // Cache-ə keç
+
+// onErrorReturn — statik dəyər qaytarır
+Mono<Integer> countMono = orderRepository.countByUser(id)
+    .onErrorReturn(0);                                        // Xəta → 0
+
+// onErrorMap — xəta tipini dəyişdir
+Mono<Order> orderMono = orderRepository.save(order)
+    .onErrorMap(DataIntegrityViolationException.class,
+        e -> new DuplicateOrderException("Sifariş artıq mövcuddur"));
+
+// doOnError — xətanı log et amma dəyişdirmə
+Mono<User> withLogging = userMono
+    .doOnError(e -> log.error("User yüklənərkən xəta: {}", e.getMessage()))
+    .onErrorResume(e -> Mono.just(User.anonymous()));
+
+// retry
+Mono<String> withRetry = externalApiClient.getData()
+    .retryWhen(Retry.backoff(3, Duration.ofMillis(500))
+        .filter(e -> e instanceof TransientException)        // Yalnız bu xəta üçün
+        .onRetryExhaustedThrow((spec, signal) ->
+            new ServiceUnavailableException("3 cəhd uğursuz")));
+
+// timeout
+Mono<Product> withTimeout = productService.findById(id)
+    .timeout(Duration.ofSeconds(3))
+    .onErrorMap(TimeoutException.class,
+        e -> new ServiceUnavailableException("Servis cavab vermir"));
+```
+
+---
+
+## Testing: StepVerifier
+
+```java
+@ExtendWith(SpringExtension.class)
+class UserServiceTest {
+
+    @Test
+    void findById_userExists_returnsMono() {
+        Mono<User> result = userService.findById(1L);
+
+        StepVerifier.create(result)
+            .expectNextMatches(user -> user.getId() == 1L
+                                    && "Ali".equals(user.getName()))
+            .verifyComplete();   // Mono tamamlandı, başqa element yoxdur
+    }
+
+    @Test
+    void findById_userNotFound_returnsEmpty() {
+        Mono<User> result = userService.findById(999L);
+
+        StepVerifier.create(result)
+            .verifyComplete();   // Boş Mono — heç bir element
+    }
+
+    @Test
+    void findById_dbError_propagatesError() {
+        when(userRepository.findById(anyLong()))
+            .thenReturn(Mono.error(new DatabaseException("DB xətası")));
+
+        StepVerifier.create(userService.findById(1L))
+            .expectError(DatabaseException.class)
+            .verify();
+    }
+
+    @Test
+    void findActiveUsers_returnsFlux() {
+        Flux<User> result = userService.findActiveUsers();
+
+        StepVerifier.create(result)
+            .expectNext(user1)
+            .expectNext(user2)
+            .expectNextCount(3)         // Növbəti 3 elementi say
+            .verifyComplete();
+    }
+
+    @Test
+    void expensiveStream_withVirtualTime() {
+        // 1 saatlıq delay-i test etmək üçün virtual time
+        StepVerifier.withVirtualTime(() ->
+            Flux.interval(Duration.ofHours(1)).take(3))
+            .expectSubscription()
+            .thenAwait(Duration.ofHours(1))
+            .expectNext(0L)
+            .thenAwait(Duration.ofHours(1))
+            .expectNext(1L)
+            .thenAwait(Duration.ofHours(1))
+            .expectNext(2L)
+            .verifyComplete();
+    }
+}
+```
+
+---
+
+## Backpressure
+
+```java
+// Flux publisher subscriber-dan sürətli işləyirsə → backpressure
+Flux<Integer> fast = Flux.range(1, 1_000_000);
+
+// onBackpressureBuffer — buffer-də saxla
+fast.onBackpressureBuffer(1000)  // 1000 element buffer
+    .subscribe(item -> slowProcess(item));
+
+// onBackpressureDrop — yeni elementləri at
+fast.onBackpressureDrop(item -> log.warn("Atıldı: {}", item))
+    .subscribe(item -> slowProcess(item));
+
+// onBackpressureLatest — yalnız sonuncunu saxla
+fast.onBackpressureLatest()
+    .subscribe(item -> slowProcess(item));
+
+// limitRate — subscription request-ini bölmə
+fast.limitRate(100)  // Subscriber 100-100 element tələb edir
+    .subscribe(item -> slowProcess(item));
+```
+
+---
+
 ## İntervyu Sualları
 
 ### 1. WebFlux vs Spring MVC nə zaman seçmək?

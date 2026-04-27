@@ -1,4 +1,4 @@
-# Advanced — Cloud, Architecture, Deployment — 24 Mövzu (01-24)
+# Advanced — Cloud, Architecture, Deployment — 26 Mövzu (01-26)
 
 Mikroservis dünyası: Spring Cloud, distributed arxitektura pattern-ləri, production deployment. Advanced ⭐⭐⭐ → Expert ⭐⭐⭐⭐ səviyyə.
 
@@ -12,9 +12,10 @@ Mikroservis dünyası: Spring Cloud, distributed arxitektura pattern-ləri, prod
 
 | # | Faza | Aralıq | Səviyyə | Qısa Mövzu |
 |---|------|--------|---------|------------|
-| 1 | Spring Cloud | 01-08 | Expert ⭐⭐⭐⭐ | Gateway, Eureka, Config, OpenFeign, Resilience4j, Sleuth, Prometheus |
+| 1 | Spring Cloud | 01-08 | Expert ⭐⭐⭐⭐ | Gateway, Eureka, Config, OpenFeign, Resilience4j, Tracing, Prometheus |
 | 2 | Architecture Patterns | 09-20 | Advanced ⭐⭐⭐ → Expert ⭐⭐⭐⭐ | SOLID, Clean, Hexagonal, DDD, CQRS, ES, Saga, Outbox, gRPC |
 | 3 | Deployment | 21-24 | Advanced ⭐⭐⭐ → Expert ⭐⭐⭐⭐ | Docker, Kubernetes, GitHub Actions CI/CD, GraalVM native |
+| 4 | Production Engineering | 25-26 | Lead ⭐⭐⭐⭐ | Multi-tenancy patterns, production profiling workflow |
 
 ---
 
@@ -39,7 +40,7 @@ Mikroservis ekosistemi: service discovery, centralized config, API gateway, resi
 | [04](04-cloud-config.md) | config server, git backend, @RefreshScope | Expert ⭐⭐⭐⭐ |
 | [05](05-cloud-openfeign.md) | declarative HTTP client, fallback, timeout | Expert ⭐⭐⭐⭐ |
 | [06](06-cloud-resilience4j.md) | CircuitBreaker, Retry, Bulkhead, RateLimiter | Expert ⭐⭐⭐⭐ |
-| [07](07-cloud-sleuth-zipkin.md) | distributed tracing, trace/span, Zipkin | Expert ⭐⭐⭐⭐ |
+| [07](07-cloud-sleuth-zipkin.md) | Micrometer Tracing, OTEL Collector, head/tail-based sampling | Expert ⭐⭐⭐⭐ |
 | [08](08-actuator-prometheus.md) | metrics export, Micrometer, Prometheus/Grafana | Expert ⭐⭐⭐⭐ |
 
 ## Phase 2: Architecture Patterns (09-20)
@@ -72,8 +73,17 @@ Spring Boot tətbiqinin production-a çatdırılması.
 | [23](23-github-actions-cicd.md) | Maven/Gradle build, test, container push pipeline | Advanced ⭐⭐⭐ |
 | [24](24-graalvm-native.md) | AOT compilation, Spring Boot 3 native, reflection config | Expert ⭐⭐⭐⭐ |
 
+## Phase 4: Production Engineering (25-26)
+
+Production sistemlərinin idarəsi: multi-tenant arxitektura, profiling metodologiyası.
+
+| # | Mövzu | Səv. |
+|---|-------|------|
+| [25](25-multi-tenancy-patterns.md) | Row-level, Schema-per-tenant, DB-per-tenant; TenantContext, AbstractRoutingDataSource | Lead ⭐⭐⭐⭐ |
+| [26](26-production-profiling-workflow.md) | Simptom → diaqnoz: CPU/latency/memory/deadlock playbook, JFR continuous | Lead ⭐⭐⭐⭐ |
+
 ---
 
-**← Əvvəlki:** [spring/](../spring/) — Spring Framework & Boot (89 mövzu)
+**← Əvvəlki:** [spring/](../spring/) — Spring Framework & Boot (100 mövzu)
 
-*24 fayl | Son yenilənmə: 2026-04-24*
+*26 fayl | Son yenilənmə: 2026-04-27*

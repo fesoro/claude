@@ -6,13 +6,14 @@ Bu folder Java dili, Spring Framework və distributed sistemlər üçün lazım 
 
 ```
 java/
-├── core/        — Java dili, JVM, Collections, Concurrency (97 fayl)
-├── spring/      — Spring Boot, MVC, Data/JPA, Security, Modern Java (99 fayl)
-├── advanced/    — Spring Cloud, Architecture, Deployment (24 fayl)
-└── comparison/  — Java/Spring vs PHP/Laravel müqayisəsi (139 fayl)
+├── core/        — Java dili, JVM, Collections, Concurrency (99 fayl)
+├── spring/      — Spring Boot, MVC, Data/JPA, Security, Modern Java (100 fayl)
+├── advanced/    — Spring Cloud, Architecture, Production Engineering (26 fayl)
+├── comparison/  — Java/Spring vs PHP/Laravel müqayisəsi (139 fayl)
+└── examples/    — 9 işlək mini layihə: Hello Spring → Microservices Demo
 ```
 
-**Cəmi: 359 fayl** — sıfırdan expert səviyyəyə qədər.
+**Cəmi: 364 fayl + 9 kod nümunəsi** — sıfırdan expert səviyyəyə qədər.
 
 ---
 
@@ -25,6 +26,24 @@ java/
 | **Java bilirəm, Spring yenisiyəm** | [spring/](spring/) 01-20 | spring/ davam → advanced/ |
 | **Spring bilirəm, mikroservisə keçirəm** | [advanced/](advanced/) | — |
 | **Senior interview-a hazırlaşıram** | hər üçünün Advanced/Expert bölmələri | — |
+
+---
+
+## [examples/](examples/) — İşlək Mini Layihələr (9 layihə)
+
+Nəzəriyyəni real kodda görmək üçün. 01-08 H2 ilə birbaşa çalışır; 09 Docker tələb edir.
+
+| # | Layihə | Səviyyə | Əsas Konseptlər |
+|---|--------|---------|-----------------|
+| 01 | [Hello Spring](examples/01-hello-spring/) | ⭐ Junior | `@RestController`, DTO, `ResponseEntity` |
+| 02 | [Todo API](examples/02-todo-api/) | ⭐⭐ Middle | JPA, H2, Validation, Exception handling |
+| 03 | [Book Store](examples/03-book-store/) | ⭐⭐ Middle | `@OneToMany`, Pagination, Flyway |
+| 04 | [JWT Auth](examples/04-jwt-auth/) | ⭐⭐⭐ Senior | Spring Security, JWT, BCrypt |
+| 05 | [Blog API](examples/05-blog-api/) | ⭐⭐⭐ Senior | Security + JPA + Cache + Pagination |
+| 06 | [Order Events](examples/06-order-events/) | ⭐⭐⭐ Senior | Spring Events, `@Async`, state machine |
+| 07 | [Task Scheduler](examples/07-task-scheduler/) | ⭐⭐⭐⭐ Lead | `@Scheduled`, job tracking, metrics |
+| 08 | [E-Commerce DDD](examples/08-ecommerce-ddd/) | ⭐⭐⭐⭐ Lead | DDD layers, Aggregates, Value Objects |
+| 09 | [Microservices Demo](examples/09-microservices-demo/) | ⭐⭐⭐⭐ Lead | 2 servis, REST + Kafka, Docker Compose |
 
 ---
 
@@ -41,7 +60,7 @@ Bütün alt qovluqlarda mövzular sadədən mürəkkəbə sıralanıb. Hər fayl
 
 ---
 
-## [core/](core/) — Java Dili və JVM (95 fayl)
+## [core/](core/) — Java Dili və JVM (99 fayl)
 
 Java syntax, OOP, Collections, Streams, Generics, Concurrency, JVM, Design Patterns, Testing əsasları.
 
@@ -59,12 +78,14 @@ Java syntax, OOP, Collections, Streams, Generics, Concurrency, JVM, Design Patte
 10. Advanced Features (80-87) — reflection, sealed, pattern matching, JPMS
 11. Design Patterns (88-90) — GoF
 12. Testing Basics (91-95) — JUnit5, AssertJ, Mockito
+13. Practical Java (96-97) — resource management, Maven multi-module
+14. Modern Concurrency & Perf (98-99) — Structured Concurrency, JMH
 
 Detallı cədvəl: [core/README.md](core/README.md)
 
 ---
 
-## [spring/](spring/) — Spring Boot & Framework (89 fayl)
+## [spring/](spring/) — Spring Boot & Framework (100 fayl)
 
 Spring Boot onboarding, IoC container, MVC/REST, Spring Data JPA, Security, AOP, messaging, Spring Testing.
 
@@ -85,15 +106,16 @@ Detallı cədvəl: [spring/README.md](spring/README.md)
 
 ---
 
-## [advanced/](advanced/) — Cloud, Architecture, Deployment (24 fayl)
+## [advanced/](advanced/) — Cloud, Architecture, Production Engineering (26 fayl)
 
 Mikroservis ekosistemi, distributed architecture pattern-ləri, production deployment. Advanced ⭐⭐⭐ → Expert ⭐⭐⭐⭐ səviyyə.
 
 **Faza xülasəsi:**
 
-1. Spring Cloud (01-08) — Gateway, Eureka, Config, OpenFeign, Resilience4j, Sleuth, Prometheus
+1. Spring Cloud (01-08) — Gateway, Eureka, Config, OpenFeign, Resilience4j, Micrometer Tracing, Prometheus
 2. Architecture Patterns (09-20) — SOLID, Clean, Hexagonal, DDD, CQRS, ES, Saga, Outbox, gRPC
 3. Deployment (21-24) — Docker, Kubernetes, GitHub Actions, GraalVM native
+4. Production Engineering (25-26) — Multi-tenancy, Production Profiling Workflow
 
 **Şərt:** [spring/](spring/) tam, xüsusən Security, Data, Messaging.
 

@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:schedulerdb
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+
+# Dev üçün daha tez-tez işlər — real cron-lar JobScheduler.java-dadır
+app:
+  scheduler:
+    report-cron: "0/30 * * * * *"   # hər 30 saniyə (dev)
+    cleanup-cron: "0/45 * * * * *"  # hər 45 saniyə (dev)

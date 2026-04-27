@@ -1,8 +1,8 @@
-# Core Java — 97 Mövzu (01-97)
+# Core Java — 99 Mövzu (01-99)
 
 Java dili, JVM, core API-lər, tooling, design patterns, testing əsasları, resource management və Maven multi-module. Sıfırdan başlayıb Senior ⭐⭐⭐ səviyyəyə qədər.
 
-**Öyrənmə yolu:** 01 → 97 sıra ilə. Hər fayl müstəqil də oxuna bilər.
+**Öyrənmə yolu:** 01 → 99 sıra ilə. Hər fayl müstəqil də oxuna bilər.
 
 ---
 
@@ -23,6 +23,7 @@ Java dili, JVM, core API-lər, tooling, design patterns, testing əsasları, res
 | 11 | Design Patterns | 88-90 | Senior ⭐⭐⭐ | GoF patterns |
 | 12 | Testing Basics | 91-95 | Middle ⭐⭐ → Senior ⭐⭐⭐ | JUnit5, AssertJ, Mockito |
 | 13 | Practical Java | 96-97 | Middle ⭐⭐ → Senior ⭐⭐⭐ | Resource management, Maven multi-module |
+| 14 | Modern Concurrency & Perf | 98-99 | Lead ⭐⭐⭐⭐ | Structured Concurrency, Scoped Values, JMH |
 
 ---
 
@@ -168,7 +169,6 @@ Java dili, JVM, core API-lər, tooling, design patterns, testing əsasları, res
 | [82](82-sealed-classes.md) | Java 17 sealed classes, permits, exhaustive patterns | Senior ⭐⭐⭐ |
 | [83](83-pattern-matching.md) | pattern matching for switch/instanceof, record patterns | Senior ⭐⭐⭐ |
 | [84](84-sequenced-collections.md) | Java 21 SequencedCollection, first/last, reversed | Senior ⭐⭐⭐ |
-| [85](85-string-templates.md) | JEP: Template strings (preview) | Senior ⭐⭐⭐ |
 | [86](86-foreign-memory-api.md) | Java 22 FFM API, native memory access | Lead ⭐⭐⭐⭐ |
 | [87](87-modules-jpms.md) | Java 9+ modules, module-info.java, requires/exports | Senior ⭐⭐⭐ |
 
@@ -197,8 +197,15 @@ Java dili, JVM, core API-lər, tooling, design patterns, testing əsasları, res
 | [96](96-resource-management.md) | try-with-resources, AutoCloseable, suppressed exceptions, custom resource | Middle ⭐⭐ |
 | [97](97-maven-multi-module.md) | Maven multi-module, parent POM, dependencyManagement, module dependency | Senior ⭐⭐⭐ |
 
+## Phase 14: Modern Concurrency & Performance (98-99)
+
+| # | Mövzu | Səv. |
+|---|-------|------|
+| [98](98-structured-concurrency-scoped-values.md) | Java 21 StructuredTaskScope, ShutdownOnFailure/Success, ScopedValue vs ThreadLocal | Lead ⭐⭐⭐⭐ |
+| [99](99-jmh-benchmarking.md) | JMH setup, @Benchmark, @State, Blackhole, dead code elimination, flamegraph | Lead ⭐⭐⭐⭐ |
+
 ---
 
-**Sonrakı qovluq →** [spring/](../spring/) — Spring Framework, Boot, Data, Security (99 mövzu)
+**Sonrakı qovluq →** [spring/](../spring/) — Spring Framework, Boot, Data, Security (100 mövzu)
 
-*97 fayl | Son yenilənmə: 2026-04-26*
+*99 fayl | Son yenilənmə: 2026-04-27*

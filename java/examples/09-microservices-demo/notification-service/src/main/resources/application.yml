@@ -1,0 +1,28 @@
+server:
+  port: 8082
+  shutdown: graceful
+
+spring:
+  application:
+    name: notification-service
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: notification-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.example.order.event,com.example.notification"
+        spring.json.value.default.type: com.example.notification.event.OrderCreatedEvent
+    listener:
+      ack-mode: manual          # Manuel ack — işlədikdən sonra commit et
+
+kafka:
+  topics:
+    order-created: order.created
+
+logging:
+  level:
+    com.example.notification: DEBUG

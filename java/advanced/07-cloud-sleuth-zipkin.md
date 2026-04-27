@@ -1,6 +1,8 @@
-# 07 — Spring Cloud Sleuth/Zipkin (Distributed Tracing) — Geniş İzah
+# 07 — Distributed Tracing: Micrometer Tracing + OpenTelemetry — Geniş İzah
 
 > **Seviyye:** Expert ⭐⭐⭐⭐
+
+> **Qeyd:** Spring Cloud Sleuth Spring Boot 3.x-də deprecated edilib. Yerinə Micrometer Tracing (Brave backend) yaxud OpenTelemetry SDK istifadə olunur.
 
 
 ## Mündəricat
@@ -235,6 +237,112 @@ management:
   tracing:
     sampling:
       probability: 0.1  # Production-da 10%
+```
+
+---
+
+## OpenTelemetry (OTEL) Backend
+
+Micrometer Tracing — vendor-neutral façade. Brave (Zipkin) əvəzinə OTEL SDK backend-ini seçmək mümkündür:
+
+```xml
+<!-- Brave əvəzinə OTEL SDK -->
+<dependency>
+    <groupId>io.micrometer</groupId>
+    <artifactId>micrometer-tracing-bridge-otel</artifactId>
+</dependency>
+<dependency>
+    <groupId>io.opentelemetry</groupId>
+    <artifactId>opentelemetry-exporter-otlp</artifactId>
+</dependency>
+```
+
+```yaml
+# application.yml — OTEL Collector-a göndər
+management:
+  tracing:
+    sampling:
+      probability: 0.1    # Production-da 10%
+  otlp:
+    tracing:
+      endpoint: http://otel-collector:4318/v1/traces
+```
+
+```
+OTEL Architecture:
+  Spring Boot → OTEL SDK → OTEL Collector → Jaeger / Grafana Tempo
+                                          ↘ Datadog / Dynatrace
+                                          ↘ AWS X-Ray
+
+Üstünlükləri:
+  → Vendor-neutral: collector config dəyişib, app code dəyişmir
+  → Metrics + Traces + Logs eyni pipeline-da
+  → Sampling OTEL Collector səviyyəsində konfiqurasiya olur
+```
+
+### OTEL Collector konfiqurasiyası
+
+```yaml
+# otel-collector.yaml
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+      grpc:
+        endpoint: 0.0.0.0:4317
+
+processors:
+  batch:
+    timeout: 1s
+    send_batch_size: 1024
+
+  # Tail-based sampling — xətalı trace-ləri tam saxla
+  tail_sampling:
+    decision_wait: 10s
+    policies:
+      - name: errors-policy
+        type: status_code
+        status_code: {status_codes: [ERROR]}
+      - name: slow-policy
+        type: latency
+        latency: {threshold_ms: 1000}       # 1s-dən uzun
+      - name: probabilistic-policy
+        type: probabilistic
+        probabilistic: {sampling_percentage: 5}  # Qalanın 5%-i
+
+exporters:
+  jaeger:
+    endpoint: jaeger:14250
+  otlp/tempo:
+    endpoint: tempo:4317
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch, tail_sampling]
+      exporters: [jaeger, otlp/tempo]
+```
+
+### Head-based vs Tail-based Sampling
+
+```
+Head-based sampling (Brave default):
+  → Request başlayanda qərar verilir (random %)
+  → Sadə, aşağı overhead
+  → Problem: xətalı trace-lər şansa görə atıla bilər
+
+Tail-based sampling (OTEL Collector):
+  → Bütün trace tamamlandıqdan sonra qərar verilir
+  → Xətalı / yavaş trace-lər həmişə saxlanır
+  → Normal trace-lərin yalnız X%-i saxlanır
+  → Overhead yüksəkdir (collector-da buffer lazımdır)
+
+Tövsiyə:
+  Development: 100% sampling
+  Staging: 10-20% head-based
+  Production: tail-based (xəta + yavaş: 100%, normal: 1-5%)
 ```
 
 ---

@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:bookstoredb
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: validate        # Flyway schema-nı idarə edir
+    show-sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
