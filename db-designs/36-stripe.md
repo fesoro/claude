@@ -305,6 +305,203 @@ CREATE TABLE subscription_items (
 
 ---
 
+## Invoice Schema
+
+```sql
+-- ==================== INVOICES ====================
+-- Subscription billing: hər period-un hesab-fakturası
+CREATE TABLE invoices (
+    id              VARCHAR(255) PRIMARY KEY,   -- 'in_abc123'
+    customer_id     VARCHAR(255) REFERENCES customers(id),
+    subscription_id VARCHAR(255) REFERENCES subscriptions(id),
+
+    -- Status
+    status          VARCHAR(20) DEFAULT 'draft',
+    -- draft, open, paid, void, uncollectible
+
+    -- Amounts (cents)
+    subtotal        INTEGER NOT NULL DEFAULT 0,
+    tax             INTEGER NOT NULL DEFAULT 0,
+    total           INTEGER NOT NULL DEFAULT 0,
+    amount_due      INTEGER NOT NULL DEFAULT 0,
+    amount_paid     INTEGER NOT NULL DEFAULT 0,
+    amount_remaining INTEGER NOT NULL DEFAULT 0,
+
+    currency        CHAR(3) NOT NULL,
+
+    -- Billing period
+    period_start    TIMESTAMPTZ,
+    period_end      TIMESTAMPTZ,
+
+    -- Due date
+    due_date        TIMESTAMPTZ,
+
+    -- Payment
+    payment_intent_id VARCHAR(255),
+    charge_id       VARCHAR(255) REFERENCES charges(id),
+
+    -- Invoice number (human-readable)
+    number          VARCHAR(50) UNIQUE,         -- 'INV-2026-0001'
+
+    -- PDF
+    invoice_pdf     TEXT,                       -- S3 URL
+
+    -- Automatic payment
+    auto_advance    BOOLEAN DEFAULT TRUE,       -- otomatik charge etsin?
+    attempted       BOOLEAN DEFAULT FALSE,
+
+    -- Metadata
+    description     VARCHAR(500),
+    footer          TEXT,
+    metadata        JSONB DEFAULT '{}',
+
+    livemode        BOOLEAN DEFAULT FALSE,
+    created_at      TIMESTAMPTZ DEFAULT NOW(),
+    paid_at         TIMESTAMPTZ,
+    voided_at       TIMESTAMPTZ
+);
+
+CREATE INDEX idx_invoices_customer    ON invoices(customer_id, created_at DESC);
+CREATE INDEX idx_invoices_status      ON invoices(status, due_date);
+CREATE INDEX idx_invoices_subscription ON invoices(subscription_id, created_at DESC);
+
+-- Invoice line items
+CREATE TABLE invoice_items (
+    id              VARCHAR(255) PRIMARY KEY,
+    invoice_id      VARCHAR(255) REFERENCES invoices(id),
+
+    description     VARCHAR(500) NOT NULL,
+    amount          INTEGER NOT NULL,           -- cents
+    currency        CHAR(3) NOT NULL,
+    quantity        INTEGER DEFAULT 1,
+
+    -- Period
+    period_start    TIMESTAMPTZ,
+    period_end      TIMESTAMPTZ,
+
+    -- Link to price/product
+    price_id        VARCHAR(255) REFERENCES prices(id),
+
+    -- Tax
+    tax_rates       JSONB DEFAULT '[]',
+
+    created_at      TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ==================== BALANCE TRANSACTIONS (Ledger) ====================
+-- Stripe-ın internal ledger-i: hər para hərəkəti burda iz buraxır
+CREATE TABLE balance_transactions (
+    id              VARCHAR(255) PRIMARY KEY,   -- 'txn_abc123'
+
+    -- Amount (positive = credit, negative = debit)
+    amount          INTEGER NOT NULL,           -- cents
+    currency        CHAR(3) NOT NULL,
+
+    -- Net (amount - fee)
+    fee             INTEGER NOT NULL DEFAULT 0,
+    net             INTEGER NOT NULL,           -- amount - fee
+
+    -- What caused this transaction
+    type            VARCHAR(50) NOT NULL,
+    -- charge, refund, payout, adjustment, stripe_fee, dispute
+
+    -- Source object
+    source_id       VARCHAR(255),              -- charge_id, refund_id, ...
+    source_type     VARCHAR(50),               -- 'charge', 'refund', 'payout'
+
+    -- Payout timing
+    available_on    TIMESTAMPTZ,               -- nə vaxt çıxarıla bilər
+
+    -- Description
+    description     VARCHAR(500),
+
+    status          VARCHAR(20) DEFAULT 'available',
+    -- pending, available
+
+    created_at      TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_btxn_source ON balance_transactions(source_id);
+CREATE INDEX idx_btxn_type   ON balance_transactions(type, created_at DESC);
+```
+
+---
+
+## Disputes / Chargebacks
+
+```
+Dispute: müştəri bankına "bu charge-ı tanımıram" deyir
+Bank → Stripe-a chargeback → Stripe sizi xəbərdar edir
+
+Status flow:
+  charge.disputed
+  → warning_needs_response (müştəri məlumat verməlidir)
+  → needs_response         (cavab deadline)
+  → under_review           (bank araşdırır)
+  → won / lost / charge_refunded
+
+Stripe Radar evidence submission:
+  - Customer email / IP / billing address proof
+  - Shipping tracking number
+  - Receipt / invoice
+  - Communication history (emails)
+  
+Deadline: 7-21 gün (karta görə dəyişir)
+Chargeback fee: $15 (Stripe tərəfindən)
+```
+
+```sql
+CREATE TABLE disputes (
+    id              VARCHAR(255) PRIMARY KEY,   -- 'dp_abc123'
+    charge_id       VARCHAR(255) NOT NULL REFERENCES charges(id),
+
+    amount          INTEGER NOT NULL,           -- disputed amount (cents)
+    currency        CHAR(3) NOT NULL,
+
+    status          VARCHAR(30) DEFAULT 'warning_needs_response',
+    -- warning_needs_response, needs_response, under_review,
+    -- won, lost, charge_refunded, warning_closed
+
+    reason          VARCHAR(50) NOT NULL,
+    -- fraudulent, duplicate, product_not_received,
+    -- product_unacceptable, subscription_canceled, unrecognized
+
+    -- Evidence submitted
+    evidence        JSONB DEFAULT '{}',
+    -- {customer_email_address, shipping_tracking_number, receipt, ...}
+
+    evidence_due_by TIMESTAMPTZ,               -- submission deadline
+    evidence_details JSONB DEFAULT '{}',       -- submission timestamp, has_evidence
+
+    -- Financial impact
+    is_charge_refundable BOOLEAN DEFAULT TRUE,
+    balance_transaction_id VARCHAR(255),       -- chargeback debit
+
+    livemode        BOOLEAN DEFAULT FALSE,
+    created_at      TIMESTAMPTZ DEFAULT NOW(),
+    updated_at      TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_disputes_charge ON disputes(charge_id);
+CREATE INDEX idx_disputes_status ON disputes(status, evidence_due_by);
+
+-- Dispute evidence submission tracking
+CREATE TABLE dispute_evidence (
+    id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    dispute_id      VARCHAR(255) NOT NULL REFERENCES disputes(id),
+
+    evidence_type   VARCHAR(50) NOT NULL,
+    -- 'customer_email', 'shipping_documentation', 'receipt', 'service_documentation'
+
+    content         TEXT,                      -- text evidence
+    file_url        TEXT,                      -- document/image URL
+
+    submitted_at    TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+---
+
 ## Webhook Delivery System
 
 ```
