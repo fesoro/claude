@@ -451,3 +451,480 @@ Metrics (Grafana):
 ❌ Adversarial attack — fraud-er ML feature-larını öyrənir
    ✓ Hidden features, threshold randomization
 ```
+
+---
+
+## Problem niyə yaranır?
+
+Ödəniş sistemi qurarkən ən sadə yanaşma "kart məlumatlarını al, bank-a göndər, nəticəni qaytar" kimi görünür. Bu yanaşma texniki baxımdan işləyir, lakin fraud-a qarşı heç bir müqavimət göstərmir. Fraud yalnız ödəniş tamamlandıqdan sonra aşkar olunarsa — chargeback gəlir, bank pulu geri alır, merchant komissiya itirir. Problem burada deyil. Problem ondadır ki, çoğunlukla ödəniş uğurla keçdikdən sonra real malı artıq göndərmisən, xidməti aktivləşdirmisən, ya da mükafat balansını artırmısan. Pulu geri almaq üçün 30-60 gün gözləyirsən, bu müddətdə iş proseslərin pozulur.
+
+10,000 payment/saat dedikdə bu saniyədə təxminən 2.8 request deməkdir, lakin peak saatlar (axşam 19-23, kampaniya anları) bu rəqəm 10-20x arta bilər. Bu yükdə hər yoxlama üçün əlavə 200ms sərfiyyat demək olar ki, checkout abandon rate-ni artırır — tədqiqatlar göstərir ki, 1 saniyəlik əlavə gecikmə e-commerce-də 7% konversiya düşkünlüyünə səbəb olur. Buna görə fraud qərarı asynchronous edə bilməzsən: ödəniş başlamazdan əvvəl qərar verilməli, bu qərar isə < 200ms daxilində hazır olmalıdır. Gecikmiş yoxlama ya checkout-u blok edir, ya da ödəniş artıq keçdikdən sonra gəlir — bu da post-payment reversalı deməkdir ki, praktiki olaraq daha bahalıdır.
+
+Yalnız rule-based sistem (velocity check, blacklist, country mismatch) 2019-cu illərdə yetərli idi. Müasir fraud-çılar bu qaydaları öyrənirlər: əgər 1 dəqiqədə 5+ ödəniş blok edirsə, 4 ödəniş edir, 2 dəqiqə gözləyib 4 daha edir. Stolen card-lardan kiçik məbləğ "test charge" edirlər (məs: $1.00) — keçirsə böyük məbləğ cəhdi edirlər. VPN-dən istifadə edir, Tor exit node-larından keçirlər, geoblock-u keçirlər. Bu adaptasiya qabiliyyəti rule-only sistemi çox tez devalvasiya edir. ML modeli isə bu pattern-ları statistik olaraq öyrənir — fraud-çı davranışı yeniləndikcə, model yeni training data ilə yenilənir. Rule-ların əvvəlcədən yazılması lazımdır; ML model isə "görünməmiş" kombinasiyaları da risk kimi qiymətləndirə bilir.
+
+---
+
+## Kompensasiya və Manual Review Flow (PHP)
+
+Avtomatik qərar sistemi hər zaman 100% dəqiq deyil. Yüksək risk score-lu, lakin legitimik ola bilən əməliyyatlar üçün insan qərarı tələb olunur. Bu flow fraud case-in yaradılmasından reviewer-in qərarına qədər tam lifecycle-ı əhatə edir.
+
+### Migration: fraud_cases cədvəli
+
+```php
+// database/migrations/2024_xx_xx_create_fraud_cases_table.php
+Schema::create('fraud_cases', function (Blueprint $table) {
+    $table->id();
+    $table->ulid('case_ref')->unique();           // HR-2024-00123 kimi external ref
+    $table->foreignId('payment_attempt_id')->constrained()->cascadeOnDelete();
+    $table->foreignId('user_id')->constrained();
+    $table->foreignId('reviewer_id')->nullable()->constrained('users');
+    $table->float('risk_score');                   // 0-100
+    $table->string('reason');                      // VELOCITY_USER_1MIN, HIGH_RISK, ...
+    $table->string('status')->default('pending_review');
+    // pending_review | under_review | approved | rejected | escalated | appealed
+    $table->string('priority')->default('normal'); // normal | high | critical
+    $table->text('reviewer_note')->nullable();
+    $table->text('appeal_reason')->nullable();
+    $table->timestamp('assigned_at')->nullable();
+    $table->timestamp('resolved_at')->nullable();
+    $table->timestamp('sla_deadline')->nullable();  // high priority: 1h, normal: 24h
+    $table->json('evidence')->nullable();           // screenshot, device info, ...
+    $table->timestamps();
+
+    $table->index(['status', 'priority', 'created_at']); // review queue sorğusu
+    $table->index(['user_id', 'status']);
+});
+```
+
+### FraudCaseStatus Enum
+
+```php
+// app/Enums/FraudCaseStatus.php
+enum FraudCaseStatus: string
+{
+    case PENDING_REVIEW  = 'pending_review';
+    case UNDER_REVIEW    = 'under_review';
+    case APPROVED        = 'approved';    // legitimate — ödənişi davam et
+    case REJECTED        = 'rejected';   // fraud — blokla
+    case ESCALATED       = 'escalated';  // senior reviewer-ə göndər
+    case APPEALED        = 'appealed';   // user etiraz etdi
+
+    public function isTerminal(): bool
+    {
+        return in_array($this, [self::APPROVED, self::REJECTED]);
+    }
+
+    public function allowedTransitions(): array
+    {
+        return match ($this) {
+            self::PENDING_REVIEW => [self::UNDER_REVIEW],
+            self::UNDER_REVIEW   => [self::APPROVED, self::REJECTED, self::ESCALATED],
+            self::ESCALATED      => [self::APPROVED, self::REJECTED],
+            self::REJECTED       => [self::APPEALED],
+            self::APPEALED       => [self::APPROVED, self::REJECTED],
+            self::APPROVED       => [],
+        };
+    }
+}
+```
+
+### FraudCaseService
+
+```php
+// app/Services/FraudCaseService.php
+class FraudCaseService
+{
+    public function __construct(
+        private FraudTrainingDataRepository $trainingRepo,
+        private NotificationService $notifications,
+    ) {}
+
+    /**
+     * Yüksək risk score-lu payment attempt-i manual review queue-ya göndər.
+     */
+    public function queueForReview(
+        PaymentAttempt $attempt,
+        string $reason,
+        float $riskScore
+    ): FraudCase {
+        $priority   = $riskScore > 80 ? 'high' : 'normal';
+        $slaDeadline = $priority === 'high'
+            ? now()->addHour()
+            : now()->addHours(24);
+
+        $case = FraudCase::create([
+            'case_ref'           => (string) Str::ulid(),
+            'payment_attempt_id' => $attempt->id,
+            'user_id'            => $attempt->user_id,
+            'risk_score'         => $riskScore,
+            'reason'             => $reason,
+            'status'             => FraudCaseStatus::PENDING_REVIEW,
+            'priority'           => $priority,
+            'sla_deadline'       => $slaDeadline,
+            'evidence'           => $this->collectEvidence($attempt),
+        ]);
+
+        // Reviewer-lərə bildiriş — yüksək prioritet anlıq xəbərdar edilir
+        if ($priority === 'high') {
+            $this->notifications->notifyFraudTeam($case, urgent: true);
+        }
+
+        // Avtomatik assign — ən az iş yükü olan reviewer-ə
+        $this->autoAssign($case);
+
+        return $case;
+    }
+
+    /**
+     * Reviewer case-i öz üzərinə götürür (claim).
+     */
+    public function claimCase(FraudCase $case, User $reviewer): FraudCase
+    {
+        $this->assertTransition($case, FraudCaseStatus::UNDER_REVIEW);
+
+        $case->update([
+            'status'      => FraudCaseStatus::UNDER_REVIEW,
+            'reviewer_id' => $reviewer->id,
+            'assigned_at' => now(),
+        ]);
+
+        return $case->fresh();
+    }
+
+    /**
+     * Reviewer ödənişi legitimate olaraq təsdiqləyir.
+     * Ödəniş davam edir, training data-ya "legitimate" kimi əlavə olunur.
+     */
+    public function approve(FraudCase $case, User $reviewer, string $note): FraudCase
+    {
+        $this->assertTransition($case, FraudCaseStatus::APPROVED);
+        $this->assertReviewer($case, $reviewer);
+
+        DB::transaction(function () use ($case, $reviewer, $note) {
+            $case->update([
+                'status'        => FraudCaseStatus::APPROVED,
+                'reviewer_id'   => $reviewer->id,
+                'reviewer_note' => $note,
+                'resolved_at'   => now(),
+            ]);
+
+            // Ödənişi davam etdir
+            ProcessApprovedPaymentJob::dispatch($case->paymentAttempt);
+
+            // ML feedback — false positive olaraq işarələ
+            $this->trainingRepo->addLabel(
+                attempt: $case->paymentAttempt,
+                label: 'legitimate',
+                source: 'manual_review',
+            );
+
+            // User-a bildiriş — uzun gözlədilmişsə üzr bildir
+            if ($case->created_at->diffInHours(now()) > 2) {
+                $this->notifications->notifyUserPaymentApproved($case->user, $case);
+            }
+        });
+
+        return $case->fresh();
+    }
+
+    /**
+     * Reviewer fraud kimi rədd edir.
+     * Ödəniş bloklanır, kart/IP/email blacklist-ə düşür (severity-ə görə).
+     */
+    public function reject(FraudCase $case, User $reviewer, string $note, bool $blacklist = false): FraudCase
+    {
+        $this->assertTransition($case, FraudCaseStatus::REJECTED);
+        $this->assertReviewer($case, $reviewer);
+
+        DB::transaction(function () use ($case, $reviewer, $note, $blacklist) {
+            $case->update([
+                'status'        => FraudCaseStatus::REJECTED,
+                'reviewer_id'   => $reviewer->id,
+                'reviewer_note' => $note,
+                'resolved_at'   => now(),
+            ]);
+
+            // ML feedback — true positive
+            $this->trainingRepo->addLabel(
+                attempt: $case->paymentAttempt,
+                label: 'fraud',
+                source: 'manual_review',
+            );
+
+            if ($blacklist) {
+                $this->blacklistEntities($case->paymentAttempt);
+            }
+
+            // User-a bildiriş — fraud şübhəsi olduğunu açıqlamadan rədd
+            $this->notifications->notifyUserPaymentRejected($case->user, $case);
+        });
+
+        return $case->fresh();
+    }
+
+    /**
+     * Senior reviewer-ə eskalasiya (şübhəli, lakin qərar vermək çətin olduqda).
+     */
+    public function escalate(FraudCase $case, User $reviewer, string $reason): FraudCase
+    {
+        $this->assertTransition($case, FraudCaseStatus::ESCALATED);
+
+        $case->update([
+            'status'        => FraudCaseStatus::ESCALATED,
+            'reviewer_note' => $reason,
+            'sla_deadline'  => now()->addHours(4),  // Eskalasiyada SLA sıxılır
+        ]);
+
+        $this->notifications->notifyFraudTeamLead($case, urgent: true);
+
+        return $case->fresh();
+    }
+
+    /**
+     * User rədd qərarına etiraz edir (appeal).
+     * Otomatik olaraq yenidən review queue-ya düşür.
+     */
+    public function appeal(FraudCase $case, string $userReason): FraudCase
+    {
+        $this->assertTransition($case, FraudCaseStatus::APPEALED);
+
+        $case->update([
+            'status'        => FraudCaseStatus::APPEALED,
+            'appeal_reason' => $userReason,
+            'reviewer_id'   => null,        // Öncəki reviewer-i sıfırla
+            'sla_deadline'  => now()->addHours(48),
+        ]);
+
+        // Fərqli reviewer-ə assign et (bias önləmək üçün)
+        $this->autoAssign($case, excludeReviewer: $case->reviewer_id);
+
+        $this->notifications->notifyFraudTeam($case, urgent: false);
+
+        return $case->fresh();
+    }
+
+    // ─── Private helpers ──────────────────────────────────────
+
+    private function collectEvidence(PaymentAttempt $attempt): array
+    {
+        return [
+            'ip'              => $attempt->ip,
+            'device_id'       => $attempt->device_id,
+            'user_agent'      => $attempt->user_agent,
+            'card_bin'        => $attempt->card_bin,
+            'card_last4'      => $attempt->card_last4,
+            'billing_country' => $attempt->billing_country,
+            'ip_country'      => $attempt->ip_country,
+            'account_age_days'=> $attempt->user->created_at->diffInDays(now()),
+            'past_fraud_count'=> FraudCase::where('user_id', $attempt->user_id)
+                                    ->where('status', FraudCaseStatus::REJECTED)
+                                    ->count(),
+        ];
+    }
+
+    private function autoAssign(FraudCase $case, ?int $excludeReviewer = null): void
+    {
+        // Fraud team role-una sahib, ən az açıq case-i olan user
+        $reviewer = User::role('fraud_reviewer')
+            ->when($excludeReviewer, fn($q) => $q->where('id', '!=', $excludeReviewer))
+            ->withCount(['fraudCases' => fn($q) => $q->whereIn('status', [
+                FraudCaseStatus::PENDING_REVIEW,
+                FraudCaseStatus::UNDER_REVIEW,
+            ])])
+            ->orderBy('fraud_cases_count')
+            ->first();
+
+        if ($reviewer) {
+            $case->update([
+                'reviewer_id' => $reviewer->id,
+                'assigned_at' => now(),
+            ]);
+        }
+    }
+
+    private function assertTransition(FraudCase $case, FraudCaseStatus $target): void
+    {
+        if (!in_array($target, $case->status->allowedTransitions())) {
+            throw new InvalidStateTransitionException(
+                "Keçid mümkün deyil: {$case->status->value} → {$target->value}"
+            );
+        }
+    }
+
+    private function assertReviewer(FraudCase $case, User $reviewer): void
+    {
+        if ($case->reviewer_id && $case->reviewer_id !== $reviewer->id) {
+            throw new UnauthorizedReviewerException(
+                "Bu case başqa reviewer-ə assign edilib."
+            );
+        }
+    }
+
+    private function blacklistEntities(PaymentAttempt $attempt): void
+    {
+        $entries = [
+            ['type' => 'card',   'value' => hash('sha256', $attempt->card_number)],
+            ['type' => 'email',  'value' => $attempt->user->email],
+            ['type' => 'device', 'value' => $attempt->device_id],
+        ];
+
+        foreach ($entries as $entry) {
+            Blacklist::firstOrCreate(
+                ['type' => $entry['type'], 'value' => $entry['value']],
+                ['reason' => "Manual review rejection: {$attempt->id}", 'expires_at' => now()->addYears(2)]
+            );
+        }
+    }
+}
+```
+
+### Manual Review Admin Panel Route-ları
+
+```php
+// routes/web.php — fraud review dashboard
+Route::middleware(['auth', 'role:fraud_reviewer'])->prefix('admin/fraud')->group(function () {
+
+    // Queue — pending və under review case-lər
+    Route::get('/queue', function () {
+        $cases = FraudCase::with(['user', 'paymentAttempt', 'reviewer'])
+            ->whereNotIn('status', [FraudCaseStatus::APPROVED, FraudCaseStatus::REJECTED])
+            ->orderByRaw("FIELD(priority, 'critical', 'high', 'normal')")
+            ->orderBy('sla_deadline')
+            ->paginate(20);
+
+        return view('admin.fraud.queue', compact('cases'));
+    })->name('fraud.queue');
+
+    // Case detail
+    Route::get('/{case}', [FraudReviewController::class, 'show'])->name('fraud.show');
+
+    // Actions
+    Route::post('/{case}/claim',    [FraudReviewController::class, 'claim'])->name('fraud.claim');
+    Route::post('/{case}/approve',  [FraudReviewController::class, 'approve'])->name('fraud.approve');
+    Route::post('/{case}/reject',   [FraudReviewController::class, 'reject'])->name('fraud.reject');
+    Route::post('/{case}/escalate', [FraudReviewController::class, 'escalate'])->name('fraud.escalate');
+});
+
+// User appeal — autentifikasiya olunmuş user öz rədd edilmiş ödənişinə etiraz edə bilər
+Route::middleware('auth')->post('/payments/{case}/appeal', [PaymentAppealController::class, 'store'])
+    ->name('payment.appeal');
+```
+
+### SLA Monitoring Job
+
+```php
+// app/Jobs/FraudCaseSlaMonitorJob.php — hər 15 dəqiqədən bir işlər
+class FraudCaseSlaMonitorJob implements ShouldQueue
+{
+    public function handle(NotificationService $notifications): void
+    {
+        // SLA-sı keçmiş, hələ həll olunmamış case-lər
+        $overdueCases = FraudCase::whereNotIn('status', [
+                FraudCaseStatus::APPROVED,
+                FraudCaseStatus::REJECTED,
+            ])
+            ->where('sla_deadline', '<', now())
+            ->get();
+
+        foreach ($overdueCases as $case) {
+            Log::warning("Fraud case SLA breached", [
+                'case_ref'    => $case->case_ref,
+                'priority'    => $case->priority,
+                'overdue_min' => $case->sla_deadline->diffInMinutes(now()),
+            ]);
+
+            $notifications->notifyFraudTeamLead($case, urgent: true);
+
+            // Eskalasiya etməmişsə, avtomatik eskalasiya
+            if ($case->status !== FraudCaseStatus::ESCALATED) {
+                $case->update(['status' => FraudCaseStatus::ESCALATED]);
+            }
+        }
+    }
+}
+```
+
+---
+
+## Trade-offs
+
+### False Positive vs False Negative
+
+| Yanaşma | Üstünlük | Risk | Nə zaman |
+|---------|----------|------|-----------|
+| **Threshold aşağı (risk < 40 → allow)** | False positive az, user experience yaxşı | False negative çox — fraud keçir, chargeback artır | Yeni bazara girişdə, brand reputasiyası ön plandadırsa |
+| **Threshold yüksək (risk > 60 → block)** | False negative az — fraud çox tutulur | False positive artır — legitimate user-lər blok edilir, revenue itirilir | High-value digital goods, irreversible əməliyyatlar |
+| **Manual review zone geniş (40-80)** | Balans — qeyri-müəyyən case-lər insana gedir | Ops xərci artır, SLA-ya uyğunluq çətin olur | Regulated sektorlar (banking, crypto) |
+| **Challenge (3DS) istifadəsi** | False positive əvəzinə friction əlavə edir — fraud blok, real user keçir | Conversion rate düşür (~5-15% abandon) | E-commerce-də orta risk zone üçün ideal |
+
+### Threshold Tənzimlənməsi
+
+Threshold çox aşağı təyin edilərsə (məs: risk > 30 → block): legitimate user-lərin 15-20%-i bloklanır, müştəri şikayəti artır, manual review queue daşır, fraud team yanır. Threshold çox yüksək təyin edilərsə (məs: risk > 90 → block): yalnız ən kobud fraud tutulur, sophisticated fraud keçir, chargeback rate artır, bank penalty gəlir.
+
+Optimal threshold müəyyən etmək üçün A/B test tətbiq edilir: trafiki split et, fərqli threshold-lar ilə test et, 2-4 həftə sonra chargeback rate + false positive rate-i müqayisə et. Tipik hədəf: **chargeback rate < 0.5%, false positive rate < 1-2%**.
+
+### Speed vs Accuracy
+
+| Yanaşma | Üstünlük | Risk | Nə zaman |
+|---------|----------|------|-----------|
+| **Yalnız hard rules (< 10ms)** | Ən sürətli, deterministik | Adaptiv fraud keçir | Layer 1 olaraq mütləq lazımdır |
+| **Rule + risk score (< 60ms)** | Balanslaşdırılmış | ML olmadan edge case-ləri çatır | Çox ödəniş olmayan sistem |
+| **Rule + score + ML (< 200ms)** | Ən dəqiq | Latency yüksək, ML service dependency | Yüksək həcmli production sistem |
+| **Async ML (post-payment check)** | Sıfır latency əlavəsi | Real-time blok etmək mümkün deyil, yalnız refund | Düşük risk kategoriyalar (subscription renewal) |
+
+### Rules vs ML
+
+| Yanaşma | Üstünlük | Risk | Nə zaman |
+|---------|----------|------|-----------|
+| **Yalnız rules** | Şəffaf, debug asan, GDPR-compliant | Adaptasiya yavaş, edge case-ləri tutmur | Startup mərhələsi, az data |
+| **Yalnız ML** | Pattern recognition güclü | Black box, drift, training data lazım | Milyonlarla transaction olan sistem |
+| **Hibrid (rule + ML)** | Hər ikisinin üstünlüyü | Mürəkkəblik artır, iki sistemi maintain etmək lazım | Production fraud sistemi üçün standart |
+
+---
+
+## Anti-patternlər
+
+**1. Yalnız rule-based sistem**
+Hard-coded qaydalar (velocity, blacklist, geo) başlanğıc üçün faydalıdır, lakin sophisticated fraud-çılar bu qaydaları öyrənib uyğunlaşırlar. Velocity 5/dəq-dirsə, 4 ödəniş edib gözləyirlər. Blacklist varsa, yeni kart/IP istifadə edirlər. Rule-lar statik qalarkən fraud dinamik inkişaf edir. **Həll:** Multi-layer yanaşma — rule-ların üstünə ML əlavə et, hər ikisi biri-birini tamamlasın.
+
+**2. ML modelini feedback loop olmadan saxlamaq**
+Model bir dəfə train edilib production-a deploy edilir, lakin artıq yenilənmir. Fraud pattern-lar zamanla dəyişir (yeni attack vector-lar, yeni cihaz tipləri, yeni geo), model isə köhnə data ilə işləyir — accuracy tədricən aşağı düşür (model drift). **Həll:** Chargeback-ları, manual review nəticələrini training data-ya əlavə et; həftəlik/aylıq model retraining pipeline qur; accuracy metric-lərini Grafana-da izlə.
+
+**3. False positive-ləri tracking etməmək**
+Sistem neçə legitimate user-i bloklandığını bilmirsən. Manual review-dan "approved" olaraq qayıdan case-lər xüsusi qeyd edilmir, training data-ya əlavə olunmur. Nəticə: threshold tənzimləmək üçün data yoxdur, model eyni false positive pattern-larını təkrar edir. **Həll:** Hər approved case-i "legitimate" label-ı ilə training repo-ya yaz, aylıq false positive rate hesabla, threshold review-u calendar-a əlavə et.
+
+**4. Bütün yüksək risk əməliyyatları birbaşa block etmək**
+Risk score 70+ olan hər ödənişi block etmək sadədir, lakin bu score-ların 40-60%-i legitimate user-lərə aid ola bilər (yeni cihaz, VPN, gecə vaxtı). Legitimate user-in ödənişi uğursuz olduqda şirkəti tərk edir, rəqibə keçir. **Həll:** Block əvəzinə challenge (3DS) + manual review zone tətbiq et; yalnız çox yüksək score-larda (85+) avtomatik block et.
+
+**5. Audit trail olmadan qərar qəbul etmək**
+Fraud qərarları — xüsusilə block — log edilmir, ya da yalnız minimal məlumatla (sadəcə "BLOCKED") saxlanılır. PCI DSS compliance, bank audit, user dispute zamanı "nə əsasla bloklandı?" sualına cavab vermək mümkün olmur. **Həll:** Hər qərarla birlikdə risk score, hansi qaydanın işlədiyini, feature dəyərlərini, reviewer qeydlərini audit log-a yaz; bu log-lar silkinə bilməz (append-only).
+
+**6. Fraud detection-ı synchronous kritik path-a daxil etmək**
+ML service down olduqda (deploy, OOM kill, network partition) bütün ödənişlər fail olur. 100ms timeout ML inference üçün kifayət etmir, ödəniş service-i timeout alır, transaction rollback olur. **Həll:** Circuit breaker tətbiq et; ML service down olduqda rule + score əsaslı fallback qərarı ver (neutral 0.5 return); latency budget-i hər layer üçün ayrıca təyin et.
+
+**7. Yalnız real-time signal-lara etibar etmək**
+Hazırkı ödəniş üçün yalnız anlıq məlumatlar (bu IP, bu kart, bu məbləğ) yoxlanılır. Lakin fraud pattern-lar tez-tez historical context tələb edir: bu user son 30 gündə neçə fərqli kart istifadə etdi? Bu device əvvəllər başqa hesablarla əlaqəli olubmu? Bu email bir neçə hesabda istifadə edilibmi? **Həll:** Feature engineering-ə 7, 30, 90 günlük aggregation-ları daxil et; Redis-də precomputed rolling counters saxla (hər ödənişdə DB-dən yenidən saymaq əvəzinə).
+
+---
+
+## Interview Sualları və Cavablar
+
+**S: False positive vs false negative trade-off-u necə balanslaşdırırsınız?**
+
+False positive — legitimate user-i fraud kimi işarələmək — birbaşa revenue itkisi, user churn, müştəri şikayəti deməkdir. False negative — real fraud-u buraxmaq — chargeback, bank penalty, brand zərəri deməkdir. İkisi arasında optimal nöqtəni tapmaq üçün threshold A/B test-i aparıram: eyni anda fərqli segment-lərə fərqli threshold tətbiq edib 2-4 həftəlik chargeback rate + manual review rate-i müqayisə edirəm. Hər biznesin risk iştahası fərqlidir — digital goods üçün false negative daha bahalıdır (irreversible), fiziki mal üçün false positive daha bahalı ola bilər (return cost çoxdur). Mən əlavə olaraq challenge zone (3DS) istifadə edirəm ki, block əvəzinə legitimate user keçə bilsin.
+
+**S: Fraud detection sisteminizi necə test edərdiniz?**
+
+Üç səviyyədə test strategiyam var. Unit test: hər layer ayrıca test edilir — HardRuleEngine için müxtəlif velocity scenario-ları, RiskScoreEngine üçün kombinasiya test-ləri, qərar matriksinin bütün branch-ları. Integration test: test environment-də bütün layer-ların birgə işini test edirəm, ML service mock-lanır. End-to-end: production-a shadow mode deploy — real traffic üçün qərar qəbul edirik amma tətbiq etmirik, nəticəni post-hoc əsl fraud/legitimate label-larla müqayisə edib accuracy ölçürük. Bundan əlavə, replay test qururam: keçmiş chargeback case-lərini sisteme yenidən veririk — əgər sistemi düzgün işləsəydi bu fraud-ları tutmalı idi? Tutubmu?
+
+**S: Real-time ML model inference necə işləyir?**
+
+Fraud detection üçün iki seçim var: gRPC/HTTP üzərindən ayrıca ML microservice-ə sorğu (TensorFlow Serving, Triton) və ya ONNX model-i PHP process-inin özündə (FFI vasitəsilə). Production-da xarici ML service daha çox görünür — model-i ayrıca deploy etmək, versioning, rollback daha asandır. Latency budget-i 100ms təyin edirəm: bu aşıldıqda circuit breaker açılır, fallback olaraq yalnız rule + score qərarı verilir. Feature engineering PHP tərəfindən edilir, normalization/scaling ML service-də baş verir. Feature drift-i monitor etmək vacibdir: training zamanla feature dəyərlərinin distribution-u production-dakından fərqlənərsə model accuracy düşür.
+
+**S: Fraud pattern-ları zamanla dəyişir — model-i necə yeniləyərsiniz?**
+
+Feedback loop qururam: chargeback gəldikdə həmin ödənişin feature-ları "fraud" label-ı ilə training data-ya əlavə olunur. Manual review nəticələri — approve (legitimate) və reject (fraud) — da training data-ya yazılır. Bu data ilə həftəlik model retraining pipeline işlədirəm (Airflow cron job): yeni data + köhnə data → feature engineering → train → evaluate → if accuracy > threshold → deploy. Champion/challenger strategiyasını tətbiq edirəm: yeni model 10% traffic-ə shadow mode-da deploy edilir, performans müqayisəsi müsbətdirsə traffic 100%-ə çatdırılır. Model performance metric-ləri (precision, recall, AUC) Grafana-da izlənilir; threshold aşıldıqda alert gəlir.
+
+**S: Velocity check nədir, necə implement edilir?**
+
+Velocity check — qısa müddət ərzindən gələn request sayını limitləmək. Fraud pattern-ların çoxu tez ardıcıl cəhdlərə əsaslanır: stolen card ilə 1 dəqiqədə onlarla test charge, hesab ele keçirildikdən sonra dərhal çoxlu ödəniş. Redis Sorted Set istifadə edirəm — score olaraq Unix timestamp, member olaraq unikal event ID saxlayıram. Yoxlama zamanı `ZRANGEBYSCORE` ilə son N saniyənin event-lərini sayıram, limit aşıldıqda block edirəm, sonra `ZADD` ilə yeni event-i əlavə edib `ZREMRANGEBYSCORE` ilə köhnə event-ləri təmizləyirəm. Bu sliding window approach-dur — fixed window-dan fərqli olaraq window keçidlərindəki burst-ları da tutur. Velocity check-i user ID, card hash, IP, device ID üzrə müstəqil olaraq tətbiq edirəm — biri keçsə digərləri tuta bilər.

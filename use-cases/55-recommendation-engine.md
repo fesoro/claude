@@ -413,3 +413,260 @@ Daily compute (offline):
   10M order × similarity = ~30 min on Spark cluster
   PHP single-node: 4-8 saat (small dataset üçün OK)
 ```
+
+---
+
+## Problem niyə yaranır?
+
+"Ən populyar məhsulları göstər" yanaşması ilk baxışda sadə görünür, amma real mühitdə işləmir. Birinci problem odur ki, bütün istifadəçilərə eyni siyahı göstərilir — aktiv alıcıya da, yeni qeydiyyatdan keçmiş ziyarətçiyə də. Bu məhsullar ümumi populyarlığa əsaslanır, istifadəçinin real maraqlarını əks etdirmir. Nəticədə click-through rate (CTR) aşağı düşür, conversion rate isə əhəmiyyətli dərəcədə azalır. Amazon-un tədqiqatlarına görə, personalized recommendation-lar ümumi populyarlıq siyahısına nisbətən 20-35% daha yüksək konversiya göstərir.
+
+**Cold start problemi** texniki baxımdan belə özünü göstərir: yeni istifadəçinin heç bir purchase history-si, browse history-si, ya da rating-i yoxdur. Collaborative filtering tamamilə bu data üzərində işləyir — "bu məhsulu alan digər istifadəçilər X məhsulunu da aldı" prinsipi ilə. Yeni istifadəçi üçün isə bu "digər istifadəçilər" kimi müəyyən etmək mümkün deyil, çünki user hələ heç bir əməliyyat etməyib. Content-based filtering də tam işləmir — istifadəçinin hansı xüsusiyyətləri (kateqoriya, qiymət aralığı, brend) sevdiyi bilinmir. Bu boşluq cold start problem adlanır, yeni product-lar üçün də (item cold start) eyni vəziyyət yaranır.
+
+**Real-time collaborative filtering-in niyə bahalı olduğu** isə ayrı bir texniki problemdir. Cosine similarity hesablamaq üçün bütün user-product matriksini nəzərə almaq lazımdır. 1M user və 100k product üçün bu matrix 100 milyard elementdən ibarətdir. Hər API sorğusunda bu hesablamanı real-time etmək hətta güclü server üçün də mümkün deyil — latency saniyələrə çıxar. Məhz buna görə industry standart yanaşma offline batch compute-dur: gecə saatlarında similarity matrix hesablanır, Redis-ə yüklənir, API sorğuları isə hazır nəticəni Redis-dən oxuyur. Bu arxitektura < 5ms latency ilə milyonlarla istifadəçiyə xidmət göstərməyə imkan verir.
+
+---
+
+## PHP Implementation — Cold Start
+
+Yeni istifadəçi üçün popularity-based fallback son 7 günün sifariş məlumatlarına əsaslanır. Bu data Redis-də cache-ə alınır ki, hər sorğuda DB-yə müraciət olmasın.
+
+```php
+<?php
+
+namespace App\Services\Recommendation;
+
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use App\Models\Product;
+use App\Models\User;
+
+class ColdStartRecommendationService
+{
+    /**
+     * Heç bir history-si olmayan yeni user üçün trending products.
+     * Son 7 günün sifarişlərinə əsasən hesablanır, 1 saat cache-ə alınır.
+     */
+    public function getForNewUser(int $limit = 10): array
+    {
+        return Cache::remember("cold_start:trending:week:{$limit}", 3600, function () use ($limit) {
+            return Product::query()
+                ->join('order_items', 'products.id', '=', 'order_items.product_id')
+                ->join('orders', 'order_items.order_id', '=', 'orders.id')
+                ->where('orders.created_at', '>=', now()->subDays(7))
+                ->where('orders.status', 'completed')
+                ->where('products.is_active', true)
+                ->groupBy('products.id')
+                ->orderByRaw('COUNT(order_items.id) DESC')
+                ->limit($limit)
+                ->get([
+                    'products.*',
+                    DB::raw('COUNT(order_items.id) as order_count'),
+                ])
+                ->toArray();
+        });
+    }
+
+    /**
+     * Kateqoriyaya görə trending products.
+     * User signup zamanı kateqoriya seçibsə — bu metod istifadə olunur.
+     */
+    public function getByCategory(int $categoryId, int $limit = 10): array
+    {
+        return Cache::remember("cold_start:category:{$categoryId}:{$limit}", 3600, function () use ($categoryId, $limit) {
+            return Product::query()
+                ->join('order_items', 'products.id', '=', 'order_items.product_id')
+                ->join('orders', 'order_items.order_id', '=', 'orders.id')
+                ->where('products.category_id', $categoryId)
+                ->where('orders.created_at', '>=', now()->subDays(14))
+                ->where('orders.status', 'completed')
+                ->where('products.is_active', true)
+                ->groupBy('products.id')
+                ->orderByRaw('COUNT(order_items.id) DESC')
+                ->limit($limit)
+                ->get([
+                    'products.*',
+                    DB::raw('COUNT(order_items.id) as order_count'),
+                ])
+                ->toArray();
+        });
+    }
+
+    /**
+     * Yüksək ratingli yeni məhsullar (item cold start).
+     * Məhsulun hələ purchase history-si yoxdursa — content + rating əsas götürülür.
+     */
+    public function getHighRatedNewArrivals(int $limit = 10): array
+    {
+        return Cache::remember("cold_start:new_arrivals:{$limit}", 1800, function () use ($limit) {
+            return Product::query()
+                ->where('is_active', true)
+                ->where('created_at', '>=', now()->subDays(30))
+                ->where('rating', '>=', 4.0)
+                ->orderByDesc('rating')
+                ->orderByDesc('rating_count')
+                ->limit($limit)
+                ->get()
+                ->toArray();
+        });
+    }
+
+    /**
+     * Tam cold start strategy chain:
+     * 1. Kateqoriya seçilibsə → category trending
+     * 2. Kateqoriya yoxdursa → ümumi trending
+     * 3. Trending boş çıxarsa (çox az data) → high-rated new arrivals
+     */
+    public function resolve(User $user, int $limit = 10): array
+    {
+        // Istifadəçi qeydiyyat zamanı kateqoriya seçib?
+        $preferredCategoryId = $user->signup_category_id;
+
+        if ($preferredCategoryId) {
+            $results = $this->getByCategory($preferredCategoryId, $limit);
+            if (count($results) >= 5) {
+                return $results;
+            }
+        }
+
+        $trending = $this->getForNewUser($limit);
+        if (count($trending) >= 5) {
+            return $trending;
+        }
+
+        // Fallback: ən az data olan mühitlər üçün (test, yeni bazarlar)
+        return $this->getHighRatedNewArrivals($limit);
+    }
+
+    /**
+     * Cache-i məcburi yenilə (admin panel-dən və ya scheduled job-dan).
+     */
+    public function invalidateCache(): void
+    {
+        Cache::forget('cold_start:trending:week:10');
+        Cache::forget('cold_start:new_arrivals:10');
+        // Kateqoriya cache-lərini pattern ilə silmək üçün Redis-dən birbaşa istifadə etmək lazımdır
+    }
+}
+```
+
+Bu service-i controller-də istifadə etmək:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Services\Recommendation\ColdStartRecommendationService;
+use App\Services\Recommendation\PersonalizedRecommender;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+
+class RecommendationController extends Controller
+{
+    public function __construct(
+        private ColdStartRecommendationService $coldStart,
+        private PersonalizedRecommender $personalized,
+    ) {}
+
+    public function forYou(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        // Guest user → cold start
+        if (!$user) {
+            return response()->json(
+                $this->coldStart->getForNewUser(10)
+            );
+        }
+
+        $orderCount = $user->orders()->count();
+
+        // Yeni user (< 3 sifariş) → cold start strategy
+        if ($orderCount < 3) {
+            return response()->json(
+                $this->coldStart->resolve($user, 10)
+            );
+        }
+
+        // Köhnə user → full personalization
+        $recommendations = Cache::remember(
+            "user:recommendations:{$user->id}",
+            1800,
+            fn() => $this->personalized->forUser($user, 20)
+        );
+
+        return response()->json($recommendations);
+    }
+}
+```
+
+---
+
+## Trade-offs
+
+| Yanaşma | Üstünlük | Çatışmazlıq | Nə zaman |
+|---------|----------|-------------|----------|
+| **Item-based CF** | Məhsul sayı artsa da dəqiqlik yüksəkdir; offline compute mümkündür; < 5ms serve | Cold start (yeni product); sparsity (az alınan məhsullar üçün zəif) | 100k+ product, 1M+ user; e-commerce, streaming |
+| **User-based CF** | Yeni məhsulları sürətlə öyrənir; user behavior-a real-time uyğunlaşır | User sayı artdıqca yavaşlayır (O(n²)); memory tələbi böyükdür | Kiçik user bazası (< 100k); social network-lər |
+| **Content-based** | Cold start problemi yoxdur; explainable ("kateqoriya eyni olduğu üçün"); user history tələb etmir | "Filter bubble" riski — istifadəçi yeni şeylər kəşf etmir; feature engineering əmək tələb edir | Yeni product-lar; news/media; məhsul feature-ları zəngindirsə |
+| **Hybrid** | Ən yüksək dəqiqlik; cold start + similarity hər ikisini həll edir; A/B test imkanı | Kompleks arxitektura; debug çətindir; daha çox infra | Production-da ciddi recommendation tələb olunanda; böyük platform-lar |
+
+**Practical qayda:** Startup mərhələsində content-based ilə başla (data lazım deyil), 10k+ sifariş toplandıqdan sonra item-based CF əlavə et, 500k+ user-dən sonra hybrid arxitekturaya keç.
+
+---
+
+## Anti-patternlər
+
+**1. Real-time similarity hesablamaq**
+
+Hər API sorğusunda cosine similarity matriksini hesablamaq — 1M user, 100k product üçün bu bilgi saniyələrə, hətta dəqiqələrə uzanır. Latency-ni < 100ms altında saxlamaq mümkün olmur. Həll: bütün similarity-lər gecə batch job ilə hesablanır, Redis-ə yazılır. API yalnız hazır nəticəni oxuyur.
+
+**2. Cold start-ı tamamilə ignore etmək**
+
+Yeni istifadəçiyə boş widget göstərmək və ya ümumiyyətlə recommendation section-ı gizlətmək — ilk sessiya impressiyasını məhv edir. İstifadəçi ilk açılışda personalized heç nə görməyəndə platformanı tərk edir. Həll: popularity fallback, kateqoriya seçimi (signup zamanı), coğrafi trending — bunların ən azı biri mütləq olmalıdır.
+
+**3. A/B test etməmək**
+
+"Collaborative filtering content-based-dən yaxşıdır" fərziyyəsini test etmədən production-a çıxarmaq. Fərqli alqoritmlər fərqli user seqmentləri üçün fərqli işləyir. Həll: feature flag vasitəsilə (Pennant, Unleash) hər yeni alqoritmi A/B test-dən keçir, CTR və conversion rate əsasında qərar ver.
+
+**4. Hər user üçün eyni popular items göstərmək**
+
+"Global trending" siyahısını bütün istifadəçilərə göstərmək — avtomobil almaq istəyən kişiyə qadın geyimi, uşaq alan valideynə elektronika göstərmək kimidir. Həll: ən azı kateqoriya + yaş qrupu + coğrafi mövqe əsasında segmentləşdir; "trending in your city" kimi yanaşmalar çox effektivdir.
+
+**5. Similarity matriksini çox nadir yeniləmək**
+
+Həftəlik və ya aylıq refresh — məhsul assortimentinin dəyişdiyi, mövsüm keçidlərinin baş verdiyi hallarda stale recommendation-lar göstərilir. Bayram öncəsi trending-i bayramdan sonra da göstərmək konversiyani aşağı salır. Həll: ən azı gündəlik batch compute; sürətli dəyişən bazarlarda (fashion, qida) 6-saatlıq refresh daha uyğundur.
+
+**6. "Black box" ML model istifadə etmək**
+
+Neural collaborative filtering kimi modellərin niyə X məhsulu tövsiyə etdiyini izah etmək mümkün deyil. Bu, debug-ı çətinləşdirir, müştəri şikayətlərini idarə etməyi mümkünsüz edir ("niyə bu mənə göstərildi?"), həmçinin GDPR explainability tələblərini pozur. Həll: production-da ilk mərhələdə explainable metodlar (item-based CF, content-based) istifadə et; ML əlavə edəndə "because you bought X" kimi explanation layer həmişə əlavə et.
+
+**7. Recommendation diversity-ni nəzərə almamaq (Filter Bubble)**
+
+Yalnız ən yüksək similarity score-lu məhsulları göstərmək istifadəçini eyni məhsul kateqoriyasına həbs edir. "Qapalı dairə" yaranır: user yalnız gördüklərini görür, kəşf baş vermir, uzun müddətdə engagement düşür. Həll: top-N recommendation-lardan 10-15%-ni intentional diversity üçün ayır — fərqli kateqoriya, yeni brend, "populyar amma sən görməmisən" kimi slotlar əlavə et.
+
+---
+
+## Interview Sualları və Cavablar
+
+**S: Collaborative filtering vs content-based filtering — fərqi nədir?**
+
+Collaborative filtering "oxşar istifadəçilər nə aldı?" sualına cavab verir — məhsulun xüsusiyyətlərini bilmir, yalnız user behavior matriksinə baxır. Content-based isə "bu məhsulun xüsusiyyətləri ilə oxşar məhsullar hansıdır?" — istifadəçi history-sindən asılı olmur. Əsas fərq: collaborative filtering user data tələb edir (cold start problemi var), content-based isə yalnız məhsul atributlarına ehtiyac duyur. Practical baxımdan collaborative filtering daha yüksək dəqiqlik verir, amma data toplanana qədər cold start problemini content-based həll edir.
+
+**S: Cold start problemini necə həll edərdiniz?**
+
+Üç paralel strategiya istifadə edərdim. Birincisi, **popularity-based fallback** — yeni user üçün son 7 günün trending məhsulları (kateqoriya, yaş, coğrafiyaya görə seqmentləşdirilmiş). İkincisi, **onboarding quiz** — signup zamanı "hansı kateqoriyalar sizi maraqlandırır?" sualı ilə 3-5 kateqoriya seçdirmək; bu seçimə əsasən content-based recommendation dərhal işə düşür. Üçüncüsü, **contextual signal-lar** — ilk sessiyada istifadəçinin browse etdiyi məhsulları real-time olaraq session-a əlavə edib, həmin session məlumatına əsasən anlıq tövsiyələr vermək (session-based recommendation). Bu üçünü birləşdirsən cold start 90%+ hallarda effektiv həll olunur.
+
+**S: Netflix/Amazon recommendation-larını necə implement edir?**
+
+Amazon item-based collaborative filtering-i 2003-cü ildə patents etdi — "customers who bought this also bought" klassik item-item CF-dir. Offline hesablanır, DynamoDB-də saxlanır. Netflix isə Matrix Factorization (ALS — Alternating Least Squares) əsaslı hybrid sistem istifadə edir: user-movie rating matriksi latent factor-lara (50-200 ölçülü) dekompose edilir, hər user və hər movie bu factor space-də təmsil olunur. Bundan əlavə deep learning (two-tower model) istifadə edirlər — bir tower user-i, digər tower content-i encode edir, dot product similarity verir. Hər ikisi də offline batch compute + online serving arxitekturası ilə işləyir; real-time yalnız context (günün vaxtı, device, location) üçün istifadə olunur.
+
+**S: Matrix factorization nədir?**
+
+Matrix factorization user-product rating matriksi (M) iki kiçik matriksin hasili kimi təmsil etməkdir: M ≈ U × P, burada U user latent factor-larıdır (hər user üçün k-ölçülü vektor), P isə product latent factor-larıdır. k adətən 50-200 seçilir. Bu factor-lar interpretable deyil — avtomatik öyrənilir, amma "janr" ya "qiymət həssaslığı" kimi implicit xüsusiyyətlərə uyğun gəlir. Populyar metodlar: **SVD** (Singular Value Decomposition), **ALS** (Alternating Least Squares — distributed compute üçün ideal, Spark MLlib-də mövcuddur), **NMF** (Non-negative Matrix Factorization). PHP/Laravel mühitdə bu hesablamanı Spark Python job-u ilə gecə batch-da edib nəticəni MySQL/Redis-ə yazmaq ən practical yanaşmadır.
+
+**S: Recommendation accuracy-ni necə ölçərsiniz?**
+
+Offline metrics (A/B testdən əvvəl): **Precision@K** — tövsiyə olunan K məhsuldan neçəsi faktiki alındı; **Recall@K** — istifadəçinin aldığı məhsulların neçəsi K tövsiyə içindəydi; **NDCG** (Normalized Discounted Cumulative Gain) — sıralamaya həssas metric, yuxarıdakı tövsiyələr aşağıdakılardan daha çox dəyər daşıyır. Online metrics (production-da əsas): **CTR** (Click-Through Rate) — tövsiyə widget-inin click sayı / göstərilmə sayı; **Conversion Rate** — tövsiyədən click edib alan user faizi; **Revenue per impression** — hər tövsiyə göstərmənin gətirdiyi gəlir; **Coverage** — neçə fərqli məhsul tövsiyə edilir (diversity); **Serendipity** — istifadəçini gözlənilmədən xoşbəxt edən tövsiyə faizi. Production-da ən vacib metric revenue per impression-dır — CTR yüksək ola bilər, amma alış baş vermirsə recommendation faydasızdır.
