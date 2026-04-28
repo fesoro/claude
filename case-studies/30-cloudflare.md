@@ -155,7 +155,7 @@ Cloudflare **Anycast network** üzərində qurulmuşdur. Hər bir PoP eyni BGP I
 
 ## Arxitekturanın təkamülü
 
-| Year | Change |
+| İl | Dəyişiklik |
 |------|--------|
 | 2010 | Launch, Nginx + Lua üzərində qurulmuş |
 | 2014 | Universal SSL — hamı üçün pulsuz HTTPS |
@@ -166,7 +166,7 @@ Cloudflare **Anycast network** üzərində qurulmuşdur. Hər bir PoP eyni BGP I
 | 2022 | D1, Durable Objects, Queues |
 | 2023+ | Workers AI, Vectorize — edge ML inference |
 
-## 3-5 Əsas texniki qərarlar
+## Əsas texniki qərarlar
 
 1. **Rust-a Nginx-dən keçid (Pingora).** C kodunda memory bugs və Nginx-in connection model-inin limitləri istehsalda ağır idi. Rust-un ownership model-i bu iki problemi həll etdi. İllərlə inkişaf, çoxlu iterasiya.
 2. **Global Anycast.** Hər PoP-un eyni IP anons etməsi DDoS resilience-i doğal hala gətirir və latency-ni minimum saxlayır.

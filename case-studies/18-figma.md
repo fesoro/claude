@@ -123,7 +123,7 @@ Figma WebAssembly vasitəsilə **brauzer tətbiqinin native səviyyə performans
 
 ## Arxitekturanın təkamülü
 
-| Year | Change |
+| İl | Dəyişiklik |
 |------|--------|
 | 2012–2015 | Araşdırma və qurma. Erkən WASM mövcud deyildi; asm.js istifadə etdilər. |
 | 2016 | İctimai işə salınma. Qapalı beta-da multiplayer. |
@@ -134,7 +134,7 @@ Figma WebAssembly vasitəsilə **brauzer tətbiqinin native səviyyə performans
 | 2023 | Blog: *How Figma's databases team lived to tell the scale*. |
 | 2024 | AI funksiyaları; WASM bundle ölçüsünün daha çox optimizasiyası. |
 
-## 3-5 Əsas texniki qərarlar
+## Əsas texniki qərarlar
 
 1. **Əsas engine üçün C++ → WebAssembly.** Bu mərc (2010-ların əvvəlində, WASM demək olar ki mövcud olmayanda) Figma-nın sürətli olmasının və Sketch-in web-də olmamasının səbəbidir.
 2. **Multiplayer üçün CRDT-lər.** Operational Transformation-dan (Google Docs kimi) çətin qurulur, amma mürəkkəb vektor data üçün daha dayanıqlıdır.

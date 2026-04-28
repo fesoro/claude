@@ -113,7 +113,7 @@ Booking.com **ətrafında servislər olan nəhəng Perl monolit**-dir. Onu soğa
 
 ## Arxitekturanın təkamülü
 
-| Year | Change |
+| İl | Dəyişiklik |
 |------|--------|
 | 1996 | Perl CGI-əsaslı sayt |
 | 2000s | mod_perl, böyük monolit böyüyür |
@@ -123,7 +123,7 @@ Booking.com **ətrafında servislər olan nəhəng Perl monolit**-dir. Onu soğa
 | 2020 | COVID şoku, xərc azaltma |
 | 2020+ | Yeni funksiyaların daha çox modernləşdirilməsi; Perl core qalır |
 
-## 3-5 Əsas texniki qərarlar
+## Əsas texniki qərarlar
 
 1. **Perl-i saxla — yenidən yazma.** Daha az praktik şirkət Java və ya Go-da yenidən yazmaq üçün yüz milyonlar xərcləyərdi və çox güman ki uğursuz olardı. Booking yayımlamağa davam edir.
 2. **Yeni funksiyalar üçün strangler-fig pattern.** Yeni şeylər Perl core ilə danışan Java/Scala/Go servislərinə gedir. Böyük partlayış yoxdur.

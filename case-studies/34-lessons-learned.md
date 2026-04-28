@@ -1,6 +1,6 @@
 # Öyrənilmiş dərslər — Şirkətlərarası nümunələr
 
-Bu fayl Instagram, WhatsApp, Discord, Figma, Spotify, Dropbox, Notion, Reddit, Booking, Zalando, plus Facebook, Twitter, Uber, Netflix və GitHub-dan kontekst ilə görülmüş nümunələri distillasiya edir. Beynəlxalq müsahibələrə hazırlaşan senior PHP/Laravel developer üçün yazılıb.
+Bu fayl Instagram, WhatsApp, Discord, Figma, Spotify, Dropbox, Notion, Reddit, Booking, Zalando, Snap, Lyft, Microsoft, plus Facebook, Twitter, Uber, Netflix və GitHub-dan kontekst ilə görülmüş nümunələri distillasiya edir. Beynəlxalq müsahibələrə hazırlaşan senior PHP/Laravel developer üçün yazılıb.
 
 ---
 
@@ -19,6 +19,7 @@ Demək olar ki, heç bir şirkət "yeni dil havalıdır" deyə köçürmür. Onl
 | Reddit | Common Lisp | Python | Web üçün kitabxana ekosistemi arıq idi |
 | WhatsApp | (başladığı) ejabberd/Erlang | Erlang saxlandı | Konkurrentlik üçün düzgün dil — tərk etməyə ehtiyac yoxdur |
 | Facebook | PHP | HHVM / Hack | PHP-ni tərk etməyə çalışdı (C++-a, tərk edildi), sonra öz kompilyatoru/dilini qurdu |
+| Snap | PHP/Python (monolit) | **Go** (mikroservislər) | AWS-dən GCP-yə keçid ilə eyni vaxtda; concurrency, statik typing, binary deploy |
 
 ### Nümunə
 1. **Hype-a görə köçürməyin.** Hazırkı yığının darboğaz olduğunu göstərən rəqəmləriniz olduğuna görə köçürün.
@@ -62,6 +63,9 @@ Demək olar ki, heç bir şirkət "yeni dil havalıdır" deyə köçürmür. Onl
 - Spotify (~1000+ servis)
 - Zalando (~1000+ servis)
 - Discord (poliqlot servislər)
+- Snap / Snapchat (PHP/Python monolitdən Go mikroservislərinə)
+- Lyft (Python monolitdən Python+Go SOA-ya)
+- Microsoft (on-prem/desktop şirkətindən Azure cloud platformasına)
 
 **Monolitdən-microservice-ə tərsinə çevrilmələr:**
 - **Amazon Prime Video** (2023): məşhur olaraq video monitorinq servisini microservice-lərdən monolitə GERİ köçürdü və infrastruktur xərclərinə 90% qənaət etdi.
@@ -129,6 +133,9 @@ Bu Sam Newman, Martin Fowler, DHH və Prime Video post-mortem-i ilə uyğun gəl
 | Reddit | PostgreSQL + Cassandra | Klassik cütləşmə |
 | Booking | MySQL (petabayt miqyası) | Darıxdırıcı + yetkin |
 | Zalando | PostgreSQL (Patroni/Spilo) | Postgres-i sevirlər |
+| Snap | Google Spanner + Bigtable + GCS | Spanner: global multi-region transaksiyalar; Bigtable: ephemeral mesaj metadata; 100% GCP |
+| Lyft | MySQL (shardlanıb) + Redis (geo) + Kafka | Ride data MySQL, driver real-time location Redis GEOSPATIAL, events Kafka |
+| Microsoft | Azure SQL + Cosmos DB + Azure Event Hub | SQL: ACID; Cosmos: global multi-model; Event Hub: Kafka-uyğun enterprise messaging |
 
 ### Nümunələr
 - **Hər böyük şirkət nəhayət shardlayır.** Tək sual nə vaxtdır.
@@ -158,6 +165,7 @@ Bu Sam Newman, Martin Fowler, DHH və Prime Video post-mortem-i ilə uyğun gəl
 | Spotify | **Luigi, Backstage** | Workflow-lar, dev portal |
 | Zalando | **Patroni, Spilo** | Postgres HA |
 | Instagram | **Cinder** | Daha sürətli Python runtime |
+| Lyft | **Envoy** (service mesh), **Feast** (feature store), **Flyte** (ML workflow) | Service mesh üçün nginx/HAProxy kifayət etmirdi; ML feature store yox idi; hamısı CNCF-ə bağışlandı |
 
 ### Nümunə: Niyə qurmaq?
 1. **OSS-in vurmadığı miqyas.** Cassandra qurulduğu üçün FB inbox miqyasında heç nə yox idi.
@@ -324,10 +332,99 @@ Struktur (STAR-bənzər):
 | Developer portal / platforması | Spotify (Backstage) |
 | Postgres HA | Zalando (Patroni, Spilo) |
 | Event-driven arxitektura | Zalando, Uber, Netflix |
+| Ephemeral content dizaynı | Snap (TTL-based silmə, Stories 24 saat) |
+| Global DB (multi-region tranzaksiya) | Snap (Google Spanner), Google |
+| Vendor lock-in (tam cloud) | Snap (100% GCP — Spanner, Bigtable, GCS, GCE) |
+| AR / on-device ML | Snap (Lenses C++ 60fps, SnapML, real-time filter pipeline) |
+| Konservativ polyglot (2 dil) | Lyft (Python + Go — yalnız latency-critical path-larda Go) |
+| Desktop→Cloud korporativ pivotu | Microsoft (Nadella 2014: .NET Core, Azure, VS Code, GitHub alışı) |
+| Service mesh (Envoy) | Lyft (Envoy ixtiraçısı; istio/AWS App Mesh altında Envoy işləyir) |
+| TypeScript ixtirası | Microsoft (2012: JS-ə static types — PHP 8 type evolution ilə paralel) |
+| ML Feature Store | Lyft (Feast → CNCF; training-serving skew problemini həll edir) |
+| Real-time dispatch optimization | DoorDash (OR-tools MIP, 500ms window batch assign), Lyft (Redis GEOSEARCH + Go) |
+| HTAP DB (OLTP+OLAP eyni DB) | TikTok/ByteDance (TiDB-nin ən böyük istifadəçisi; MySQL API + horizontal scale) |
+| Recommendation engine at scale | TikTok (Monolith C++, real-time online learning dəqiqələrlə) |
+| On-device ML inference | Snap (SnapML, AR Lenses C++ 60fps; server-side latency sıfır) |
+| Workflow orchestration (uzun-müddətli) | DoorDash (Temporal/Cadence; sifariş lifecycle saatlarla durable) |
 
 ---
 
-## 9. Son prinsiplər
+## 9. ML/AI platform pattern-ləri
+
+ML artıq yalnız data science-in deyil, backend arxitekturasının bir hissəsidir. Müsahibədə "recommendation", "fraud detection", "ETA prediction" kimi suallar gəldikdə bu pattern-lər lazımdır.
+
+### Real-time öyrənmə vs batch öyrənmə
+
+| Şirkət | Model update tezliyi | Mexanizm | Niyə |
+|---------|---------------------|----------|-------|
+| TikTok | Dəqiqələr | Monolith (C++), online learning | FYP-nin addiktivliyinin sirri burada |
+| Snap | Model deployment ilə (günlər/həftələr) | SnapML → on-device export | Device inference; server-side deyil |
+| Lyft | Saatlar (surge), günlər (ETA modeli) | Feast feature store + batch pipeline | Real-time feature-lar Redis-dən, batch-lər DWH-dan |
+| DoorDash | Real-time batch (30 saniyə) | OR-tools dispatch + offline training | MIP solver real-time, ML model offline |
+| Netflix | Günlər/həftələr | Metaflow + batch training | İzləmə historiyası gecikməyə tolerantdır |
+
+**Əsas insight:** TikTok-u rəqiblərindən fərqləndirən yeganə şey dəqiqəlik real-time feedback loop-dur. Instagram Reels eyni UX-i kopyaladı, amma modeli o qədər tez update etmir.
+
+### On-device vs server-side inference
+
+| Yanaşma | Şirkət | Use case | Trade-off |
+|---------|---------|---------|-----------|
+| **On-device (C++/CoreML/TFLite)** | Snap (AR Lenses), Instagram (AR filter) | Real-time camera AR, 60fps | Latency 0ms; model update cycle serverə bağlıdır |
+| **Server-side** | Netflix (recommendations), DoorDash (dispatch) | Heavy model, accuracy vacib | Güclü hardware; bandwidth lazım |
+| **Hybrid** | TikTok, Lyft (ETA) | Coarse model on-device, fine model server | Balans |
+
+**PHP developer üçün əlaqə:** `php artisan queue:work` ilə ML inference call etmək sadə server-side yanaşmasıdır. On-device inference yalnız mobile/web JS WASM ilə mümkündür.
+
+### Feature Store pattern
+
+**Problem:** ML model training-i historical data-dan istifadə edir (batch), amma serving zamanı real-time feature-lar lazımdır. Bu ikisi uyğunsuz olarsa → **training-serving skew**.
+
+```
+Klassik problem:
+  Training:  "Bu istifadəçinin son 30 günlük ortalama sürücülük puanı"
+  Serving:   "Bu istifadəçinin son 30 günlük ortalama..." — necə real-time hesablayırsan?
+
+Feature Store həlli (Feast):
+  Feature tərifi → bir yerdə
+  Training pipeline → DWH-dan historical feature-ları oxuyur
+  Serving API → Redis/online store-dan real-time feature-ları oxuyur
+  Eyni feature kodu → iki istifadə
+```
+
+**Kim yaratdı, kim qəbul etdi:**
+- Lyft (2018) → Feast → CNCF
+- Uber → Michelangelo Feature Store
+- Spotify → öz feature store
+- Twitter, Shopify → Feast-i qəbul etdi
+
+### Dispatch / Assignment optimization
+
+Bir çox real-time platform ən yaxın eşləmə əvəzinə **optimization problem** həll edir:
+
+| Şirkət | Problem | Yanaşma |
+|---------|---------|---------|
+| DoorDash | Dasher ← → Restoran ← → Müştəri | MIP (Gurobi/OR-tools), 500ms window |
+| Lyft | Driver ← → Rider | Redis GEOSEARCH + Go dispatch + heuristics |
+| Uber | Driver ← → Rider + batching | H3 hexagonal grid + ML match score |
+
+**Niyə naive "ən yaxını seç" işləmir:**
+- Yalnız mesafəyə baxsan, eyni vaxtda gəlmək üçün nisbəti optimize etmirsən.
+- Batching (30-500ms gözlə, sonra toplu assign) tək-tək assign etməkdən 20%+ efficiency artımı verir.
+- Real-world constraint-lər: sürücünün müəyyən restoranlara üstünlüyü, pikap tarixi, rating.
+
+### ML platform müsahibə sualı cavab şablonu
+
+**"Recommendation engine dizayn edin"** soruşulduqda:
+
+1. **Funnel arxitekturası söylə:** candidate generation (millions) → retrieval (thousands, approximate NN) → ranking (hundreds, fine model) → diversity + business rules (top-K).
+2. **Latency budget ver:** hər stage-in vaxtını müəyyən et (ümumilikdə < 200ms).
+3. **Feature freshness-i izah et:** TikTok real-time, Netflix batch — niyə fərqli?
+4. **Training-serving skew-u qeyd et:** Feature store bu problemi həll edir.
+5. **A/B test infrastrukturu:** model dəyişiklikləri trafiki bölərək test olunur.
+
+---
+
+## 10. Son prinsiplər
 
 1. **Sadə ağıllını döyür.**
 2. **Optimallaşdırmadan əvvəl ölçün.**

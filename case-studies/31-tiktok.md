@@ -63,6 +63,9 @@ TikTok **recommendation engine** sahəsində dünyanın ən mürəkkəb sistemi 
 
 ### Rust — artan istifadə
 - Bəzi network-heavy komponentlərdə istifadə olunur.
+- Video transcoding pipeline-larında bəzi memory-sensitive komponentlər.
+- Amazon-un Rust-a ağır investisiyasından ilham alan Go→Rust qismən miqrasiyalar (hələ tam deyil).
+- ByteDance-in Rust istifadəsi Go qədər yaygın deyil — GC tuning ilə Go hələ kifayət edir.
 
 ## Framework seçimləri — Nə və niyə
 - **Kitex** — ByteDance-in açıq mənbəli yüksək performanslı Go RPC framework-u (Thrift/gRPC uyğunluğu).
@@ -155,7 +158,7 @@ TikTok **recommendation engine** sahəsində dünyanın ən mürəkkəb sistemi 
 
 ## Arxitekturanın təkamülü
 
-| Year | Change |
+| İl | Dəyişiklik |
 |------|--------|
 | 2012 | ByteDance yaradıldı (Toutiao news feed) |
 | 2016 | Douyin (Çin) launch, Go əsasən |
@@ -166,7 +169,7 @@ TikTok **recommendation engine** sahəsində dünyanın ən mürəkkəb sistemi 
 | 2022 | Monolith paper; BytePS açıq mənbə |
 | 2023+ | Project Texas — US data sovereignty layer |
 
-## 3-5 Əsas texniki qərarlar
+## Əsas texniki qərarlar
 
 1. **Go → əsas backend dili.** Python (Instagram, Pinterest) və Java (LinkedIn) əvəzinə Go seçdilər. Compile sürəti və concurrency qərarverici idi.
 2. **Monolith — öz recommender framework.** TensorFlow default sistem ilə işə yaramadı (embedding table-ları TikTok miqyasında yaramaz). Öz C++ sistemini qurdular.

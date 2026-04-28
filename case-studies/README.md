@@ -48,6 +48,8 @@ Maraqlı texniki qərarlar verən, böyümə zamanı kritik seçimlər etmiş ş
 | [20](20-dropbox.md) | Dropbox | Python → Go | Xidmət yönlü | Performans miqrasiyası |
 | [21](21-atlassian.md) | Atlassian | Java, Kotlin | Monolit → Cloud SaaS | Server → Cloud miqrasiyası, B2B SaaS |
 | [22](22-zalando.md) | Zalando | Scala, Java | Mikroservislər (1000+) | Komanda muxtariyyəti |
+| [35](35-snapchat.md) | Snap / Snapchat | Go, C++, Python | Monolit → mikroservislər | Stories ixtiraçısı, ephemeral dizayn, AR at scale |
+| [37](37-lyft.md) | Lyft | Python, Go | Monolit → SOA | Uber ilə müqayisəli; Envoy + Feast ixtiraçısı |
 
 ---
 
@@ -68,6 +70,7 @@ Extreme-scale distributed sistemlər. System design interview-lərinin "referenc
 | [31](31-tiktok.md) | TikTok / ByteDance | Go + Python (ML) | Mikroservislər + ML platform | Rec engine at scale |
 | [32](32-twitch.md) | Twitch | Go, Rust, Erlang | Cell-based | Millions concurrent chat |
 | [33](33-google.md) | Google | C++, Java, Go | Monorepo + mikroservislər | GFS, MapReduce, Spanner öncülü |
+| [36](36-microsoft.md) | Microsoft | C#, TypeScript, Go | Cloud + developer platform | .NET Core, Azure, Teams, TypeScript ixtiraçısı |
 
 ---
 
@@ -81,9 +84,9 @@ Sıra: **02 → 03 → 01 → 06 → 10 → 12 → 13 → 14 → 34**
 
 ### Monolit → Mikroservis miqrasiya path
 
-Sıra: **10 → 26 → 29 → 25 → 34**
+Sıra: **10 → 35 → 26 → 29 → 37 → 25 → 34**
 
-*Shopify (qalmaq qərarı) → Airbnb (miqrasiya) → DoorDash (miqrasiya) → Uber (ekstremal) → Lessons*
+*Shopify (qalmaq qərarı) → Snap (PHP→Go, ephemeral-first) → Airbnb (miqrasiya) → DoorDash (miqrasiya) → Lyft (konservativ polyglot) → Uber (ekstremal) → Lessons*
 
 ### System Design Interview — Core path
 
@@ -93,15 +96,39 @@ Sıra: **24 → 27 → 25 → 23 → 33**
 
 ### Dil miqrasiyası case study-ləri
 
-Sıra: **15 → 20 → 29 → 17 → 34**
+Sıra: **15 → 20 → 29 → 17 → 35 → 34**
 
-*Twitter Ruby→Scala → Dropbox Python→Go → DoorDash Python→Kotlin → Discord Go→Rust → Lessons*
+*Twitter Ruby→Scala → Dropbox Python→Go → DoorDash Python→Kotlin → Discord Go→Rust → Snap PHP→Go → Lessons*
 
 ### B2B SaaS + Cloud architecture
 
-Sıra: **21 → 30 → 22 → 34**
+Sıra: **21 → 36 → 30 → 22 → 34**
 
-*Atlassian Server→Cloud → Cloudflare edge → Zalando microservices → Lessons*
+*Atlassian Server→Cloud → Microsoft Azure + Teams → Cloudflare edge → Zalando microservices → Lessons*
+
+### Ride-sharing + Real-time matching
+
+Sıra: **37 → 29 → 25 → 34**
+
+*Lyft (Python+Go, Envoy, Feast, Redis Geospatial dispatch) → DoorDash (OR-tools MIP, Temporal workflows) → Uber (polyglot, H3, Cadence) → Lessons (dispatch + ML patterns)*
+
+### Ephemeral design + Consumer scale
+
+Sıra: **07 → 35 → 08 → 17 → 32 → 34**
+
+*WhatsApp (mesajları sil) → Snap (TTL-based, Stories, AR) → Instagram (feed, Stories at Meta) → Discord (chat clusters) → Twitch (live streaming) → Lessons*
+
+### Developer platform + Enterprise tools
+
+Sıra: **11 → 36 → 21 → 27 → 34**
+
+*GitHub (Rails monolith, Spokes, Blackbird) → Microsoft (Azure, TypeScript, Teams) → Atlassian (B2B SaaS migration) → LinkedIn (Kafka ixtirası) → Lessons*
+
+### ML/AI platform arxitekturası
+
+Sıra: **31 → 35 → 37 → 29 → 34**
+
+*TikTok (Monolith rec engine, real-time online learning) → Snap (SnapML on-device, Spotlight feed) → Lyft (Feast feature store, dispatch optimization) → DoorDash (OR-tools MIP, Temporal workflows) → Lessons (ML platform patterns)*
 
 ---
 
@@ -113,12 +140,17 @@ Sıra: **21 → 30 → 22 → 34**
 |--------------|-------------|-------------------|
 | Tranzaksional (əsas biznes) | **MySQL** | Facebook, Shopify, GitHub, Uber, Wikipedia |
 | Tranzaksional (PG üstün tutulur) | **PostgreSQL** | Instagram, Reddit, Notion, Atlassian Cloud |
+| Tranzaksional (qlobal, multi-region) | **Google Spanner** | Snap, Google internal |
 | Geniş sütun / yazma-ağır | **Cassandra** | Netflix, Discord (ScyllaDB), Uber |
 | Key-value cache | **Redis / Memcached** | Hamı; FB Memcached, Twitter Redis |
 | Axtarış | **Elasticsearch** | GitHub, Wikipedia, Uber, Slack, Atlassian |
 | Analitika | **Presto / Trino, BigQuery** | Airbnb, Netflix, Spotify |
-| Event log / streaming | **Kafka** | LinkedIn (ixtira edən), Netflix, Uber, Slack |
+| Event log / streaming | **Kafka** | LinkedIn (ixtira edən), Netflix, Uber, Slack, Lyft |
 | Qraf | **Xüsusi** (TAO, ZippyDB) | Facebook, LinkedIn |
+| Enterprise managed SQL | **Azure SQL / Cosmos DB** | Microsoft (Teams, M365) |
+| ML Feature Store | **Feast** (açıq mənbə, Lyft yaratdı) | Lyft, Uber, Shopify, Twitter |
+| HTAP (OLTP + OLAP bir DB-də) | **TiDB** (MySQL-uyğun, horizontal scale) | TikTok/ByteDance (ən böyük istifadəçi), PingCAP |
+| Qlobal qeyri-ephemeral storage | **Google Cloud Storage + TTL** | Snap (media, Stories 24h TTL) |
 
 ### "Monolit vs Mikroservislər — kim nəyi seçdi?"
 
@@ -126,9 +158,12 @@ Sıra: **21 → 30 → 22 → 34**
 |---------|-----------|-------|
 | **Majestic monolit** | Basecamp, Stack Overflow, Wikipedia | Sürətli iterasiya; kiçik komanda gücü |
 | **Modul monolit** | Shopify, GitHub, Atlassian (əvvəl) | Paylanmış ağrı olmadan sərhədlər |
-| **SOA** | Amazon, Airbnb (miqrasiyadan sonra) | Komanda sahibliyi; tam mikroservis vergisi olmadan |
-| **Mikroservislər** | Netflix, Uber, Spotify | Nəhəng təşkilatda komanda muxtariyyəti |
-| **Cell-based** | Slack, Twitch | Partlayış radiusunu azaltmaq |
+| **SOA** | Amazon, Airbnb (miqrasiyadan sonra), Lyft | Komanda sahibliyi; tam mikroservis vergisi olmadan |
+| **Mikroservislər** | Netflix, Uber, Spotify, Snap, TikTok | Nəhəng təşkilatda komanda muxtariyyəti |
+| **Cell-based** | Slack, Twitch | Partlayış radiusunu azaltmaq; blast radius məhdudlaşdırmaq |
+| **Monorepo + mikroservislər** | Google (Piper/Blaze), Meta | Bir repo, milyardlarla sətir — cross-team refactor asan |
+| **Edge-first (heç vaxt mərkəzi region yoxdur)** | Cloudflare (Anycast), TikTok | Global PoP-lar, user ən yaxın node-a gedir |
+| **Cloud-native platform** | Microsoft (Azure, Teams) | Managed services + developer ecosystem |
 
 ### "Framework seçimini nəyin təyin etdiyi"
 
@@ -139,7 +174,11 @@ Sıra: **21 → 30 → 22 → 34**
 | **Spring (Java)** | Enterprise yetkinlik | Netflix, LinkedIn, Atlassian |
 | **Laravel / Symfony** | Sürətli dev + PHP ekosistemi | Çox SME; böyük tech PHP-ni Hack-ə köçürdü |
 | **Phoenix (Elixir)** | Miqyasda soft real-time | Discord (bəzi hissələr) |
-| **Go stdlib** | Az resurs, paralellik | Uber (hissə), Dropbox Magic Pocket, Cloudflare |
+| **Go stdlib** | Az resurs, paralellik | Uber (hissə), Dropbox Magic Pocket, Cloudflare, Lyft (dispatch) |
+| **ASP.NET Core** | Enterprise yetkinlik + cross-platform performans | Microsoft (Teams, Azure) |
+| **C++ (Emscripten/WASM)** | Max performance: AR, codec, rendering | Snap Lenses (AR engine), Figma (WebGL), Cloudflare Quiche |
+| **Erlang/OTP + Ejabberd** | Soft real-time, milyonlarla concurrent bağlantı | WhatsApp (saxlandı), Twitch (köçürdü), Discord (başlanğıc) |
+| **Kitex / Hertz (Go)** | Yüksək performanslı Go RPC/HTTP, ByteDance yaratdı | TikTok (ByteDance), CloudWeGo topluluğu |
 
 ### "Arxitektura təkamülü pattern-ləri"
 
@@ -149,6 +188,11 @@ Sıra: **21 → 30 → 22 → 34**
 4. **"Orijinal dildə qaldıq, öz runtime-ımızı qurduq"** — Facebook (PHP→Hack+HHVM)
 5. **"İlk gündən polyglot"** — Uber, Netflix
 6. **"Server → Cloud miqrasiyası"** — Atlassian (on illik yol)
+7. **"Tam cloud-a committed (vendor lock-in qəbul edildi)"** — Snap (100% GCP)
+8. **"Desktop/Enterprise → Cloud-first pivotu"** — Microsoft (Nadella dövrü, 2014)
+9. **"Konservativ polyglot: 2 dil, bəsdir"** — Lyft (Python + Go, digər dillərə yox deməyi bilmək)
+10. **"ML-first arxitektura: recommendation engine = core product"** — TikTok (Monolith, real-time online learning), Snap (SnapML, on-device), Lyft (Feast feature store), DoorDash (OR-tools dispatch)
+11. **"Öz infrastruktur alətini yaratdıq, açıq mənbəyə çevirdik"** — Lyft (Envoy, Feast, Flyte), LinkedIn (Kafka, Samza, Pinot), Uber (Jaeger, M3, Cadence), Zalando (Patroni, Spilo)
 
 ---
 
@@ -195,6 +239,8 @@ Bu göstərir ki, sən reference-i bilirsən VƏ onu adapt edə bilərsən.
 20. [Dropbox](20-dropbox.md)
 21. [Atlassian](21-atlassian.md)
 22. [Zalando](22-zalando.md)
+35. [Snap / Snapchat](35-snapchat.md)
+37. [Lyft](37-lyft.md)
 
 ### Architect ⭐⭐⭐⭐⭐
 23. [Amazon](23-amazon.md)
@@ -208,6 +254,7 @@ Bu göstərir ki, sən reference-i bilirsən VƏ onu adapt edə bilərsən.
 31. [TikTok / ByteDance](31-tiktok.md)
 32. [Twitch](32-twitch.md)
 33. [Google](33-google.md)
+36. [Microsoft](36-microsoft.md)
 
 ### Sintez
 34. [Şirkətlər arası dərslər](34-lessons-learned.md)

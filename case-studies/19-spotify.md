@@ -129,7 +129,7 @@ Spotify Avropanın ən böyük tech scale-up-ıdır. Engineering blogu həm uğu
 
 ## Arxitekturanın təkamülü
 
-| Year | Change |
+| İl | Dəyişiklik |
 |------|--------|
 | 2006–2008 | Erkən Java + Python, P2P streaming |
 | 2010–2013 | Microservice-lər artır; Cassandra istifadədə |
@@ -139,7 +139,7 @@ Spotify Avropanın ən böyük tech scale-up-ıdır. Engineering blogu həm uğu
 | 2020 | Backstage open-source |
 | 2022+ | "Golden path" stack-lərin standartlaşdırılması; daha az dil təşviq edilir |
 
-## 3-5 Əsas texniki qərarlar
+## Əsas texniki qərarlar
 
 1. **Squad / Tribe / Chapter / Guild təşkilat modeli (Spotify modeli).** Komandalara muxtariyyət verdi. Məşhurlaşdı, amma Spotify özü sonra bunun fraqmentasiyaya səbəb olduğunu etiraf etdi və ötdü.
 2. **Öz data mərkəzlərindən GCP-yə köçürmə.** Böyük mərc. Data platforması (BigQuery, Dataflow) böyük sürücü idi.

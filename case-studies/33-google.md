@@ -133,11 +133,38 @@ Google **daxili monorepo** + **minlərlə microservice** modelidir. Hər şey Pi
 - ZooKeeper əsasən Chubby paper-indən götürüldü.
 
 ### Axtarış sistemi
-- **Index:** Colossus üzərində saxlanılır, Bigtable-də metadata.
-- **Crawler (Googlebot):** paylanmış, əxlaqlı (robots.txt).
-- **Indexing:** incremental, Percolator-dan gəlir (2010).
-- **Serving:** shard-lərə bölünmüş C++ servisləri; sorğu fan-out yüzlərlə shard-a.
-- **Ranking:** hundreds of signals, RankBrain (ML), BERT (NLP), indi LLM-əsaslı.
+
+```
+Web saytlar
+    |
+[Googlebot crawler (paylanmış, robots.txt-ə hörmət edir)]
+    |
+[Percolator (incremental indexing, 2010)]
+    |
+[Inverted index → Colossus (distributed file system)]
+    |
+[Bigtable (metadata, PageRank scores, freshness signals)]
+    |
+[Search serving: sorğu gəlir → fan-out yüzlərlə index shard-a]
+    |
+[Ranking pipeline: hundreds of signals]
+    |  - PageRank (link authority)
+    |  - RankBrain (ML, 2015): query-document relevance
+    |  - BERT (NLP, 2019): natural language understanding
+    |  - MUM / Gemini (LLM-əsaslı, 2021+): multimodal, cross-lingual
+    |
+[Top-10 results → user]
+```
+
+- **Crawler:** Milyardlarla URL, politeness delay, robots.txt. Freshness üçün priority queue.
+- **Indexing:** Percolator transaction modeli ilə incremental — bütün index-i yenidən qurmaq lazım deyil.
+- **Serving:** Bir sorğu yüzlərlə shard-a parallel fanout edir; scatter-gather toplama.
+- **Ranking:**
+  - **PageRank (1998)** — əsas innovasiya: backlink-lər authority-ni müəyyən edir.
+  - **RankBrain (2015)** — ML ilə query interpretation; naməlum sorğular üçün.
+  - **BERT (2019)** — transformer NLP: "can you get medicine for someone" → "someone" ≠ "you".
+  - **Gemini (2024+)** — LLM integration: AI Overviews (SGE), multimodal axtarış.
+- **Ads auction:** organic result-lərlə paralel, Spanner-də real-time bidding.
 
 ### Ads sistemi
 - Real-time auction, millisaniyələr içində aparılır.
@@ -153,7 +180,7 @@ Google **daxili monorepo** + **minlərlə microservice** modelidir. Hər şey Pi
 
 ## Arxitekturanın təkamülü
 
-| Year | Change |
+| İl | Dəyişiklik |
 |------|--------|
 | 1998 | Stanford-da başlanğıc; PageRank alqoritmi |
 | 2003 | GFS paper |
@@ -166,7 +193,7 @@ Google **daxili monorepo** + **minlərlə microservice** modelidir. Hər şey Pi
 | 2015 | gRPC açıq mənbə |
 | 2020+ | TPU-lar, ML/AI infrastrukturu, Gemini |
 
-## 3-5 Əsas texniki qərarlar
+## Əsas texniki qərarlar
 
 1. **Monorepo + Blaze/Bazel.** Hər şey bir repo-da, hermetic build. Hiring və cross-team refactoring üçün üstünlük.
 2. **Standard RPC + Standard serialization.** Hamı Stubby/gRPC + Protobuf istifadə edir. Bu heç bir engineer-in formatı təkrar ixtira etməməsi deməkdir.

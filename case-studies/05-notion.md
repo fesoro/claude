@@ -119,7 +119,7 @@ Notion microservice buludu deyil, **dəstəkləyici servislərlə TypeScript mon
 
 ## Arxitekturanın təkamülü
 
-| Year | Change |
+| İl | Dəyişiklik |
 |------|--------|
 | 2015 | Notion 1.0 — kiçik komanda, tək Postgres |
 | 2018 | Notion 2.0 yenidən yazılması; yenə də tək Postgres |
@@ -130,7 +130,7 @@ Notion microservice buludu deyil, **dəstəkləyici servislərlə TypeScript mon
 | 2023 | Notion AI; AI infra əlavə edildi |
 | 2024 | Daha çox shard; davamlı miqyaslanma |
 
-## 3-5 Əsas texniki qərarlar
+## Əsas texniki qərarlar
 
 1. **Hər şey block data modelidir.** Güclü və birləşə bilən. "Database" funksiyasını təbii etdi. Yazı həcmi qiymətini ödədi.
 2. **Mümkün qədər uzun tək Postgres-də qal.** Praktik — lazım olmayana qədər shard-lama.

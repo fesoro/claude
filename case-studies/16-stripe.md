@@ -136,7 +136,7 @@ Stripe **böyük Ruby monoliti ("pay-server")** + **ətrafdakı servislər** mod
 
 ## Arxitekturanın təkamülü
 
-| Year | Change |
+| İl | Dəyişiklik |
 |------|--------|
 | 2010 | Ruby + Mongo; kiçik Rails monolit |
 | 2013 | Ağır Mongo skalalanması; Kafka daxil olur |
@@ -146,7 +146,7 @@ Stripe **böyük Ruby monoliti ("pay-server")** + **ətrafdakı servislər** mod
 | 2021 | Daha çox Go, bəzi gRPC servisləri |
 | 2023+ | AI/ML üçün daha dərin sərmayə (Radar-ın LLM ilə genişləndirilməsi) |
 
-## 3-5 Əsas texniki qərarlar
+## Əsas texniki qərarlar
 
 1. **Monolit + Ruby + Rails, miqyasda saxlanılır.** Stripe parçalamaq əvəzinə daxili alətlərə (Sorbet, custom fork-lar) sərmayə qoydu. Developer velocity > "mikroservis olmalıdır".
 2. **Idempotency-key pattern-i standarta çevirmək.** Əvvəl ad-hoc idi; Stripe public API-də standartlaşdırdı. İndi bütün ödəmə sistemlərinə kopyalanıb.

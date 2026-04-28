@@ -125,7 +125,7 @@ Discord **bilərəkdən polyglot proqramlaşdırma** mövzusunda ən öyrədici 
 
 ## Arxitekturanın təkamülü
 
-| Year | Change |
+| İl | Dəyişiklik |
 |------|--------|
 | 2015 | Launch. Elixir + MongoDB. |
 | 2016 | MongoDB-dən mesajları köçürdülər; Cassandra-nı qəbul etdilər. |
@@ -135,7 +135,7 @@ Discord **bilərəkdən polyglot proqramlaşdırma** mövzusunda ən öyrədici 
 | 2022 | Blog: Trillions of Messages — Cassandra-dan ScyllaDB-yə köçürmə. |
 | 2023+ | Hot path-larda daha çox Rust; çox dilli build-lər üçün daha yaxşı tooling. |
 
-## 3-5 Əsas texniki qərarlar
+## Əsas texniki qərarlar
 
 1. **Birinci gündən real-time üçün Elixir.** Go və Node daha populyar olanda BEAM-a mərc etdilər. Qazanc böyük oldu.
 2. **Tail-latency həssas servislər üçün Go → Rust.** Hər şeyi yenidən yazmadılar; GC pauzalarının önəmli olduğu konkret servisi yenidən yazdılar.

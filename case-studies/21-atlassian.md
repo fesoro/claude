@@ -148,7 +148,7 @@ Atlassian **on milyonlarla fayl attach-ı, on milyardlarla issue, on illik audit
 | 2022 | Böyük Data Center → Cloud migration dalğası |
 | 2024 | Server versiyası sona çatdı; Atlassian tam cloud |
 
-## 3-5 Əsas texniki qərar
+## Əsas texniki qərarlar
 
 1. **Schema-per-tenant PostgreSQL.** Row-level multi-tenancy yerinə schema-per-tenant seçildi. Bu tenant isolation-ı gücləndirir amma migration mürəkkəbliyini artırır. On minlərlə schemada `ALTER TABLE` migration-ları daxili automation tələb etdi.
 2. **OSGi plugin sistemi.** 2008-dən bəri extension point-lər OSGi vasitəsilə. 3500+ marketplace plugin bu qərarın məhsuludur. Əks tərəfi: classloader isolation-ı debug çətin, security boundary zəif. Forge bu problemi həll edir.

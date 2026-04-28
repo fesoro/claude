@@ -105,7 +105,7 @@ Reddit klassik "Python + Postgres + Cassandra" case study-dir, 15 ildən artıqd
 
 ## Arxitekturanın təkamülü
 
-| Year | Change |
+| İl | Dəyişiklik |
 |------|--------|
 | 2005 | Bir neçə ay ərzində Common Lisp → Python yenidən yazılma |
 | 2008 | r2 open-source edildi |
@@ -116,7 +116,7 @@ Reddit klassik "Python + Postgres + Cassandra" case study-dir, 15 ildən artıqd
 | 2023 | API qiymətləndirmə mübahisəsi |
 | 2024 | IPO |
 
-## 3-5 Əsas texniki qərarlar
+## Əsas texniki qərarlar
 
 1. **2005-də Common Lisp → Python yenidən yazılma.** Şirkət həyatında erkən yaxşı "sevdiyiniz şeyləri öldürün" anı.
 2. **20 il Python-da qal.** Bir neçə Reddit-dən böyük şirkətin dil moda dövrələri (Ruby, Node, Go, Rust) ərzində Reddit Python-da yayımlamağa davam etdi.

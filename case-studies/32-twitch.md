@@ -157,7 +157,7 @@ Twitch **"Clusters"** arxitekturasını istifadə edir — cell-based, regional 
 
 ## Arxitekturanın təkamülü
 
-| Year | Change |
+| İl | Dəyişiklik |
 |------|--------|
 | 2007 | Justin.tv launch; Rails + Erlang chat (Ejabberd) |
 | 2011 | Twitch.tv ayrılma |
@@ -168,7 +168,7 @@ Twitch **"Clusters"** arxitekturasını istifadə edir — cell-based, regional 
 | 2020 | Pandemiya partlayışı — capacity ağır stress |
 | 2023 | Amazon cost-cutting, layoffs; optimization focus |
 
-## 3-5 Əsas texniki qərarlar
+## Əsas texniki qərarlar
 
 1. **Chat Erlang-dan Go-ya köçürmə.** Erlang texniki olaraq problemi həll etmişdi, amma hiring və Amazon ekosistemi inteqrasiyası Go-ya keçidi əsaslandırdı. Bu "good enough" dəyişikliyidir — həmişə texniki optimum deyil.
 2. **Cell-based Clusters.** Monolit və ya hamı-bir-cluster əvəzinə, kiçik izolə olunmuş cluster-lər. Blast radius azalır.
