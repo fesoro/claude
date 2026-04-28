@@ -183,3 +183,148 @@ git archive --format=zip HEAD > archive.zip
 git shortlog -sn — author-a görə commit sayı
 git describe — ən yaxın tag-ı təsvir et
 git show-branch — branch-ləri vizual müqayisə et
+
+## Sparse-checkout / partial clone (large repos)
+
+git clone --filter=blob:none <url>            — partial clone (no blobs until needed)
+git clone --filter=tree:0 <url>               — tree-less (super shallow)
+git clone --depth 1 --filter=blob:none --no-checkout <url>
+git sparse-checkout init --cone               — cone mode (faster, simpler)
+git sparse-checkout set src/api docs/         — only these dirs
+git sparse-checkout list
+git sparse-checkout disable
+git sparse-checkout reapply
+# Useful for monorepos: clone ↓ size, work only on relevant subtree
+
+## Worktree (multiple branches in parallel — no stash needed)
+
+git worktree add ../hotfix main               — yeni worktree main branch-də
+git worktree add -b hotfix ../hotfix          — yeni branch yarat
+git worktree list
+git worktree remove ../hotfix
+git worktree prune
+# Each worktree shares .git but has its own working dir + index — perfect for review/hotfix while coding
+
+## Rerere (reuse recorded resolution)
+
+git config --global rerere.enabled true
+# Once enabled: when you resolve a conflict, git remembers and auto-applies the same resolution next time
+git rerere status
+git rerere diff
+git rerere clear
+# Big win on long-running rebase / merge cycles
+
+## Signing commits (modern — SSH preferred)
+
+git config --global commit.gpgsign true
+git config --global gpg.format ssh                          — SSH key signing (Git 2.34+)
+git config --global user.signingkey ~/.ssh/id_ed25519.pub
+git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
+git commit -S -m "msg"                         — sign explicitly
+git tag -s v1.0 -m "release"                   — signed tag
+git log --show-signature
+git verify-commit <sha>
+git verify-tag <tag>
+# GitHub: paste public key as SSH "Signing Key" type
+
+## Modern shortcuts (Git 2.23+ / 2.40+)
+
+git switch <branch>                            — replaces "checkout <branch>"
+git switch -c <branch>                         — replaces "checkout -b"
+git switch -                                   — toggle to previous branch
+git restore <file>                             — replaces "checkout -- file"
+git restore --staged <file>                    — replaces "reset HEAD file"
+git restore --source=HEAD~3 <file>             — file from older commit
+git maintenance start                          — schedule auto-gc/fetch (2.30+)
+git maintenance run --task=gc
+git fsmonitor--daemon start                    — fast file change detection (2.36+)
+
+## Common workflows
+
+# GitHub flow / trunk-based
+git switch -c feature/x
+# ... commit work ...
+git push -u origin feature/x
+gh pr create                                   — open PR (GitHub CLI)
+# After merge:
+git switch main && git pull && git branch -d feature/x
+
+# Update branch with main (rebase preferred for feature branches)
+git fetch origin
+git rebase origin/main
+git push --force-with-lease                     — safer than --force
+
+# Squash before merge
+git rebase -i origin/main                       — pick → squash → reword
+# OR merge with squash:
+git switch main && git merge --squash feature/x && git commit -m "feat: ..."
+
+# Cherry-pick a commit from another branch
+git cherry-pick <sha>
+git cherry-pick -x <sha>                        — record source in message
+git cherry-pick A..B                            — range (A exclusive, B inclusive)
+git cherry-pick A^..B                           — range (A inclusive)
+git cherry-pick --no-commit <sha>               — stage without committing
+
+# Undo a published commit safely
+git revert <sha>                                — creates inverse commit (preserves history)
+git revert -m 1 <merge-sha>                     — revert merge commit (mainline)
+
+# Recover lost work
+git reflog                                      — see HEAD history
+git switch -c recover <sha-from-reflog>
+git fsck --lost-found
+
+# Conflict resolution
+git status                                      — see "both modified"
+git diff --conflict=zdiff3                      — better conflict view (2.35+)
+git config --global merge.conflictstyle zdiff3
+# Edit files, resolve markers, then:
+git add <resolved>
+git rebase --continue / git merge --continue / git cherry-pick --continue
+git checkout --ours <file> / --theirs <file>    — pick a side wholesale
+
+## Useful aliases (add to ~/.gitconfig)
+
+[alias]
+  s   = status -sb
+  co  = checkout
+  sw  = switch
+  br  = branch
+  ci  = commit
+  l   = log --oneline --graph --decorate --all
+  last = log -1 HEAD
+  unstage = restore --staged
+  amend = commit --amend --no-edit
+  fixup = commit --fixup
+  uncommit = reset HEAD~1 --soft
+  please = push --force-with-lease
+
+## Useful config tweaks
+
+git config --global pull.rebase true                       — pull = fetch + rebase (cleaner history)
+git config --global push.autoSetupRemote true              — first push auto-sets upstream
+git config --global push.default current
+git config --global rebase.autoStash true                  — stash before rebase, pop after
+git config --global rebase.autoSquash true                 — autosquash fixup! commits
+git config --global merge.conflictstyle zdiff3
+git config --global rerere.enabled true
+git config --global diff.algorithm histogram               — better diffs
+git config --global core.fsmonitor true                    — fast scan
+git config --global init.defaultBranch main
+git config --global fetch.prune true                       — auto-remove deleted remote branches
+git config --global column.ui auto                         — list output columnized
+
+## GitHub CLI (gh) quick reference
+
+gh auth login
+gh repo clone owner/repo
+gh repo view --web
+gh pr create --fill                            — auto title/body from commits
+gh pr list / gh pr view <n> / gh pr checkout <n>
+gh pr merge --squash                           — merge current PR
+gh pr review --approve / --request-changes
+gh issue list / gh issue create
+gh run list / gh run view <id>                 — Actions
+gh release create v1.0 --notes "..."
+gh api repos/owner/repo/pulls/N/comments       — raw API

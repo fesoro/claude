@@ -180,3 +180,187 @@ Prefer early returns
 Context first param (ctx context.Context)
 errors wrap zəncirləmə
 defer ilə resource cleanup
+
+## Modern Go (1.21 → 1.24)
+
+# 1.21
+log/slog — structured logging in stdlib
+slices, maps packages — generic helpers (slices.Sort, slices.Contains, maps.Keys)
+cmp package — cmp.Compare, cmp.Less, cmp.Or
+min, max, clear builtins
+context.WithoutCancel, context.AfterFunc, context.WithDeadlineCause
+sync.OnceFunc / OnceValue / OnceValues — generic once
+
+# 1.22
+http.ServeMux — method + path patterns ("GET /users/{id}")
+range over int — for i := range 10 { ... }
+loop variable scoping fix (per-iteration variable)
+math/rand/v2 — improved API, no global mutable state
+
+# 1.23
+range over functions — for k, v := range myIter { ... } (push iterators)
+iter.Seq, iter.Seq2 — iterator types
+unique package — value canonicalization (string interning)
+slog.DiscardHandler
+
+# 1.24
+generic type aliases (type Set[T comparable] = map[T]struct{})
+crypto/mlkem — post-quantum KEM
+weak package — weak references
+go tool directive in go.mod (replace go install with versioned tools)
+omitzero JSON struct tag — omit zero values
+
+# Deprecated patterns to avoid
+math/rand global Seed (use rand/v2)
+ioutil.* (use io / os since 1.16)
+io/ioutil (whole package deprecated)
+
+## stdlib patterns (modern)
+
+# log/slog — structured logging
+logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))
+logger.Info("user login", "user_id", 1, "ip", ip)
+logger = logger.With("trace_id", tid)              — child with context
+slog.SetDefault(logger)
+slog.Info(...)                                       — uses default
+
+# http.ServeMux 1.22+ routing
+mux := http.NewServeMux()
+mux.HandleFunc("GET /users/{id}", getUser)
+mux.HandleFunc("POST /users", createUser)
+mux.HandleFunc("DELETE /users/{id}", deleteUser)
+id := r.PathValue("id")                              — extract path param
+http.ListenAndServe(":8080", mux)
+
+# embed FS
+import "embed"
+//go:embed templates/*.html
+var templates embed.FS
+//go:embed config.yaml
+var configBytes []byte
+//go:embed static/*
+var static embed.FS                                  — http.FS(static) for static serving
+
+# range over function (1.23+)
+func Numbers(n int) iter.Seq[int] {
+    return func(yield func(int) bool) {
+        for i := 0; i < n; i++ {
+            if !yield(i) { return }
+        }
+    }
+}
+for v := range Numbers(10) { fmt.Println(v) }
+
+# slices / maps generics (1.21+)
+slices.Contains(s, x)
+slices.Sort(s) / slices.SortFunc(s, cmp)
+slices.Index(s, x)
+slices.Reverse(s)
+slices.Equal(a, b)
+slices.Clone(s)
+slices.Concat(a, b, c)                              — 1.22+
+maps.Keys(m) / maps.Values(m)                        — returns iter.Seq (1.23+)
+maps.Clone(m)
+maps.Copy(dst, src)
+maps.Equal(a, b)
+
+# sync.OnceValue (1.21+)
+var loadConfig = sync.OnceValue(func() *Config {
+    return parseConfig()
+})
+
+## Security / supply chain
+
+govulncheck ./...                                    — known CVE scan (golang.org/x/vuln)
+go list -m -json all | nancy sleuth                  — alt vulnerability scanner
+go mod verify                                        — check sum vs go.sum
+GOFLAGS="-trimpath" go build                          — strip paths
+go build -ldflags="-s -w"                            — strip debug
+GOSUMDB=sum.golang.org / GONOSUMCHECK / GOPRIVATE=corp.com/*
+crypto/rand for security; math/rand only for non-crypto
+gosec ./...                                          — static security analyzer
+go install honnef.co/go/tools/cmd/staticcheck@latest
+
+## Observability
+
+OpenTelemetry SDK (go.opentelemetry.io/otel)
+otel-go-contrib instrumentations (net/http, database/sql, gRPC, redis)
+prometheus client_golang
+expvar — stdlib runtime stats (/debug/vars)
+net/http/pprof — runtime profiles (/debug/pprof/)
+runtime.ReadMemStats / runtime.NumGoroutine
+GODEBUG=schedtrace=1000,scheddetail=1 — runtime trace (debug only)
+
+## Tooling (modern)
+
+go work — multi-module workspaces (go.work file)
+go work init ./module1 ./module2
+go work use ./newmod
+go work sync
+
+go.mod toolchain directive (1.21+) — pin Go version
+toolchain go1.23.0
+
+go install <pkg>@latest   — install CLI tools to $GOBIN
+go install -tags="prod" ./cmd/server
+go run -race ./...
+go test -race -shuffle=on -count=1 ./...
+go test -fuzz=FuzzName -fuzztime=30s
+go test -bench=. -benchmem -benchtime=10s
+go tool covdata percent -i=cov.out                  — 1.20+ binary coverage
+
+# Lint / format
+gofmt -s -w .                                        — simplify + write
+goimports -local mycompany.com -w .
+golangci-lint run                                    — meta-linter (gofmt, govet, staticcheck, etc.)
+gopls — language server
+
+# Generate
+//go:generate stringer -type=Status
+//go:generate mockgen -source=foo.go -destination=mock_foo.go
+go generate ./...
+
+# Vendor / modules
+go mod download
+go mod tidy
+go mod why <pkg>
+go mod graph
+go mod edit -replace=old=new
+go mod edit -dropreplace=old
+GOPROXY=https://proxy.golang.org,direct
+GOPRIVATE=github.com/mycompany/*    — skip proxy/sumdb for private
+
+## Common idioms (production)
+
+# Graceful shutdown
+ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+defer cancel()
+srv := &http.Server{Addr: ":8080", Handler: mux}
+go func() { srv.ListenAndServe() }()
+<-ctx.Done()
+shutdownCtx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+defer cancel()
+srv.Shutdown(shutdownCtx)
+
+# Error wrapping with stack-like context
+return fmt.Errorf("load user %d: %w", id, err)
+errors.Is(err, ErrNotFound)
+var pe *PathError; errors.As(err, &pe)
+
+# Functional options pattern
+type Option func(*Server)
+func WithPort(p int) Option { return func(s *Server) { s.port = p } }
+func New(opts ...Option) *Server { s := &Server{}; for _, o := range opts { o(s) }; return s }
+
+# Singleflight (dedup concurrent calls)
+var g singleflight.Group
+v, err, _ := g.Do(key, func() (any, error) { return loadFromDB(key) })
+
+# errgroup
+g, ctx := errgroup.WithContext(ctx)
+for _, url := range urls {
+    url := url
+    g.Go(func() error { return fetch(ctx, url) })
+}
+if err := g.Wait(); err != nil { ... }
+g.SetLimit(10)                                       — bounded concurrency

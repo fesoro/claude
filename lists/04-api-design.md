@@ -63,11 +63,37 @@ Stack trace prod-da asla (debug mode-da yalnız)
 ## Semantic behaviors
 
 Idempotency (GET, PUT, DELETE default idempotentdir; POST deyil)
-Idempotency Key (Stripe stilində — header: Idempotency-Key)
 Safe methods (GET, HEAD, OPTIONS) — side-effect yoxdur
 Optimistic concurrency — If-Match (ETag)
 Conditional requests — If-None-Match / If-Match
 PATCH: JSON Patch (RFC 6902) vs JSON Merge Patch (RFC 7396)
+
+## Idempotency Key (deep)
+
+# Client
+Idempotency-Key: <uuid-v4>  — header; Stripe, Adyen, Twilio pattern
+
+# Server workflow
+1. Extract Idempotency-Key from header
+2. Hash key + {user_id, endpoint} → lookup in cache/DB
+3a. Miss → process request, store {status, response_body, expires_at}; return response
+3b. Hit + in-flight → 409 Conflict (or wait/retry)
+3c. Hit + completed → return stored response (same status + body, no re-processing)
+4. TTL: 24 h - 7 days (per product policy)
+
+# Implementation (Redis-based)
+SET idempotency:{key} "in-flight" NX EX 30          — claim key; NX prevents race
+# ... process ...
+SET idempotency:{key} {json_response} XX EX 86400   # store result
+
+# Edge cases
+Same key + different body → 422 (Stripe behaviour); or ignore silently (choose one, document it)
+Key reuse after TTL → treated as new request
+Network timeout (client retry with same key) → idempotent response returned
+Distributed: use distributed lock (Redis SETNX) to prevent concurrent processing
+
+# Response headers
+Idempotency-Replayed: true   — signals cached response returned
 
 ## HATEOAS / discoverability
 
@@ -95,6 +121,75 @@ API Blueprint (köhnəlmiş)
 RAML (köhnəlmiş)
 Postman Collection / Insomnia export
 Contract testing (Pact)
+
+## OpenAPI 3.1 (vs 3.0)
+
+JSON Schema full alignment — 3.0 subset-di, 3.1-də tam JSON Schema Draft 2020-12
+nullable deyil artıq — type: ["string", "null"]  (3.0-da nullable: true idi)
+Webhooks — openapi 3.1-də ayrı "webhooks" section (paths-dən ayrı)
+$ref + sibling allowed — 3.0-da $ref yanında başqa key-lər ignore edilirdi
+discriminator.mapping tam uyğun
+paths optional — 3.1-də paths olmaya bilər (webhooks-only spec)
+info.summary əlavə edildi
+license.identifier (SPDX kodu) dəstəyi
+
+# Minimal 3.1 spec
+openapi: "3.1.0"
+info:
+  title: My API
+  version: "1.0.0"
+paths:
+  /users/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/User" }
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema: { $ref: "#/components/schemas/Problem" }
+components:
+  schemas:
+    User:
+      type: object
+      required: [id, email]
+      properties:
+        id: { type: integer }
+        email: { type: string, format: email }
+        deleted_at: { type: ["string", "null"], format: date-time }   # 3.1 nullable
+    Problem:
+      type: object
+      properties:
+        type: { type: string, format: uri }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - BearerAuth: []
+webhooks:
+  orderCreated:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/OrderEvent" }
+      responses:
+        "200":
+          description: Acknowledged
 
 ## GraphQL
 
@@ -128,10 +223,63 @@ Buf CLI (modern Proto ecosystem)
 Server-Sent Events (SSE) — tək yönlü stream
 WebSocket — bidirectional
 Long polling (köhnəlmiş alternative)
-Webhook dizaynı (retry, HMAC signature, replay attack defense, exponential backoff)
 Webhook vs polling tradeoff
 MQTT — IoT real-time
 AMQP — RabbitMQ
+
+## Webhook design (deep)
+
+# Signing (HMAC-SHA256 — GitHub/Stripe/Shopify pattern)
+secret = random 32-byte hex (per-subscription)
+payload = raw request body bytes (do NOT parse before verify)
+signature = HMAC-SHA256(secret, payload)
+header: X-Webhook-Signature: sha256=<hex>  OR  X-Hub-Signature-256: sha256=<hex>
+
+# Verification (PHP)
+$expected = 'sha256=' . hash_hmac('sha256', $rawBody, $secret);
+if (!hash_equals($expected, $header)) { return 401; }
+# hash_equals prevents timing attacks
+
+# Verification (Go)
+mac := hmac.New(sha256.New, []byte(secret))
+mac.Write(body)
+expected := "sha256=" + hex.EncodeToString(mac.Sum(nil))
+if !hmac.Equal([]byte(expected), []byte(header)) { ... }
+
+# Replay attack defense
+X-Webhook-Timestamp: 1714123456  — unix seconds
+if abs(time.now() - timestamp) > 300 { return 401 }  — 5 min window
+Include timestamp in signature: HMAC(secret, timestamp + "." + body)
+
+# Retry strategy (sender side)
+1st retry: 5s
+2nd retry: 30s
+3rd-5th:   exponential (1min, 5min, 30min)
+Max:       24h; give up → dead letter / alert
+Respect Retry-After header if present
+
+# Delivery guarantees
+At-least-once by default (retry on non-2xx or timeout)
+Receiver must be idempotent (use event_id for deduplication)
+
+# Payload design
+{
+  "event_id": "evt_abc123",          — unique per event (idempotency key)
+  "event_type": "order.created",
+  "created_at": "2024-04-27T10:00:00Z",
+  "api_version": "2024-04-01",       — version pin (breaking changes don't break old receivers)
+  "data": { ... }
+}
+
+# Fan-out
+One domain event → multiple webhook subscriptions
+Use queue (Kafka/SQS) between domain event and webhook dispatcher
+Dispatcher: pull from queue → POST → ack or requeue
+
+# Security extras
+Allowlist sender IPs (optional; breaks CDN-based delivery)
+Rotate secrets without downtime: send old+new sig during rotation window
+mTLS for high-security M2M webhooks
 
 ## Resilience
 

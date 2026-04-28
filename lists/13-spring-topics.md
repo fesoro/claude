@@ -235,8 +235,98 @@ Layered JARs (for better Docker caching)
 Jakarta EE migration (javax → jakarta)
 Native image support (GraalVM)
 Observability abstraction (Micrometer Tracing)
-Virtual Threads (Java 21 + spring.threads.virtual.enabled=true)
 @HttpExchange declarative clients
 Problem Details (RFC 7807) ProblemDetail
-Spring Modulith (modular monolith)
 Project Reactor + Structured Concurrency interop
+
+## Virtual Threads (Spring Boot 3.2+ / Java 21+)
+
+spring.threads.virtual.enabled=true           — enable globally (enables for Tomcat + @Async)
+
+# What changes automatically
+Tomcat request threads → virtual threads (each request = 1 VT)
+@Async tasks → virtual threads
+@Scheduled → virtual threads
+@RabbitListener, @KafkaListener → virtual threads
+
+# Trade-offs
+GAIN: high concurrency with blocking I/O (DB, HTTP calls) at lower memory than platform threads
+GAIN: no need for reactive (WebFlux) for I/O-bound apps
+LOSE: CPU-bound work gains nothing (pinning risk if synchronized + blocking inside)
+WATCH: thread-local profilers, APM agents may not support VT yet (check vendor docs)
+
+# Pinning (avoid)
+synchronized blocks that call blocking ops → pin carrier thread → defeats purpose
+Fix: use ReentrantLock instead of synchronized; or avoid blocking inside synchronized
+
+# JVM flags to detect pinning
+-Djdk.tracePinnedThreads=full
+
+# When NOT to use virtual threads
+CPU-intensive work (parallelism, not concurrency) → use ForkJoinPool / parallel streams
+Already on WebFlux reactive stack → mixing models is complex
+
+## Spring Modulith (modular monolith)
+
+@ApplicationModule — marks package as module; enforces boundaries at test time
+Spring Modulith dependencies:
+  spring-modulith-core, spring-modulith-test, spring-modulith-events-*
+
+# Module boundaries enforced
+Internal sub-packages not accessible from other modules
+Only public API package (top-level of module) is accessible
+Violation → test failure (not compile error; use Modulith verifier)
+
+# Verifier test
+@Test void verifyModularity() {
+    ApplicationModules.of(App.class).verify();
+}
+
+# Module events (decoupled communication between modules)
+// Publisher (inside Order module)
+@ApplicationModuleListener  // or @EventListener + @Transactional
+// Subscriber (inside Inventory module)
+@ApplicationModuleListener
+public void on(OrderCreatedEvent e) { ... }
+
+# Event publication registry (guaranteed delivery)
+spring-modulith-events-jdbc / spring-modulith-events-jpa
+Incomplete event publications → stored in DB → retried on restart
+Replaces Outbox pattern for intra-monolith events
+
+# Scenarios (integration test per module)
+@ApplicationModuleTest   // boots only the module + its dependencies
+class OrderModuleTests { ... }
+
+## Spring Boot 3.4 specifics
+
+@MockitoBean / @MockitoSpyBean — replaces deprecated @MockBean / @SpyBean
+  Same behavior, new naming aligned with Mockito ecosystem
+  Works in @SpringBootTest, @WebMvcTest, @DataJpaTest slices
+
+# ProblemDetail improvements (3.3+)
+ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, "User not found")
+  .with("userId", id)         — custom properties
+// Returned as application/problem+json automatically with @ControllerAdvice
+
+# @Fallback beans (3.4+)
+@Bean @Fallback           — bean used only if no other implementation present
+Replaces @ConditionalOnMissingBean pattern for library defaults
+
+# SSL bundle hot reload (3.4+)
+spring.ssl.bundle.*       — manage keystores/truststores declaratively
+Reloadable without restart: spring.ssl.bundle.jks.myBundle.reload-on-rotation=true
+
+# CDS (Class Data Sharing) training run (3.3+)
+./mvnw spring-boot:process-aot   — AOT processing
+java -XX:DumpLoadedClassList=app.classlist -jar app.jar
+java -XX:SharedArchiveFile=app.jsa -XX:SharedClassListFile=app.classlist -Xshare:dump
+→ faster startup with CDS archive
+
+# Testcontainers @ServiceConnection (3.1+, expanded in 3.2+)
+@Container
+static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16");
+@DynamicPropertySource  // manual (old way)
+// OR:
+@ServiceConnection     // auto-wires DataSource URL/user/pass
+static PostgreSQLContainer<?> postgres = ...;
