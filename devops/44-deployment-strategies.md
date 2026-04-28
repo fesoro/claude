@@ -453,3 +453,23 @@ spec:
 - Argo Rollouts niyə default Kubernetes Deployment-dən üstündür?
 - Backward-incompatible migration zaman zaman necə edilməlidir?
 - 50 microservice-li sistemdə hansı strategiyanı seçərdiniz və niyə?
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Nginx konfiqurasiyasında `upstream` blokunda weighted canary yazın: `v1` 95 çəki, `v2` 5 çəki — 5% canary simulyasiya edin
+2. AWS ALB-də iki Target Group (blue, green) qurun; listener rule-u weight 100/0 → 0/100 dəyişdirərək blue-green switch edin
+3. Laravel Pennant feature flag qurun: 5% user üçün yeni checkout aktiv edin, 1% üçün tam rollout edin
+4. Kubernetes Deployment-ə `readinessProbe`, `livenessProbe` və `maxUnavailable: 1, maxSurge: 1` əlavə edin; rolling update izləyin
+5. Breaking migration senariyası (sütun rename): expand/contract ilə 3 ayrı deployment planlayın — hər deployment-da hansı kod+schema vəziyyəti olacağını izah edin
+6. Shadow deployment üçün Nginx `mirror` direktivi ilə test mühitinə 10% trafik yönəldin; write request-ləri necə idarə edəcəyinizi planlayın
+
+## Əlaqəli Mövzular
+
+- [Zero-Downtime Deployment](41-zero-downtime-deployment.md) — DB migration koordinasiyası, health check
+- [Infrastructure Patterns](27-infrastructure-patterns.md) — Deployer, Envoyer, atomic symlink
+- [CI/CD Deployment](39-cicd-deployment.md) — Pipeline dizaynı, artifact management
+- [GitOps](35-gitops.md) — Argo CD progressive delivery, Flux
+- [DORA Metrics](45-dora-metrics.md) — Change failure rate, deployment frequency
+- [Chaos Engineering](33-chaos-engineering.md) — Deployment resiliency testing

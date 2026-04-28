@@ -302,3 +302,23 @@ return new class extends Migration {
 - Rolling deployment zamanı v1 + v2 paralel işlədikdə API backward compatibility niyə vacibdir?
 - Kubernetes readiness probe vs liveness probe fərqi nədir?
 - Maintenance mode olmadan zero-downtime-ı necə həyata keçirərdiniz?
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Mövcud bir Laravel migration-ı götürün (sütun adını dəyişdirən): expand/contract pattern ilə 3 migration-a bölün; hər mərhələnin niyə ayrı deployment tələb etdiyini izah edin
+2. `/health/ready` (readiness) və `/health/live` (liveness) endpointlər yarat: readiness DB+Redis+Queue yoxlasın, liveness sadəcə 200 qaytarsın
+3. Nginx upstream konfiqurasiyasında health check əlavə edin: `health_check interval=5s fails=2`
+4. Kubernetes Deployment YAML-ına readiness + liveness probe əlavə edin; readiness failure-ı simulyasiya edin (DB-ni dayandırın), trafikin dayandırıldığını yoxlayın
+5. Bir "additive" migration yazın (yeni nullable sütun + indeks): migration zamanı production traffic-in kəsilmədiyini `pt-online-schema-change` ilə müqayisə edin
+6. Blue-green simulate edin: iki local Docker container, Nginx `upstream` weight-i 0/100 → 100/0 dəyişdirin; session davamlılığını yoxlayın
+
+## Əlaqəli Mövzular
+
+- [Deployment Strategies](44-deployment-strategies.md) — Canary, A/B, Shadow, bütün strategiyalar
+- [Infrastructure Patterns](27-infrastructure-patterns.md) — Deployer, Envoyer deployment tools
+- [CI/CD Deployment](39-cicd-deployment.md) — Pipeline-da zero-downtime deploy
+- [Nginx](11-nginx.md) — Load balancer, health check konfiqurasiyası
+- [SLA/SLO/SLI](43-sla-slo-sli.md) — Availability hədəfləri, error budget
+- [DORA Metrics](45-dora-metrics.md) — Change failure rate, MTTR ölçmə

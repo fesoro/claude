@@ -274,3 +274,23 @@ services:
 - Dev/Prod parity (Factor X) niyə vacibdir? Hansı gap-lər var?
 - Factor IX (Disposability) PHP worker-larda necə tətbiq edilir?
 - "Backing services" bağımsız dəyişdirmək (MySQL → PostgreSQL) niyə mümkün olmalıdır?
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Mövcud Laravel proyektinizdə `config/` fayllarını yoxlayın — hardcoded credential tapın, hamsını `env()` ilə əvəz edin (Factor III)
+2. Multi-stage Dockerfile yazın: `composer install` → `config:cache` build stage-də, runtime stage yalnız tətbiqi işlədir (Factor V)
+3. `docker-compose.yml` yarat: PHP + PostgreSQL + Redis + Queue worker — hər xidmət production ilə eyni version (Factor X)
+4. Laravel `config/logging.php`-ni dəyişdirin: `stderr` channel-ını default edin, stdout-a JSON log yaz; `docker logs` ilə yoxlayın (Factor XI)
+5. Queue worker üçün `SIGTERM` handler əlavə edin: `pcntl_signal(SIGTERM, fn() => $this->shouldQuit = true)` — graceful shutdown (Factor IX)
+6. Statefull olan bir Laravel xüsusiyyətini tapın (məs: local file upload) və S3 ilə əvəz edin — stateless etmək (Factor VI)
+
+## Əlaqəli Mövzular
+
+- [CI/CD Konseptləri](03-cicd-concepts.md) — Build, Release, Run pipeline
+- [CI/CD Deployment](39-cicd-deployment.md) — Praktik CI/CD pipeline
+- [Zero-Downtime Deployment](41-zero-downtime-deployment.md) — Disposability, graceful shutdown
+- [Secrets Management](28-secrets-management.md) — Factor III: Config mühitdə saxlamaq
+- [Deployment Strategies](44-deployment-strategies.md) — Factor V: Build/Release/Run ayrılığı
+- [GitOps](35-gitops.md) — Declarative, version-controlled infrastructure

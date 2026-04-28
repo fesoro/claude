@@ -429,3 +429,23 @@ Route::get('/metrics', function (CollectorRegistry $reg) {
 - "Burn rate" konsepti necə izah edilir?
 - Prometheus-da SLI recording rule nə üçündür?
 - ML sistemində "correctness" SLI necə modelləşdirilir?
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Öz Laravel API-niz üçün 3 SLI müəyyən edin: availability (HTTP 2xx/total), latency (p99 < 500ms), quality (exceptions-free requests)
+2. Bu SLI-lər üçün SLO-lar yazın; 30 günlük error budget dəqiqə cinsindən hesablayın
+3. Prometheus `recording rule` yazın: availability SLI-ni 5m, 1h, 30d window üçün hesablayan
+4. Grafana paneli qurun: 30-günlük rolling availability — threshold line: SLO = 99.9%
+5. Error budget burn rate alert yazın: 1h window-da budget 14.4× daha sürətli xərclənərsə `critical` alert
+6. Bir "99.99% SLO" tələbinin həm texniki, həm maddi dəyərini qiymətləndirin — infrastructure, monitoring, on-call xərc cəlb edərək
+
+## Əlaqəli Mövzular
+
+- [Site Reliability Engineering](34-site-reliability.md) — SRE çərçivəsi, error budget policy
+- [Prometheus Monitoring](18-monitoring-prometheus.md) — SLI ölçmə recording rules
+- [Grafana](19-monitoring-grafana.md) — SLO dashboard dizaynı
+- [Incident Response](31-incident-response.md) — MTTR, error budget xərclənməsi
+- [DORA Metrics](45-dora-metrics.md) — Deploy frequency vs error budget
+- [Chaos Engineering](33-chaos-engineering.md) — SLO üzərindən experiment aparmaq
