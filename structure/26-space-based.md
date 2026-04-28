@@ -177,3 +177,97 @@ project/
 ├── go.mod
 └── Makefile
 ```
+
+---
+
+## Hazelcast Configuration (Java)
+
+```java
+// HazelcastConfig.java
+@Configuration
+public class HazelcastConfig {
+
+    @Bean
+    public HazelcastInstance hazelcastInstance() {
+        Config config = new Config();
+        config.setClusterName("auction-cluster");
+
+        // Map config: auction data grid
+        MapConfig auctionMapConfig = new MapConfig("auctions");
+        auctionMapConfig.setBackupCount(1);           // 1 sync backup replica
+        auctionMapConfig.setAsyncBackupCount(1);      // 1 async backup
+        auctionMapConfig.setEvictionConfig(
+            new EvictionConfig()
+                .setEvictionPolicy(EvictionPolicy.LRU)
+                .setMaxSizePolicy(MaxSizePolicy.PER_NODE)
+                .setSize(10_000)
+        );
+        // Near cache: local thread-level cache
+        NearCacheConfig nearCache = new NearCacheConfig("auctions");
+        nearCache.setTimeToLiveSeconds(60);
+        auctionMapConfig.setNearCacheConfig(nearCache);
+        config.addMapConfig(auctionMapConfig);
+
+        // Network config: member discovery
+        NetworkConfig network = config.getNetworkConfig();
+        JoinConfig join = network.getJoin();
+        join.getMulticastConfig().setEnabled(false);
+        join.getKubernetesConfig()
+            .setEnabled(true)
+            .setProperty("namespace", "auction-system")
+            .setProperty("service-name", "hazelcast");
+
+        return Hazelcast.newHazelcastInstance(config);
+    }
+}
+```
+
+---
+
+## Data Partitioning Strategy
+
+```
+Partition Key seçimi:
+  Auction system: auction_id → partition key
+  - Eyni auction-un bütün bid-ləri eyni partition-da
+  - Partition = 1 processing unit üzərindədir
+  - Race condition yoxdur (single-threaded partition processing)
+
+  E-commerce: user_id → partition key
+  - Eyni user-in bütün session data-sı eyni partition-da
+  - HTTP request routing: user_id hash → processing unit
+
+Hazelcast partition count (default: 271):
+  - Prime number seçilir (271) — better distribution
+  - Hər member ~271/N partition alır (N = member sayı)
+  - Member əlavə olunanda partitions rebalance olunur
+
+Backup strategy:
+  - backupCount=1: primary düşəndə backup avtomatik primary olur
+  - asyncBackupCount=1: additional async backup (weaker consistency)
+  - Production: backupCount=2 (3 kopya total) → 2 node failure tolerates
+```
+
+---
+
+## When to Use Space-Based
+
+```
+✓ İstifadə et:
+  - Auctions, flash sales (concurrent writes per entity)
+  - Online gaming (real-time state per player/room)
+  - Trading platforms (order book per instrument)
+  - Session-heavy apps (100K+ concurrent sessions)
+  - Traffic spikes: sports events, concerts (unpredictable load)
+
+✗ İstifadə etmə:
+  - ACID transactions tələb olunan sistemlər
+  - Strong consistency critical (financial ledger)
+  - Data > memory capacity (hundreds of GB)
+  - Operational simplicity prioritetdir
+
+Alternativlər:
+  - Yüksək yük amma daha sadə → Horizontal scaling + Redis cache
+  - Per-entity concurrency → Actor model (25-reactive-actor-model.md)
+  - Global distribution → Cell-based architecture (27-cell-based-architecture.md)
+```
