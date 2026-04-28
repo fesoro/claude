@@ -422,3 +422,11 @@ docker run -d --name laravel-redis \
 8. **`.dockerignore` istifadə edin.** Lazımsız faylların image-ə düşməsinin qarşısını alın.
 9. **Health check əlavə edin.** Konteynerin sağlam işlədiyini yoxlamaq üçün.
 10. **Non-root istifadəçi istifadə edin.** Təhlükəsizlik üçün root-dan qaçın.
+
+
+## Əlaqəli Mövzular
+
+- [dockerfile.md](02-dockerfile.md) — Dockerfile instruksiyaları, image yaratmaq
+- [dockerignore-build-context.md](03-dockerignore-build-context.md) — Build context optimallaşdırma
+- [docker-compose.md](05-docker-compose.md) — Çoxlu servisləri bir yerdə idarə etmək
+- [networking.md](08-networking.md) — Konteyner şəbəkə arxitekturası

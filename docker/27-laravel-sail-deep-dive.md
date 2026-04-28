@@ -372,3 +372,10 @@ Named volumes: `sail-mysql`, `sail-redis`. Docker Desktop-da `/var/lib/docker/vo
 8. **macOS-da Mutagen/VirtioFS** — file sync performance üçün
 9. **`sail artisan queue:work`** — queue worker dedicated container-də işlət
 10. **Supervisor** quraşdır — production-da PHP-FPM, queue worker, schedule idarəsi üçün
+
+
+## Əlaqəli Mövzular
+
+- [docker-compose.md](05-docker-compose.md) — Docker Compose əsasları
+- [dev-vs-prod-docker-setup.md](44-dev-vs-prod-docker-setup.md) — Dev vs prod setup
+- [database-services-in-docker.md](06-database-services-in-docker.md) — Database servislər

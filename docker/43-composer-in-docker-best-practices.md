@@ -464,3 +464,10 @@ Build fail: "composer.lock is out of sync with composer.json".
 
 - **Q:** BuildKit cache mount composer üçün?
   - `RUN --mount=type=cache,target=/tmp/composer-cache COMPOSER_HOME=/tmp/composer-cache composer install` — 3-5x daha sürətli build.
+
+
+## Əlaqəli Mövzular
+
+- [multi-stage-builds.md](04-multi-stage-builds.md) — Multi-stage build
+- [php-extensions-in-docker.md](35-php-extensions-in-docker.md) — PHP extension-lar
+- [php-laravel-production-dockerfile.md](36-php-laravel-production-dockerfile.md) — Production Dockerfile

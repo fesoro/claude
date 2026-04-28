@@ -391,3 +391,10 @@ Multi-stage build-də paralelizm. Məs: 3 stage varsa, bir-birindən asılı olm
 8. **Bake** — multi-image repos-larda istifadə et
 9. **`.dockerignore`** — lazımsız faylları build context-dən çıxar
 10. **Copy strategy** — ən az dəyişən faylları əvvəl kopyala (cache invalidation-dan qaç)
+
+
+## Əlaqəli Mövzular
+
+- [multi-stage-builds.md](04-multi-stage-builds.md) — Multi-stage build
+- [docker-optimization.md](11-docker-optimization.md) — Layer caching
+- [docker-ci-cd-github-actions-php.md](51-docker-ci-cd-github-actions-php.md) — CI/CD ilə BuildKit

@@ -394,3 +394,11 @@ docker images myapp
 8. **Stage-ləri yenidən istifadə edin** — Eyni base stage-dən development və production image-lər qurun.
 9. **Xarici image-lərdən alətləri kopyalayın** — `COPY --from=composer:2` kimi.
 10. **Image ölçüsünü izləyin** — Hər build-dən sonra `docker images` ilə yoxlayın.
+
+
+## Əlaqəli Mövzular
+
+- [dockerfile.md](02-dockerfile.md) — Dockerfile əsasları
+- [dockerignore-build-context.md](03-dockerignore-build-context.md) — Build context
+- [docker-optimization.md](11-docker-optimization.md) — Layer caching
+- [php-laravel-production-dockerfile.md](36-php-laravel-production-dockerfile.md) — Laravel production Dockerfile

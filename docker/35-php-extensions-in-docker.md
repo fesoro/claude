@@ -1,8 +1,6 @@
 # PHP Extension-larını Docker-də Quraşdırmaq
 
 > **Səviyyə (Level):** ⭐⭐ Middle
-> **Oxu müddəti:** ~15-20 dəqiqə
-> **Kateqoriya:** Docker / PHP Runtime
 
 ## Nədir? (What is it?)
 
@@ -585,3 +583,10 @@ WORKDIR /var/www/html
 
 - **Q:** Laravel üçün minimum extension siyahısı nədir?
   - `pdo_mysql` (DB), `mbstring` + `openssl` + `tokenizer` + `json` + `ctype` (core, default var), `bcmath` (pul), `intl` (locale), `gd` və ya `imagick` (şəkil), `zip` (Composer), `redis` (cache/queue), `opcache` (prod perf), `pcntl` (queue worker). `composer.json`-dakı `ext-*` siyahısına əməl et.
+
+
+## Əlaqəli Mövzular
+
+- [dockerfile.md](02-dockerfile.md) — Dockerfile instruksiyaları
+- [php-laravel-production-dockerfile.md](36-php-laravel-production-dockerfile.md) — Production Dockerfile
+- [composer-in-docker-best-practices.md](43-composer-in-docker-best-practices.md) — Composer best practices

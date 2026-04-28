@@ -1,8 +1,6 @@
 # Image Tagging və Versioning Strategiyası
 
 > **Səviyyə (Level):** ⭐⭐ Middle
-> **Oxu müddəti:** ~15-20 dəqiqə
-> **Kateqoriya:** CI/CD & Release Engineering
 
 ## Nədir? (What is it?)
 
@@ -655,3 +653,10 @@ Paranoid production-larda istifadə olunur (Kubernetes supply-chain security).
 
 - **Q:** `docker/metadata-action` nə edir?
   - GitHub event-inə əsasən avtomatik tag generate edir. `v1.2.3` git tag push olduqda `1.2.3`, `1.2`, `1` tag-ləri. `main` branch push-da `main` + `sha-abc1234`. Manual tag yazmağa ehtiyac yoxdur.
+
+
+## Əlaqəli Mövzular
+
+- [docker-registry.md](12-docker-registry.md) — Registry-lər, push/pull
+- [docker-ci-cd-github-actions-php.md](51-docker-ci-cd-github-actions-php.md) — GitHub Actions CI/CD
+- [buildkit-advanced.md](29-buildkit-advanced.md) — Multi-arch build

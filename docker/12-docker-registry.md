@@ -392,3 +392,10 @@ docker buildx build \
 8. **Registry auth-u credential helper ilə idarə edin** — password-u plain text saxlamayın
 9. **Image-ləri imzalayın** — Docker Content Trust və ya cosign
 10. **Pull rate limit-ə diqqət edin** — Docker Hub free plan-da 100/6 saat
+
+
+## Əlaqəli Mövzular
+
+- [image-tagging-versioning-strategy.md](13-image-tagging-versioning-strategy.md) — Tagging strategiyası
+- [docker-ci-cd-github-actions-php.md](51-docker-ci-cd-github-actions-php.md) — CI/CD ilə registry push
+- [docker-security.md](10-docker-security.md) — Image scanning, secrets

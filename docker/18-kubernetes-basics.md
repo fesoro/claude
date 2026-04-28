@@ -538,3 +538,11 @@ kubectl create -f file.yaml   # Yalnız yaradır (imperativ)
 8. **`kubectl apply` istifadə edin** — `create` əvəzinə
 9. **RBAC konfiqurasiya edin** — minimum privilege prinsipi
 10. **Monitoring qurun** — Prometheus + Grafana
+
+
+## Əlaqəli Mövzular
+
+- [kubernetes-services.md](19-kubernetes-services.md) — Service tipləri, Ingress
+- [kubernetes-deployments.md](20-kubernetes-deployments.md) — Deployment strategiyaları
+- [kubernetes-configmaps-secrets.md](22-kubernetes-configmaps-secrets.md) — Konfigurasiya idarəsi
+- [kubernetes-helm.md](23-kubernetes-helm.md) — Helm paket meneceri

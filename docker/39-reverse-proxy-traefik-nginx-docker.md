@@ -1,8 +1,6 @@
 # Reverse Proxy Pattern: Traefik və Nginx Docker-də
 
 > **Səviyyə (Level):** ⭐⭐⭐ Senior
-> **Oxu müddəti:** ~20-25 dəqiqə
-> **Kateqoriya:** Docker / Networking
 
 ## Nədir? (What is it?)
 
@@ -558,3 +556,10 @@ gRPC backend-sə Traefik-də `scheme=h2c` lazımdır. Default HTTP/1.1 işləmir
 
 ### S8: Traefik middleware nədir və hansıları lazımdır?
 **C:** Middleware — request/response-u dəyişən əlavə layer-dir. Chain-də tətbiq olunur. Yaygın: rate limiting, auth (basic/forward), header manipulation (HSTS, X-Frame-Options), IP whitelist, strip prefix, compression, retry. Label-da `traefik.http.middlewares.X.Y.Z` kimi konfiqurasiya olunur, sonra router-ə bağlanır.
+
+
+## Əlaqəli Mövzular
+
+- [nginx-php-fpm-container-setup.md](38-nginx-php-fpm-container-setup.md) — Nginx + PHP-FPM
+- [networking.md](08-networking.md) — Docker şəbəkə
+- [kubernetes-services.md](19-kubernetes-services.md) — K8s Ingress

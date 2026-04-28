@@ -1,8 +1,6 @@
 # Local Kubernetes Backend Dev üçün (kind, minikube, k3d)
 
 > **Səviyyə (Level):** ⭐⭐⭐ Senior
-> **Oxu müddəti:** ~20-25 dəqiqə
-> **Kateqoriya:** Kubernetes / Developer Tooling
 
 ## Nədir? (What is it?)
 
@@ -445,3 +443,10 @@ Həmişə açıq olmalı deyil — RAM yeyir. Lazım olanda aç.
 
 ### S8: "imagePullPolicy: Never" nə vaxt istifadə olunur?
 **C:** Local development-də, image registry-də yox, yalnız local Docker-də mövcud olanda. Produksiyada heç vaxt — orada `Always` və ya `IfNotPresent` (dəqiq tag-la) olmalıdır. Local kind/k3d workflow-unda `kind load` sonra `imagePullPolicy: Never` kombinasiyası standartdır.
+
+
+## Əlaqəli Mövzular
+
+- [kubernetes-basics.md](18-kubernetes-basics.md) — K8s arxitekturası
+- [kubernetes-helm.md](23-kubernetes-helm.md) — Helm chart deploy
+- [helm-chart-consumer-guide.md](24-helm-chart-consumer-guide.md) — Helm istifadəsi

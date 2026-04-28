@@ -324,3 +324,11 @@ Alternativ: reverse proxy (Nginx) host-da, konteyner 8080-də.
 8. **Chainguard images** — distroless alternativi kimi nəzərdən keçir
 9. **`allowPrivilegeEscalation: false`** — K8s-də hər podda
 10. **SBOM yarat** — image daxilindəki hər paket məlumatı (syft ilə)
+
+
+## Əlaqəli Mövzular
+
+- [docker-security.md](10-docker-security.md) — Docker security best practices
+- [php-laravel-production-dockerfile.md](36-php-laravel-production-dockerfile.md) — Production Dockerfile
+- [kubernetes-deep-dive.md](52-kubernetes-deep-dive.md) — Pod Security Standards
+- [docker-file-permissions-php.md](45-docker-file-permissions-php.md) — UID/GID idarəsi

@@ -488,3 +488,11 @@ secrets:
 10. **Image-ləri pin edin** — Digest ilə, `latest` tag-dan qaçın.
 11. **Build secret-lər istifadə edin** — `--mount=type=secret` ilə.
 12. **Docker Content Trust aktiv edin** — İmzalanmış image-lər.
+
+
+## Əlaqəli Mövzular
+
+- [distroless-rootless-docker.md](28-distroless-rootless-docker.md) — Distroless image, rootless Docker
+- [docker-file-permissions-php.md](45-docker-file-permissions-php.md) — Fayl icazələri, UID/GID
+- [docker-env-secrets-laravel.md](46-docker-env-secrets-laravel.md) — Secret idarəsi
+- [kubernetes-deep-dive.md](52-kubernetes-deep-dive.md) — K8s RBAC, NetworkPolicy, PSS

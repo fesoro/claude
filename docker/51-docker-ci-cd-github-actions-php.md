@@ -723,3 +723,11 @@ deploy:
 
 - **Q:** Trivy CRITICAL tapırsa?
   - Build fail et (`exit-code: 1`). Developer CVE-ni yoxlayır — base image yenilə (`FROM php:8.3-fpm-alpine` → yeni digest), paketi update et, və ya CVE irrelevant-dirsə `.trivyignore`-a əlavə et.
+
+
+## Əlaqəli Mövzular
+
+- [docker-registry.md](12-docker-registry.md) — Registry push/pull
+- [image-tagging-versioning-strategy.md](13-image-tagging-versioning-strategy.md) — Tagging strategiyası
+- [buildkit-advanced.md](29-buildkit-advanced.md) — Multi-arch build
+- [testing-php-in-docker.md](47-testing-php-in-docker.md) — Test stage CI-da

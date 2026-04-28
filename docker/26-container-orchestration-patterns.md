@@ -808,3 +808,10 @@ spec:
 8. **Shared volume üçün emptyDir istifadə edin** — Pod restart-da itirilməsi problem deyilsə
 9. **Init container-ları sıralı düşünün** — birincisi bitməsə ikincisi başlamır
 10. **Sidecar resource-larını hesaba alın** — Pod-un total resource tələbi artır
+
+
+## Əlaqəli Mövzular
+
+- [kubernetes-basics.md](18-kubernetes-basics.md) — K8s Pod konsepti
+- [kubernetes-deployments.md](20-kubernetes-deployments.md) — Deployment idarəsi
+- [nginx-php-fpm-container-setup.md](38-nginx-php-fpm-container-setup.md) — Nginx + PHP-FPM sidecar

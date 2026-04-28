@@ -935,3 +935,11 @@ CI/CD-də (46-cı fayl detallı):
 
 - **Q:** `DB_HOST=mysql` niyə `127.0.0.1` yox?
   - Docker Compose service name-ləri DNS ilə resolve edir. Konteyner daxilində `mysql` → mysql service-nin IP-si. `127.0.0.1` isə konteynerin özüdür.
+
+
+## Əlaqəli Mövzular
+
+- [php-laravel-production-dockerfile.md](36-php-laravel-production-dockerfile.md) — Production Dockerfile
+- [docker-compose.md](05-docker-compose.md) — Docker Compose
+- [dev-vs-prod-docker-setup.md](44-dev-vs-prod-docker-setup.md) — Dev vs prod setup
+- [docker-entrypoint-scripts-laravel.md](40-docker-entrypoint-scripts-laravel.md) — Entrypoint skriptlər

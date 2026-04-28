@@ -1,8 +1,6 @@
 # Docker Performance Mac və Windows-da
 
 > **Səviyyə (Level):** ⭐⭐ Middle
-> **Oxu müddəti:** ~15-20 dəqiqə
-> **Kateqoriya:** Docker / Development Experience
 
 ## Nədir? (What is it?)
 
@@ -508,3 +506,10 @@ Docker Desktop `localhost:3306`-ı otomatik forward edir. Colima etməyə bilər
 
 - **Q:** Test-lər CI-də işləyir amma lokal yavaşdır — niyə?
   - CI native Linux-dadır (GitHub Actions Ubuntu runner). Lokal Mac/Windows-da VM sərhədi var. CI-də 30 saniyə → lokal 5 dəqiqə olmaq normal ola bilər. Həll: VirtioFS, selective mount, OrbStack, və ya testləri konteynerdə deyil bir dəfə CI-də icra et.
+
+
+## Əlaqəli Mövzular
+
+- [docker-basics.md](01-docker-basics.md) — Docker əsasları
+- [volumes-and-storage.md](07-volumes-and-storage.md) — Volume tipləri
+- [dev-vs-prod-docker-setup.md](44-dev-vs-prod-docker-setup.md) — Dev mühiti setup

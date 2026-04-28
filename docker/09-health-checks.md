@@ -547,3 +547,10 @@ services:
 8. **Müxtəlif səviyyədə yoxlayın** — Nginx (HTTP), PHP-FPM (process), App (dependency).
 9. **Timeout-u real şərtlərə uyğunlaşdırın** — Yavaş network-da timeout artırın.
 10. **Health check nəticələrini monitorinq edin** — Unhealthy alert-ləri qurun.
+
+
+## Əlaqəli Mövzular
+
+- [kubernetes-deployments.md](20-kubernetes-deployments.md) — K8s probes
+- [nginx-php-fpm-container-setup.md](38-nginx-php-fpm-container-setup.md) — PHP-FPM health check
+- [docker-entrypoint-scripts-laravel.md](40-docker-entrypoint-scripts-laravel.md) — Entrypoint və graceful shutdown

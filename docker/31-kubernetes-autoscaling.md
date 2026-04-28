@@ -683,3 +683,11 @@ Cold start — ilk event gələndə pod yaratmaq, image pull, warm up vaxtı tə
 12. **Load test** — scaling davranışını öncədən yoxla
 13. **`kubectl top`** — baseline resource istifadəsi
 14. **Alert on max replicas** — cap-ə çatıbsa incident
+
+
+## Əlaqəli Mövzular
+
+- [kubernetes-deployments.md](20-kubernetes-deployments.md) — HPA konfiqurasiyası
+- [resource-limits-sizing-php.md](48-resource-limits-sizing-php.md) — Resource limits
+- [kubernetes-observability.md](33-kubernetes-observability.md) — Custom metrics
+- [laravel-queue-workers-scheduler-docker.md](42-laravel-queue-workers-scheduler-docker.md) — KEDA ilə queue worker scaling

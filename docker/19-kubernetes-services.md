@@ -551,3 +551,11 @@ Route::get('/ready', function () {
 8. **Network Policy ilə traffic-i məhdudlaşdırın** — yalnız lazım olan Service-lər əlçatan olsun
 9. **ExternalName ilə xarici servisləri abstrakt edin** — migration asanlaşır
 10. **Service annotation-larını bilin** — cloud provider-ə xüsusi konfiqurasiya
+
+
+## Əlaqəli Mövzular
+
+- [kubernetes-basics.md](18-kubernetes-basics.md) — K8s arxitekturası
+- [networking.md](08-networking.md) — Docker şəbəkə arxitekturası
+- [reverse-proxy-traefik-nginx-docker.md](39-reverse-proxy-traefik-nginx-docker.md) — Ingress/proxy setup
+- [kubernetes-helm.md](23-kubernetes-helm.md) — Helm chart-larda service konfiq

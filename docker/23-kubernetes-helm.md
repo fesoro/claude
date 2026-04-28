@@ -686,3 +686,11 @@ spec:
 8. **Dependency-ləri Chart.lock ilə kilidləyin**
 9. **Mühitlər üçün ayrı values faylları** — values-staging.yaml, values-production.yaml
 10. **Chart-ı OCI registry-də saxlayın** — Helm 3.8+
+
+
+## Əlaqəli Mövzular
+
+- [helm-chart-consumer-guide.md](24-helm-chart-consumer-guide.md) — Helm consumer perspektivi
+- [kubernetes-basics.md](18-kubernetes-basics.md) — K8s resurlar
+- [kubernetes-configmaps-secrets.md](22-kubernetes-configmaps-secrets.md) — ConfigMap/Secret
+- [kubernetes-jobs-cronjobs.md](32-kubernetes-jobs-cronjobs.md) — Helm hook ilə migration

@@ -1,8 +1,6 @@
 # MySQL/Postgres/Redis Servislərini Docker-də (Local Dev üçün)
 
 > **Səviyyə (Level):** ⭐⭐ Middle
-> **Oxu müddəti:** ~20-25 dəqiqə
-> **Kateqoriya:** Docker / Local Development
 
 ## Nədir? (What is it?)
 
@@ -847,3 +845,10 @@ Və ya PHP-ni yenilə.
 ### 8. MinIO niyə S3 local əvəzedicisidir?
 
 **Cavab:** MinIO S3-compatible API verir — eyni `aws-sdk` kodu, Laravel `S3Adapter`, URL signature-lər işləyir. `AWS_ENDPOINT` ilə MinIO-ya yönəltmək kifayətdir, kod dəyişmir. Console UI-da bucket, IAM policy, versioning test etmək olur. Prod-da isə real S3/R2/Spaces istifadə olunur.
+
+
+## Əlaqəli Mövzular
+
+- [docker-compose.md](05-docker-compose.md) — Docker Compose ilə servis idarəsi
+- [volumes-and-storage.md](07-volumes-and-storage.md) — Data persistence
+- [kubernetes-storage.md](21-kubernetes-storage.md) — K8s-də storage

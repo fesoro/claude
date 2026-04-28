@@ -447,3 +447,10 @@ Default-da FastCGI `HTTP_PROXY` environment-i ötürür — təhlükəsizlik pro
 
 - **Q:** FastCGI cache-i Laravel-də necə qoruyursuz?
   - Session cookie (`laravel_session`) olan request-ləri `fastcgi_cache_bypass` ilə cache-dən xaric et. Yalnız anonymous GET-ləri cache et.
+
+
+## Əlaqəli Mövzular
+
+- [php-fpm-tuning-docker.md](37-php-fpm-tuning-docker.md) — PHP-FPM pool tuning
+- [reverse-proxy-traefik-nginx-docker.md](39-reverse-proxy-traefik-nginx-docker.md) — Reverse proxy pattern
+- [health-checks.md](09-health-checks.md) — Health probe-lar

@@ -646,3 +646,11 @@ FrankenPHP-də `config/octane.php`:
 
 - **Q:** Deploy zamanı code dəyişiklikləri necə fetch olunur?
   - Worker-lar yaddaşdakı kod cache istifadə edir. `php artisan octane:reload` ilə graceful restart, və ya yeni pod-lar (K8s rollout) — yeni kod oxunur.
+
+
+## Əlaqəli Mövzular
+
+- [php-laravel-production-dockerfile.md](36-php-laravel-production-dockerfile.md) — Production Dockerfile
+- [php-fpm-tuning-docker.md](37-php-fpm-tuning-docker.md) — PHP-FPM tuning müqayisəsi
+- [nginx-php-fpm-container-setup.md](38-nginx-php-fpm-container-setup.md) — Nginx arxitekturası
+- [resource-limits-sizing-php.md](48-resource-limits-sizing-php.md) — Worker mode resource sizing

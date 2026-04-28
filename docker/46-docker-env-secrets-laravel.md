@@ -604,3 +604,10 @@ Private key Docker secret-dən və ya K8s Secret-dən mount.
 
 - **Q:** Secret rotation necə edilir?
   - `APP_PREVIOUS_KEYS` (Laravel 11+) köhnə key-i fallback kimi saxlayır. DB encrypted field-ləri re-encrypt et. Vault-da rotate → ExternalSecret refresh → pod restart (Reloader).
+
+
+## Əlaqəli Mövzular
+
+- [kubernetes-configmaps-secrets.md](22-kubernetes-configmaps-secrets.md) — K8s ConfigMap/Secret
+- [dev-vs-prod-docker-setup.md](44-dev-vs-prod-docker-setup.md) — Dev vs prod mühiti
+- [docker-security.md](10-docker-security.md) — Secret security

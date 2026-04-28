@@ -100,6 +100,14 @@ PHP/Laravel developer üçün Docker-dən Kubernetes-ə qədər praktik material
 
 ---
 
+### Docker Advanced Operations (53) — Senior ⭐⭐⭐
+
+| # | Fayl | Mövzu | Səviyyə |
+|---|------|-------|---------|
+| 53 | [docker-context.md](53-docker-context.md) | Docker context: remote VPS-ə SSH/TLS, multi-server deploy | ⭐⭐⭐ Senior |
+
+---
+
 ## Oxuma Yolları
 
 ### Docker-ə başlamaq (Junior → Middle)
@@ -125,3 +133,6 @@ PHP/Laravel developer üçün Docker-dən Kubernetes-ə qədər praktik material
 
 ### Production hazırlığı (Senior)
 **36 → 37 → 38 → 39 → 40 → 41 → 48 → 50 → 51**
+
+### Remote Deploy (Senior)
+**12 → 13 → 53 → 51** — Registry, tagging, Docker context, CI/CD

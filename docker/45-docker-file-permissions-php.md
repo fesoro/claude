@@ -441,3 +441,10 @@ docker compose exec -u root app sh -c 'chown -R www-data:www-data storage bootst
 
 - **Q:** Nginx və PHP-FPM fərqli user-lərdədir — niyə?
   - Default Alpine image-lərində nginx UID 101, www-data UID 82. İkisini eyni group-a qoy və ya nginx-i də www-data user-lə işlət.
+
+
+## Əlaqəli Mövzular
+
+- [docker-security.md](10-docker-security.md) — Docker security
+- [php-laravel-production-dockerfile.md](36-php-laravel-production-dockerfile.md) — Production Dockerfile
+- [distroless-rootless-docker.md](28-distroless-rootless-docker.md) — Rootless Docker

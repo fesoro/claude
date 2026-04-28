@@ -625,3 +625,11 @@ kustomize/
 8. **immutable ConfigMap/Secret** — `immutable: true` ilə yanlış dəyişikliyin qarşısını alın
 9. **Secret rotation plan qurun** — müntəzəm dəyişdirin
 10. **Kustomize/Helm ilə mühit konfiqurasiyasını idarə edin**
+
+
+## Əlaqəli Mövzular
+
+- [docker-env-secrets-laravel.md](46-docker-env-secrets-laravel.md) — Docker-də env/secret
+- [kubernetes-basics.md](18-kubernetes-basics.md) — K8s resurlar
+- [kubernetes-helm.md](23-kubernetes-helm.md) — Helm values ilə konfig
+- [kubernetes-deep-dive.md](52-kubernetes-deep-dive.md) — External Secrets Operator

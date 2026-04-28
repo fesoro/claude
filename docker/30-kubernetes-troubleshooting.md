@@ -443,3 +443,10 @@ Metrics Server quraşdırılmayıb. `kubectl apply -f https://github.com/kuberne
 | popeye | Cluster audit |
 | kubectl-debug | Debug sidecar |
 | netshoot | Network troubleshooting image |
+
+
+## Əlaqəli Mövzular
+
+- [docker-debugging.md](15-docker-debugging.md) — Docker debug alətləri
+- [kubernetes-basics.md](18-kubernetes-basics.md) — K8s arxitekturası
+- [kubernetes-observability.md](33-kubernetes-observability.md) — Prometheus, Grafana

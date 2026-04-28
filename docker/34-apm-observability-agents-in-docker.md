@@ -1,8 +1,6 @@
 # APM və Observability Agent-ləri Docker-də (Sentry, Datadog, New Relic, OTel)
 
 > **Səviyyə (Level):** ⭐⭐⭐ Senior
-> **Oxu müddəti:** ~20-25 dəqiqə
-> **Kateqoriya:** Docker / Observability
 
 ## Nədir? (What is it?)
 
@@ -911,3 +909,10 @@ Və ya worker env-də `DD_TRACE_CLI_ENABLED=1`.
 ### 8. Vendor-lock-in üçün OTel yoxsa native SDK?
 
 **Cavab:** **OTel** vendor-neutral — eyni kod Jaeger, Tempo, Honeycomb, Datadog-a göndərir. Provider dəyişmək Collector config-i dəyişməklə olur. **Native SDK** (dd-trace-php, newrelic) daha dərin integrasiya — platform-specific feature-lər (Datadog Watchdog, NR Transactions). Layihənin fazasından asılıdır: early stage OTel + Honeycomb, böyüdükdə Datadog-a köçürmək rahatdır. Enterprise-də Datadog birbaşa APM instrumentation-ı OTel-dən daha dolğun verir.
+
+
+## Əlaqəli Mövzular
+
+- [kubernetes-observability.md](33-kubernetes-observability.md) — Prometheus, Loki stack
+- [docker-logging.md](14-docker-logging.md) — Docker logging
+- [php-laravel-production-dockerfile.md](36-php-laravel-production-dockerfile.md) — Production image

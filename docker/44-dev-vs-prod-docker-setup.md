@@ -601,3 +601,11 @@ Prod server-də source code yoxdur — build fail.
 
 - **Q:** Dev container-də vendor host-dan niyə mount olunmur?
   - Host-da composer versiyası fərqli ola bilər, ya da yox. Anonymous volume ilə image-dəki vendor saxlanır — deterministic.
+
+
+## Əlaqəli Mövzular
+
+- [docker-compose.md](05-docker-compose.md) — Docker Compose əsasları
+- [docker-env-secrets-laravel.md](46-docker-env-secrets-laravel.md) — Env idarəsi
+- [testing-php-in-docker.md](47-testing-php-in-docker.md) — Test mühiti
+- [laravel-sail-deep-dive.md](27-laravel-sail-deep-dive.md) — Laravel Sail dev setup

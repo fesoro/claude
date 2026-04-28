@@ -1,8 +1,6 @@
 # .dockerignore və Build Context Optimizasiyası
 
 > **Səviyyə (Level):** ⭐⭐ Middle
-> **Oxu müddəti:** ~15-20 dəqiqə
-> **Kateqoriya:** Build Optimization & Security
 
 ## Nədir? (What is it?)
 
@@ -524,3 +522,11 @@ Docker 20.10+ bunu dəstəkləyir. Köhnə versiyalarda yalnız single-level (`*
 
 - **Q:** `.dockerignore`-da negation (`!`) nə vaxt işləmir?
   - Parent qovluq tam ignore-dadır (`storage/**`), child `!storage/app/.gitkeep` tətbiq olunmur. Həll: hər səviyyəni açıq göstər (`storage/*`, sonra `!storage/app`, sonra `storage/app/*`, sonra `!storage/app/.gitkeep`).
+
+
+## Əlaqəli Mövzular
+
+- [dockerfile.md](02-dockerfile.md) — Dockerfile instruksiyaları
+- [multi-stage-builds.md](04-multi-stage-builds.md) — Multi-stage builds
+- [docker-optimization.md](11-docker-optimization.md) — Image optimallaşdırma
+- [buildkit-advanced.md](29-buildkit-advanced.md) — BuildKit advanced features

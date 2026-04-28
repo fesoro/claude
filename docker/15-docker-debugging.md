@@ -476,3 +476,10 @@ docker exec myapp composer show --installed
 8. **`docker events` istifadə edin** — real-time hadisə izləmə
 9. **Health check-lər əlavə edin** — problemləri erkən aşkar etmək üçün
 10. **Debug üçün `--cap-add=SYS_PTRACE` istifadə edin** — strace, gdb üçün lazımdır
+
+
+## Əlaqəli Mövzular
+
+- [kubernetes-troubleshooting.md](30-kubernetes-troubleshooting.md) — K8s problemlər
+- [docker-logging.md](14-docker-logging.md) — Logging driver-lər
+- [health-checks.md](09-health-checks.md) — Probe-lar

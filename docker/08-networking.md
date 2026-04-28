@@ -445,3 +445,10 @@ server {
 8. **Şəbəkə debug üçün `docker network inspect`** — Problemləri araşdırın.
 9. **Container adlarını DNS-ə uyğun seçin** — Sadə, qısa, mənalı adlar.
 10. **Production-da overlay istifadə edin** — Çox host-lu deployment üçün.
+
+
+## Əlaqəli Mövzular
+
+- [docker-compose.md](05-docker-compose.md) — Compose şəbəkə konfiqurasiyası
+- [kubernetes-services.md](19-kubernetes-services.md) — K8s Service tipləri
+- [reverse-proxy-traefik-nginx-docker.md](39-reverse-proxy-traefik-nginx-docker.md) — Traefik vs Nginx proxy

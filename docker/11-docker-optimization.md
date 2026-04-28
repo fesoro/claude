@@ -390,3 +390,11 @@ pm.max_requests = 1000
 8. **Cache-i təmizləyin** — `rm -rf /var/lib/apt/lists/*`, `apk del .build-deps`
 9. **OPcache aktiv edin** — produksiyada `validate_timestamps=0`
 10. **`dive` aləti ilə image-i analiz edin** — hər layer-in nə qədər yer tutduğunu görün
+
+
+## Əlaqəli Mövzular
+
+- [multi-stage-builds.md](04-multi-stage-builds.md) — Multi-stage build
+- [dockerignore-build-context.md](03-dockerignore-build-context.md) — Build context
+- [buildkit-advanced.md](29-buildkit-advanced.md) — BuildKit advanced
+- [php-laravel-production-dockerfile.md](36-php-laravel-production-dockerfile.md) — Laravel prod Dockerfile

@@ -429,3 +429,10 @@ Deploy-dan sonra credential-lar köhnə .env-dən oxunur.
 
 - **Q:** `terminationGracePeriodSeconds` nə üçün artırırsız?
   - Uzun request-lər (upload, PDF render) SIGTERM-dən sonra bitirmək üçün vaxt lazımdır. Default 30s, adətən 60s kifayətdir.
+
+
+## Əlaqəli Mövzular
+
+- [php-laravel-production-dockerfile.md](36-php-laravel-production-dockerfile.md) — Production Dockerfile
+- [health-checks.md](09-health-checks.md) — Healthcheck konfig
+- [migrations-in-containers.md](41-migrations-in-containers.md) — Migration strategiyaları

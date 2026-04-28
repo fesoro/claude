@@ -485,3 +485,10 @@ numprocs=2
 
 - **Q:** Queue worker-ları necə ölçüləndirirsiniz?
   - **KEDA + Redis queue length** — 50-dən çox job varsa scale up, boş olanda scale to zero. CPU-based HPA faydasızdır — queue-da job var amma CPU idle ola bilər.
+
+
+## Əlaqəli Mövzular
+
+- [kubernetes-jobs-cronjobs.md](32-kubernetes-jobs-cronjobs.md) — K8s Job, CronJob
+- [kubernetes-autoscaling.md](31-kubernetes-autoscaling.md) — KEDA ilə queue scaling
+- [docker-env-secrets-laravel.md](46-docker-env-secrets-laravel.md) — Queue env konfigurasiyası

@@ -644,3 +644,12 @@ WWWGROUP=1000
 8. **Resource limit-ləri qoyun** — `deploy.resources` ilə CPU/memory limitləyin.
 9. **Read-only mount-lar istifadə edin** — Konfiqurasiya fayllarını `:ro` ilə mount edin.
 10. **`docker compose config`** ilə YAML-ı yoxlayın — Xətaları erkən tapın.
+
+
+## Əlaqəli Mövzular
+
+- [docker-basics.md](01-docker-basics.md) — Docker əsasları
+- [database-services-in-docker.md](06-database-services-in-docker.md) — Database servislər
+- [volumes-and-storage.md](07-volumes-and-storage.md) — Volume-lər
+- [networking.md](08-networking.md) — Şəbəkə konfiqurasiyası
+- [dev-vs-prod-docker-setup.md](44-dev-vs-prod-docker-setup.md) — Dev vs prod setup

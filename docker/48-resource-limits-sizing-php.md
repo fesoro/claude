@@ -1,8 +1,6 @@
 # Resource Limits və Sizing PHP-FPM üçün Docker/K8s-də
 
 > **Səviyyə (Level):** ⭐⭐⭐ Senior
-> **Oxu müddəti:** ~20-25 dəqiqə
-> **Kateqoriya:** Docker / Kubernetes / Performance
 
 ## Nədir? (What is it?)
 
@@ -486,3 +484,10 @@ Migration-lar çox yaddaş işlədə bilər. Init container-ə ayrı (daha yüks
 
 ### S8: Memory sizing üçün hansı metriklərə baxırsan?
 **C:** 1) `container_memory_working_set_bytes` — əsl memory (cache daxil deyil); 2) `container_memory_rss` — per-process; 3) `container_spec_memory_limit_bytes` — limit; 4) Nisbət: working_set / limit > 80% → artırma vaxtı. Per-worker: Laravel `APP_DEBUG=false` ilə prod-a yaxın workload altında `ps aux` və ya `smem` işlədib RSS-in p99-una bax.
+
+
+## Əlaqəli Mövzular
+
+- [php-fpm-tuning-docker.md](37-php-fpm-tuning-docker.md) — PHP-FPM pm.max_children
+- [kubernetes-autoscaling.md](31-kubernetes-autoscaling.md) — HPA, VPA
+- [kubernetes-deployments.md](20-kubernetes-deployments.md) — Resource requests/limits

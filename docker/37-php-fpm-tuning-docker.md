@@ -361,3 +361,10 @@ access.log = /proc/self/fd/2
 
 - **Q:** Konteynerdə FPM status-u necə monitor edirsiz?
   - `pm.status_path = /fpm-status`, Nginx-dən expose et, `hipages/php-fpm_exporter` ilə Prometheus-a yaz. `max children reached`, `listen queue`, `slow requests` baxırıq.
+
+
+## Əlaqəli Mövzular
+
+- [php-laravel-production-dockerfile.md](36-php-laravel-production-dockerfile.md) — Production Dockerfile
+- [nginx-php-fpm-container-setup.md](38-nginx-php-fpm-container-setup.md) — Nginx + FPM arxitekturası
+- [resource-limits-sizing-php.md](48-resource-limits-sizing-php.md) — Resource limits hesablama

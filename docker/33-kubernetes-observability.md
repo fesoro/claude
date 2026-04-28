@@ -820,3 +820,10 @@ Kod dəyişmədən kernel-dən HTTP/SQL/gRPC-ni capture edir. Bütün dillər ü
 | eBPF | Pixie, Cilium Hubble, Parca |
 | APM (SaaS) | Datadog, New Relic, Dynatrace, Elastic APM |
 | Profiling | Pyroscope, Parca |
+
+
+## Əlaqəli Mövzular
+
+- [apm-observability-agents-in-docker.md](34-apm-observability-agents-in-docker.md) — APM agent-ları
+- [docker-logging.md](14-docker-logging.md) — Logging driver-lər
+- [kubernetes-autoscaling.md](31-kubernetes-autoscaling.md) — Custom metric ilə HPA

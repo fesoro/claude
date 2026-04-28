@@ -1,8 +1,6 @@
 # PHP/Laravel Test-lərini Docker-də İcra Etmək
 
 > **Səviyyə (Level):** ⭐⭐ Middle
-> **Oxu müddəti:** ~15-20 dəqiqə
-> **Kateqoriya:** Docker / Testing
 
 ## Nədir? (What is it?)
 
@@ -743,3 +741,10 @@ Dev-də PCOV yoxdur, test-də var — test keçir amma prod-da başqa davranış
 
 - **Q:** Prod image-dən test image-i necə qurursunuz?
   - Multi-stage: `FROM base AS test` — prod base + PCOV + dev composer paketlər. Eyni OS, eyni extension versiyası, yalnız test üçün əlavələr. Test image CI-də qurulur, prod image-lə eyni foundation-dan.
+
+
+## Əlaqəli Mövzular
+
+- [dev-vs-prod-docker-setup.md](44-dev-vs-prod-docker-setup.md) — Dev mühiti setup
+- [composer-in-docker-best-practices.md](43-composer-in-docker-best-practices.md) — Composer dev dependency
+- [docker-ci-cd-github-actions-php.md](51-docker-ci-cd-github-actions-php.md) — CI test integration

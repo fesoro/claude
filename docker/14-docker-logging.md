@@ -424,3 +424,10 @@ php_admin_flag[log_errors] = on
 8. **Nginx/PHP-FPM log-larını stdout/stderr-ə yönləndirin**
 9. **`none` driver-dən uzaq durun** — debug çətinləşir
 10. **Log-ları monitor edin** — alert qurun (error rate artanda)
+
+
+## Əlaqəli Mövzular
+
+- [kubernetes-observability.md](33-kubernetes-observability.md) — Prometheus, Loki, Grafana
+- [apm-observability-agents-in-docker.md](34-apm-observability-agents-in-docker.md) — APM agent-ları
+- [docker-debugging.md](15-docker-debugging.md) — Konteyner debug alətləri

@@ -689,3 +689,11 @@ Tradeoff: `schedule:run` hər dəqiqə pod start — overhead. K8s CronJob per-t
 13. **Idempotent task-lar** — retry təhlükəsiz olsun
 14. **Helm hook** — migration üçün pre-upgrade
 15. **`--stop-when-empty`** — queue worker-lər üçün graceful exit
+
+
+## Əlaqəli Mövzular
+
+- [laravel-queue-workers-scheduler-docker.md](42-laravel-queue-workers-scheduler-docker.md) — Queue worker və scheduler
+- [kubernetes-basics.md](18-kubernetes-basics.md) — K8s workload tipləri
+- [kubernetes-helm.md](23-kubernetes-helm.md) — Helm hook ilə migration
+- [migrations-in-containers.md](41-migrations-in-containers.md) — Migration strategiyaları

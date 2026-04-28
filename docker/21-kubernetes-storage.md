@@ -541,3 +541,10 @@ spec:
 8. **VolumeBindingMode: WaitForFirstConsumer** — locality üçün
 9. **emptyDir ilə tmp data** — Pod restart-da itməsi problem deyilsə
 10. **Session/cache üçün Redis** — PVC əvəzinə in-memory store
+
+
+## Əlaqəli Mövzular
+
+- [volumes-and-storage.md](07-volumes-and-storage.md) — Docker volume-ları
+- [kubernetes-basics.md](18-kubernetes-basics.md) — K8s resurlar
+- [database-services-in-docker.md](06-database-services-in-docker.md) — Database persistence

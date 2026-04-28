@@ -1,8 +1,6 @@
 # Docker və Dockerfile Anti-Patterns (PHP/Laravel)
 
 > **Səviyyə (Level):** ⭐⭐ Middle
-> **Oxu müddəti:** ~15-20 dəqiqə
-> **Kateqoriya:** Best Practices & Troubleshooting
 
 ## Nədir? (What is it?)
 
@@ -866,3 +864,11 @@ K8s-də liveness / readiness probe tərcih olunur, amma plain Docker-də HEALTHC
 
 - **Q:** Layer-ləri necə sıralamalı?
   - Cache hit dərəcəsi yüksək olanlar üstdə: 1) sistem dependencies 2) language runtime 3) composer deps 4) app code 5) app cache. Hər instruction bundan aşağıdakı hər şeyi invalidate edir. Ən çox dəyişən ən altda.
+
+
+## Əlaqəli Mövzular
+
+- [dockerfile.md](02-dockerfile.md) — Dockerfile best practices
+- [docker-optimization.md](11-docker-optimization.md) — Image optimallaşdırma
+- [php-laravel-production-dockerfile.md](36-php-laravel-production-dockerfile.md) — Production Dockerfile
+- [composer-in-docker-best-practices.md](43-composer-in-docker-best-practices.md) — Composer anti-pattern-lər

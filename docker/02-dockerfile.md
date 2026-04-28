@@ -471,3 +471,11 @@ CMD ["php-fpm"]
 8. **HEALTHCHECK əlavə edin** — Konteyner sağlamlığını yoxlayın.
 9. **Exec form istifadə edin** — `CMD ["php-fpm"]` (`CMD php-fpm` deyil).
 10. **Secret-ləri build-ə daxil etməyin** — ARG/ENV-də parol saxlamayın, BuildKit secret mount istifadə edin.
+
+
+## Əlaqəli Mövzular
+
+- [docker-basics.md](01-docker-basics.md) — Docker əsasları, konteyner konsepti
+- [dockerignore-build-context.md](03-dockerignore-build-context.md) — Build context optimallaşdırma
+- [multi-stage-builds.md](04-multi-stage-builds.md) — Multi-stage ilə image ölçüsünü azaltmaq
+- [docker-optimization.md](11-docker-optimization.md) — Layer caching, BuildKit

@@ -738,3 +738,11 @@ class HealthController extends Controller
 8. **Canary deployment istifadə edin** — risk azaltmaq üçün
 9. **Init container-da migration işlədin** — app container-dən əvvəl
 10. **terminationGracePeriodSeconds artırın** — uzun request-lər üçün
+
+
+## Əlaqəli Mövzular
+
+- [kubernetes-basics.md](18-kubernetes-basics.md) — K8s əsasları
+- [kubernetes-autoscaling.md](31-kubernetes-autoscaling.md) — HPA, KEDA
+- [resource-limits-sizing-php.md](48-resource-limits-sizing-php.md) — Resource requests/limits
+- [migrations-in-containers.md](41-migrations-in-containers.md) — Init container migration

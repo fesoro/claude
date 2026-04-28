@@ -410,3 +410,11 @@ docker compose exec app chmod -R 775 storage bootstrap/cache
 8. **Docker Compose-da volume-ları declare edin** — Top-level `volumes:` bölməsində.
 9. **İcazələrə diqqət edin** — Container istifadəçisi ilə host istifadəçisinin UID/GID uyğunluğu.
 10. **Volume driver-ləri araşdırın** — NFS, cloud storage üçün uyğun driver seçin.
+
+
+## Əlaqəli Mövzular
+
+- [docker-compose.md](05-docker-compose.md) — Compose-da volume konfiqurasiyası
+- [database-services-in-docker.md](06-database-services-in-docker.md) — Database data persistence
+- [kubernetes-storage.md](21-kubernetes-storage.md) — K8s PV, PVC, StorageClass
+- [docker-file-permissions-php.md](45-docker-file-permissions-php.md) — Fayl icazələri
