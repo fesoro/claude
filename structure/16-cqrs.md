@@ -405,3 +405,167 @@ project/
 ├── go.mod
 └── Makefile
 ```
+
+---
+
+## Sync vs Async Read Model
+
+```
+SYNC (Simple CQRS):
+  Command Handler → saves to write DB
+                  → immediately updates read model (same transaction)
+  ✓ Consistency: read model həmişə up-to-date
+  ✗ Performance: write operation iki DB-yə yazır
+
+  Nə vaxt: Consistency kritikdir, traffic azdır
+
+ASYNC (Full CQRS with Eventual Consistency):
+  Command Handler → saves to write DB → publishes DomainEvent
+  Projector (async) ← subscribes to event → updates read model
+
+  ✓ Performance: write path yüngüldür
+  ✓ Read model fərqli storage-da ola bilər (Elasticsearch, Redis)
+  ✗ Lag: read model bir neçə millisaniyə geri qala bilər
+  ✗ "Read your own writes" problemi (həll: version check)
+
+  Nə vaxt: High read load, read model fərqli storage tələb edir
+```
+
+---
+
+## Command Bus Middleware (Laravel)
+
+```php
+// Command Bus with middleware pipeline
+
+// CommandBus.php
+class CommandBus
+{
+    private array $middleware = [];
+
+    public function dispatch(Command $command): mixed
+    {
+        $pipeline = array_reduce(
+            array_reverse($this->middleware),
+            fn($carry, $middleware) => fn($cmd) => $middleware->handle($cmd, $carry),
+            fn($cmd) => $this->resolve($cmd)->handle($cmd)
+        );
+
+        return $pipeline($command);
+    }
+}
+
+// Middleware stack:
+// 1. ValidationMiddleware    — command DTO validate et
+// 2. AuthorizationMiddleware — user bu command-ı icra edə bilərmi?
+// 3. LoggingMiddleware       — command audit log
+// 4. TransactionMiddleware   — DB transaction wrap
+// 5. Handler                 — actual business logic
+
+// PlaceOrderCommand — immutable DTO
+final class PlaceOrderCommand
+{
+    public function __construct(
+        public readonly string $userId,
+        public readonly array  $items,
+        public readonly string $shippingAddress,
+    ) {}
+}
+
+// PlaceOrderHandler
+class PlaceOrderHandler
+{
+    public function handle(PlaceOrderCommand $cmd): string
+    {
+        $order = Order::place(
+            userId:  UserId::fromString($cmd->userId),
+            items:   $cmd->items,
+            address: Address::fromString($cmd->shippingAddress),
+        );
+
+        $this->orderRepository->save($order);
+
+        // Domain events → read model update (async via queue)
+        foreach ($order->pullDomainEvents() as $event) {
+            $this->eventBus->publish($event);
+        }
+
+        return $order->id()->toString();
+    }
+}
+```
+
+---
+
+## Eventual Consistency — "Read Your Own Writes"
+
+```php
+// Problem: user creates order, immediately redirects to order list
+// Read model not yet updated → order not visible!
+
+// Solution 1: Version-based polling
+class OrderQueryController extends Controller
+{
+    public function index(Request $request)
+    {
+        $expectedVersion = $request->query('v'); // version after write
+
+        if ($expectedVersion) {
+            // Poll until read model catches up (max 2s)
+            $retries = 0;
+            while ($retries < 10) {
+                $orders = $this->queryBus->dispatch(new ListOrdersQuery($request->user()->id));
+                if ($orders->version >= $expectedVersion) break;
+                usleep(200_000); // 200ms
+                $retries++;
+            }
+        }
+
+        return OrderResource::collection($orders);
+    }
+}
+
+// Solution 2: Write-through to read model synchronously for critical paths
+// Only use async for non-critical (analytics, reports)
+
+// Solution 3: Return command result directly (bypass read model)
+// POST /orders → returns created order data from write model
+// Subsequent GET /orders uses (eventually consistent) read model
+```
+
+---
+
+## Read Model Storage Seçimi
+
+```
+Write Model:       PostgreSQL (ACID, normalized)
+Read Models:
+  Order list:      PostgreSQL (separate read-optimized table, denormalized)
+  Order search:    Elasticsearch (full-text, filters)
+  Dashboard stats: Redis (pre-aggregated counters)
+  Reports:         ClickHouse / BigQuery (analytical queries)
+
+Projector nümunəsi (Laravel):
+class OrderSummaryProjector
+{
+    public function onOrderPlaced(OrderPlaced $event): void
+    {
+        // Redis counter increment
+        Redis::hincrby("user:{$event->userId}:stats", 'total_orders', 1);
+        Redis::hincrbyfloat("user:{$event->userId}:stats", 'total_spent', $event->total);
+
+        // Elasticsearch index
+        $this->elasticsearch->index([
+            'index' => 'orders',
+            'id'    => $event->orderId,
+            'body'  => [
+                'user_id'    => $event->userId,
+                'total'      => $event->total,
+                'status'     => 'placed',
+                'created_at' => $event->occurredAt,
+                'items'      => $event->items,
+            ],
+        ]);
+    }
+}
+```

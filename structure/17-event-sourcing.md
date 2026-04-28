@@ -371,3 +371,185 @@ project/
 ├── go.mod
 └── Makefile
 ```
+
+---
+
+## Snapshot Strategy
+
+```
+Problem: 10.000 event olan aggregate-i rebuild etmək üçün 10.000 event replay lazımdır.
+Həll: N eventdən bir snapshot saxla → replay yalnız snapshot-dan sonrakı event-lərdən.
+
+Threshold-based snapshot (hər 50 eventdə bir):
+
+  // SnapshotStore (Laravel / PHP)
+  class EventSourcedAccountRepository
+  {
+      private const SNAPSHOT_THRESHOLD = 50;
+
+      public function save(Account $account): void
+      {
+          $events = $account->pullDomainEvents();
+          $this->eventStore->append($account->id(), $events);
+
+          if ($account->version() % self::SNAPSHOT_THRESHOLD === 0) {
+              $this->snapshotStore->save(
+                  aggregateId: $account->id(),
+                  version: $account->version(),
+                  state: $account->toSnapshot(),
+              );
+          }
+      }
+
+      public function findById(AccountId $id): Account
+      {
+          $snapshot = $this->snapshotStore->findLatest($id);
+
+          $fromVersion = $snapshot?->version ?? 0;
+          $events = $this->eventStore->loadFrom($id, $fromVersion);
+
+          $account = $snapshot
+              ? Account::fromSnapshot($snapshot)
+              : Account::empty($id);
+
+          return $account->replay($events);
+      }
+  }
+
+DB schema (snapshots table):
+  CREATE TABLE snapshots (
+      aggregate_id  UUID    NOT NULL,
+      version       INT     NOT NULL,
+      state         JSONB   NOT NULL,
+      created_at    TIMESTAMPTZ DEFAULT now(),
+      PRIMARY KEY (aggregate_id, version)
+  );
+
+Time-based alternative: hər gecə saat 02:00-da bütün active aggregate-lər üçün snapshot.
+  → Sabit replay window (max 24 saat event)
+  → Threshold-based-dən daha predictable
+```
+
+---
+
+## Event Versioning / Upcasting
+
+```
+Problem: 6 ay sonra event schema dəyişir. Köhnə event-lər hələ event store-dadır.
+Həll: Upcaster — köhnə event-i yeni versiyaya çevirir (read path-də, store-u dəyişmədən).
+
+Versiya 1 → Versiya 2 migration nümunəsi:
+
+  // V1 event (köhnə):
+  {
+    "type": "MoneyDeposited",
+    "version": 1,
+    "amount": 100.00          // float — precision problem!
+  }
+
+  // V2 event (yeni):
+  {
+    "type": "MoneyDeposited",
+    "version": 2,
+    "amount_cents": 10000,    // integer cents
+    "currency": "USD"         // yeni sahə
+  }
+
+  // Upcaster (PHP):
+  class MoneyDepositedUpcaster
+  {
+      public function upcast(array $rawEvent): array
+      {
+          if ($rawEvent['version'] === 1) {
+              return [
+                  ...$rawEvent,
+                  'version'      => 2,
+                  'amount_cents' => (int) round($rawEvent['amount'] * 100),
+                  'currency'     => 'USD',  // default
+              ];
+          }
+          return $rawEvent;
+      }
+  }
+
+  // Event Store-dan oxuyanda upcaster pipeline-dan keçir:
+  class EventStore
+  {
+      public function load(string $aggregateId): array
+      {
+          $rawEvents = $this->db->query(...);
+          return array_map(
+              fn($e) => $this->upcasterChain->upcast($e),
+              $rawEvents,
+          );
+      }
+  }
+
+Qaydalar:
+  - Event store-u heç vaxt UPDATE etmə (immutable log)
+  - Upcaster yalnız read path-də işləyir
+  - Hər versiya üçün ayrı upcaster class
+  - Upcaster-lar chain şəklində: v1→v2→v3
+```
+
+---
+
+## Projection Rebuild
+
+```
+Problem: Yeni feature üçün yeni projection lazımdır, ya mövcud projection pozuldu.
+Həll: Event store-dan sıfırdan replay edərək projection yenidən qur.
+
+Rebuild prosesi:
+
+  Addım 1 — Projector reset:
+    DELETE FROM order_summaries;  -- read model cədvəlini təmizlə
+    UPDATE projector_checkpoints
+    SET last_processed_position = 0
+    WHERE projector = 'OrderSummaryProjector';
+
+  Addım 2 — Replay:
+    // OrderSummaryProjector.php
+    class OrderSummaryProjector
+    {
+        public function rebuild(): void
+        {
+            $position = 0;
+            $batchSize = 1000;
+
+            do {
+                $events = $this->eventStore->loadFrom(
+                    position: $position,
+                    limit: $batchSize,
+                );
+
+                foreach ($events as $event) {
+                    $this->project($event);
+                    $position = $event->position;
+                }
+            } while (count($events) === $batchSize);
+        }
+
+        private function project(StoredEvent $event): void
+        {
+            match ($event->type) {
+                'OrderPlaced'    => $this->onOrderPlaced($event),
+                'OrderConfirmed' => $this->onOrderConfirmed($event),
+                'OrderShipped'   => $this->onOrderShipped($event),
+                default          => null,
+            };
+        }
+    }
+
+  Addım 3 — Blue/Green projection rebuild (zero downtime):
+    1. Yeni cədvəl yarat: order_summaries_v2
+    2. Yeni projector-u buraya replay et (background)
+    3. Replay bitdikdən sonra: app yeni cədvələ keçir
+    4. Köhnə cədvəli sil
+
+  Addım 4 — Checkpoint saxla (bölünmüş rebuild üçün):
+    UPDATE projector_checkpoints
+    SET last_processed_position = :position
+    WHERE projector = 'OrderSummaryProjector';
+    -- Rebuild crash olsa, checkpoint-dən davam et
+```

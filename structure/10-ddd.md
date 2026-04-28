@@ -536,3 +536,138 @@ project/
 ├── go.mod
 └── Makefile
 ```
+
+---
+
+## Event Storming Workshop
+
+```
+Event Storming — DDD-də domain-i kəşf etmək üçün collaborative workshop texnikası.
+Alberto Brandolini tərəfindən yaradılıb. Sticky note-larla fiziki və ya virtual board-da işlənir.
+
+Level 1 — Big Picture (4-8 saat):
+┌─────────────────────────────────────────────────────────────────┐
+│  BOARD (soldan sağa — zaman axını)                              │
+│                                                                 │
+│  🟠 Domain Events (narıncı)                                     │
+│     OrderPlaced → PaymentCharged → InventoryReserved → Shipped  │
+│                                                                 │
+│  🩷 Hotspots / Problems (çəhrayı)                               │
+│     "Payment niyə 2 dəfə çəkilir?" — investigate               │
+│                                                                 │
+│  🟡 Actors / Users (sarı)                                       │
+│     Customer, Warehouse Operator, Finance Team                  │
+└─────────────────────────────────────────────────────────────────┘
+
+Level 2 — Process Modeling:
+┌─────────────────────────────────────────────────────────────────┐
+│  🔵 Commands (mavi) → 🟠 Events → 🟣 Policies (bənövşəyi)      │
+│                                                                 │
+│  PlaceOrder → OrderPlaced → [When OrderPlaced: ReserveStock]   │
+│  ChargePayment → PaymentCharged → [When Paid: ConfirmOrder]    │
+│                                                                 │
+│  🟢 Read Models / Views (yaşıl)                                 │
+│     "Order Summary" — Customer sees this before placing        │
+└─────────────────────────────────────────────────────────────────┘
+
+Level 3 — Design Level (Software):
+  Commands → Aggregate → Events
+  PlaceOrder → Order aggregate → OrderPlaced event
+
+Nəticə — Bounded Context-lər aşkar olunur:
+  Ordering BC | Payment BC | Inventory BC | Notification BC
+```
+
+---
+
+## Bounded Context Map
+
+```
+8 Context Relationship Pattern:
+
+1. Partnership — iki team birlikdə işləyir, eyni sprint
+   [Ordering] ←→ [Inventory]
+
+2. Shared Kernel — ortaq kod (domain model, DB schema)
+   [Ordering] == shared == [Reporting]
+   ⚠ Risk: dəyişiklik hər iki tərəfi pozur
+
+3. Customer-Supplier — downstream (müştəri) upstream-dən asılıdır
+   [Payment] ──▶ [Ordering]  (Ordering = supplier, Payment = customer)
+   Supplier: "API hazır olacaq Q2-də"
+
+4. Conformist — downstream upstream-in modelinə tam uyğunlaşır
+   [Notification] adapts to [Ordering] model as-is
+   (Ordering team-ə heç bir təsiri yoxdur)
+
+5. Anti-Corruption Layer (ACL) — downstream öz modelini qoruyur
+   [New Ordering] ──[ACL]──▶ [Legacy ERP]
+   ACL: legacy model-i yeni domain model-ə translate edir
+
+6. Open Host Service (OHS) — public API + documentation
+   [Inventory] exposes REST/gRPC API for any consumer
+
+7. Published Language — standart format (JSON Schema, Protobuf, OpenAPI)
+   [Payment] publishes events using Cloudevents spec
+
+8. Separate Ways — heç bir inteqrasiya yoxdur
+   [Analytics] ←✗→ [Ordering]  (Analytics öz datasını alır)
+
+Real E-commerce Context Map:
+┌──────────────┐     Customer-Supplier     ┌──────────────┐
+│   Ordering   │ ─────────────────────────▶│   Payment    │
+│      BC      │                           │      BC      │
+└──────┬───────┘                           └──────────────┘
+       │ OHS (events via Kafka)
+       ▼
+┌──────────────┐     ACL                   ┌──────────────┐
+│  Inventory   │ ─────────[ACL]───────────▶│  Legacy WMS  │
+│      BC      │                           │   (old ERP)  │
+└──────────────┘                           └──────────────┘
+       │ Published Language (Cloudevents)
+       ▼
+┌──────────────┐
+│ Notification │
+│      BC      │
+└──────────────┘
+```
+
+---
+
+## Ubiquitous Language
+
+```
+Ubiquitous Language — domain expert + developer eyni terminləri istifadə edir.
+Kod, sənəd, danışıq — hamısında eyni dil.
+
+❌ YANLIŞ (texniki dil domain language-i gizlədir):
+  class OrderManager {
+      public function processTransaction(int $userId, array $data) {
+          $record = $this->db->insert('orders', [...]);
+          $this->emailService->send($userId, 'order_confirm');
+      }
+  }
+
+✅ DÜZGÜN (ubiquitous language kod-da görünür):
+  class Order {
+      public static function place(
+          CustomerId $customerId,
+          OrderLines $lines,
+          ShippingAddress $address,
+      ): self { ... }
+
+      public function confirm(): void { ... }
+      public function cancel(CancellationReason $reason): void { ... }
+      public function ship(TrackingNumber $trackingNumber): void { ... }
+  }
+
+Glossary nümunəsi (domain expert ilə razılaşdırılır):
+  "Order"         → müştərinin satınalma niyyəti (placed, not yet confirmed)
+  "Confirmation"  → payment + inventory reserve uğurlu olduqda
+  "Shipment"      → fiziki çatdırma prosesi başladı
+  "Cancellation"  → hər iki tərəf (customer/system) initiate edə bilər
+
+  ⚠ "Transaction" termini işlətmə — DB transaction ilə qarışır
+  ⚠ "Process" termini işlətmə — OS process ilə qarışır
+  ✓ Domain-specific terminlər seç: "place", "confirm", "ship", "cancel"
+```
