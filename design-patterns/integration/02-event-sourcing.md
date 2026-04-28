@@ -518,6 +518,20 @@ $order = OrderAggregateRoot::retrieve($uuid);
 $order->placeOrder($customerId)->persist();
 ```
 
+## Anti-Pattern Nə Zaman Olur?
+
+**CRUD store kimi Event Sourcing — event bloat:**
+`UserProfileUpdated` event-i hər form save-də — user adını dəyişdirmək, bio-nu yeniləmək, şəkil upload etmək hər biri ayrı event. Aylar sonra event store gigabaytları keçir, replay yavaşlayır, əhəmiyyətsiz "event-lər" real history-ni gizlədir. Yalnız business-meaningful fact-lar event olmalıdır: `OrderPlaced`, `PaymentReceived` — `UserTypedInField` deyil.
+
+**ES-siz snapshot — reconstitution yavaş:**
+500+ event olan aggregate-lər snapshot olmadan hər yükləmədə hamısını replay edir — latency artır. ES tətbiq edərkən snapshot strategiyasını da planlaşdırın; 50–200 event-dən sonra snapshot threshold məqsədəuyğundur.
+
+**Event-ləri mutable etmək:**
+Köhnə event-i düzəltmək, ya da event store-dan silmək — ES-in əsas invariant-ını pozur: event-lər baş vermiş faktdır, dəyişdirilə bilməz. Dəyişiklik lazımdırsa yeni event əlavə edin (`OrderCorrected`), ya da upcasting ilə deserialization zamanı transform edin.
+
+**Event schema-nı versiyalanmadan dəyişmək:**
+`OrderCreated` event-inin field-ləri dəyişdirilir — event store-da köhnə strukturda milyonlarla event var, yeni projection onları parse edə bilmir. `OrderCreatedV2` yaradın; upcasting ilə köhnə event-ləri yeni formata çevirin; köhnə event-ləri immutable saxlayın.
+
 ## Praktik Tapşırıqlar
 1. `event_store` migration yaradın: `id`, `stream_id`, `event_type`, `payload` (JSON), `version`, `occurred_at`; `BankAccount` aggregate ilə (`AccountOpened`, `MoneyDeposited`, `MoneyWithdrawn`) test edin
 2. `AccountBalanceProjection` yazın: `MoneyDeposited` → balance artır, `MoneyWithdrawn` → azalır; projection-ı başdan rebuild edin (bütün event-ləri yenidən replay); sonuç `account_balances` cədvəlindədir
