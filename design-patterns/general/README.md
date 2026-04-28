@@ -16,6 +16,7 @@ Bu qovluq domain-agnostic, amma backend developer üçün vacib olan cross-cutti
 | 06 | [06-architecture-decision-records.md](06-architecture-decision-records.md) | Architecture Decision Records (ADR) | Lead ⭐⭐⭐⭐ |
 | 07 | [07-cache-aside.md](07-cache-aside.md) | Cache-Aside Pattern | Middle ⭐⭐ |
 | 08 | [08-caching-strategies.md](08-caching-strategies.md) | Caching Strategiyaları | Senior ⭐⭐⭐ |
+| 09 | [09-feature-flags.md](09-feature-flags.md) | Feature Flags / Feature Toggles | Middle ⭐⭐ |
 
 ---
 
@@ -53,6 +54,10 @@ Bu qovluq domain-agnostic, amma backend developer üçün vacib olan cross-cutti
 **Problem**: Cache stampede-dən DB çökür; Redis down olduqda tətbiq tamamilə dayanır; HTTP cache başlıqları yanlış.
 **Həll**: Lock-based stampede protection, circuit breaker, Redis tag-ları, ETag/Last-Modified HTTP cache.
 
+### Feature Flags (09)
+**Problem**: Yeni feature deploy etmək = hamı görür ya da heç kim. Production-da bug tapılsa hotfix deploy gözlənilir.
+**Həll**: Feature flag arxasında dark launch; kill switch ilə anında söndürmə; canary rollout ilə %1 → %100 açılış.
+
 ---
 
 ## Oxuma Yolları
@@ -60,7 +65,7 @@ Bu qovluq domain-agnostic, amma backend developer üçün vacib olan cross-cutti
 ### Middle Səviyyəsinə Giriş
 Layerlər arasında data ötürülməsini düzgün qurmaq:
 ```
-01 (DTO) → 07 (Cache-Aside) → 02 (Code Smells)
+01 (DTO) → 07 (Cache-Aside) → 09 (Feature Flags) → 02 (Code Smells)
 ```
 
 ### Senior Keçid
@@ -77,7 +82,7 @@ Texniki liderlik qərarları:
 
 ### Tam Oxuma Yolu (Easy → Hard)
 ```
-01 → 07 → 02 → 08 → 03 → 04 → 05 → 06
+01 → 07 → 09 → 02 → 08 → 03 → 04 → 05 → 06
 ```
 
 ---

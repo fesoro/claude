@@ -1,4 +1,4 @@
-# Choreography vs Orchestration (Saga) (Senior)
+# Choreography vs Orchestration (Saga) (Senior ⭐⭐⭐)
 
 ## Mündəricat
 1. [İki Yanaşma](#iki-yanaşma)

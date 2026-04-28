@@ -1,4 +1,4 @@
-# Facade (Junior ⭐)
+# Facade (Middle ⭐⭐)
 
 ## İcmal
 Facade pattern mürəkkəb bir subsistemi sadə, vahid bir interface arxasında gizlədir. Laravel-də Facade-lər Service Container-dəki service-lərə statik-görünüşlü, lakin test edilə bilən proxy kimi çalışır — `Cache::get('key')` yazdıqda əslində container-dən `cache` service-ini alır və `get()` çağırır.

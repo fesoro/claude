@@ -1,4 +1,4 @@
-# Enterprise Integration Patterns (EIP) (Lead)
+# Enterprise Integration Patterns (EIP) (Lead ⭐⭐⭐⭐)
 
 ## Mündəricat
 1. [EIP nədir?](#eip-nədir)

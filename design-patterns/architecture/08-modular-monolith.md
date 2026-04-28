@@ -1,4 +1,4 @@
-# Modulyar Monolit Arxitektura (Senior)
+# Modulyar Monolit Arxitektura (Senior ⭐⭐⭐)
 
 ## Mündəricat
 1. [Modulyar Monolit nədir](#modulyar-monolit-nədir)

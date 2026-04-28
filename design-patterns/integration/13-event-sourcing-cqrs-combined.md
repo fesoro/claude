@@ -1,4 +1,4 @@
-# Event Sourcing + CQRS (Lead)
+# Event Sourcing + CQRS (Lead ⭐⭐⭐⭐)
 
 ## Konseptlər
 

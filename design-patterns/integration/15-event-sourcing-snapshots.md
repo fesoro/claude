@@ -1,4 +1,4 @@
-# Event Sourcing: Snapshots (Lead)
+# Event Sourcing: Snapshots (Lead ⭐⭐⭐⭐)
 
 ## Mündəricat
 1. [Problem: Uzun Event Axını](#problem-uzun-event-axını)

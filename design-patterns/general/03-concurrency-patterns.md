@@ -1,4 +1,4 @@
-# Concurrency Patterns (Senior)
+# Concurrency Patterns (Senior ⭐⭐⭐)
 
 ---
 

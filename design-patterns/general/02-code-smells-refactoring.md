@@ -1,4 +1,4 @@
-# Code Smells & Refactoring (PHP-specific) (Middle)
+# Code Smells & Refactoring (Middle ⭐⭐)
 
 ## Mündəricat
 1. [Code smell nədir?](#code-smell-nədir)

@@ -1,4 +1,4 @@
-# Clean Architecture (Lead)
+# Clean Architecture (Lead ⭐⭐⭐⭐)
 
 ## İcmal
 

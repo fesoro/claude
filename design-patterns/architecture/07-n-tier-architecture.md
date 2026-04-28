@@ -1,4 +1,4 @@
-# N-Tier Architecture (Senior)
+# N-Tier Architecture (Senior ⭐⭐⭐)
 
 ## İcmal
 

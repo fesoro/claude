@@ -1,4 +1,4 @@
-# SOLID Prinsipləri (Junior)
+# SOLID Prinsipləri (Junior ⭐)
 
 ## İcmal
 

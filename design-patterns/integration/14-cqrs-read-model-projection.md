@@ -1,4 +1,4 @@
-# CQRS Read Model & Projection (Lead)
+# CQRS Read Model & Projection (Lead ⭐⭐⭐⭐)
 
 ## Read Model nədir?
 

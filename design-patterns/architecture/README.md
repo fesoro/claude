@@ -10,11 +10,11 @@ Bu folder PHP/Laravel developer-lər üçün nəzərdə tutulub. Hər mövzu rea
 
 | # | Fayl | Mövzu | Səviyyə |
 |---|------|--------|---------|
-| 01 | [01-design-patterns-overview.md](01-design-patterns-overview.md) | Design Patterns Ümumi Baxış | ⭐⭐ Middle |
+| 01 | [01-design-patterns-overview.md](01-design-patterns-overview.md) | Design Patterns Ümumi Baxış | ⭐ Junior |
 | 02 | [02-solid-principles.md](02-solid-principles.md) | SOLID Prinsipləri | ⭐ Junior |
 | 03 | [03-grasp-principles.md](03-grasp-principles.md) | GRASP Prinsipləri | ⭐⭐⭐ Senior |
 | 04 | [04-layered-architectures.md](04-layered-architectures.md) | Layered Architecture (müqayisəli baxış) | ⭐⭐⭐ Senior |
-| 05 | [05-hexagonal-architecture.md](05-hexagonal-architecture.md) | Hexagonal Architecture / Ports & Adapters | ⭐⭐⭐⭐⭐ Architect |
+| 05 | [05-hexagonal-architecture.md](05-hexagonal-architecture.md) | Hexagonal Architecture / Ports & Adapters | ⭐⭐⭐⭐ Lead |
 | 06 | [06-onion-architecture.md](06-onion-architecture.md) | Onion Architecture | ⭐⭐⭐ Senior |
 | 07 | [07-n-tier-architecture.md](07-n-tier-architecture.md) | N-Tier Architecture | ⭐⭐⭐ Senior |
 | 08 | [08-modular-monolith.md](08-modular-monolith.md) | Modular Monolith | ⭐⭐⭐ Senior |

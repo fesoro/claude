@@ -1,4 +1,4 @@
-# MVC, MVP, MVVM (Middle)
+# MVC, MVP, MVVM (Middle ⭐⭐)
 
 ## İcmal
 

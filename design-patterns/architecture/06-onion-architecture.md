@@ -1,4 +1,4 @@
-# Onion Architecture (Senior)
+# Onion Architecture (Senior ⭐⭐⭐)
 
 ## İcmal
 

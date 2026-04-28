@@ -1,4 +1,4 @@
-# Data Transfer Objects (DTO) (Middle)
+# Data Transfer Object — DTO (Middle ⭐⭐)
 
 ## Mündəricat
 1. [DTO nədir?](#dto-nədir)
@@ -33,7 +33,6 @@ Data Transfer Object (DTO) — layerlər (təbəqələr) arasında data daşıma
 - API request/response strukturunu təyin etmək üçün
 - Array-lərdən qaçmaq üçün (typo, unutma, tip uyğunsuzluğu problemləri)
 
-*- Array-lərdən qaçmaq üçün (typo, unutma, tip uyğunsuzluğu problemləri üçün kod nümunəsi:*
 ```php
 // YANLIŞ - Array istifadə etmək
 class UserService

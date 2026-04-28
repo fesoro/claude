@@ -1,4 +1,4 @@
-# Design Patterns (Ümumi Baxış + Laravel Nümunələri) (Middle)
+# Design Patterns — Ümumi Baxış (Junior ⭐)
 
 ## İcmal
 

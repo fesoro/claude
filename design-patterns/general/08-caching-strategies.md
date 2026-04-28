@@ -1,4 +1,4 @@
-# Caching Strategiyaları (Senior) ⭐⭐⭐
+# Caching Strategiyaları (Senior ⭐⭐⭐)
 
 ## İcmal
 

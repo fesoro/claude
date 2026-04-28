@@ -1,4 +1,4 @@
-# Multi-Tenancy Arxitekturası (Senior)
+# Multi-Tenancy Arxitekturası (Senior ⭐⭐⭐)
 
 ## Mündəricat
 1. [Multi-Tenancy nədir?](#multi-tenancy-nədir)

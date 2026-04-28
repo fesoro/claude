@@ -1,4 +1,4 @@
-# Technical Debt & Fitness Functions (Lead)
+# Technical Debt & Fitness Functions (Lead ⭐⭐⭐⭐)
 
 ## Mündəricat
 1. [Technical Debt Növləri](#technical-debt-növləri)

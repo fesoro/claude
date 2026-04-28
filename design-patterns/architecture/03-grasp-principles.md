@@ -1,4 +1,4 @@
-# GRASP Prinsipləri (Senior)
+# GRASP Prinsipləri (Senior ⭐⭐⭐)
 
 ## İcmal
 

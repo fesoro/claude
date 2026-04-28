@@ -1,4 +1,4 @@
-# Cache-Aside Pattern (Middle) ⭐⭐
+# Cache-Aside Pattern (Middle ⭐⭐)
 
 ## İcmal
 

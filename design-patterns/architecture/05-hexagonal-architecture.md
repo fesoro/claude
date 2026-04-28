@@ -1,4 +1,4 @@
-# Hexagonal Architecture / Ports & Adapters (Architect ⭐⭐⭐⭐⭐)
+# Hexagonal Architecture / Ports & Adapters (Lead ⭐⭐⭐⭐)
 
 ## İcmal
 Hexagonal Architecture (Ports & Adapters), domain core-u ən ortaya qoyur — heç bir framework, library və ya external system bilmir. Xarici dünya ilə kommunikasiya interface-lər (Ports) vasitəsilə aparılır; real implementasiyalar (Adapters) isə infrastruktur qatında yaşayır. Domain yalnız domain ilə danışır.

@@ -1,4 +1,4 @@
-# Data Mapper vs Active Record (Senior)
+# Data Mapper vs Active Record (Senior ⭐⭐⭐)
 
 ## İcmal
 

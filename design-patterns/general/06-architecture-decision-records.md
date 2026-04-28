@@ -1,4 +1,4 @@
-# Architecture Decision Records — ADR (Lead)
+# Architecture Decision Records — ADR (Lead ⭐⭐⭐⭐)
 
 ## İcmal
 Architecture Decision Record (ADR) — bir arxitektura qərarını, niyə verildiyi konteksti, alternativləri və nəticələri qeyd edən qısa sənəddir. "Niyə bunu Redis-lə etdik, Kafka ilə yox?" sualına 6 ay sonra cavab vermək üçün.

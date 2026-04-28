@@ -1,4 +1,4 @@
-# Layered Architectures (Senior)
+# Layered Architectures (Senior ⭐⭐⭐)
 
 ## İcmal
 
