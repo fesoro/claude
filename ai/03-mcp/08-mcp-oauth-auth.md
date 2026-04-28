@@ -587,4 +587,29 @@ Log::info('MCP tool icra edildi', [
     'token_id' => $request->user()?->token()?->id,
     'scopes'  => $request->user()?->token()?->scopes,
 ]);
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: OAuth Client Credentials Flow
+
+`McpServiceClient` (machine-to-machine) üçün Laravel Passport client credentials grant implement et. `POST /oauth/token` ilə `client_credentials` grant_type istifadə et. Token-i alıb MCP `Authorization: Bearer` header-inə əlavə et. Token-i 1 saatlıq cache et, expire olanda avtomatik refresh et.
+
+### Tapşırıq 2: Scope-Based Tool Access Control
+
+3 scope müəyyən et: `mcp:read`, `mcp:write`, `mcp:admin`. Hər tool üçün tələb olunan scope-u JSON schema-ya əlavə et. Middleware-da gələn token-in scope-unu yoxla: `mcp:read` scope olmayan client `get_orders` tool-unu çağıra bilməsin. Bunu test et.
+
+### Tapşırıq 3: Token Revocation Test
+
+`POST /oauth/tokens/{tokenId}/revoke` ilə aktiv token-i iptal et. Həmin token-i MCP server-ə göndər. 401 cavab alırsınmı? `audit_logs`-da revocation qeydinin olduğunu yoxla.
+
+---
+
+## Əlaqəli Mövzular
+
+- `03-mcp-transports-deep.md` — Streamable HTTP transport + Bearer auth
+- `09-mcp-security-patterns.md` — Token scope, replay attack qorunması
+- `11-mcp-for-company-laravel.md` — Tam company MCP server + OAuth
+- `../05-agents/13-agent-security.md` — Agent-lər arası trust model
 ```

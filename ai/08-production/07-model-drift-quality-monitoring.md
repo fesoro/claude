@@ -982,3 +982,22 @@ Production-a çıxmazdan əvvəl:
 - Anthropic model versioning: https://docs.claude.com/en/docs/about-claude/models
 - Langfuse regression monitoring: https://langfuse.com/docs/evaluation
 - NIST AI RMF 1.0: https://www.nist.gov/itl/ai-risk-management-framework
+
+## Praktik Tapşırıqlar
+
+### 1. Drift Detection Pipeline
+Hər gün `claude-sonnet-4-6` ilə 50 sabit benchmark sorğusunu işlədin. Cavab uzunluğu, sentiment score və LLM-as-judge qiymətlərini `model_quality_snapshots` cədvəlinə yazın. Statistik kontrol limiti hesablayın: `mean ± 2σ`. Kənar çıxış `>3` dəfə ardıcıl olarsa Slack alert göndərin. 30 günlük trend qrafikini Grafana dashboard-da göstərin.
+
+### 2. Canary vs Baseline Müqayisəsi
+Yeni model versiyanı 10% traffic ilə canary olaraq deploy edin. Eyni sorğular üçün `baseline_score` vs `canary_score` müqayisəsi aparın. Welch t-test ilə fərqin statistik əhəmiyyətliliyini yoxlayın. Canary `p95 latency > baseline * 1.2` olduqda avtomatik rollback tətbiq edin. 7 gün sonra tam keçid edin.
+
+### 3. Shadow Eval Logging
+Production-da hər cavabı `shadow_eval_queue` Redis queue-ya göndərin (async). Background worker LLM-as-judge ilə qiymətləndirir, nəticəni yazır. Prioritet: yüksək xərcli sorğular əvvəl. İstifadəçi görünmədən keyfiyyət haqqında məlumat toplayın. Aylıq quality report avtomatik generasiya edin.
+
+## Əlaqəli Mövzular
+
+- [LLM Observability](./03-llm-observability.md)
+- [AI Testing Strategies](./06-ai-testing-strategies.md)
+- [Canary Shadow Deploy](./14-canary-shadow-llm-deploy.md)
+- [Agent Evaluation Patterns](../05-agents/12-ai-agent-evaluation-patterns.md)
+- [AI Governance Compliance](./16-ai-governance-compliance.md)

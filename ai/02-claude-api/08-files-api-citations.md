@@ -1178,4 +1178,25 @@ Multi-user shared KB             → cache (90% read hit)
 
 ---
 
-*Növbəti: [18 — Computer Use](./12-computer-use.md)*
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Document Q&A with Citations
+
+Şirkətin siyasət sənədini (`policy.pdf`) Files API-yə yüklə. `file_id`-i saxla. İstifadəçi suallarına cavab verən endpoint yaz ki, hər cavabda `citations` massivindən hansı sənəd bölməsinə istinad olunduğunu göstərsin. Cavabın dəqiqliyini ölç.
+
+### Tapşırıq 2: File Cache Strategy
+
+`claude_files` cədvəli yarat: `file_id`, `original_filename`, `content_hash`, `expires_at`. Hər sənəd yüklənmədən əvvəl `content_hash`-ə görə mövcud `file_id` olub-olmadığını yoxla. Varsa, yenidən yükləmə — mövcudu istifadə et. Bu, həm latency-ni azaldır, həm xərcləri kəsir.
+
+### Tapşırıq 3: Multi-Document Analysis
+
+3 müqavilə sənədini eyni anda Files API-yə yüklə. Claude-dan: "Bu üç müqavilədəki fərqli ödəniş şərtlərini müqayisə et" tapşır. `content` massivindəki hər bir fayl referansını düzgün quruşdur. Çoxlu fayl üzərindən cross-reference-in doğru işlədiyini yoxla.
+
+---
+
+## Əlaqəli Mövzular
+
+- `06-vision-pdf-support.md` — PDF emalının əsas texnikalrı
+- `03-structured-output.md` — Citation məlumatlarını strukturlaşdırılmış formata çevir
+- `09-prompt-caching.md` — File referanslarını cache ilə optimallaşdır
+- `../04-rag-embeddings/12-multimodal-rag.md` — Files API + RAG kombinasiyası

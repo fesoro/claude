@@ -922,4 +922,30 @@ GROUP BY component_id
 ORDER BY size DESC;
 ```
 
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Entity Extraction Pipeline
+
+Korporativ sənədlər toplusundan (30+ sənəd) entity extraction pipeline qur. `EntityExtractionService`-i Claude ilə implement et. 200 entity üçün `graph_entities` cədvəlinə yazılan name, type, metadata-nı yoxla. Entity resolution-u test et: eyni şirkətin müxtəlif adlandırmalarını ("Apple Inc.", "Apple", "AAPL") eyni entity-ə birləşdirir? Birləşdirilməmiş duplicate-ları tap.
+
+### Tapşırıq 2: Graph vs Vector Hybrid Müqayisəsi
+
+10 relational sorğu yaz (məs. "X şirkəti ilə işləyən bütün mühəndislər") və 10 semantik sorğu (məs. "autentifikasiya ilə bağlı məzmun"). Hər sorğu tipi üçün: (a) yalnız pgvector, (b) yalnız graph traversal, (c) `CombinedGraphVectorRagService` ilə hybrid. F1 score-u müqayisə et. Relational sorğular üçün hansının daha yaxşı olduğunu dəqiqləşdir.
+
+### Tapşırıq 3: Query Router
+
+Sorğunu analiz edərək graph vs vector vs hybrid routing qərarı verən `QueryRouterService` implement et. Routing siqnalları: "kim", "nə zaman", "hansı şirkət" → graph-heavy; "haqqında", "necə", "niyə" → vector-heavy; "əlaqəli", "bağlı olan" → hybrid. 50 sorğu üzərindən routing qərarlarının dəqiqliyini insan əllə yoxlasın. Routing accuracy-ni ölç.
+
+---
+
+## Əlaqəli Mövzular
+
+- `03-rag-architecture.md` — Klassik RAG pipeline — GraphRAG-a keçid nöqtəsi
+- `05-embedding-models.md` — Graph node embedding-ləri üçün model seçimi
+- `07-contextual-retrieval.md` — Contextual prefix ilə entity-aware chunk hazırlanması
+- `10-agentic-rag.md` — Graph traversal agentic loop içərisində tool kimi
+- `11-rag-evaluation-rerank.md` — Relational sorğular üçün F1 metrikası
+
 Bu, icma xülasəsi yaratmaq üçün güclü şəkildə bağlı qurumların icmalarını müəyyənləşdirir.

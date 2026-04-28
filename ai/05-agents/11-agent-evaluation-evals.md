@@ -784,3 +784,29 @@ Eval dəstiniz 6 ay əvvəl yaradılmışdır. İstifadəçilərinizin sorğular
 Kalibrasiya edilməmiş LLM hakim sistematik qərəzli olacaq — məsələn, həmişə geniş cavablara yüksək skor verəcək ya da müəyyən bir modelin çıxışlarını üstün tutacaq.
 
 **Düzəliş**: 50+ nümunədə insan mühakimələri ilə LLM hakiminin uyğunluğunu doğrulayın. ≥ 85% korrelyasiya hədəfləyin.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: LLM-as-Judge Calibration
+
+20 agent response üçün insan qiymətləndirməsi toplayın (1-5 skala). Eyni response-ları Claude Haiku ilə LLM-as-judge pattern-i ilə qiymətləndir. Pearson korrelyasiyasını hesabla. 0.85-dən aşağıdırsa, judge prompt-una few-shot nümunələr əlavə et, judge modelini Sonnet-ə qaldır, ya da rubric-i daha dəqiq et. Hər iterasiyada korrelyasiyanı yenidən ölç.
+
+### Tapşırıq 2: Laravel EvalRunner CI İnteqrasiyası
+
+`EvalRunner` sinfini `php artisan eval:run --suite=invoice_extraction --budget=2.00` əmri ilə işə salınan Artisan command-a çevir. GitHub Actions workflow-una əlavə et: PR açıldıqda `regression` eval suite-i, nightly-də `full` suite çalışsın. Budget aşıldıqda və ya pass rate 90%-dən aşağı düşdükdə pipeline-ı uğursuz et. Failure sebebini PR kommentinə yaz.
+
+### Tapşırıq 3: Gold-Set Dataset Quruluşu
+
+Production-dan son 100 real istifadəçi sorğusunu götür. Hər sorğu üçün beklenen çıxışı insan ekspert tərəfindən əl ilə yaz. `eval_datasets` cədvəlinə import et. İlk `EvalRunner` çalışdırmasını icra et. Ən aşağı skoru alan 10 cavabı analiz et — bu, növbəti prompt iterasiyasının fokus nöqtəsidir.
+
+---
+
+## Əlaqəli Mövzular
+
+- `12-ai-agent-evaluation-patterns.md` — Trajectory eval, reference-based vs LLM-judge, benchmark-lar
+- `../02-claude-api/02-prompt-engineering.md` — Automated eval pipeline, PromptEvaluator class
+- `08-agent-orchestration-patterns.md` — Multi-agent sistemlər üçün eval ölçüsü
+- `../08-production/07-model-drift-canary.md` — Eval-ların drift detection ilə inteqrasiyası
+- `../04-rag-embeddings/11-rag-evaluation-rerank.md` — RAG-specific retrieval metrikaları

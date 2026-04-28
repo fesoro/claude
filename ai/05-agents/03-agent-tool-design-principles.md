@@ -1199,3 +1199,28 @@ Agent alətlərinin dizaynı interfeys dizaynıdır — yalnız istifadəçi LLM
 7. **Observability** hər alətdə olsun
 
 Laravel `ToolBuilder` pattern-i bu prinsipləri avtomatlaşdırır — onları qaçırmaq çətindir, bu da onların ən böyük gücüdür.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Tool Granularity Audit
+
+Mövcud agent-inizdəki bütün tool-ları nəzərdən keçirin. Birdən çox iş görən tool-lar varmı? (`get_and_update_customer` kimi) Onları ayırın. 10 tool-dan çox varsa, context-ə görə qruplaşdırın (separate tool sets per agent type). Tool sayı azaldıqda agent-in tool seçim dəqiqliyi artırmı?
+
+### Tapşırıq 2: Idempotency Test
+
+`create_invoice(order_id)` tool-unu eyni `order_id` ilə 3 dəfə çağır. Duplicate invoice yaranırmı? `INSERT ... ON CONFLICT DO NOTHING` və ya unique constraint ilə idempotency tətbiq et. Yenidən test et — 3 çağırışın hamısı eyni nəticəni qaytarmalı, yalnız bir record yaranmalıdır.
+
+### Tapşırıq 3: Observable Tool
+
+`ToolLogger` middleware yaz. Hər tool call-dan əvvəl: `tool_name`, `arguments`, `caller_session_id`, timestamp log et. Hər tool call-dan sonra: `result_type`, `duration_ms`, `error_type` (varsa) log et. `tool_calls` cədvəlindəki datanı Filament-də göstər. Ən çox uğursuz olan tool-u müəyyənləşdir.
+
+---
+
+## Əlaqəli Mövzular
+
+- `02-agent-reasoning-patterns.md` — Tool-lar reasoning loop-un core komponenti
+- `../02-claude-api/04-tool-use.md` — Tool use API-nin texniki əsası
+- `13-agent-security.md` — Minimal permission principle tool dizaynında
+- `05-build-custom-agent-laravel.md` — Tool-ların Laravel agent-ə inteqrasiyası

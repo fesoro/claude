@@ -349,3 +349,64 @@ Geri ödəmə müddəti: < 1 ay
 | Miqyasda xərc azaldılması (>100K sorğu/ay) | Açıq mənbəli incə tənzimləmə |
 | Məxfilik (məlumat serverlərinizə tərk etmir) | İncə tənzimləmə + lokal yerləşdirmə |
 | Sürətli iterasiya və eksperiment | Əvvəlcə prompt mühəndisliyi |
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: İlk QLoRA Fine-Tune (Kiçik Model)
+
+**Məqsəd:** 7B modeli Azərbaycan dilindəki PHP/Laravel suallarına cavab vermək üçün incə tənzimləyin.
+
+**Addımlar:**
+1. RunPod-da RTX 4090 kirayə edin (~$0.45/saat)
+2. 200 nümunəlik dataset hazırlayın (instruction + output format)
+3. Axolotl ilə QLoRA konfiqurasiyası yaradın (r=16, alpha=32)
+4. 3 epoch üçün öyrənin (~15-20 dəqiqə)
+5. Yoxlama itkisini izləyin — həddindən artıq uyğunlaşmanı aşkarlayın
+6. LoRA adapterlərini birləşdirin və GGUF-a ixrac edin
+
+```bash
+# RunPod-da sürətli başlanğıc
+pip install unsloth axolotl
+axolotl train config.yml --num_epochs 3
+```
+
+**Gözlənilən nəticə:** Yalnız format/üslub üçün ~100 nümunə kifayətdir. Yoxlama itkisi öyrənmə itkisi ilə birlikdə azalmalıdır.
+
+### Tapşırıq 2: Artımlı Dataset Keyfiyyətinin Yoxlanması
+
+**Məqsəd:** Pis nümunələrin modeli necə xarab etdiyini anlamaq.
+
+**Addım-addım:**
+1. 50 keyfiyyətli + 50 pis (səthi, qısa) nümunəlik iki dataset yaradın
+2. Eyni modeli, eyni hiperparametrlərlə hər iki dataset-də öyrədin
+3. Eyni test sualları üçün hər iki modelin çıxışlarını müqayisə edin
+4. Keyfiyyətin fərqini sənədləşdirin
+
+**Nəticə:** 100 yüksək keyfiyyətli nümunə 1,000 küylü nümunədən üstündür.
+
+### Tapşırıq 3: Zərər-Mənfəət Hesablaması
+
+**Məqsəd:** Xüsusi istifadə halınız üçün incə tənzimləməni API xərci ilə müqayisə edin.
+
+```
+Hesab edin:
+  Aylıq həcminiz: _____ sorğu
+  Claude Haiku xərci: _____ $/ay
+  Fine-tune xərci (bir dəfəlik): $_____
+  Geri ödəmə müddəti: _____ ay
+
+Əgər < 6 ay → fine-tune edin
+Əgər > 12 ay → API-ni davam etdirin
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [02-fine-tuning-vs-rag.md](02-fine-tuning-vs-rag.md) — Hansı yanaşmanı seçmək
+- [03-open-source-models-ollama.md](03-open-source-models-ollama.md) — Base model seçimi (Llama, Qwen, Mistral)
+- [04-lora-qlora-peft.md](04-lora-qlora-peft.md) — LoRA/QLoRA texnikası dərindən
+- [05-create-custom-model-finetune.md](05-create-custom-model-finetune.md) — Praktik fine-tune addım-addım
+- [08-ft-dataset-curation.md](08-ft-dataset-curation.md) — Dataset hazırlama və keyfiyyət

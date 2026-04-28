@@ -918,3 +918,28 @@ class StreamingServiceTest extends TestCase
     }
 }
 ```
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Real-time Chat UI
+
+Laravel + Livewire ilə streaming chat implement et. `StreamingService::streamText()` metodunu yaz. `Server-Sent Events` (SSE) endpoint-i qur. Frontend-də hər token gəldikdə DOM-u yenilə. Yanıt tam gəldikdə `[DONE]` eventi göndər. 
+
+### Tapşırıq 2: Streaming vs Non-Streaming Latency
+
+Eyni 10 uzun sorğu üçün: (a) `stream=false` ilə tam cavabı gözlə, (b) `stream=true` ilə ilk token-ə qədər latency ölç. "Time to First Token" (TTFT) metrikasını qeyd et. Uzun çıxışlarda streaming-in UX üstünlüyünü sübut et.
+
+### Tapşırıq 3: Streaming Error Recovery
+
+Streaming zamanı network kəsilib `stream_socket_client` timeout baş verdikdə recovery implement et. Tokenları `StreamBuffer`-də yığ. Connection bərpa olunduqda davam edə bilirsinizmi? (Xeyr — yeni request lazımdır.) Bu məhdudiyyəti necə handle edirsiniz?
+
+---
+
+## Əlaqəli Mövzular
+
+- `01-claude-api-guide.md` — API əsasları, authentication
+- `../07-workflows/06-ai-streaming-ui.md` — Streaming UI pattern-ləri və SSE
+- `../05-agents/05-build-custom-agent-laravel.md` — Agent loop-da streaming
+- `11-rate-limits-retry-php.md` — Streaming zamanı retry strategiyası

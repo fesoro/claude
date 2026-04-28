@@ -694,3 +694,28 @@ function streamJobProgress(jobId, onProgress) {
 - **Yük balanslaşdırıcıları:** SSE bağlantıları üçün yapışqan sessiyalar və ya birbaşa yönləndirmə istifadə edin.
 - **Redis:** Pub/sub SSE üçün DB polling-i əvəz edə bilər — hər saniyə DB-ni sorğu etmək əvəzinə iş yeniləmə kanalına abunə olun.
 - **İdempotentlik TTL:** 24 saat standartdır. Stripe 24 saat istifadə edir; retry pəncərənizə əsasən seçin.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Webhook-triggered AI
+
+`POST /webhooks/document-uploaded` endpoint-i yaz. Gələn payload-u doğrula (HMAC signature). `ProcessDocumentJob`-u dispatch et. Job tamamlandıqda callback URL-ə `POST /your-callback {status, result}` göndər. Webhook delivery-yi retry logic ilə implement et (3 cəhd, exponential backoff).
+
+### Tapşırıq 2: SSE Progress Streaming
+
+Uzun müddətli AI task üçün SSE endpoint-i qur: `GET /ai-tasks/{id}/stream`. Hər 2 saniyədə `ai_tasks` cədvəlindən `status`, `progress`, `partial_result`-ı çəkib SSE event göndər. Task tamamlandıqda `event: done` göndər, connection bağla. Nginx `proxy_buffering off` konfiqurasiyasını yoxla.
+
+### Tapşırıq 3: Idempotent Webhook Handler
+
+Webhook idempotency-sini test et: eyni webhook-u 3 dəfə göndər. `webhook_events` cədvəlindəki `idempotency_key` sütunu ilə duplicate-i aşkar et. İkinci və üçüncü webhook-lar 200 OK qaytarmalı lakin job dispatch etməməlidir.
+
+---
+
+## Əlaqəli Mövzular
+
+- `04-ai-idempotency-circuit-breaker.md` — Webhook idempotency pattern-i
+- `03-laravel-queue-ai-patterns.md` — Background job dispatch-i
+- `06-ai-streaming-ui.md` — SSE frontend implementasiyası
+- `../08-production/02-observability-logging.md` — Webhook delivery monitoring

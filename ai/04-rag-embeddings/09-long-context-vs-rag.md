@@ -956,3 +956,28 @@ class StrategyRouter
 - "Lost in the middle" və attention dilution long-context-in keyfiyyət riskləridir
 - Unified Strategy interface Laravel-də miqrasiya və A/B test-i asanlaşdırır
 - Qərar öz dataset-inin üzərində eval ilə verilməlidir — bir ölçü universal deyil
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Long Context vs RAG Benchmark
+
+Eyni 20 sual üçün iki yanaşmanı test et: (a) tam sənədi context-ə yüklə (long context), (b) RAG ilə top-5 chunk əldə et. Hər yanaşma üçün keyfiyyəti (1-5), latency-ni, token xərcini ölç. Sənədin ölçüsünü artır (10K→50K→200K token) — nə vaxt RAG üstün olur?
+
+### Tapşırıq 2: "Lost in the Middle" Eksperimenti
+
+50K token-lik sənəddə cavab faktını 3 müxtəlif mövqedə yerləşdir: başında (0-5K), ortasında (22K-28K), sonunda (45K-50K). Hər 3 mövqe üçün Claude-un həmin faktı tapıb tapmamasını yoxla. Middle mövqedə accuracy aşağı düşürsə, RAG-ın bu problemi həll etdiyini sübut et.
+
+### Tapşırıq 3: Hybrid Strategy Router
+
+Sorğu gəldikdə sənəd ölçüsünə baxaraq strategiyanı avtomatik seçən `StrategyRouter` implement et: `< 50K token` → long context, `50K-500K` → hybrid (LC + RAG), `> 500K` → RAG only. 3 fərqli ölçüdə sənəd + 20 sorğu üzərindən router-ın seçimlərini yoxla.
+
+---
+
+## Əlaqəli Mövzular
+
+- `03-rag-architecture.md` — RAG pipeline-ın əsas quruluşu
+- `07-contextual-retrieval.md` — RAG keyfiyyətini artırmaqla LC-nin üstünlüyünü azaltmaq
+- `10-agentic-rag.md` — Agentic loop ilə dinamik strategiya seçimi
+- `../02-claude-api/07-extended-thinking.md` — Long context + extended thinking kombinasiyası

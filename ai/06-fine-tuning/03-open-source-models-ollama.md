@@ -762,3 +762,28 @@ docker exec ollama ollama pull nomic-embed-text  # Embedding-lər üçün
 | M4 Max 128GB | Apple Silicon | 45 t/s | ~250ms |
 
 Müqayisə üçün: Claude Haiku API adətən 300-500ms-də ilk tokenləri qaytarır, sonra ~60-100 t/s çıxış verir.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Ollama + Laravel Inteqrasiyası
+
+Ollama-nı qur, `llama3.2:3b` modelini yüklə. Laravel `OllamaService` yaz: `POST /api/generate` endpoint-inə HTTP request göndər, response-u stream et. `ClaudeService` ilə eyni interface tətbiq et (`message(array $messages): string`). Featurenin API dəyişmədən Ollama-ya keçdiyini test et.
+
+### Tapşırıq 2: Privacy-First Workflow
+
+PII ehtiva edən mətn üzərindən iki emalı müqayisə et: (a) Claude API — data Anthropic serverlərinə gedir, (b) Ollama lokal — data heç yerə getmir. Hər iki halda keyfiyyəti, latency-ni ölç. GDPR tələbi olan data için Ollama-nın deployment modelini sənədləşdir.
+
+### Tapşırıq 3: Model Routing Hibrid
+
+`ModelRouter` implement et: sorğu həssas PII data ehtiva edirsə → Ollama, adi sorğu isə → Claude Haiku. PII detection üçün basit regex ya da NER istifadə et. Cost tracking: lokal inference-in ayda nə qədər Claude API cost-unu əvəz etdiyini hesabla.
+
+---
+
+## Əlaqəli Mövzular
+
+- `09-vllm-model-serving.md` — Production-grade model serving
+- `../01-fundamentals/09-llm-provider-comparison.md` — Lokal vs cloud provider müqayisəsi
+- `../08-production/15-multi-provider-failover.md` — Ollama fallback kimi multi-provider
+- `04-lora-qlora-peft.md` — Yerli modeli fine-tune etmək

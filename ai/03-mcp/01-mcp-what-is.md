@@ -369,3 +369,95 @@ MCP tarix əsaslı versiyalaşdırma istifadə edir: `2024-11-05` (ilkin), `2025
   }
 }
 ```
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Birinci MCP Serverini Quraşdırmaq
+
+**Məqsəd:** Mövcud MCP serverini Claude Desktop-a qoşub real tool çağırışı görmək.
+
+```bash
+# 1. MCP filesystem serverini quraşdırın
+npm install -g @modelcontextprotocol/server-filesystem
+
+# 2. Claude Desktop konfiqurasiyasını açın
+# macOS: ~/Library/Application Support/Claude/claude_desktop_config.json
+# Windows: %APPDATA%\Claude\claude_desktop_config.json
+
+# 3. Serveri əlavə edin:
+```
+
+```json
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/home/username/projects"]
+    }
+  }
+}
+```
+
+4. Claude Desktop-u yenidən başladın
+5. Claude-a: "Layihə qovluğumda hansı fayllar var?" soruşun
+6. Claude `list_directory` toolunu çağırır — JSON-RPC mesajını izləyin
+
+**Nəticə:** İlk real tool çağırışını müşahidə etdiniz.
+
+### Tapşırıq 2: MCP vs Birbaşa Tool Müqayisəsi
+
+**Aşağıdakı iki implementasiyanı müqayisə edin:**
+
+```php
+// Birbaşa tool (API-də)
+$response = $anthropic->messages->create([
+    'tools' => [
+        ['name' => 'get_weather', 'description' => '...', 'input_schema' => [...]]
+    ],
+    // ...
+]);
+
+// MCP tool (xarici server)
+// weather-mcp-server ayrıca proqram kimi işləyir
+// Claude Desktop onu kəşf edir, tool çağırışları protokol üzərindən gedir
+```
+
+**Suallar:**
+- Hansı ssenari üçün birbaşa tool daha uyğundur?
+- Hansı ssenari üçün MCP daha uyğundur?
+- Hər birinin latensiyası necə fərqlənir?
+
+### Tapşırıq 3: JSON-RPC Mesajlarını Debug Etmək
+
+MCP Inspector ilə tool çağırışını real vaxtda izləyin:
+
+```bash
+# MCP Inspector quraşdırmaq
+npm install -g @modelcontextprotocol/inspector
+
+# Serveri Inspector ilə başladın
+mcp-inspector npx @modelcontextprotocol/server-filesystem /tmp
+
+# localhost:5173-ü açın
+# "Tools" → "list_directory" → çağırın
+# JSON-RPC sorğu/cavabını görün
+```
+
+**İzlənəcəklər:**
+- `initialize` handshake
+- `tools/list` cavabı
+- `tools/call` sorğusu və cavabı
+- Xəta halında `error` formatı
+
+---
+
+## Əlaqəli Mövzular
+
+- [02-mcp-resources-tools-prompts.md](02-mcp-resources-tools-prompts.md) — MCP primitivləri dərindən
+- [03-mcp-transports-deep.md](03-mcp-transports-deep.md) — stdio vs HTTP nəqli
+- [04-mcp-server-build-node.md](04-mcp-server-build-node.md) — Öz MCP serverini qurmaq (Node.js)
+- [05-mcp-server-build-php.md](05-mcp-server-build-php.md) — PHP-də MCP server
+- [09-mcp-security-patterns.md](09-mcp-security-patterns.md) — Təhlükəsizlik modeli
+```

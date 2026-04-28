@@ -617,3 +617,28 @@ Arxitektura trade-off-ları yaxşı anladıqda, provayder seçimi statik deyil d
 - **Portfel yanaşması** — bir provayderə bağlı olmayın, fallback və cost-optimization üçün multi-provider.
 
 Növbəti fəsillər: **10-model-selection-decision** (Opus vs Sonnet vs Haiku seçimi) və **11-llm-pricing-economics** (AI feature-ın unit economics-i).
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Provider Benchmark
+
+5 task tipi üçün (strukturlaşdırılmış data extraction, kod generasiya, kreativ yazı, məntiqi sual, RAG Q&A) Claude Sonnet, GPT-4o-mini, Gemini Flash ilə cavab al. Hər cavab üçün keyfiyyəti 1-5 ilə qiymətləndir, latency və token xərclərini qeyd et. Cədvəl çəkib hər task tipi üçün "winner" müəyyənləşdir.
+
+### Tapşırıq 2: Multi-Provider Failover
+
+Laravel-də `AIProviderService` implement et: primary Claude, rate limit (429) halında GPT-4o-mini-yə fallback. Her provider-in API client-ini `driver` pattern-i ilə swap oluna bilən şəkildə yaz. Failover-ın işlədiyini simulate et: Claude client-ini mock edib 429 qaytar, GPT-4o client-inin devreye girməsini yoxla.
+
+### Tapşırıq 3: Compliance Matrix
+
+Layihəndəki data senaryolarını (PII, health data, financial records) götür. Hər provayder üçün data residency (EU/US/AZ) siyasəti, SOC2, GDPR uyğunluq sənədlərini oxu. Compliance matrix cədvəli yarat. Hansı provayderlər layihəndəki data sovereignty tələblərini ödəyir?
+
+---
+
+## Əlaqəli Mövzular
+
+- `10-model-selection-decision.md` — Qərar çərçivəsi: Opus vs Sonnet vs Haiku
+- `11-llm-pricing-economics.md` — Provayder xərclərinin unit economics üzərindəki təsiri
+- `../08-production/15-multi-provider-failover.md` — Multi-provider failover arxitekturası
+- `../02-claude-api/11-rate-limits-retry-php.md` — Rate limit idarəetməsi və retry strategiyası

@@ -884,3 +884,28 @@ UI-də iki fərqli zona göstərilir: text stream + tool use panel (spinner + to
 - **Reconnect**: Anthropic API stateless — partial-ı DB-də saxlamaq olur, amma generation resume deyil, sadəcə UI bərpası.
 - **Token vs chunk vs event** granularity use-case-dən asılıdır — chat üçün token, multi-step üçün event.
 - **Tool use stream**: `input_json_delta` tool args-ı token-by-token streamlə; UI tool panel-də progress göstər.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Livewire Streaming Chat
+
+Laravel Livewire ilə real-time chat UI qur. SSE endpoint-i: `GET /chat/stream?message={msg}`. Livewire `$wire.listen('StreamChunk', cb)` ilə hər token gəldikdə DOM-u yenilə. Chat bubble-ın tədricən genişlənməsini (typing animation kimi) test et.
+
+### Tapşırıq 2: Streaming Latency Measurement
+
+Streaming endpoint-i üçün: (a) Time to First Token (TTFT), (b) total completion time ölç. Eyni prompt üçün streaming vs non-streaming latency müqayisəsi apar. User-perceived latency (TTFT) nə qədər azalır? Bu UX improvement-ı istifadəçi satisfaction-a necə təsir edir?
+
+### Tapşırıq 3: Mid-Stream Error Recovery
+
+Streaming zamanı 15 saniyə sonra intentionally network connection-ı kəs. UI-da: partial cavabı göstər, error indicator göstər, "Yenidən cəhd et" düyməsi göstər. Yenidən cəhd edəndə yeni request göndər (resume mümkün deyil). Bu UX pattern-i implement et.
+
+---
+
+## Əlaqəli Mövzular
+
+- `../02-claude-api/05-streaming-responses.md` — Streaming API-nin backend implementasiyası
+- `05-webhook-async-ai.md` — SSE vs webhook seçim meyarları
+- `../05-agents/05-build-custom-agent-laravel.md` — Agent loop-da streaming
+- `../08-production/05-latency-optimization.md` — TTFT optimizasiyası

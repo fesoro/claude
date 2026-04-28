@@ -970,4 +970,21 @@ it('retries on validation failure with error context', function () {
 - Production-da read replica istifadə et, primary-ə qoruma ver
 - User-ə **SQL-i göstər**, onunla birlikdə summary — trust-i artırır
 
-Növbəti addım — [01-ai-feature-economics.md](../10-product-thinking/01-ai-feature-economics.md): bu feature-in iqtisadiyyatını hesabla.
+## Praktik Tapşırıqlar
+
+### 1. Schema-Aware Prompt Engineering
+Verilənlər bazanızın schema-sını avtomatik export edən `php artisan ai:export-schema` komandası yazın. Hər cədvəl üçün sütun adları, tiplər və FK əlaqələri JSON formatında çıxarılsın. Bu schema-nı system prompt-a daxil edin. 20 müxtəlif natural language sorğusu test edin: düzgün SQL generasiya nisbəti `>85%` olmalıdır.
+
+### 2. Read-Only Query Guard
+SQL Injection və destruktiv əməliyyatların qarşısını almaq üçün validator yazın. Regex ilə `DROP`, `DELETE`, `UPDATE`, `INSERT`, `TRUNCATE`, `ALTER`, `CREATE` keywordlərini aşkarlayın. Yalnız `SELECT` sorğularına icazə verin. Şübhəli sorğuları `blocked_queries` cədvəlinə log edin. Test case-lər: 10 injection cəhdi, 5 çoxcədvəlli JOIN, 5 aggregate sorğusu.
+
+### 3. User Satisfaction Feedback Loop
+Hər SQL nəticəsinin yanında thumbs up/down göstərin. `user_rating` sütununu `ai_sql_queries` cədvəlinə əlavə edin. Rating `<3` olduqda sorğunu `low_quality_queries` queue-ya göndərin. Həftəlik review: ən çox rədd edilən sorğu tipləri hansıdır? Bu tapıntıları few-shot nümunə kimi system prompt-a əlavə edin.
+
+## Əlaqəli Mövzular
+
+- [Laravel RAG App](./04-laravel-rag-app.md)
+- [Tool Use](../02-claude-api/04-tool-use.md)
+- [Safety Guardrails](../08-production/08-safety-guardrails.md)
+- [AI Feature Economics](../10-product-thinking/03-ai-feature-economics.md)
+- [Observability Logging](../08-production/02-observability-logging.md)

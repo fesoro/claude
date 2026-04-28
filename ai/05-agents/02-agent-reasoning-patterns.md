@@ -874,3 +874,28 @@ Senior həyatda 80% hal ReAct-lı bir agent-dir. Verifiable uğursuzluq halında
 ---
 
 **Növbəti fayl:** `08-agent-orchestration-patterns.md` — tək agent yerinə bir neçə agent-i necə qurmaq (supervisor, hierarchical, swarm, blackboard).
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: ReAct Agent
+
+`ReActAgent` sinifi implement et. Tool-lar: `search_docs(query)`, `calculate(expr)`. 10 multi-step sual üçün (məs. "Şirkətin Q3 gəliri Q2-dən neçə faiz artıb?") agent-i çalışdır. Hər Thought/Action/Observation addımını log et. Kaç iteration average olduğunu ölç.
+
+### Tapşırıq 2: Reflexion İmplementasiyası
+
+`ReActAgent`-ə `ReflexionLayer` əlavə et: agent cavab qaytardıqdan sonra özünü eval et ("Bu cavab sualı tam cavablandırdı?"). Self-eval "xeyr" olduqda, reflection-ı messages-ə əlavə edib yenidən cəhd et. Max 2 reflection. Reflexion olmadan vs olduqda quality score müqayisə et.
+
+### Tapşırıq 3: Plan-and-Execute vs ReAct
+
+Mürəkkəb research tapşırığı (məs. "5 competitor-ı araşdır, hər biri üçün pricing, features, target market analiz et") üçün iki pattern-ı müqayisə et. Plan-and-Execute: əvvəlcə plan yaz, sonra icra et. ReAct: addım-addım. Hansı pattern daha az hallucination edir? Hansı daha az token istifadə edir?
+
+---
+
+## Əlaqəli Mövzular
+
+- `05-build-custom-agent-laravel.md` — ReAct pattern-in Laravel implementasiyası
+- `03-agent-tool-design-principles.md` — Reasoning üçün optimal tool dizaynı
+- `08-agent-orchestration-patterns.md` — Multi-agent reasoning: supervisor, swarm
+- `../02-claude-api/07-extended-thinking.md` — Extended thinking vs ReAct tradeoffs

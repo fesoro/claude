@@ -1115,4 +1115,25 @@ TOPLU OPTİMİZASİYA:
 
 ---
 
-*Əvvəlki: [08 — Tool Use](./04-tool-use.md) | Geri: [İndeks](../README.md)*
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Invoice Extraction
+
+Faktura şəkillərindən strukturlaşdırılmış məlumat çıxar. JSON schema: `{invoice_number, date, vendor_name, line_items: [{description, qty, unit_price}], total}`. 20 müxtəlif faktura ilə test et. Parsing uğursuzluqlarını (malformed JSON) catch et, retry logic ilə həll et. Success rate-i ölç.
+
+### Tapşırıq 2: Validation Pipeline
+
+`StructuredOutputService`-ə Zod-style PHP validation əlavə et. LLM cavabını `json_decode` ilə parse et, sonra type checks (string, int, array), required field checks, range validation. Validation fail olursa, error message-i LLM-ə göndərib "əvvəlki cavabındakı bu xətaları düzəlt" ilə retry et. Max 2 retry.
+
+### Tapşırıq 3: Multi-Schema Router
+
+Fərqli sənəd tipləri (invoice, contract, CV) üçün fərqli JSON schema-lar hazırla. Sənəd tipini əvvəlcə Claude-a müəyyən etdir, sonra uyğun schema ilə əsas extraction-ı çalışdır. 30 qarışıq sənəd üzərindən dəqiqliyi ölç.
+
+---
+
+## Əlaqəli Mövzular
+
+- `04-tool-use.md` — Tool use ilə strukturlaşdırılmış output alternativ yanaşma
+- `02-prompt-engineering.md` — JSON output üçün prompt texnikaları
+- `08-files-api-citations.md` — Sənədlər üçün Files API ilə inteqrasiya
+- `../07-workflows/01-ai-pipeline-laravel.md` — Extraction pipeline-larının orkestrası

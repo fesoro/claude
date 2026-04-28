@@ -1210,3 +1210,22 @@ if (ExtractedDocument::where('file_hash', $fileHash)->exists()) {
     // Mövcud çıxarmanı qaytar
 }
 ```
+
+## Praktik Tapşırıqlar
+
+### 1. Çoxsahəli PDF Extractor
+Invoice, kontrakt və CV kimi 3 fərqli sənəd tipi üçün JSON schema müəyyən edin. Claude Vision-la hər tipi ayrıca prompt-la extract edin. Dəqiqliyi ölçmək üçün 20 əl ilə doldurulmuş ground-truth dataset hazırlayın. Hər sənəd tipi üçün F1 score hesablayın. Ən az dəqiq sahəni müəyyən edin, prompt-u genişləndirib dəqiqliyi artırın.
+
+### 2. Human-in-the-Loop Review
+Aşağı confidence (`<0.85`) ekstraksiyalar üçün review queue qurun. Laravel Nova və ya sadə admin panel ilə operator extracted data-nı yoxlasın, düzəltsin. Düzəlişləri `extraction_corrections` cədvəlinə yazın. Bu cədvəldən monthly fine-tuning dataset hazırlayın. Zamanla model accuracy-sinin artdığını izləyin.
+
+### 3. Batch Processing Pipeline
+200 sənədin eyni anda emal edilməsi üçün Laravel Horizon ilə queue sistemi qurun. `ExtractDocumentJob` yaradın, prioritet queue-lar tətbiq edin (VIP müştərilər yüksək prioritet). Batch API (`claude-batch`) istifadə edərək xərci 50% azaldın. Progress tracking: `extraction_batches` cədvəlində status, tamamlanma %, ETA göstərin.
+
+## Əlaqəli Mövzular
+
+- [Vision PDF API](../02-claude-api/08-vision-pdf-api.md)
+- [Batch API](../02-claude-api/10-batch-api.md)
+- [Laravel RAG App](./04-laravel-rag-app.md)
+- [Cost Optimization](../08-production/04-cost-optimization.md)
+- [AI Testing Strategies](../08-production/06-ai-testing-strategies.md)

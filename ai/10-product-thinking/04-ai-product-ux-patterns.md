@@ -1258,3 +1258,22 @@ AI UX dizaynı **feature dizaynı deyil**, **güvən mühəndisliyi**-dir. Hər 
 Senior developer kimi sən backend-i bilirsən. Amma AI product-da UX sənə backend qədər təsir göstərir. Feature keyfiyyəti 9/10, UX keyfiyyəti 4/10 olan məhsul **ölür**. Feature 7/10, UX 9/10 olan məhsul **yaşayır və qazanır**.
 
 Bu sənəddəki pattern-ləri öz app-ında bir-bir tətbiq et. Hər həftə bir pattern. 3 ay sonra AI product-un həm daha etik, həm də daha sevilən olacaq.
+
+## Praktik Tapşırıqlar
+
+### 1. Streaming + Progressive Disclosure
+Mövcud AI feature-ınızda streaming tətbiq edin. SSE (Server-Sent Events) ilə tokenləri real-vaxtda göndərin. Loading skeleton ilk cavab gələnə qədər göstərin. İlk token gəldikdən sonra skeleton yox olsun, cavab genişlənsin. TTFT (Time to First Token) ölçün. User feedback toplayın: streaming ilə əvvəlki tam-cavab yanaşmasını müqayisə edin.
+
+### 2. Feedback Loop UI
+Hər AI cavabının altına thumbs up/down əlavə edin. Down seçildikdə optional dropdown: `"Yanlış məlumat" | "Uyğunsuz ton" | "Çox uzun" | "Başqa"`. Bu məlumatı `ai_feedback` cədvəlinə yazın. Dashboard qurun: hansı cavab tipi daha çox rədd edilir? Bu pattern-ləri prompt improvement-ə yönləndirilə bilər.
+
+### 3. Error UX Audit
+Mövcud AI feature-ınızın error vəziyyətlərini sənədləşdirin: API timeout, rate limit, content policy block, boş cavab. Hər hal üçün hazırda user nə görür? Yaxşılaşdırın: timeout → `"Cavab gecikir, yenidən cəhd edilir..."`, rate limit → `"Çox aktiv, 30 saniyə gözləyin"`. Texniki error mesajları istifadəçiyə göstərilməsin.
+
+## Əlaqəli Mövzular
+
+- [AI MVP Playbook](./01-ai-mvp-playbook.md)
+- [Measuring AI Success](./05-measuring-ai-success.md)
+- [Streaming Responses](../02-claude-api/05-streaming-responses.md)
+- [Safety Guardrails](../08-production/08-safety-guardrails.md)
+- [Responsible AI for Product](./06-responsible-ai-for-product.md)

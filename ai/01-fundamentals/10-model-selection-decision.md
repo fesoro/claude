@@ -735,3 +735,28 @@ Model seçimi konfiq parametri deyil — arxitektur qərarıdır:
 8. **A/B test** — keyfiyyət fərqini ölçmədən ucuz modelə keç
 
 Senior developer kimi, LLM xərclərini database index-ləri qədər ciddi qəbul et. Hər sorğu pul yandırır — ya ağıllı yandır, ya da arxitekturanı dəyişdir.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Feature-Model Mapping
+
+Layihəndəki bütün AI feature-ları siyahıya al. Hər feature üçün: (a) task tipi nədir, (b) latency tələbi nədir, (c) accuracy mühümdür? Bu kriteriyalar əsasında optimal model seç. Nəticəni `config/ai.php`-yə yaz. Mapping-in əsaslandırmasını bir markdown faylda sənədləşdir.
+
+### Tapşırıq 2: Dynamic Complexity Router
+
+Gələn sorğunun mürəkkəbliyini ölçən bir `ComplexityClassifier` implement et: qısa/sadə sorğular → Haiku, orta → Sonnet, uzun/multi-step → Opus. Heuristic meyarlar: token sayı, sual sayı, "why/how/design/analyze" kimi açar sözlər. 50 real sorğu üzərindən routing qərarlarını insan ilə yoxla.
+
+### Tapşırıq 3: Cost Monitoring Dashboard
+
+`ai_requests` cədvəlinə `model`, `input_tokens`, `output_tokens`, `cost_usd`, `feature_name` sütunları əlavə et. 1 həftə data topla. Ən bahalı feature-ları müəyyənləşdir. Hansı feature-lar cheaper modellərə keçidə adaydır?
+
+---
+
+## Əlaqəli Mövzular
+
+- `09-llm-provider-comparison.md` — Provider seçimi — model seçiminin əvvəlki addımı
+- `11-llm-pricing-economics.md` — Model seçiminin maliyyə nəticələri
+- `02-models-overview.md` — Müxtəlif model ailələrinin xüsusiyyətləri
+- `../08-production/03-llm-observability.md` — Model performance-ını production-da izlə

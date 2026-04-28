@@ -644,4 +644,21 @@ $response = $claude->messages()->create([
 
 **Prinsip**: AI MVP prompt + data pipeline + minimal UI + kill switch. Custom fine-tune, vector DB, agent framework = day 30 problemi.
 
-Növbəti: [03-build-vs-buy-ai.md](./03-build-vs-buy-ai.md) — komponentləri öz quraşdır, yoxsa al?
+## Praktik Tapşırıqlar
+
+### 1. 7 Günlük Sprint Planı
+Öz layihəniz üçün 7 günlük AI MVP sprint-i planlaşdırın. Gün 1: problem + data, Gün 2-3: prompt iteration (10+ versiya), Gün 4: minimal UI + kill switch, Gün 5: 3 canlı user testi, Gün 6: feedback + fix, Gün 7: success criteria review. Hər gün üçün "done" kriteriyasını əvvəlcədən müəyyən edin. Sprint sonunda: ship et ya ya öldür — ortada qalma.
+
+### 2. Kill Switch Tətbiqi
+Laravel feature flag sistemi qurun. `ai_features` cədvəli: `name`, `enabled`, `rollout_percentage`, `killswitch_reason`. Hər AI endpoint-i flag-ın arxasına qoyun: `if (!Feature::isEnabled('ai_chat')) return $this->fallbackResponse()`. Admin panel-dən bir tıkla deaktiv etmək mümkün olsun. Kill switch-i test edin: aktivləşdirin, deaktivləşdirin, fallback-ın işlədiyini yoxlayın.
+
+### 3. MVP Success Criteria Sənədi
+Feature-ı ship etməzdən əvvəl 1 səhifəlik success doc yazın: nəyi ölçəcəksiniz (metric), hansı threshold uğur sayılır, ölçmə üsulu, zaman çərçivəsi, "kill" qərarı kim verir. Məsələn: `auto_resolution_rate > 60%` 2 həftə ərzində. Bu doc-u team ilə razılaşdırın. 2 həftə sonra ölçün, qərara gəlin.
+
+## Əlaqəli Mövzular
+
+- [Build vs Buy](./02-build-vs-buy-ai.md)
+- [AI Feature Economics](./03-ai-feature-economics.md)
+- [AI Product UX Patterns](./04-ai-product-ux-patterns.md)
+- [Canary Shadow Deploy](../08-production/14-canary-shadow-llm-deploy.md)
+- [AI Testing Strategies](../08-production/06-ai-testing-strategies.md)

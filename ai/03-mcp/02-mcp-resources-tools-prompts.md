@@ -1056,3 +1056,28 @@ return ['isError' => true, 'content' => [['type' => 'text', 'text' => 'Əməliyy
 10. **Error-ları sanitize et** — stack trace LLM-ə getməsin.
 
 Növbəti addım: testing və debugging nümunələri üçün `10-mcp-testing-debugging.md` faylına bax.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Tool vs Resource Seçimi
+
+CRM sisteminiz üçün MCP server dizayn et. Aşağıdakıları primitiv növünə görə siyahıla: müştəri profili göstərmək, müştəri adını axtarmaq, müştəriyə email göndərmək, email şablonları siyahısı. Tool vs Resource vs Prompt ayrımını əsaslandır. `get_customer` tool kimi mi, resource kimi mi olmalıdır?
+
+### Tapşırıq 2: Prompt Template MCP
+
+`customer_summary` adlı MCP Prompt implement et. Tələb olunan argument: `customer_id`. Prompt birdən çox LLM çağırışını koordinasiya edir: əvvəlcə müştəri datasını çəkir, sonra müştəri aktivlik xülasəsi hazırlayır. Claude Desktop-da `@` sintaksisi ilə bu promptu çağır.
+
+### Tapşırıq 3: Schema Optimization
+
+Mövcud MCP tool-larının JSON schema-larını nəzərdən keçir. 10 sahədən çox olan tool-lar varmı? Opsional sahələri müəyyənləşdir. Schema-nı sadələşdir. Simplification öncəsi vs sonrasındakı Claude-un tool seçim dəqiqliyini müqayisə et.
+
+---
+
+## Əlaqəli Mövzular
+
+- `01-mcp-what-is.md` — MCP protokolunun əsasları
+- `04-mcp-server-build-node.md` — Node.js-də tool implementasiyası
+- `05-mcp-server-build-php.md` — PHP-də tool implementasiyası
+- `09-mcp-security-patterns.md` — Tool input sanitization və scope məhdudiyyətləri

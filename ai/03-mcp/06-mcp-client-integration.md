@@ -853,3 +853,28 @@ final class McpAgent
     }
 }
 ```
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: PHP MCP Client
+
+`McpClient` PHP sinifi yaz. `initialize()`, `listTools()`, `callTool(name, args)` metodlarını implement et. Mövcud MCP server-ə (Node.js ya da PHP) qoşun. `listTools()` nəticəsini log et, `callTool` ilə real tool çağırın.
+
+### Tapşırıq 2: Tool Discovery + Dynamic Routing
+
+`McpClient::listTools()` ilə server-in bütün tool-larını avtomatik kəşf et. Hər tool-u Claude-a `tools` massivində göstər. Claude-un özbaşına doğru tool seçib çağırmasını yoxla. Yeni tool əlavə etdikdə client kodu dəyişmədən işlədiyini sübut et (zero-config tool discovery).
+
+### Tapşırıq 3: Multi-Server Aggregator
+
+İki müxtəlif MCP server-ə qoşulan aggregator qur: `CrmMcpClient` + `InventoryMcpClient`. Hər ikisinə `listTools()` göndər. Tool listlərini birləşdir, prefix əlavə et (`crm_search_customers`, `inventory_get_stock`). Claude-a hər iki server-in tool-larını birlikdə ver.
+
+---
+
+## Əlaqəli Mövzular
+
+- `01-mcp-what-is.md` — MCP protokolu əsasları
+- `04-mcp-server-build-node.md` — Server tərəfi implementasiyası
+- `07-mcp-clients-compared.md` — Hazır client-lərin müqayisəsi
+- `08-mcp-oauth-auth.md` — Authenticated MCP client-ə qoşulmaq

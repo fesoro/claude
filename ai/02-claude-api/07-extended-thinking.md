@@ -1192,4 +1192,25 @@ Israf:            100000+ (əksər hallarda)
 
 ---
 
-*Növbəti: [16 — Vision və PDF Support](./06-vision-pdf-support.md)*
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Thinking Budget Eksperimenti
+
+Mürəkkəb texniki sual üçün (məs. "Microservices-dən monolith-ə revert etmək nə zaman məntiqlidir?") extended thinking-i `budget_tokens=2000`, `5000`, `10000` ilə test et. Hər halda cavab keyfiyyəti və thinking token xərclərini qeyd et. Nə vaxt daha çox thinking token real fayda verir?
+
+### Tapşırıq 2: Streaming + Thinking UI
+
+Laravel Livewire-də extended thinking ilə streaming implement et. Thinking blokunu ayrıca "Düşünür..." spinner ilə göstər. Final cavab gəldikdə spinner-i gizlət. `Server-Sent Events` ilə thinking chunk-larını frontend-ə çatdır.
+
+### Tapşırıq 3: ROI Kalkulyator
+
+Layihəndəki ən mürəkkəb 5 use case-i götür. Hər birini: (a) standard Sonnet, (b) extended thinking ilə test et. Token xərcini və keyfiyyəti ölç. Hansı use case-lər üçün extended thinking xərci əsaslandırılır? ROI meyarlarını sənədləşdir.
+
+---
+
+## Əlaqəli Mövzular
+
+- `../01-fundamentals/08-reasoning-models.md` — Reasoning modellər nədir
+- `02-prompt-engineering.md` — Extended thinking ilə optimal prompt strukturu
+- `04-tool-use.md` — Tool use + extended thinking kombinasiyası
+- `../05-agents/02-agent-reasoning-patterns.md` — ReAct, ToT kimi reasoning pattern-lər

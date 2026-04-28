@@ -723,6 +723,31 @@ public function diagnoseCache(array $usage): string
         return "CACHE HIT: {$read} token cache-dən oxundu. ~\${$savings} qənaət edildi.";
     }
 
-    return "CACHE YOX: {$normal} adi giriş tokeni. Beta başlığını və minimum ölçünü yoxlayın.";
+    return "CACHE YOX: {$normal} adi giriş tokeni. Beta başlığını və minimum ölçünü yoxlayın."; // cache_control bloku yoxsa və ya 1024 token minimum aşılmayıbsa
 }
 ```
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Cache Hit Rate Ölçümü
+
+`claude_usage_logs` cədvəlinə `cache_creation_tokens`, `cache_read_tokens`, `input_tokens` sütunları əlavə et. 1 həftə data topla. Cache hit rate-i hesabla: `cache_read / (cache_read + cache_creation)`. 80%-dən aşağıdırsa, hansı system prompt-ların cache üçün çox kiçik olduğunu araşdır (1024 token minimum).
+
+### Tapşırıq 2: 5 Dəqiqəlik TTL Testi
+
+Eyni cached sistem promptunu: (a) 30 saniyə intervalda, (b) 6 dəqiqə intervalda göndər. Cache TTL-i (5 dəqiqə) real olaraq gözlə — ikinci halda `cache_creation_tokens` sıfırdan artacaq (cache miss). Bu eksperiment dispatch sequence-in vacibliyini sübut edir.
+
+### Tapşırıq 3: Cost Qənaəti Hesablaması
+
+Layihəndəki ən böyük sistem promptunu götür (token sayı ≥ 1024). Aylıq çağırış sayını hesabla. Caching olmadan: `calls × full_input_tokens × input_price`. Caching ilə: `first_call × write_price + remaining_calls × read_price` (read price ~10x ucuz). Aylıq qənaəti dollar olaraq hesabla.
+
+---
+
+## Əlaqəli Mövzular
+
+- `01-claude-api-guide.md` — API strukturu və `cache_control` başlığının yerləşdirilməsi
+- `11-rate-limits-retry-php.md` — Rate limit zamanı cached sorğuların retry davranışı
+- `../01-fundamentals/11-llm-pricing-economics.md` — Caching-in unit economics üzərindəki təsiri
+- `../04-rag-embeddings/07-contextual-retrieval.md` — Contextual Retrieval-da prompt caching tətbiqi

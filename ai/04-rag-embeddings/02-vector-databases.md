@@ -820,4 +820,29 @@ CREATE INDEX ON knowledge_chunks
 USING ivfflat (embedding vector_cosine_ops) 
 WITH (lists = 1000);
 SET ivfflat.probes = 10;
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: pgvector Benchmark
+
+`knowledge_chunks` cədvəlinə 100,000 embedding yüklə. IVFFlat index-i `lists=100` (az) vs `lists=1000` (çox) ilə müqayisə et. Axtarış latency-sini ölç. HNSW index-ini də sına. Recall@10 metrikasını hesabla: hansı index-ləmə üsulu daha yaxşı accuracy-latency balansı verir?
+
+### Tapşırıq 2: Multi-Tenant İzolyasiya
+
+`tenant_id` ilə partition edilmiş pgvector table dizayn et. Hər tenant-ın yalnız öz sənədlərini görə biləcəyini test et (cross-tenant axtarış mümkün olmamalıdır). `RLS (Row Level Security)` ilə enforce et. Performance-ı tenant filtrəsi ilə vs filtrəsiz müqayisə et.
+
+### Tapşırıq 3: Metadata Filtering
+
+`knowledge_chunks`-a `category`, `date`, `source` metadata sütunları əlavə et. pgvector sorğusuna metadata filter əlavə et: `WHERE category = 'legal' AND <=> < 0.2`. Yalnız metadata filter vs vector+metadata hybrid axtarışın accuracy fərqini ölç.
+
+---
+
+## Əlaqəli Mövzular
+
+- `01-embeddings-vector-search.md` — Embedding-lərin yaradılması
+- `03-rag-architecture.md` — Vector DB-nin RAG sistemindəki rolu
+- `06-reranking-hybrid-search.md` — pgvector + BM25 hibrid axtarış
+- `../sql/51-vector-databases.md` — pgvector SQL detalları
 ```

@@ -1397,3 +1397,22 @@ Storage::allFiles('tts')
 - **claude-haiku-4-5**: növbə başına ~$0.001
 - **OpenAI TTS**: cavab başına ~$0.008 (100 söz)
 - **Növbə başına cəmi**: ~$0.011
+
+## Praktik Tapşırıqlar
+
+### 1. End-to-End Voice Pipeline
+Tam pipeline qurun: browser `MediaRecorder` API ilə audio record edin, Laravel-ə WAV formatında göndərin, Groq Whisper ilə transkript edin, Claude-a göndərin, ElevenLabs/OpenAI TTS ilə cavabı audio-ya çevirin, streaming ilə browser-ə qaytarın. Total round-trip latency-ni ölçün. Hədəf: `<4 saniyə`. Bottleneck-i müəyyən edin.
+
+### 2. Noise Filtering və Silence Detection
+3 saniyədən qısa audio clip-ləri (`silence threshold`) avtomatik rədd edin. Background noise üçün WebRTC noise suppression aktivləşdirin (browser tərəfi). Transkript confidence score `<0.7` olduqda: `"Bağışlayın, eşitmədim. Yenidən deyin?"` cavabı qaytarın. Bu hallarda TTS xərci sıfır olsun.
+
+### 3. Voice Session Analytics
+`voice_sessions` cədvəlini qurun: `session_id`, `duration_seconds`, `turns_count`, `whisper_cost`, `tts_cost`, `claude_cost`, `total_cost`, `completion_type` (user_ended/timeout/error). Aylıq xərc analizi: ortalama sessiya xərci, ən bahalı saat aralığı, xərc/dəyər nisbəti. Bu məlumatla pricing model qurun.
+
+## Əlaqəli Mövzular
+
+- [Laravel Chatbot](./01-laravel-chatbot.md)
+- [Streaming Responses](../02-claude-api/05-streaming-responses.md)
+- [Latency Optimization](../08-production/05-latency-optimization.md)
+- [Cost Optimization](../08-production/04-cost-optimization.md)
+- [Customer Support Bot](./10-laravel-customer-support-bot.md)

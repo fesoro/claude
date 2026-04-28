@@ -824,3 +824,28 @@ Hər yazma tool-u `AuditLog::create(...)` çağırmalıdır (yuxarıda `create_s
 **Əsas prinsip**: MCP server mövcud Laravel koduna toxunmadan üstündə nazik adapter qatıdır. Mövcud Policy-lərin, Service-lərin, Event-lərin hamısı dəyişməz qalır.
 
 Növbəti addım — [07-mcp-clients-compared.md](./07-mcp-clients-compared.md): hansı istemcini hansı senarium üçün seçməli.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: İlk Company Tool
+
+Mövcud Laravel layihəsindəki `OrderService::getOrdersByCustomer(int $customerId)` metodunu MCP tool kimi aç. `get_customer_orders(customer_id: int)` adlı tool yaz. Laravel Policy ilə `auth user can view orders` yoxla. Claude Desktop-dan test et: "124 nömrəli müştərinin sifarişlərini göstər."
+
+### Tapşırıq 2: Multi-Model Tool
+
+`search_products(query, category?, price_max?)` tool-u implement et. Elasticsearch ya da Scout ilə axtarış et. Nəticəni paginasiya ilə qaytarır: `{data: [...], total, page}`. Sorğu boş qalanda, kateqoriya yanlış olanda, database bağlantısı uğursuz olanda necə davranır?
+
+### Tapşırıq 3: Audit + Observability
+
+Bütün MCP tool call-larını `AuditLog` modeli ilə qeyd et. Prometheus metrics endpoint-i əlavə et: `mcp_tool_calls_total{tool="get_orders"}`. Grafana dashboard-da real-time tool usage grafiki qur. Anomaliya aşkar ediləndə Slack webhook göndər.
+
+---
+
+## Əlaqəli Mövzular
+
+- `05-mcp-server-build-php.md` — PHP MCP server qurmağın əsasları
+- `08-mcp-oauth-auth.md` — Laravel Passport ilə MCP auth
+- `09-mcp-security-patterns.md` — Company MCP-nin security layihəsi
+- `07-mcp-clients-compared.md` — Komandada hansı client-i paylaşmaq

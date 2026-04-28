@@ -561,4 +561,21 @@ Yeni komponent əlavə edərkən hər birinə cavab ver:
 
 **Yekun**: Senior PHP dev üçün çox vaxt **API-dan başla + gateway pattern**. Scale-ə çatanda selective self-host. Data residency olarsa məcburi self-host. Hybrid normal final arxitekturadır.
 
-Növbəti: `/home/orkhan/Projects/claude/ai/01-fundamentals/11-llm-pricing-economics.md` — rəqəmləri dərindən anla.
+## Praktik Tapşırıqlar
+
+### 1. TCO Hesablama Spreadsheet
+Mövcud və ya planladığınız AI feature üçün TCO (Total Cost of Ownership) hesablayın. API yolu: inference xərc + developer vaxt + monitoring. Self-host yolu: GPU/server + ops vaxt + upgrade + on-call. Spreadsheet-i 1 il, 3 il üçün proyeksiyalayın. Break-even nöqtəsini müəyyən edin. Hansı yolun real daha ucuz olduğunu rəqəmlərlə göstərin.
+
+### 2. Gateway Pattern Tətbiqi
+`AiProviderGateway` abstract class yazın. Claude, OpenAI, Gemini üçün concrete implementation-lar yaradın. Gateway hər zaman eyni interfeysi qaytarsın. Config-dən active provider seçilsin. Production-da Anthropic API ilə, test-də mock provider ilə işlə. Provider dəyişdirəndə bir sətir config dəyişikliyi kifayət etsin.
+
+### 3. Compliance Risk Audit
+Layihəniz üçün data residency + compliance suallarını cavablandırın: müştəri məlumatları hansı ölkədə saxlanır, GDPR/KVKK tətbiq olunurmu, Anthropic/OpenAI data processing agreement-i var? Hər sual üçün: cavab, risk səviyyəsi, mitigation. Bu audit-i security review-ın bir hissəsi edin.
+
+## Əlaqəli Mövzular
+
+- [AI MVP Playbook](./01-ai-mvp-playbook.md)
+- [AI Feature Economics](./03-ai-feature-economics.md)
+- [Multi-Provider Failover](../08-production/15-multi-provider-failover.md)
+- [AI Governance Compliance](../08-production/16-ai-governance-compliance.md)
+- [LLM Pricing Economics](../01-fundamentals/11-llm-pricing-economics.md)

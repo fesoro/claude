@@ -728,3 +728,28 @@ PR-də slice 50 sample ilə $2.5/PR. Nightly full run $10/gecə.
 - **Continuous capture**: thumbs-down + low-confidence + low-faithfulness → human review queue.
 - **Cost budget**: ~$10/200-sample tam run, slice CI-də $2-3.
 - **Alerting**: MRR deklin, faithfulness trend, empty retrieval, rerank latency spike.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Gold-Set Dataset Qurulumu
+
+Real istifadəçi sorğularından 50 sual seç. Hər sual üçün: (a) doğru cavabı əl ilə yaz, (b) doğru chunk-ı markup et. `rag_eval_datasets` cədvəlinə yüklə. `EvalRunner` ilə Recall@5 ilk nəticəni al. Baseline qeyd et — sonrakı dəyişiklikləri buna görə ölç.
+
+### Tapşırıq 2: Faithfulness Metric
+
+100 RAG cavabı üçün faithfulness ölç: LLM-as-judge ilə "Bu cavab yalnız retrieve edilmiş chunk-lara əsaslanır?" sorusuna cavab al. 0 (tamamilə hallucinated) - 1 (tamamilə faithful) skala. Faithfulness 0.9-dan aşağı olan halları tap, həmin chunk-ların niyə insufficient olduğunu araşdır.
+
+### Tapşırıq 3: CI Regression Guard
+
+Laravel Pest-də `ai-regression` test qrupu yarat. Hər PR-da `php artisan eval:run --suite=rag_smoke --budget=1.00` çalışsın. Recall@5 < 0.70 ya da faithfulness < 0.85 olduqda CI-ı uğursuz et. Bu test gate ilə heç bir RAG regressionunun deploy olmamasını təmin et.
+
+---
+
+## Əlaqəli Mövzular
+
+- `03-rag-architecture.md` — Evaluation olduğu sistem
+- `06-reranking-hybrid-search.md` — Reranker-ın Recall@K üzərindəki effekti
+- `07-contextual-retrieval.md` — Contextual retrieval-ın NDCG uplift-i
+- `../05-agents/12-ai-agent-evaluation-patterns.md` — Trajectory eval metodları

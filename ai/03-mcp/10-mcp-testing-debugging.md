@@ -1120,3 +1120,28 @@ Senior MCP server production-a çıxmamışdan əvvəl:
 - [ ] **CI-də MCP smoke testlər** — pull request-lər üçün blocker
 
 Növbəti addım: təhlükəsizlik pattern-ləri üçün `09-mcp-security-patterns.md` faylına bax.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: MCP Inspector Workflow
+
+`@modelcontextprotocol/inspector` qur. Server-inə qoşun (stdio ya da HTTP). MCP Inspector ilə: `initialize` handshake-i yoxla, `tools/list`-i çağır, hər tool-u manual invoke et. JSON-RPC request/response-larını izlə. Bu workflow-u server deployment-ındən əvvəl checklist kimi istifadə et.
+
+### Tapşırıq 2: Error Injection Testing
+
+Tool handler-da bilerek exception at. Server: (a) `{"isError": true, "content": [...]}` formatında cavab verirmi, (b) process crash olurmu, (c) client anlaşılır error mesajı alırmı? `CallToolResult` içindəki `isError` flag-ının düzgün set olduğunu test et.
+
+### Tapşırıq 3: Load Test
+
+`k6` ilə MCP HTTP endpoint-inə 50 concurrent user simulyasiya et. Hər user 10 saniyə ərzində 10 tool call göndərsin. Response time percentile-larını (p50, p95, p99) ölç. Bottleneck harada — Laravel PHP-FPM worker-lərdə mi, Eloquent sorğularda mı, AI API çağırışlarında mı?
+
+---
+
+## Əlaqəli Mövzular
+
+- `04-mcp-server-build-node.md` — Node.js server-in test edilməsi
+- `05-mcp-server-build-php.md` — PHP server-in test edilməsi
+- `09-mcp-security-patterns.md` — Security testləri buraya əsaslanır
+- `06-mcp-client-integration.md` — Client inteqrasiya testləri

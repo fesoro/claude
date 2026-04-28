@@ -1059,3 +1059,216 @@ $batch = Bus::batch(
     PostReviewSummary::dispatch($review->id);
 })->dispatch();
 ```
+
+---
+
+## Layihə Kontekst Şüuru (Codebase-Aware Review)
+
+Generic prompt "N+1 yoxla, SQL injection yoxla" — amma hər layihənin öz konvensiyaları var. Layihənin arxitektura qaydalarını Claude-a verin:
+
+```php
+// app/Services/CodeReview/ProjectContextService.php
+<?php
+
+namespace App\Services\CodeReview;
+
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
+
+class ProjectContextService
+{
+    /**
+     * Layihənin arxitektura qaydalarını oxuyur.
+     * .claude-review.yml faylından konfiqurasiya alır.
+     */
+    public function getProjectContext(string $repo): string
+    {
+        return Cache::remember("project_context:{$repo}", 3600, function () use ($repo) {
+            $parts = [];
+
+            // 1. Repo-dan .claude-review.yml oxu (repository qaydaları)
+            $configContent = $this->fetchFileFromRepo($repo, '.claude-review.yml');
+            if ($configContent) {
+                $config = yaml_parse($configContent) ?? [];
+                if (!empty($config['coding_standards'])) {
+                    $parts[] = "## Layihənin Kodlama Standartları\n" .
+                        implode("\n", array_map(fn($r) => "- {$r}", $config['coding_standards']));
+                }
+                if (!empty($config['architecture_patterns'])) {
+                    $parts[] = "## Arxitektura Pattern-ləri\n" .
+                        implode("\n", array_map(fn($p) => "- {$p}", $config['architecture_patterns']));
+                }
+                if (!empty($config['false_positive_rules'])) {
+                    $parts[] = "## Keçilməli Pattern-lər (False Positive)\n" .
+                        implode("\n", array_map(fn($r) => "- {$r}", $config['false_positive_rules']));
+                }
+            }
+
+            // 2. composer.json-dan framework versiyasını çıxar
+            $composerJson = $this->fetchFileFromRepo($repo, 'composer.json');
+            if ($composerJson) {
+                $composer = json_decode($composerJson, true) ?? [];
+                $laravelVersion = $composer['require']['laravel/framework'] ?? null;
+                if ($laravelVersion) {
+                    $parts[] = "## Framework\nLaravel {$laravelVersion} istifadə olunur.";
+                }
+            }
+
+            return implode("\n\n", $parts);
+        });
+    }
+
+    private function fetchFileFromRepo(string $repo, string $path): ?string
+    {
+        try {
+            $response = Http::withToken(config('services.github.token'))
+                ->withHeaders(['Accept' => 'application/vnd.github.v3.raw'])
+                ->timeout(10)
+                ->get("https://api.github.com/repos/{$repo}/contents/{$path}");
+
+            return $response->successful() ? $response->body() : null;
+        } catch (\Throwable) {
+            return null;
+        }
+    }
+}
+```
+
+**`.claude-review.yml`** nümunəsi (repo root-da):
+
+```yaml
+# .claude-review.yml — Bu layihənin AI kod icmal qaydaları
+coding_standards:
+  - "Repository pattern istifadə edirik, kontrollerlerdə birbaşa Eloquent normaldir"
+  - "FormRequest sinifləri bütün validasiyanı idarə edir — kontrollerdə missing validation flag etmə"
+  - "UUID v4 əvəzinə ULID istifadə edirik public resource-lar üçün"
+  - "Service class-lar readonly constructor property promotion istifadə edir (PHP 8.1+)"
+
+architecture_patterns:
+  - "CQRS pattern: Commands (write) və Queries (read) ayrıdır — bu normal dizayndır"
+  - "Event Sourcing istifadə edirik, birbaşa DB update əvəzinə event dispatch normaldir"
+  - "Outbox pattern: events events_outbox cədvəlindən oxunur"
+
+false_positive_rules:
+  - "'Missing eager loading' — bu layihədə lazy loading qəsdən istifadə olunur (benchmark edilib)"
+  - "config() çağırışları kontrollerdə — dependency injection əvəzinə qəsdən, bəzi yerlər"
+```
+
+Claude review prompt-unu layihə konteksti ilə zənginləşdirin:
+
+```php
+// ClaudeReviewService::reviewFileDiff() metodunda:
+
+public function reviewFileDiff(
+    string $filePath,
+    string $diff,
+    array $context = [],
+    string $projectContext = '',   // ← yeni parametr
+): array {
+    $contextBlock = $projectContext
+        ? "\n\n{$projectContext}\n\nYuxarıdakı layihə qaydalarına əsaslanaraq icmal et."
+        : '';
+
+    $prompt = <<<PROMPT
+    {$contextBlock}
+
+    Fayl: {$filePath}
+
+    Diff:
+    ```diff
+    {$diff}
+    ```
+
+    Bu diff-i icmal et. Problem yoxdursa [] qaytarın.
+    PROMPT;
+
+    // ...
+}
+```
+
+---
+
+## Keçmiş İcmallardan Öyrənmə
+
+Reviewer "Dismiss" etdiyi şərhləri gələcək icmallardan çıxarın:
+
+```php
+// database/migrations/2024_01_02_create_review_feedback_table.php
+Schema::create('review_feedback', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('code_review_comment_id')->constrained()->cascadeOnDelete();
+    $table->string('repository');
+    $table->string('feedback'); // 'accepted', 'dismissed', 'false_positive'
+    $table->string('dismissed_reason')->nullable();
+    $table->string('reviewer')->nullable();
+    $table->timestamps();
+    $table->index(['repository', 'feedback']);
+});
+```
+
+```php
+// FeedbackLearningService.php — dismissal pattern-lərini öyrən
+class FeedbackLearningService
+{
+    /**
+     * Repo üçün tez-tez dismissed pattern-ları çıxarır.
+     * Bu pattern-lar sistem prompt-a "false positive rules" kimi əlavə olunur.
+     */
+    public function getLearnedRules(string $repo, int $minOccurrences = 3): array
+    {
+        // Son 90 gündəki dismissed şərhlər
+        return CodeReviewComment::query()
+            ->join('review_feedback', 'review_feedback.code_review_comment_id', '=', 'code_review_comments.id')
+            ->join('code_reviews', 'code_reviews.id', '=', 'code_review_comments.code_review_id')
+            ->where('code_reviews.repository', $repo)
+            ->where('review_feedback.feedback', 'false_positive')
+            ->where('code_reviews.created_at', '>=', now()->subDays(90))
+            ->select('code_review_comments.category', 'review_feedback.dismissed_reason')
+            ->get()
+            ->groupBy('dismissed_reason')
+            ->filter(fn($group) => $group->count() >= $minOccurrences)
+            ->keys()
+            ->map(fn($reason) => "- {$reason} (reviewer tərəfindən dəfələrlə dismissed edilib)")
+            ->values()
+            ->all();
+    }
+}
+```
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Webhook + Lokal Test
+
+1. `ngrok http 8000` ilə lokal tunnel açın
+2. Test reposunda GitHub App webhook-u ngrok URL-ə yönləndirin
+3. Kiçik bir PR açın (3-5 sətir dəyişiklik)
+4. Webhook gəldikdə `code_reviews` cədvəlini izləyin
+5. GitHub PR-da inline şərh göründüyünü doğrulayın
+
+### Tapşırıq 2: `.claude-review.yml` Konfiqurasiyası
+
+Mövcud bir layihədə aşağıdakıları müəyyən edin:
+- 3 "false positive" — Claude tez-tez flag etdiyi, amma qəbul edilən pattern (məs., `config()` çağırışı)
+- 2 xüsusi layihə qaydası (məs., "bizim authentication Sanctum ilə, manual JWT yoxdur")
+- 1 arxitektura qeydiyyatı
+
+`.claude-review.yml` yazın, review prompt-una inteqrasiya edin, eyni PR-da qabaq/sonra müqayisə edin.
+
+### Tapşırıq 3: Cost Monitoring
+
+10 PR-dan sonra:
+- Fayl başına ortalama token istifadəsini hesablayın
+- Ən bahalı fayl tipini müəyyən edin (PHP vs Blade vs JSON)
+- `max_files_per_pr` limitini optimallaşdırın: keyfiyyəti qoruyaraq aylıq $X limiti altında saxlayın
+
+---
+
+## Əlaqəli Mövzular
+
+- `01-support-bot.md` — FAQ cavablama botu (eyni queue + Claude pattern-i)
+- `07-sql-assistant.md` — SQL agent (agentic review üçün ilham)
+- `../02-claude-api/02-prompt-engineering.md` — System prompt keyfiyyəti (review prompt-unu yaxşılaşdırmaq üçün)
+- `../02-claude-api/04-tool-use.md` — Review agentini tool-calling ilə daha ağıllı etmək
+- `../05-agents/08-agent-orchestration-patterns.md` — Çoxlu reviewer agent-lər (paralel ixtisaslaşmış review-lər)

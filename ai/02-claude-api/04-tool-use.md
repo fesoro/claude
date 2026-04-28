@@ -1196,3 +1196,26 @@ TOOL TƏHLÜKƏSİZLİK YOXLAYIcısı:
 ```
 
 ---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Weather Tool Agent
+
+`get_weather(city: string): object` tool-u implement et (real API ya da mock). Claude-a "Bakı, Istanbul, London-un bu həftəki hava şəraitini müqayisə et" soruş. Tool call loop-unu (call → result → next call) izlə. Hər tool call-ı log et.
+
+### Tapşırıq 2: Database Query Tool
+
+`query_orders(status, date_from, date_to): array` tool-u yaz. Claude-a "Bu ay hansı sifarişlər gözlənilir, ümumi məbləğ nə qədərdir?" soruş. Claude-un tool-u düzgün parametrlərlə çağırıb-çağırmadığını yoxla. `parallel_tool_use=true` ilə birdən çox tool-un eyni vaxtda çağrılmasını test et.
+
+### Tapşırıq 3: Tool Error Handling
+
+Tool icrasında exception baş verdikdə — məs. verilənlər bazası connection error — `isError: true` ilə tool result qaytar. Claude-un bu xətaya necə reaksiya verdiyini müşahidə et. User-ə xəta mesajı verirmi, alternativ yol axtarırmı?
+
+---
+
+## Əlaqəli Mövzular
+
+- `03-structured-output.md` — Tool output-unu strukturlaşdırılmış formata çevir
+- `02-prompt-engineering.md` — Tool-lar üçün optimal system prompt
+- `../05-agents/03-agent-tool-design-principles.md` — Minimal, dəqiq tool dizaynı
+- `../05-agents/05-build-custom-agent-laravel.md` — Laravel-də tool call loop implementasiyası

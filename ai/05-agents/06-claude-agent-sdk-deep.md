@@ -1193,3 +1193,28 @@ Laravel event listener-lər hər tool çağırışını `events` cədvəlinə ya
 - Subagent-lər queue job-larla spawn et (və ya ayrı HTTP service).
 - Production-da **budget enforcement**, **max turns** və **observability** olmadan agent yazma.
 - PHP codebase-ində senior dev üçün bu fasad bütün agent work-ları üçün vahid giriş nöqtəsi olur.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: SDK vs PHP Agent Müqayisəsi
+
+Eyni tapşırığı iki yanaşma ilə implement et: (a) TypeScript ilə Claude Agent SDK, (b) PHP ilə öz `AgentRunner` sinifi. Token istifadəsi, latency, developer experience-i müqayisə et. PHP implementasiyasında nə əlavə etmək lazım gəldi ki SDK avtomatik verirdi?
+
+### Tapşırıq 2: Subagent Spawn
+
+PHP agent-dən TypeScript SDK agent-ini HTTP sidecar kimi çağıran bir bridge implement et. `POST /agent/run {task, tools}` → SDK agent icra edir → nəticəni qaytar. Bu pattern nə vaxt məntiqlidir? Overhead nə qədərdir?
+
+### Tapşırıq 3: Cost Tracking Hook
+
+`AgentRunner`-ə `on_turn_end` hook əlavə et: hər turn-dan sonra `input_tokens`, `output_tokens`, `cost_usd` hesabla. Session bitdikdə: əgər `total_cost > $0.10` olarsa, cost alert log et. 30 günlük data ilə ortalama cost per task tipi hesabla.
+
+---
+
+## Əlaqəli Mövzular
+
+- `../02-claude-api/13-claude-agent-sdk.md` — SDK-nın PHP ekvivalentinin qurulması
+- `05-build-custom-agent-laravel.md` — PHP native agent implementasiyası
+- `08-agent-orchestration-patterns.md` — SDK subagent-ləri ilə orchestration
+- `11-agent-evaluation-evals.md` — SDK agent-lərinin eval edilməsi

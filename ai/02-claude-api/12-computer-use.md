@@ -1201,4 +1201,25 @@ Task = full RPA
 
 ---
 
-*Növbəti: 05-agents folder-i ilə agent loop-lar, tool design, evaluation*
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Sandbox Screenshot Agent
+
+Docker konteynerindəki xrom brauzerinin screenshot-ını al, Claude-a göndər, "Giriş formunu tap, email/şifrəni daxil et, Submit düyməsinə bas" tapşır. Tool call-ları (`screenshot`, `click`, `type`) ardıcıl icra et. Hər addımda screenshot al, nəticəni yoxla.
+
+### Tapşırıq 2: DOM Extraction vs Computer Use
+
+Eyni web scraping tapşırığı üçün iki yanaşmanı müqayisə et: (a) standart HTTP + DOM parsing, (b) Claude Computer Use ilə browser automation. Xərc, sürət, dəqiqliq fərqlərini qeyd et. Computer Use nə vaxt həqiqətən lazımdır?
+
+### Tapşırıq 3: Human Checkpoint
+
+Computer Use agent-i kritik aksiya (form submit, ödəniş) etmək istədikdə dayandır. Screenshot-ı insana göstər, "Bu aksiyaya icazə verirsiniz?" soruşan webhook gönder. Yalnız approval aldıqdan sonra davam et. `HITL` pattern-ini bu spesifik kontekstdə implement et.
+
+---
+
+## Əlaqəli Mövzular
+
+- `../05-agents/09-human-in-the-loop.md` — Kritik aksiyalar üçün insan approval
+- `../05-agents/13-agent-security.md` — Computer Use agent-inin sandbox security
+- `04-tool-use.md` — Tool use mexanizminin əsasları
+- `../05-agents/05-build-custom-agent-laravel.md` — Laravel-də agent loop qurmaq

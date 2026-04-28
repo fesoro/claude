@@ -718,3 +718,22 @@ class AISecurityServiceProvider extends ServiceProvider
 | Çıxış              | Çıxış təhlükəsiz şəkildə göstərilir (XSS qarşısının alınması) | [ ] |
 | Monitorinq         | Anormal istifadə nümunələri üçün xəbərdarlıqlar | [ ]   |
 | Uyğunluq           | Məlumat saxlama siyasəti tətbiq edilir          | [ ]    |
+
+## Praktik Tapşırıqlar
+
+### 1. API Key Rotation Sistemi
+Claude API açarlarını Laravel `.env`-dən çıxarın, AWS Secrets Manager və ya HashiCorp Vault-a köçürün. `config/ai.php`-da `$secret = app(SecretsManager::class)->get('claude-api-key')` pattern-ini tətbiq edin. 30 günlük avtomatik rotation qurun. Köhnə açar 48 saat sonra deaktiv edilsin. Rotation hadisələrini audit log-a yazın.
+
+### 2. OWASP AI Security Checklist Tətbiqi
+Layihəniz üçün checklist-i gözden keçirin: authentication (JWT ilə), authorization (feature-based), rate limiting (hər user üçün), input validation, output sanitization, audit logging. Hər maddə üçün test yaz. CI-da `php artisan security:audit` komandası ilə 5 kritik maddəni avtomatik yoxlayın.
+
+### 3. Anomaly Detection Alert
+`ai_call_logs`-da anormal istifadəni aşkarlayan cron job yazın. Qayda: bir user 1 saatda normadan `3σ` çox sorğu göndərirsə → `suspicious_usage` event fire edin. Həm də gecə yarısında ani spike (normal gecə trafikinin 10x-dən çox) olduqda PagerDuty-yə alert göndərin. İlk 7 günün baseline-ını formalaşdırın, sonra monitoring aktiv edin.
+
+## Əlaqəli Mövzular
+
+- [Safety Guardrails](./08-safety-guardrails.md)
+- [Prompt Injection Defenses](./10-prompt-injection-defenses.md)
+- [PII Data Redaction](./11-pii-data-redaction.md)
+- [Red Teaming Adversarial](./12-red-teaming-adversarial.md)
+- [AI Governance Compliance](./16-ai-governance-compliance.md)

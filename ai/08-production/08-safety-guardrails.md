@@ -649,3 +649,22 @@ return [
 | Sistem promptunun ifşası  | Heç vaxt modeldən onu təkrar etməsini istəmə | Yüksək |
 
 > **Dərin müdafiə:** Heç bir tək təhlükəsizlik tədbiri kifayət deyil. Hərtərəfli qorunma üçün giriş sanitasiyasını, PII aşkarlamasını, çıxış doğrulamasını və monitorinqi bir-birinə qat.
+
+## Praktik Tapşırıqlar
+
+### 1. Input Sanitization Middleware
+Laravel middleware yazın: istifadəçi inputunu PII regex (email, AZN kart nömrəsi, şifrə pattern) üçün scan edin. Tap olduqda mask edin `[REDACTED]` ilə. System prompt injection cəhdlərini (`"Ignore previous instructions"`, `"You are now"`) detect edin. Anomaliya log edin, rate limit tətbiq edin (eyni user-dən 3+ cəhd → 1 saatlıq blok).
+
+### 2. Output Validation Pipeline
+Claude-dan gələn cavabı üç mərhələdən keçirin: (1) JSON schema validation (strukturlaşdırılmış cavablar üçün), (2) toxicity score (`<0.7` olmalı), (3) PII leak check (cavabda heç kəsin şəxsi məlumatı olmamalı). Validation uğursuz olarsa default fallback cavabı qaytarın, hadisəni `guardrail_violations` cədvəlinə yazın.
+
+### 3. Guardrail Effectiveness Audit
+100 test case hazırlayın: 50 normal sorğu + 50 hücum cəhdi (jailbreak, prompt injection, PII extraction). Hər test üçün guardrail sisteminin nəticəsini log edin. True positive rate (hücumu tutma), false positive rate (normal sorğunu bloklamaq) hesablayın. Hədəf: `TPR > 95%`, `FPR < 2%`. Aylıq audit report hazırlayın.
+
+## Əlaqəli Mövzular
+
+- [Prompt Injection Defenses](./10-prompt-injection-defenses.md)
+- [AI Security](./09-ai-security.md)
+- [PII Data Redaction](./11-pii-data-redaction.md)
+- [Content Moderation](./13-content-moderation.md)
+- [Red Teaming Adversarial](./12-red-teaming-adversarial.md)

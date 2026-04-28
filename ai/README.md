@@ -2,7 +2,7 @@
 
 Bu folder senior PHP/Laravel (və Java/Spring, Go) developer-ləri üçün **LLM-ləri real produksiya sistemlərində istifadə etmək** üzərinə qurulmuş biliyin cəmidir. Nə saf teoriya, nə də "hello world" tutorial — real arxitektura, real kod, real cost/latency/failure tradeoff-ları.
 
-> **Fayl sayı:** 103 fayl + README, ~97,000+ sətir. 10 alt-folder. Hər fayl müstəqil oxuna bilər, amma aşağıdakı oxuma yolları ilə ardıcıl getdikdə bilik **asandan çətinə** yığılır.
+> **Fayl sayı:** 111 fayl + README, ~115,000+ sətir. 10 alt-folder. Hər fayl müstəqil oxuna bilər, amma aşağıdakı oxuma yolları ilə ardıcıl getdikdə bilik **asandan çətinə** yığılır.
 
 ---
 
@@ -36,6 +36,7 @@ Müxtəlif məqsədlər üçün müxtəlif ardıcıllıqlar. Sıradakı rəqəml
 22. [02-claude-api/11-rate-limits-retry-php.md](02-claude-api/11-rate-limits-retry-php.md) — 429, exponential backoff, Laravel
 23. [02-claude-api/12-computer-use.md](02-claude-api/12-computer-use.md) — ekran vizyonu + mouse/keyboard
 24. [02-claude-api/13-claude-agent-sdk.md](02-claude-api/13-claude-agent-sdk.md) — Agent SDK giriş
+25. [02-claude-api/14-context-engineering.md](02-claude-api/14-context-engineering.md) — kontekst pəncərəsi dizaynı, token büdcəsi, prefilling
 
 ### Yol 2 — RAG Developer (2 həftə, Yol 1-dən sonra)
 
@@ -50,8 +51,9 @@ Müxtəlif məqsədlər üçün müxtəlif ardıcıllıqlar. Sıradakı rəqəml
 9. [04-rag-embeddings/09-long-context-vs-rag.md](04-rag-embeddings/09-long-context-vs-rag.md) — 1M kontekstdə RAG-a hələ ehtiyac var?
 10. [04-rag-embeddings/10-agentic-rag.md](04-rag-embeddings/10-agentic-rag.md) — retrieval tool kimi, CRAG, Self-RAG
 11. [04-rag-embeddings/11-rag-evaluation-rerank.md](04-rag-embeddings/11-rag-evaluation-rerank.md) — Ragas, groundedness, A/B
+12. [04-rag-embeddings/12-multimodal-rag.md](04-rag-embeddings/12-multimodal-rag.md) — şəkil+mətn retrieval, ColPali, PDF visual
 
-### Yol 3 — Agent Developer (2 həftə, Yol 1 + RAG-dan sonra)
+### Yol 3 — Agent Developer (2-3 həftə, Yol 1 + RAG-dan sonra)
 
 1. [05-agents/01-ai-agents-overview.md](05-agents/01-ai-agents-overview.md) — agent nədir, nə deyil
 2. [05-agents/02-agent-reasoning-patterns.md](05-agents/02-agent-reasoning-patterns.md) — ReAct, Reflexion, ToT, Plan-Execute
@@ -65,6 +67,7 @@ Müxtəlif məqsədlər üçün müxtəlif ardıcıllıqlar. Sıradakı rəqəml
 10. [05-agents/10-claude-code-skills-hooks.md](05-agents/10-claude-code-skills-hooks.md) — Claude Code skills/hooks
 11. [05-agents/11-agent-evaluation-evals.md](05-agents/11-agent-evaluation-evals.md) — agent eval giriş
 12. [05-agents/12-ai-agent-evaluation-patterns.md](05-agents/12-ai-agent-evaluation-patterns.md) — trajectory, end-state, benchmark
+13. [05-agents/13-agent-security.md](05-agents/13-agent-security.md) — prompt injection, tool sandboxing, audit logging
 
 ### Yol 4 — MCP Developer (1 həftə, Yol 1-dən sonra)
 
@@ -80,7 +83,7 @@ Müxtəlif məqsədlər üçün müxtəlif ardıcıllıqlar. Sıradakı rəqəml
 10. [03-mcp/10-mcp-testing-debugging.md](03-mcp/10-mcp-testing-debugging.md) — MCP Inspector, test
 11. [03-mcp/11-mcp-for-company-laravel.md](03-mcp/11-mcp-for-company-laravel.md) — şirkət daxili MCP (capstone)
 
-### Yol 5 — Fine-Tuning Path (1-2 həftə — təkrar ehtiyac olmadıqda OPSİYONAL)
+### Yol 5 — Fine-Tuning Path (2-3 həftə — təkrar ehtiyac olmadıqda OPSİYONAL)
 
 1. [06-fine-tuning/01-fine-tuning-overview.md](06-fine-tuning/01-fine-tuning-overview.md) — fine-tuning nədir
 2. [06-fine-tuning/02-fine-tuning-vs-rag.md](06-fine-tuning/02-fine-tuning-vs-rag.md) — qərar çərçivəsi
@@ -88,8 +91,11 @@ Müxtəlif məqsədlər üçün müxtəlif ardıcıllıqlar. Sıradakı rəqəml
 4. [06-fine-tuning/04-lora-qlora-peft.md](06-fine-tuning/04-lora-qlora-peft.md) — LoRA, QLoRA, PEFT dərin
 5. [06-fine-tuning/05-create-custom-model-finetune.md](06-fine-tuning/05-create-custom-model-finetune.md) — praktik fine-tune
 6. [06-fine-tuning/06-distillation-small-models.md](06-fine-tuning/06-distillation-small-models.md) — distillation, kiçik sürətli modellər
+7. [06-fine-tuning/07-rlhf-dpo-alignment.md](06-fine-tuning/07-rlhf-dpo-alignment.md) — RLHF, DPO, ORPO, KTO alignment training
+8. [06-fine-tuning/08-ft-dataset-curation.md](06-fine-tuning/08-ft-dataset-curation.md) — dataset hazırlama, keyfiyyət, synthetic data
+9. [06-fine-tuning/09-vllm-model-serving.md](06-fine-tuning/09-vllm-model-serving.md) — vLLM, GGUF, llama.cpp serving
 
-### Yol 6 — Workflows və Integration (1 həftə)
+### Yol 6 — Workflows və Integration (1-2 həftə)
 
 1. [07-workflows/01-ai-pipeline-laravel.md](07-workflows/01-ai-pipeline-laravel.md) — pipeline pattern
 2. [07-workflows/02-ai-workflow-patterns.md](07-workflows/02-ai-workflow-patterns.md) — prompt chaining, routing, parallelization
@@ -98,6 +104,8 @@ Müxtəlif məqsədlər üçün müxtəlif ardıcıllıqlar. Sıradakı rəqəml
 5. [07-workflows/05-webhook-async-ai.md](07-workflows/05-webhook-async-ai.md) — webhook-driven inference
 6. [07-workflows/06-ai-streaming-ui.md](07-workflows/06-ai-streaming-ui.md) — SSE, WebSocket, Server-Sent UI
 7. [07-workflows/07-ai-ab-testing.md](07-workflows/07-ai-ab-testing.md) — eksperimentlər
+8. [07-workflows/08-semantic-caching.md](07-workflows/08-semantic-caching.md) — semantic caching, xərc azaltma
+9. [07-workflows/09-event-driven-ai.md](07-workflows/09-event-driven-ai.md) — Kafka + pub/sub AI workflow-lar
 
 ### Yol 7 — Production Engineering (2-3 həftə — **ən kritik**)
 
@@ -133,12 +141,14 @@ Hər faylı real, işlək Laravel tətbiq skeleti — migration, controller, que
 - [09-projects/03-laravel-email-classifier.md](09-projects/03-laravel-email-classifier.md) — inbox-da təsnifat
 - [09-projects/05-laravel-ai-sql-assistant.md](09-projects/05-laravel-ai-sql-assistant.md) — NL → SQL assistant
 
-### Yol 9 — Product Thinking (1 gün, manager-lə söhbət üçün)
+### Yol 9 — Product Thinking (1-2 gün, manager-lə söhbət üçün)
 
 1. [10-product-thinking/01-ai-mvp-playbook.md](10-product-thinking/01-ai-mvp-playbook.md) — MVP addımları
 2. [10-product-thinking/02-build-vs-buy-ai.md](10-product-thinking/02-build-vs-buy-ai.md) — build/buy qərarı
 3. [10-product-thinking/03-ai-feature-economics.md](10-product-thinking/03-ai-feature-economics.md) — unit economics, margin
 4. [10-product-thinking/04-ai-product-ux-patterns.md](10-product-thinking/04-ai-product-ux-patterns.md) — UX pattern kataloqu
+5. [10-product-thinking/05-measuring-ai-success.md](10-product-thinking/05-measuring-ai-success.md) — AI KPI-lar, metric framework, regression detection
+6. [10-product-thinking/06-responsible-ai-for-product.md](10-product-thinking/06-responsible-ai-for-product.md) — bias/fairness, şəffaflıq, consent, incident response
 
 ---
 
@@ -147,17 +157,17 @@ Hər faylı real, işlək Laravel tətbiq skeleti — migration, controller, que
 | Folder | Fayl sayı | Səviyyələr | Məzmun |
 |---|---|---|---|
 | [01-fundamentals/](01-fundamentals/) | 11 | ⭐×3 ⭐⭐×4 ⭐⭐⭐×4 | LLM necə işləyir, token, hallucination, reasoning modellər, provider müqayisəsi, pricing |
-| [02-claude-api/](02-claude-api/) | 13 | ⭐×1 ⭐⭐×4 ⭐⭐⭐×6 ⭐⭐⭐⭐×2 | Messages API, prompt eng, tool use, structured out, streaming, vision/PDF, extended thinking, Files+citations, prompt caching, batch, computer use, rate limits |
+| [02-claude-api/](02-claude-api/) | 14 | ⭐×1 ⭐⭐×4 ⭐⭐⭐×7 ⭐⭐⭐⭐×2 | Messages API, prompt eng, tool use, structured out, streaming, vision/PDF, extended thinking, Files+citations, prompt caching, batch, computer use, rate limits, **context engineering** |
 | [03-mcp/](03-mcp/) | 11 | ⭐×1 ⭐⭐×5 ⭐⭐⭐×4 ⭐⭐⭐⭐×1 | Model Context Protocol tam — server (Node+PHP), client, OAuth, security, testing, transports, company Laravel |
-| [04-rag-embeddings/](04-rag-embeddings/) | 11 | ⭐×1 ⭐⭐×3 ⭐⭐⭐×4 ⭐⭐⭐⭐×3 | Embedding, vektor DB, RAG arxitektura, chunking, query transform (HyDE), reranking, contextual retrieval, knowledge graph, long-context vs RAG, agentic RAG, eval |
-| [05-agents/](05-agents/) | 12 | ⭐×1 ⭐⭐⭐×5 ⭐⭐⭐⭐×6 | Agent tərif, reasoning pattern (ReAct/Reflexion/ToT), tool dizayn, memory, multi-agent, orchestration, HITL, Claude SDK dərin, Claude Code skills, eval |
-| [06-fine-tuning/](06-fine-tuning/) | 6 | ⭐⭐×3 ⭐⭐⭐×1 ⭐⭐⭐⭐×2 | FT overview, FT vs RAG, open-source/Ollama, LoRA/QLoRA, custom FT, distillation |
-| [07-workflows/](07-workflows/) | 7 | ⭐⭐×2 ⭐⭐⭐×4 ⭐⭐⭐⭐×1 | Pipeline, workflow pattern, queue, idempotency+CB, webhook, streaming UI, A/B |
+| [04-rag-embeddings/](04-rag-embeddings/) | 12 | ⭐×1 ⭐⭐×3 ⭐⭐⭐×4 ⭐⭐⭐⭐×4 | Embedding, vektor DB, RAG arxitektura, chunking, query transform (HyDE), reranking, contextual retrieval, knowledge graph, long-context vs RAG, agentic RAG, eval, **multimodal RAG** |
+| [05-agents/](05-agents/) | 13 | ⭐×1 ⭐⭐⭐×5 ⭐⭐⭐⭐×7 | Agent tərif, reasoning pattern (ReAct/Reflexion/ToT), tool dizayn, memory, multi-agent, orchestration, HITL, Claude SDK dərin, Claude Code skills, eval, **agent security** |
+| [06-fine-tuning/](06-fine-tuning/) | 9 | ⭐⭐×3 ⭐⭐⭐×3 ⭐⭐⭐⭐×3 | FT overview, FT vs RAG, open-source/Ollama, LoRA/QLoRA, custom FT, distillation, **DPO/ORPO alignment**, **dataset curation**, **vLLM serving** |
+| [07-workflows/](07-workflows/) | 9 | ⭐⭐×2 ⭐⭐⭐×5 ⭐⭐⭐⭐×2 | Pipeline, workflow pattern, queue, idempotency+CB, webhook, streaming UI, A/B, **semantic caching**, **event-driven Kafka** |
 | [08-production/](08-production/) | 16 | ⭐⭐⭐×7 ⭐⭐⭐⭐×6 ⭐⭐⭐⭐⭐×3 | System design, observability (ümumi + LLM), cost/latency, testing, drift, guardrail, security, prompt injection, PII, red team, content moderation, canary/shadow, multi-provider failover, governance (EU AI Act/ISO 42001) |
 | [09-projects/](09-projects/) | 10 | ⭐⭐×3 ⭐⭐⭐×4 ⭐⭐⭐⭐×3 | 10 işlək Laravel AI tətbiqi — chatbot, RAG, MCP, code review, extractor, voice, CS bot, HR bot, email classifier, SQL assistant |
-| [10-product-thinking/](10-product-thinking/) | 4 | ⭐⭐×2 ⭐⭐⭐×2 | Feature economics, UX pattern, MVP playbook, build-vs-buy |
+| [10-product-thinking/](10-product-thinking/) | 6 | ⭐⭐×2 ⭐⭐⭐×3 ⭐⭐⭐⭐×1 | Feature economics, UX pattern, MVP playbook, build-vs-buy, **AI KPI framework**, **responsible AI** |
 
-Toplam: **101 fayl, ~95,000+ sətir** (README daxil deyil).
+Toplam: **111 fayl, ~115,000+ sətir** (README daxil deyil).
 
 **Səviyyə işarələri:** ⭐ Junior · ⭐⭐ Middle · ⭐⭐⭐ Senior · ⭐⭐⭐⭐ Lead · ⭐⭐⭐⭐⭐ Architect
 

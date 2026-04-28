@@ -481,3 +481,29 @@ Hər istemci fərqli rol üçündür. Server-in isə **bir dəfə** qurulur və 
 3. Komanda üçün `Claude Desktop` config paylaş
 4. Enterprise müştərilər üçün OAuth əlavə et (bax `08-mcp-oauth-auth.md`)
 5. Xüsusi daxili agent (Slack bot) lazım olanda — PHP-də MCP client yaz
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Claude Desktop + Lokal MCP Server
+
+`04-mcp-server-build-node.md`-dəki stdio server-i qur. `claude_desktop_config.json`-a əlavə et. Claude Desktop-da `@` ilə server-i çağır, bir neçə tool test et. Sonra eyni server-i HTTP transport-a çevir (`04-mcp-server-build-node.md` → HTTP transport bölməsi). `claude_desktop_config.json`-da `url` variantına keç. İki transport üzərindəki latency fərqini ölç.
+
+### Tapşırıq 2: Claude Code Custom Slash Command
+
+`.claude/commands/` altında `review-pr.md` slash command yaz: PR diff-i götür, security check et, output markdown-da ver. `claude /review-pr` ilə çalışdır. Eyni funksiyanı MCP tool kimi implement et. İki yanaşmanın developer experience fərqini müqayisə et — nə zaman tool, nə zaman slash command daha uyğundur?
+
+### Tapşırıq 3: Client Migration Checklist
+
+Komanda üçün mövcud Claude Desktop stdio server-ini hosted HTTP server-ə migrate etmək üçün addım-addım checklist yaz: (a) server-i `StreamableHTTPServerTransport`-a port et, (b) Sanctum token auth əlavə et, (c) Docker-ə deploy et, (d) hər client üçün config update et (Desktop → `url`, Code → `/mcp add`, Cursor → Settings). Migration zamanı hansı client-lər backward-compat kimi stdio-dan HTTP-ə keçə bilər?
+
+---
+
+## Əlaqəli Mövzular
+
+- `04-mcp-server-build-node.md` — stdio və HTTP transport server implementasiyası
+- `08-mcp-oauth-auth.md` — Enterprise client-lər üçün OAuth 2.1 server-side setup
+- `10-mcp-testing-debugging.md` — MCP Inspector ilə client-agnostik protokol yoxlama
+- `11-mcp-for-company-laravel.md` — Laravel MCP server-in production deploy-u
+- `05-mcp-security.md` — Client-server trust modeli, token scope, injection qorunması

@@ -934,3 +934,28 @@ LLM unit economics, ənənəvi SaaS-dən fərqli düşüncə tələb edir:
 - **Break-even hesablanmalıdır** — hisslə deyil, spreadsheet ilə
 
 Senior developer kimi LLM məhsulu — həm texniki, həm də maliyyə problemi həll edir. Bu iki tərəfi ayırsan, məhsul zərərdə olur. Birləşdirsən, margin 70% ola bilər — bu qənaət bütün şirkətin büdcəsini müəyyən edir.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Cost Tracking Dashboard
+
+`ai_usage_logs` cədvəli yarat: `model`, `feature`, `input_tokens`, `output_tokens`, `cost_usd`, `created_at`. Hər API çağırışını burada log et. Filament-də aylıq xərc qrafiği, feature-a görə qrupluq, ən bahalı istifadəçilər üçün rapor hazırla.
+
+### Tapşırıq 2: Break-Even Hesablaması
+
+Ən çox istifadə olunan AI feature-ın aylıq xərclərini hesabla: API cost + developer saatı. Həmin feature-ın gətirdiyi gəlir (ya da qənaət) nədir? Break-even nöqtəsini tap. Əgər break-even məntiqsiz uzaqdırsa, model dəyişikliyi ya da feature prioritizasiyası barəsində düşün.
+
+### Tapşırıq 3: Prompt Caching ROI
+
+Sistemdəki ən tez-tez istifadə olunan 3 sistem promptunu müəyyənləşdir. Caching əvvəl vs sonra cache hit rate, input token xərci, aylıq qənaəti ölç. `cache_creation_input_tokens` vs `cache_read_input_tokens` ratio-nu log et. Caching-in həqiqi ROI-ni hesabla.
+
+---
+
+## Əlaqəli Mövzular
+
+- `09-llm-provider-comparison.md` — Provayder xərclərinin müqayisəsi
+- `10-model-selection-decision.md` — Cost-quality balansı üçün model seçimi
+- `../02-claude-api/09-prompt-caching.md` — Xərc azaltmanın ən effektiv yolu
+- `../08-production/04-cost-optimization.md` — Production-da sistematik cost optimization

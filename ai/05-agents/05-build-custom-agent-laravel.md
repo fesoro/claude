@@ -951,3 +951,28 @@ class QueryDatabaseTool extends AgentTool
     }
 }
 ```
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: İlk Laravel Agent
+
+`CustomerSupportAgent` qurun: system prompt + 3 tool (get_order_status, get_customer_info, create_support_ticket). `AgentRunner::run(string $task)` metodu: messages array-i qurar, tool call loop-unu idarə edir, final cavabı qaytarır. 10 real müştəri sualı ilə test et.
+
+### Tapşırıq 2: Agent Observability
+
+`agent_sessions` cədvəlinə hər run-u log et: `task`, `messages` (JSON), `tool_calls` (JSON array), `final_response`, `iterations`, `input_tokens`, `output_tokens`, `duration_ms`, `error`. Filament admin panelindən: session tarixçəsi, ortalama iteration count, ən çox istifadə olunan tool-lar qrafiği.
+
+### Tapşırıq 3: Error Boundary
+
+Agent loop-a error handling əlavə et: (a) tool exception → `isError: true` ilə tool result qaytar, agent davam etsin; (b) LLM API error → exponential backoff ilə retry; (c) max_iterations aşıldı → partial result qaytar; (d) token limit aşıldı → context-i kəs. Hər halı test et.
+
+---
+
+## Əlaqəli Mövzular
+
+- `02-agent-reasoning-patterns.md` — ReAct, Plan-and-Execute reasoning pattern-ləri
+- `03-agent-tool-design-principles.md` — Tool dizayn prinsipləri
+- `04-agent-memory-systems.md` — Agent loop-da memory inteqrasiyası
+- `08-agent-orchestration-patterns.md` — Bu tək agent-i supervisor pattern-ə çevirmək

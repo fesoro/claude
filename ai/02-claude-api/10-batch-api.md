@@ -952,3 +952,28 @@ public function handle(BatchProcessor $processor): int
     return self::SUCCESS;
 }
 ```
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Batch Email Classifier
+
+1000 müştəri emailini Batch API ilə eyni anda classify et. Hər email üçün ayrı request yarat: `{custom_id: "email_{id}", model: "haiku", messages: [...]}`. Batch-i göndər, webhook ya da polling ilə nəticəni al. Real-time API ilə cost + latency müqayisəsi apar (50% endirim gözlənilir).
+
+### Tapşırıq 2: Batch Status Polling Job
+
+`BatchStatusCheckJob` Laravel scheduled command-ı yarat: hər 5 dəqiqədə `batch_status` endpoint-ini sorğula. `in_progress` → gözlə, `ended` → nəticəni S3-dan yüklə, parse et, `batch_results` cədvəlinə yaz. Xətalı request-ləri (`errored`) flag et, yenidən göndər.
+
+### Tapşırıq 3: Overnight Processing Pipeline
+
+Gündüzlük yığılan bütün sənədləri (invoice, contract) gün sonunda bir batch-ə yığ. Gecə yarısı `ProcessDailyBatchJob` çalışdır: batch göndər. Səhər `RetrieveBatchResultsJob` nəticəni çəkib database-ə yaz. Real-time işləmə cost-unun 50%-ini qənaət etdiyini yoxla.
+
+---
+
+## Əlaqəli Mövzular
+
+- `01-claude-api-guide.md` — API auth və temel istifadə
+- `11-rate-limits-retry-php.md` — Batch request-lərdə xəta idarəetməsi
+- `../07-workflows/03-laravel-queue-ai-patterns.md` — Queue ilə batch emalın orkestrası
+- `../01-fundamentals/11-llm-pricing-economics.md` — Batch API-nin unit economics üzərindəki 50% təsiri

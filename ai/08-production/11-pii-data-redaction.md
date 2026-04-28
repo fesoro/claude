@@ -611,4 +611,21 @@ DB::table('pii_redaction_log')->insert([
 
 **Yadda saxla**: redaction **nice-to-have deyil, məcburi**. Security review hər AI feature launch-dan əvvəl lazımdır. PII leak-ı reputational və legal risk-dir.
 
-Növbəti: `/home/orkhan/Projects/claude/ai/08-production/15-multi-provider-failover.md` — əgər Claude API down olsa.
+## Praktik Tapşırıqlar
+
+### 1. Regex + Presidio İkiqat Süzgəc
+Laravel middleware yaradın. Birinci qat: AZN şəxsiyyət nömrəsi (`\d{7}`), email (`[\w.]+@[\w.]+`), bank kartı (`\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}`) üçün regex redaction. İkinci qat: Microsoft Presidio API-ni çağırın (docker ilə local deploy edin). İki qatı keçən PII-ı `[NAME]`, `[EMAIL]`, `[CARD]` kimi mask edin. Redaction audit log-a yazın.
+
+### 2. PII Leak Regression Test
+100 test case hazırlayın: 50 normal + 50 PII-lı input. Hər ikisi üçün hem input, hem output PII scan edin. Output-da PII tapılarsa TEST FAIL edin. CI pipeline-a daxil edin. `php artisan test --group=pii` ilə işlətmə. Xüsusi diqqət: LLM-in PII-ı paraphrase edib qaytarma hallarını da test edin.
+
+### 3. Consent-based Retention Policy
+`user_data_consents` cədvəli qurun: `user_id`, `feature`, `consent_given_at`, `retention_days`. Hər AI call üçün active consent yoxlayın. `retention_days` keçdikdən sonra `ai_call_logs`-dan həmin user-in məlumatlarını avtomatik sil (`DeleteExpiredAiLogs` scheduled job). GDPR "right to erasure" endpoint-ini tətbiq edin: `DELETE /api/user/ai-data`.
+
+## Əlaqəli Mövzular
+
+- [Safety Guardrails](./08-safety-guardrails.md)
+- [AI Security](./09-ai-security.md)
+- [Prompt Injection Defenses](./10-prompt-injection-defenses.md)
+- [Content Moderation](./13-content-moderation.md)
+- [AI Governance Compliance](./16-ai-governance-compliance.md)

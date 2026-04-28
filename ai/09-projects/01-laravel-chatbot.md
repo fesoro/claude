@@ -1539,3 +1539,22 @@ class GetWeatherTool implements ToolInterface {
     // ... getDescription(), getInputSchema(), execute() metodlarını tətbiq et
 }
 ```
+
+## Praktik Tapşırıqlar
+
+### 1. Multi-Turn Söhbət Yaddaşı
+Chatbot-u mövcud session management-dən Redis-based yaddaşa keçirin. Hər söhbəti `chat_sessions` cədvəlində saxlayın. 20 mesajdan sonra köhnə mesajları xülasə edin (Claude-la): `"Summarize this conversation in 3 sentences for context."` Bu xülasəni yeni context-in başına əlavə edin. Token limit-i aşmadan uzun söhbətlər mümkün olsun.
+
+### 2. Tool Use Genişləndirilməsi
+Mövcud chatbot-a iki yeni tool əlavə edin: (1) `get_order_status` — sipariş vəziyyətini DB-dən qaytarır, (2) `create_support_ticket` — Jira/Freshdesk API-ə yeni ticket açır. Tool call-ları `tool_calls` cədvəlinə log edin. Tool uğursuz olarsa graceful fallback: Claude-dan manual cavab alın. Tool call latency-ni ayrıca izləyin.
+
+### 3. A/B Test: Model Müqayisəsi
+Haiku vs Sonnet müqayisəsi üçün A/B test qurun. 50/50 traffic split edin. Hər iki model üçün: latency, xərc, LLM-as-judge keyfiyyət score, user satisfaction (thumbs up/down) toplayın. 500 söhbətdən sonra statistik analiz edin. Hansı model optimal cost/quality nisbəti verir? Nəticəni team-ə report kimi təqdim edin.
+
+## Əlaqəli Mövzular
+
+- [Customer Support Bot](./10-laravel-customer-support-bot.md)
+- [HR Internal Bot](./07-laravel-internal-hr-bot.md)
+- [Tool Use](../02-claude-api/04-tool-use.md)
+- [Streaming Responses](../02-claude-api/05-streaming-responses.md)
+- [Observability Logging](../08-production/02-observability-logging.md)

@@ -1806,3 +1806,22 @@ QUEUE_CONNECTION=redis
 - Canary: 5% trafik → yeni model → 30 dəqiqə SLO yoxla → full rollout.
 
 Bu sxem real istehsal yüklərində istifadə olunur: tenant başına gündə ~500 sessiya, orta 4 mesaj, ~$0.008/sessiya, 72% auto-resolution.
+
+## Praktik Tapşırıqlar
+
+### 1. Auto-Resolution Rate Optimizasiyası
+Mövcud bot-un auto-resolution rate-ini ölçün. Ən çox human handoff tələb edən kateqoriyaları tapın (məs: "refund", "account suspension"). Bu kateqoriyalar üçün daha detallı few-shot nümunələr system prompt-a əlavə edin. 2 həftə sonra auto-resolution rate-inin dəyişdiyini ölçün. Hədəf: `>75%`.
+
+### 2. Escalation Trigger Dashboard
+`support_escalations` cədvəlini qurun: `session_id`, `trigger_reason` (confidence_low/user_frustrated/explicit_request/tool_failed), `escalated_at`, `resolved_by`. Real-time dashboard-da: hansı trigger ən çox baş verir, hansı agent-lər daha tez həll edir. Bu analiz bot-un zəif nöqtələrini ortaya qoyur. Aylıq improvement sprint planlaşdırın.
+
+### 3. Tenant-Based Customization
+Multi-tenant arxitektura qurun. Hər tenant üçün ayrıca system prompt, tool konfiqurasiyası, eskalasiya qaydaları. `tenant_ai_configs` cədvəli: `tenant_id`, `system_prompt`, `tools_enabled`, `escalation_rules`. Böyük tenant-lar özlərinin prompt-larını admin panel üzərindən edit edə bilsin. Dəyişiklikləri `tenant_config_history` ilə versiyalayın.
+
+## Əlaqəli Mövzular
+
+- [Laravel Chatbot](./01-laravel-chatbot.md)
+- [Email Classifier](./03-laravel-email-classifier.md)
+- [HR Internal Bot](./07-laravel-internal-hr-bot.md)
+- [Safety Guardrails](../08-production/08-safety-guardrails.md)
+- [Observability Logging](../08-production/02-observability-logging.md)

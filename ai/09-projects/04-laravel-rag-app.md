@@ -1489,3 +1489,22 @@ Route::post('/rag/queries/{query}/rate', function (RagQuery $query, Request $req
 
 // Həftəlik hesabat: reytinqi 3-dən aşağı olan sorğular əldə etmə problemlərini göstərir
 ```
+
+## Praktik Tapşırıqlar
+
+### 1. Retrieval Quality Benchmark
+NDCG@10 metrikasını ölçün. 50 test sorğusu + ideal sıralama hazırlayın. Cosine similarity threshold-u `0.70`, `0.80`, `0.90` ilə test edin. Top-3 retrieved chunk-ı LLM-as-judge ilə qiymətləndirin: sorğuya uyğunluq `1-5`. Optimal threshold-u müəyyən edin. Chunking strategiyasını (512 vs 1024 token) müqayisə edin.
+
+### 2. Hybrid Search Tətbiqi
+Mövcud pure vector search-ə keyword search (PostgreSQL `tsvector`) əlavə edin. RRF (Reciprocal Rank Fusion) ilə nəticələri birləşdirin: `score = 1/(k + rank_vector) + 1/(k + rank_keyword)`. 100 test sorğu üzərindən pure vector vs hybrid NDCG-ni müqayisə edin. Xüsusilə spesifik termin sorğularında (şirkət adları, kod) fərqi ölçün.
+
+### 3. RAG Evaluation Pipeline
+Nightly eval cron job yazın: 20 benchmark sorğusunu işlədin, context relevancy + answer faithfulness + answer relevancy üç metriki hesablayın (RAGAS framework). Nəticəni `rag_eval_runs` cədvəlinə yazın. Hər hafta trend qrafiği göndərin. Score azalması `>10%` olduqda chunking/embedding yenidən konfiqurasiya prosesini başladın.
+
+## Əlaqəli Mövzular
+
+- [Contextual Retrieval](../04-rag-embeddings/07-contextual-retrieval.md)
+- [Agentic RAG](../04-rag-embeddings/10-agentic-rag.md)
+- [Embeddings Chunking](../04-rag-embeddings/02-chunking-strategies.md)
+- [AI SQL Assistant](./05-laravel-ai-sql-assistant.md)
+- [LLM Observability](../08-production/03-llm-observability.md)

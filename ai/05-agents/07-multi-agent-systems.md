@@ -736,3 +736,28 @@ class SubagentCircuitBreaker
     }
 }
 ```
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Orchestrator + Worker Pattern
+
+`ResearchOrchestrator` implement et: 1 orchestrator + 3 worker agent (search, summarize, format). Orchestrator hər worker-ə tapşırığı dağıdır, nəticələri toplayır. 5 research tapşırığı üçün çalışdır. Tək agent vs multi-agent-in keyfiyyət + cost müqayisəsini apar.
+
+### Tapşırıq 2: Circuit Breaker Test
+
+`AgentCircuitBreaker`-i test et: worker agent 3 dəfə ardıcıl fail olsun (mock exception at). Circuit `open` vəziyyətinə keçirmi? `open` halda orchestrator-un alternativ worker ya da fallback response-a keçdiyini yoxla.
+
+### Tapşırıq 3: Shared State via Database
+
+`agent_shared_state` cədvəli üçün: orchestrator bir agent-in nəticəsini yazır, digər agent həmin nəticəni oxuyub işləyir. Race condition testi: iki agent eyni anda `state`-i güncəlləməyə çalışır. `SELECT FOR UPDATE` ilə lock tətbiq et, problemi həll et.
+
+---
+
+## Əlaqəli Mövzular
+
+- `08-agent-orchestration-patterns.md` — Supervisor, Swarm, Blackboard, Pipeline pattern-ləri
+- `05-build-custom-agent-laravel.md` — Tək agent — multi-agent-in building block-u
+- `09-human-in-the-loop.md` — Multi-agent sistemdə HITL checkpoint
+- `13-agent-security.md` — Agent-lərarası trust boundary-lər

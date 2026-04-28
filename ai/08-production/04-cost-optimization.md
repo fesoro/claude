@@ -677,3 +677,22 @@ class AICostController extends Controller
 | Yerli modellər (Ollama)    | Sadə tapş. üçün 95%+| Yüksək (infrastr.)|
 
 **Prioritet sırası:** Model yönləndirməsi → Keşləmə → Prompt sıxışdırması → Toplu emal → Yerli modellər
+
+## Praktik Tapşırıqlar
+
+### 1. Model Router Tətbiqi
+Sorğunun mürəkkəbliyini müəyyən etmək üçün sadə klassifikator yazın. Qısa FAQ sorğuları (`<50 token cavab`) üçün `claude-haiku-4-5`, mürəkkəb analitik sorğular üçün `claude-sonnet-4-6` seçin. A/B test keçirin: 1 həftə sonra xərc azalmasını ölçün. Hədəf: ortalama xərci 40%+ azaltmaq.
+
+### 2. Prompt Cache Audit
+Mövcud system prompt-larınızı analiz edin: hansıları statik, hansıları dinamikdir? Statik hissəni ayrıca `cache_control: ephemeral` block-una çıxarın. `cache_read_input_tokens` / `cache_creation_input_tokens` nisbətini bir həftə izləyin. Cache hit rate `>70%` olmalıdır. Əgər azdırsa, prefixin niyə dəyişdiyini araşdırın.
+
+### 3. Token Budget Middleware
+Laravel middleware yaradın: hər feature üçün maksimum `max_tokens` limiti konfiqurasiya faylında müəyyən edin. Limit aşılmışsa request-i rədd edin (422 qaytarın). Aylıq budget tracking üçün `feature_token_usage` cədvəlini qurun. `budget_utilization > 80%` olduqda team lead-ə email göndərin.
+
+## Əlaqəli Mövzular
+
+- [LLM Observability](./03-llm-observability.md)
+- [Latency Optimallaşdırması](./05-latency-optimization.md)
+- [Observability Logging](./02-observability-logging.md)
+- [Multi-Provider Failover](./15-multi-provider-failover.md)
+- [Canary Shadow Deploy](./14-canary-shadow-llm-deploy.md)

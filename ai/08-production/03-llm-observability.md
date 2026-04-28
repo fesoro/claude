@@ -725,3 +725,22 @@ CI-də bu dataset üzərində hər prompt dəyişikliyindən əvvəl regression 
 - **A/B testing**: experiment variant-ı trace attribute kimi əlavə et, 1000+ sample sonra statistical analysis.
 - **Dataset akkumulyasiyası**: production trace → eval set — regression testin canlı mənbəyi.
 - **Per-user/per-feature xərc attribution** unit economics və abuse detection üçün şərtdir.
+
+## Praktik Tapşırıqlar
+
+### 1. Langfuse Tracing Quraşdırması
+Laravel proyektinizə Langfuse PHP SDK əlavə edin. Hər LLM çağırışını `trace()` ilə əhatə edin: `user_id`, `session_id`, `feature_name` metadata kimi əlavə olsun. Span-lar daxilindən tool call-ları ayrıca trace edin. Son addım: `score()` metodu ilə LLM-as-judge nəticələrini eyni trace-ə bağlayın.
+
+### 2. LLM-as-Judge Sampling Pipeline
+Production sorğularının 5%-ni `sample_for_eval` flag ilə işarələyin. Nümunəvi judge prompt yazın: `"Does this response correctly answer the user question? Rate 1-5."` Nəticəni `eval_scores` cədvəlinə yazın. Günlük ortalama score `<3.5` olduqda Slack alert göndərin. Bu pipeline cost: ~$0.001 per eval.
+
+### 3. A/B Test Attribution
+`experiment_variant` sütununu `ai_call_logs`-a əlavə edin. Traffic-in 20%-ni `variant_b` (yeni model/prompt) olaraq işarələyin. 1000 sample toplandıqdan sonra Mann-Whitney U testi ilə latency və score fərqini müqayisə edin. Statistik əhəmiyyətlilik `p < 0.05` olduqda variant-ı tam aktiv edin.
+
+## Əlaqəli Mövzular
+
+- [Observability Logging](./02-observability-logging.md)
+- [AI Testing Strategies](./06-ai-testing-strategies.md)
+- [Model Drift Monitoring](./07-model-drift-quality-monitoring.md)
+- [Canary Shadow Deploy](./14-canary-shadow-llm-deploy.md)
+- [AI Xərclərinin Optimallaşdırılması](./04-cost-optimization.md)

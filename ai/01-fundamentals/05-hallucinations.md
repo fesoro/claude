@@ -777,4 +777,45 @@ Model yeni deployment-a hazırdır əgər:
 
 ---
 
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Self-Consistency Testi
+
+Elə bir sual seçin ki, cavabı mübahisəli ola bilsin (məs., "Laravel 10-da hansı feature əlavə olundu?"). Həmin prompt-u temperature=0.8 ilə 5 dəfə çağırın. Cavabları semantik olaraq müqayisə edin — uyğunsuzluq yüksəkdirsə, bu domain-də RAG tətbiq etmək lazımdır.
+
+```php
+$results = [];
+for ($i = 0; $i < 5; $i++) {
+    $results[] = $claude->messages()->create([
+        'model' => 'claude-haiku-4-5',
+        'max_tokens' => 200,
+        'temperature' => 0.8,
+        'messages' => [['role' => 'user', 'content' => $question]],
+    ])->content[0]->text;
+}
+// similar_text() ilə pairwise uyğunsuzluq hesablayın
+```
+
+### Tapşırıq 2: Groundedness Metrikasını Qurun
+
+Mövcud RAG sisteminizə `HallucinationMonitor::evaluate()` əlavə edin. 50 real istifadəçi sorğusunu keçirin, `groundedness_score` paylanmasını çıxarın. 0.7-dən aşağı olan hallarda prompt-u və RAG context-ini müqayisə edərək kökü tapın.
+
+### Tapşırıq 3: Known-Answer Evaluation Set
+
+Öz domain-inizdən 100 sual + doğru cavab cütü hazırlayın. Hər yeni model/prompt versiyasında bu test-i çalışdırın:
+- Baseline hallucination rate müəyyən edin
+- Yeni versiyada rate artırsa → rollback trigger edin
+
+---
+
+## Əlaqəli Mövzular
+
+- `01-how-ai-works.md` — Hallucination-un kökü: next-token prediction mexanizmi
+- `../04-rag-embeddings/03-rag-architecture.md` — Hallucination azaldılmasının ən təsirli yolu: RAG
+- `../02-claude-api/08-files-api-citations.md` — Citations ilə faithfulness təminatı
+- `07-extended-thinking.md` — Mürəkkəb mühakimədə hallucination azaldır
+- `10-prompt-injection-defenses.md` — Adversarial hallucination (düşmənçi input)
+
+---
+
 *Növbəti: [10 — Embedding və Generativ Modellər](./06-embedding-vs-generative-models.md)*

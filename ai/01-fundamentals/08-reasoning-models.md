@@ -967,4 +967,25 @@ Domain?
 
 ---
 
-*Növbəti: [02-models-overview.md](./02-models-overview.md) — modellərə ümumi baxış, yaxud Claude extended thinking API detalları üçün [07-extended-thinking.md](../02-claude-api/07-extended-thinking.md)*
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Standard vs Reasoning Model Müqayisəsi
+
+Multi-step arxitektura dizayn tapşırığı (məs. "Bir e-ticarət platforması üçün event-driven ödəniş sistemi dizayn et") üçün `claude-sonnet-4-6` (standart) vs `claude-sonnet-4-6` extended thinking ilə cavabları müqayisə et. Budget: `max_tokens=8000, thinking.budget_tokens=4000`. Keyfiyyət fərqini və token xərcini qeyd et.
+
+### Tapşırıq 2: Thinking Budget Testi
+
+Eyni mürəkkəb problem üçün `budget_tokens=1000`, `3000`, `8000` ilə test et. Final cavab keyfiyyəti ilə thinking budget arasındakı korrelyasiyanı ölç. ROI tipping point-i tapırsınmı — bir həddən sonra daha çox thinking token keyfiyyət artırmır?
+
+### Tapşırıq 3: Reasoning Model ROI Kalkulyatoru
+
+Layihəndəki 5 AI feature-ı üçün hesabla: reasoning model + standard model xərc fərqi nədir? Hər feature üçün "keyfiyyət qərəzli cavab" faizini ölç. ROI-ni hesabla: `keyfiyyət_artımı × biznes_dəyəri / əlavə_xərc`. Reasoning modeli yalnız ROI-i müsbət olan feature-lara tətbiq et.
+
+---
+
+## Əlaqəli Mövzular
+
+- `01-how-ai-works.md` — Test-time compute-un transformer arxitekturası ilə əlaqəsi
+- `02-models-overview.md` — Reasoning modellərin müxtəlif provider-lərdəki icrası
+- `10-model-selection-decision.md` — Reasoning model seçim meyarları
+- `../02-claude-api/07-extended-thinking.md` — Claude-da extended thinking API implementasiyası

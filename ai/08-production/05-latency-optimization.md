@@ -669,3 +669,22 @@ class SpeculativeExecutor
 | Coğrafi yönləndirmə | 50-150ms | Yüksək infrastruktur səyi |
 
 **Söhbət üçün ən təsirli stek:** Axın + Semantik keş + Bağlantı hovuzu + Model yönləndirmə = naiv tətbiqa nisbətən ~90% qəbul edilmiş gecikmənin azalması.
+
+## Praktik Tapşırıqlar
+
+### 1. Streaming SSE Tətbiqi
+Laravel-də Claude streaming cavabını Server-Sent Events ilə frontend-ə ötürün. `StreamedResponse` istifadə edin, hər token gəldikcə `data: {chunk}\n\n` formatında göndərin. Frontend-də `EventSource` obyekti yaradın, tokenləri DOM-a append edin. TTFT (Time to First Token) `<500ms` hədəfinə çatdığınızı ölçün.
+
+### 2. Semantic Cache Benchmark
+Redis ilə embedding-based semantic cache qurun. 100 test sorğusu hazırlayın (50 unikal + 50 semantik dublikat). Cache olmadan vs cache ilə latency-ni müqayisə edin. Cosine similarity threshold-u `0.92` ilə başlayın. Hit rate, false positive rate (yanlış cache hit) və ümumi xərc azalmasını hesabat kimi çıxarın.
+
+### 3. Connection Pool Benchmark
+Guzzle client-i singleton kimi Laravel service container-ə qeydiyyatdan keçirin (`app()->singleton()`). Persistent connection ilə yeni connection yaratma arasında `p99` latency fərqini ölçün. 100 paralel sorğu göndərən load test yazın (`Guzzle Pool` istifadə edin). Fərqi qeyd edin.
+
+## Əlaqəli Mövzular
+
+- [AI Xərclərinin Optimallaşdırılması](./04-cost-optimization.md)
+- [Observability Logging](./02-observability-logging.md)
+- [Semantic Caching](../07-workflows/08-semantic-caching.md)
+- [Streaming UI](../07-workflows/06-ai-streaming-ui.md)
+- [Multi-Provider Failover](./15-multi-provider-failover.md)

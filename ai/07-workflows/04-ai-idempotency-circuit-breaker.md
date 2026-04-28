@@ -1183,3 +1183,28 @@ AI sistemləri production-da aşağıdakı layer-lərə ehtiyac duyur:
 6. **Test bütün state-lər üçün** — CLOSED, OPEN, HALF-OPEN, transition-lar.
 
 Bu layer olmadan AI feature "gün üçün yaxşı" amma production-qrafiq-ə-çıxış-yoxdur. Onunla — AI reliability-ni klassik microservice-lə eyni səviyyəyə çatdırır.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Idempotency Key Test
+
+`ProcessInvoiceJob`-a idempotency key əlavə et: `invoice_id`-dən SHA256 hash yarat. Eyni invoice üçün job-u 3 dəfə dispatch et. Yalnız bir dəfə real API çağırışı edilməli, digərləri cache-dən cavab verməlidir. Idempotency key TTL-i 24 saat et.
+
+### Tapşırıq 2: Circuit Breaker State Machine
+
+`ClaudeCircuitBreaker`-i test et: (a) 5 ardıcıl timeout → `OPEN`, (b) 30 saniyə sonra `HALF-OPEN`, (c) 1 uğurlu request → `CLOSED`. Hər state transition-ı log et. Filament-də circuit state-i real-time göstər. `OPEN` vəziyyətindən Slack-ə alert göndər.
+
+### Tapşırıq 3: Graceful Degradation
+
+Circuit breaker `OPEN` olduqda fallback strategiyasını implement et: (a) cache-dən köhnə cavabı qaytar (varsa), (b) yoxdursa rule-based cavab ver, (c) "AI müvəqqəti əlçatan deyil" mesajı göstər. Fallback halında user experience-i test et.
+
+---
+
+## Əlaqəli Mövzular
+
+- `03-laravel-queue-ai-patterns.md` — Queue job-larda idempotency tətbiqi
+- `../02-claude-api/11-rate-limits-retry-php.md` — Rate limit zamanı circuit breaker
+- `../08-production/15-multi-provider-failover.md` — Circuit breaker + provider failover
+- `05-webhook-async-ai.md` — Async workflow-da idempotency

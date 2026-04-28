@@ -962,4 +962,25 @@ Self-host lazımdır?
 
 ---
 
-*Növbəti: [11 — Reasoning Models](./08-reasoning-models.md)*
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Embedding Model Müqayisəsi
+
+Eyni 20 cümləni `text-embedding-3-small` (OpenAI) və `voyage-3-lite` (Anthropic) ilə embed et. Hər model üçün semantik cütlər arasındakı cosine similarity-ni müqayisə et. Hansı model domain-specific texniki mətnlər üçün daha yaxşı ayrışdırır?
+
+### Tapşırıq 2: Classification — Embedding vs Generation
+
+Müştəri dəstəyi emailini 5 kateqoriyaya təsnif et. İki yanaşmanı implement et: (a) embedding-based kNN classifier (k=3), (b) generation-based zero-shot classification ilə Claude. 100 test emaili üzərindən accuracy + cost müqayisəsi apar.
+
+### Tapşırıq 3: Semantic Search Qur
+
+`documents` cədvəlinə `embedding vector(1536)` sütunu əlavə et. Hər sənədi embed et, pgvector-ə yaz. User sorğusunu embed et, `<=>` operatoru ilə ən yaxın 5 sənədi qaytar. Bunun keyword search-dən nə zaman üstün olduğunu sübut et.
+
+---
+
+## Əlaqəli Mövzular
+
+- `01-how-ai-works.md` — Encoder-only vs decoder-only arxitektura fərqi
+- `../04-rag-embeddings/01-embeddings-vector-search.md` — Embedding-lərin RAG sistemlərindəki tətbiqi
+- `../04-rag-embeddings/05-query-transformation-hyde.md` — Embedding keyfiyyətini artıran query texnikaları
+- `../04-rag-embeddings/06-reranking-hybrid-search.md` — Sparse + dense embedding hibrid axtarışı

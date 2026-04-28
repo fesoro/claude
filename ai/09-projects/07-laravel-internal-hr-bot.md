@@ -1629,3 +1629,22 @@ CONFLUENCE_TOKEN=...
 - HR-a düşən manual ticket sayı 41% azaldı
 
 Bu arxitektura MCP-nin güclü tərəflərini istifadə edir: HRIS, ITSM, Calendar kimi müxtəlif sistemləri tək protocol arxasında birləşdirir. Laravel yalnız orchestration edir — MCP serverlər ayrıca servislər kimi saxlanılır, versiyalaşdırılır, deploy olunur.
+
+## Praktik Tapşırıqlar
+
+### 1. Slack Bot Quraşdırması
+Slack App yaradın, `events:read`, `chat:write`, `im:read` permissionları əldə edin. Laravel-də `/api/slack/events` webhook endpoint yazın. Slack slash command `/hr-question` ilə Claude-a sorğu göndərin. Response-ı `ephemeral` (yalnız soruşana görünən) göndərin. Rate limiting: bir user saatda `>20` sorğu göndərirsə `⚠️ Limit reached` qaytarın.
+
+### 2. Knowledge Base Yeniləmə Prosesi
+HR sənədlərinin (PDF/Confluence) avtomatik indeksləşdirilməsi üçün pipeline qurun. Yeni fayl upload olunanda `IndexHrDocument` job queue-ya göndərilsin. Chunk-ları `hr_knowledge_chunks` cədvəlinə yazın. `updated_at` sahəsindən 90 gündən köhnə chunk-ları "stale" olaraq işarələyin. Stale chunk-lar sorğu nəticəsində qaytarıldıqda `⚠️ Bu məlumat köhnə ola bilər` bildirişi əlavə edin.
+
+### 3. Usage Analytics Dashboard
+`hr_bot_queries` cədvəlindən aylıq report yaradın: ən çox sorulan suallar, cavabsız qalan suallar (low confidence), peak usage saatları. Bu analiz HR komandasına hansı sənədlərin genişləndirilməsi lazım olduğunu göstərir. Avtomatik aylıq email report göndərin: `php artisan hr:monthly-report`.
+
+## Əlaqəli Mövzular
+
+- [Laravel MCP Server](./09-laravel-mcp-server.md)
+- [Laravel Chatbot](./01-laravel-chatbot.md)
+- [MCP Fundamentals](../03-mcp/02-mcp-fundamentals.md)
+- [RAG App](./04-laravel-rag-app.md)
+- [Observability Logging](../08-production/02-observability-logging.md)

@@ -735,17 +735,251 @@ Build etdikdən (`npm run build`) sonra `claude_desktop_config.json`-da qeydiyya
 }
 ```
 
-### Docker Deployment (HTTP nəqli üçün)
+### HTTP Transport Server (Bulud Deployment üçün)
+
+stdio yalnız lokal process-lər üçündür. Remote server-lərə (Docker, cloud) `StreamableHTTPServerTransport` lazımdır:
+
+```typescript
+// src/index-http.ts
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import { registerDatabaseTools } from "./tools/database.js";
+import { registerFileTools } from "./tools/files.js";
+import { registerApiTools } from "./tools/external-api.js";
+import { registerResources } from "./resources/index.js";
+import { createServer } from "node:http";
+
+const PORT = parseInt(process.env.PORT ?? "3000", 10);
+
+async function createMcpServer(): Promise<McpServer> {
+  const server = new McpServer({
+    name: "my-production-server",
+    version: "1.0.0",
+  });
+
+  registerDatabaseTools(server);
+  registerFileTools(server);
+  registerApiTools(server);
+  registerResources(server);
+
+  return server;
+}
+
+// Hər HTTP bağlantısı üçün ayrı transport instance — stateless dizayn
+const httpServer = createServer(async (req, res) => {
+  // Yalnız /mcp endpoint-ini idarə et
+  if (!req.url?.startsWith("/mcp")) {
+    res.writeHead(404).end("Not found");
+    return;
+  }
+
+  // Bearer token autentifikasiyası
+  const authHeader = req.headers["authorization"];
+  const expectedToken = process.env.MCP_AUTH_TOKEN;
+
+  if (expectedToken && authHeader !== `Bearer ${expectedToken}`) {
+    res.writeHead(401).end(JSON.stringify({ error: "Unauthorized" }));
+    return;
+  }
+
+  const server = await createMcpServer();
+  const transport = new StreamableHTTPServerTransport({
+    sessionIdGenerator: undefined, // Stateless: hər request müstəqil
+  });
+
+  res.on("close", () => {
+    transport.close();
+    server.close();
+  });
+
+  await server.connect(transport);
+  await transport.handleRequest(req, res, req.body);
+});
+
+httpServer.listen(PORT, () => {
+  console.log(`MCP HTTP server ${PORT} portunda işləyir`);
+});
+
+process.on("SIGTERM", () => {
+  httpServer.close(() => process.exit(0));
+});
+```
+
+### Docker Deployment
 
 ```dockerfile
+# Dockerfile
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY tsconfig.json ./
+COPY src/ ./src/
+RUN npm run build
+
 FROM node:20-alpine
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --omit=dev
-COPY dist/ ./dist/
+RUN npm ci --omit=dev && npm cache clean --force
+COPY --from=builder /app/dist ./dist/
 EXPOSE 3000
 ENV NODE_ENV=production
+HEALTHCHECK --interval=30s --timeout=10s \
+  CMD wget -qO- http://localhost:3000/health || exit 1
+USER node
 CMD ["node", "dist/index-http.js"]
 ```
 
-HTTP nəqli üçün `StdioServerTransport`-u `StreamableHTTPServerTransport` ilə əvəzləyin (SDK 1.x-də mövcuddur).
+```yaml
+# docker-compose.yml
+version: "3.9"
+
+services:
+  mcp-server:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://user:pass@postgres:5432/mydb
+      FILES_SANDBOX: /data/sandbox
+      MCP_AUTH_TOKEN: ${MCP_AUTH_TOKEN}
+      NODE_ENV: production
+    volumes:
+      - sandbox_data:/data/sandbox:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - internal
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
+volumes:
+  pg_data:
+  sandbox_data:
+
+networks:
+  internal:
+```
+
+```bash
+# Production deploy
+MCP_AUTH_TOKEN=$(openssl rand -hex 32) docker compose up -d
+```
+
+### PM2 ilə Production (Docker olmadan)
+
+```yaml
+# ecosystem.config.cjs
+module.exports = {
+  apps: [{
+    name: "mcp-server",
+    script: "dist/index-http.js",
+    instances: 2,           // CPU-ya görə ayarlayın
+    exec_mode: "cluster",
+    env: {
+      NODE_ENV: "production",
+      PORT: 3000,
+    },
+    error_file: "logs/error.log",
+    out_file: "logs/out.log",
+    log_date_format: "YYYY-MM-DD HH:mm:ss Z",
+    max_memory_restart: "512M",
+  }]
+};
+```
+
+```bash
+npm run build
+pm2 start ecosystem.config.cjs
+pm2 save
+pm2 startup  # sistem başlanğıcında avtomatik başlat
+```
+
+### Nginx Reverse Proxy
+
+```nginx
+upstream mcp_backend {
+    server 127.0.0.1:3000;
+    server 127.0.0.1:3001;   # PM2 cluster instance 2
+    keepalive 32;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name mcp.acme.az;
+
+    ssl_certificate     /etc/letsencrypt/live/mcp.acme.az/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/mcp.acme.az/privkey.pem;
+
+    # MCP SSE bağlantıları uzun ömürlüdür — timeout artır
+    proxy_read_timeout  300s;
+    proxy_send_timeout  300s;
+
+    location /mcp {
+        proxy_pass         http://mcp_backend;
+        proxy_http_version 1.1;
+        proxy_set_header   Connection "";
+        proxy_set_header   Host $host;
+        proxy_set_header   X-Real-IP $remote_addr;
+
+        # SSE üçün buffering söndür
+        proxy_buffering    off;
+        proxy_cache        off;
+    }
+}
+```
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Lokal Server + Inspector
+
+1. Bu faylda göstərilən server-i qurun (layihə quraşdırması)
+2. Öz PostgreSQL test DB-ni qoşun
+3. `npm run inspect` ilə MCP Inspector açın
+4. `query_database("SELECT * FROM users LIMIT 5")` tool-unu Inspector-da test edin
+5. İnvalid SQL ilə (`DELETE FROM users`) rədd cavabı aldığınızı doğrulayın
+
+### Tapşırıq 2: HTTP Transport + Claude Desktop
+
+1. `npm run build && node dist/index-http.js` ilə HTTP server başladın
+2. `claude_desktop_config.json`-a **streamable-http** transport ilə əlavə edin:
+   ```json
+   { "transport": "streamable-http", "url": "http://localhost:3000/mcp" }
+   ```
+3. Claude Desktop-da "List all tables" yazın — MCP server-dən cavab gəlməlidir
+4. stdio transport ilə latency fərqini müşahidə edin
+
+### Tapşırıq 3: Docker Production Deploy
+
+1. `Dockerfile` + `docker-compose.yml` yazın (bu faylı izləyin)
+2. `docker compose up -d` ilə servisi başladın
+3. `MCP_AUTH_TOKEN` olmadan `curl http://localhost:3000/mcp` ilə 401 aldığınızı yoxlayın
+4. `docker logs` çıxışında server log-larını izləyin
+
+---
+
+## Əlaqəli Mövzular
+
+- `01-mcp-what-is.md` — MCP protokolunun əsasları (bu fayldan əvvəl oxuyun)
+- `02-mcp-resources-prompts.md` — Resources + Prompts primitiv-ləri server-ə necə əlavə olunur
+- `08-mcp-oauth-auth.md` — HTTP server-ə OAuth 2.1 əlavə etmək (enterprise deployment)
+- `10-mcp-testing-debugging.md` — MCP Inspector və avtomatik testlər
+- `11-mcp-for-company-laravel.md` — PHP Laravel-də MCP server qurmaq

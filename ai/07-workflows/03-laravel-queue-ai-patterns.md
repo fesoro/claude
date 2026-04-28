@@ -1241,3 +1241,28 @@ Laravel queue + AI vahid sistem kimi dizayn edilməlidir. Əsas prinsiplər:
 8. **Progress broadcasting** istifadəçi təcrübəsini saxlayır.
 
 `GenerateEmbeddingsJob` göstərdi ki, bütün bu prinsiplər bir job-da necə birləşir. Bu, sadəcə pattern yox, production-qrafiya-prelimineri Laravel + AI arxitekturasıdır.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: AI Job with Rate Limiting
+
+`SummarizeDocumentJob` implement et. `ThrottlesExceptions` + `RateLimited` middleware əlavə et: Anthropic API üçün dəqiqədə 60 request limiti. Job uğursuz olduqda 3 cəhd, exponential backoff. `failed_jobs`-da uğursuz job-ların monitoring-i qur.
+
+### Tapşırıq 2: Batch Embedding Job
+
+1000 sənəd üçün `GenerateEmbeddingsJob`-u `Bus::batch()` ilə çalışdır. Progress tracking: `batch->processedJobs()` / `batch->totalJobs()` SSE ilə frontend-ə axtar. Batch tamamlandıqda webhook göndər. Batch-ın yarıda uğursuz olduqda `catch()` callback-ı test et.
+
+### Tapşırıq 3: Per-Tenant Budget
+
+`ai_usage` cədvəlindən hər tenant üçün aylıq token xərclərini izlə. Tenant-ın `monthly_budget_usd` həddinə çatdıqda `TenantBudgetExceededException` at, job-u queue-dan çıxar. Admin-ə email göndər. Budget reset (ayın 1-i) üçün scheduled command yaz.
+
+---
+
+## Əlaqəli Mövzular
+
+- `01-ai-pipeline-laravel.md` — Queue job-lardan ibarət pipeline qurmaq
+- `04-ai-idempotency-circuit-breaker.md` — Job idempotency və circuit breaker
+- `../02-claude-api/11-rate-limits-retry-php.md` — API rate limit idarəetməsi
+- `../08-production/04-cost-optimization.md` — Budget enforcement strategiyası

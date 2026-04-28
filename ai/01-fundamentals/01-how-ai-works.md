@@ -673,4 +673,26 @@ Bu "yaranma" tam başa düşülmür — aktiv araşdırma sahəsidir.
 
 ---
 
-*Növbəti: [02 — Modellərə Baxış](./02-models-overview.md)*
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: KV Cache Latency Testi
+
+Claude API-də eyni prompt-u iki dəfə göndər: birinci call cold (cache yoxdur), ikinci call warm (eyni prefix). `cache_read_input_tokens` vs `cache_creation_input_tokens`-i log et. Latency fərqini ölç. Nəticə: warm call nə qədər sürətlidir?
+
+### Tapşırıq 2: Temperature Müqayisəsi
+
+Eyni kod generasiya prompt-unu `temperature=0.0`, `temperature=0.7`, `temperature=1.5` ilə hər birindən 5 dəfə çalışdır. Cavabların identiklik faizini müqayisə et. `temperature=0`-da fərqli cavab alırsanmı? Bu, deterministikliklə bağlı gözləntilərinizi doğrulayır?
+
+### Tapşırıq 3: Attention Haqqında Eksperiment
+
+Uzun bir sənədi Claude-a ver, ortasında gizli bir fakt yerləşdir. Sual sor ki, həmin faktı tapıb tapmamasına bax. Sənədi daha uzun et. "Lost in the middle" effektini müşahidə et — bu transformer-ın attention mexanizmi ilə necə əlaqəlidir?
+
+---
+
+## Əlaqəli Mövzular
+
+- `02-models-overview.md` — Transformer arxitekturasının müxtəlif model ailələrindəki icrası
+- `03-tokens-context-window.md` — Token-lərin inference prosesindəki rolu
+- `04-temperature-parameters.md` — Sampling parametrlərinin nəzəri əsası
+- `05-hallucinations.md` — Hallusinasiyaların transformer arxitekturasından qaynaqlanması
+- `06-embedding-vs-generative-models.md` — Encoder-only vs decoder-only fərqi

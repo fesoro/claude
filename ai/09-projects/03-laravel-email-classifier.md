@@ -1497,3 +1497,22 @@ ZENDESK_TOKEN=...
 - Mailgun webhook itdisə → IMAP polling 5 dəqiqədən bir çağırır və yoxlayır.
 
 Bu sistem real istehsalda 3 aydan çoxdur işləyir. Ən böyük qənaət faktoru: Sonnet yalnız 30% emailə çağırılır (digər 70% spam/route/auto-reject). Kalibrlənmiş threshold ilə auto-reply rate böyüyə bilər, amma 18% səviyyəsi rejection risk-ini 5% altında saxlayır.
+
+## Praktik Tapşırıqlar
+
+### 1. Classifier Accuracy Benchmark
+500 real email götürün, əllə label edin (spam/billing/support/sales). Classifier-i bu dataset üzərindən test edin. Precision, recall, F1 hər kateqoriya üçün hesablayın. Ən çox error olan kateqoriyanı müəyyən edin, prompt-da əlavə nümunələr (few-shot) əlavə edib yenidən test edin. Hədəf: ortalama F1 `>0.90`.
+
+### 2. Auto-Reply Quality Audit
+Son 100 avtomatik göndərilmiş email-i nəzərdən keçirin. LLM-as-judge ilə hər birini qiymətləndirin: tone uyğunmu, düzgün məlumat varmı, müştəri narazı ola bilərmi? Score `<3/5` olanları `auto_reply_issues` cədvəlinə yazın. Bu tapıntıları prompt improvement üçün istifadə edin. Aylıq trend izləyin.
+
+### 3. Fallback → Learning Loop
+Anthropic 5xx halında keyword-based fallback classifier işləyir. Bu fallback-ın nə vaxt aktiv olduğunu log edin. Fallback tərəfindən yanlış etiketlənən email-ləri (human review ilə aşkarlanan) `misclassified_fallback` cədvəlinə yazın. Aylıq bu kateqoriyalarda keyword siyahısını genişləndirib fallback accuracy-ni artırın.
+
+## Əlaqəli Mövzular
+
+- [Laravel Chatbot](./01-laravel-chatbot.md)
+- [Customer Support Bot](./10-laravel-customer-support-bot.md)
+- [Webhook Async AI](../07-workflows/05-webhook-async-ai.md)
+- [AI Testing Strategies](../08-production/06-ai-testing-strategies.md)
+- [Cost Optimization](../08-production/04-cost-optimization.md)

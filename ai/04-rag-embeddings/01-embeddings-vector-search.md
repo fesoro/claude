@@ -694,3 +694,28 @@ HNSW indeks yükü: xam vektor saxlanmasının təxminən 1.5-2 misli.
 ```
 
 Sürət limitləri içində qalmaq və veb sorğularını bloklamaqdan qaçmaq üçün toplu indeksləmədə növbəyə alınmış işlər istifadə et.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: İlk Embedding Pipeline
+
+`documents` cədvəlinə `embedding vector(1536)` sütunu əlavə et. `EmbeddingService` yaz: mətn → Voyage API → float array → pgvector. 100 sənədi queue job-la embed et. `<=>` cosine operatoru ilə semantik axtarış endpoint-i yarat. "Müştəri şikayəti" sorğusu ilə test et.
+
+### Tapşırıq 2: Batch Embedding Optimization
+
+1000 sənəd üçün iki yanaşmanı müqayisə et: (a) hər sənəd ayrıca API call, (b) 100-lük batch-lər halında. Ümumi vaxt, API call sayı, rate limit hiti qeyd et. Batch-in neçə dəfə daha sürətli olduğunu sübut et.
+
+### Tapşırıq 3: Similarity Threshold Tuning
+
+100 cüt (sual, cavab) üçün cosine similarity-ni hesabla. `similarity >= 0.85` threshold-u ilə relevant vs irrelevant ayrımı düzgün işləyir? Threshold-u dəyiş (0.70, 0.80, 0.90) — precision vs recall trade-off-u müşahidə et.
+
+---
+
+## Əlaqəli Mövzular
+
+- `02-vector-databases.md` — pgvector vs Pinecone vs Qdrant seçimi
+- `03-rag-architecture.md` — Embedding-lərin RAG pipeline-dakı yeri
+- `../01-fundamentals/06-embedding-vs-generative-models.md` — Embedding modellərin nəzəri əsası
+- `05-query-transformation-hyde.md` — Query embedding keyfiyyətini artırmaq

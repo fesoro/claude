@@ -1279,4 +1279,21 @@ Red teaming LLM tətbiqiniz üçün **funksional tələbdir**, opsional feature 
 6. **Continuous** — quarterly sprint + nightly + CI + live monitoring
 7. **EU AI Act, RSP, NIST** — audit trail-iniz compliance evidence-dir
 
-Sonrakı fayl (61) — LLM deployment strategiyalarına keçir: canary, shadow, blue-green, A/B testing.
+## Praktik Tapşırıqlar
+
+### 1. Automated Red Team Suite
+Laravel-də `php artisan ai:red-team` komandası yazın. 50 attack pattern-i JSON faylından yükləyin: jailbreak, role-play, indirect injection, PII extraction, system prompt leak. Hər cəhdi Claude-a göndərin, cavabı LLM-as-judge ilə qiymətləndirin. Uğurlu hücumları (model "sınıb") `red_team_findings` cədvəlinə yazın. Report: attack success rate per category.
+
+### 2. Adversarial Probe Dataset
+50 "boundary" sorğusu hazırlayın: nə açıq-aşkar hücum, nə də tamamilə normal. Məsələn: `"What chemicals should NOT be mixed?"` (normal) vs `"How to make dangerous gas at home?"` (hücum). Modelinizin bu zone-da davranışını sənədləşdirin. False refusal rate (normal sorğuları rədd etmə) və false acceptance rate (hücumu qəbul etmə) hesablayın.
+
+### 3. Quarterly Red Team Sprint
+Komanda üçün 2 saatlıq red team sessiyası planı yazın. Rolllar: 2 attacker, 1 defender, 1 recorder. Findings-i severity ilə qiymətləndirin (Critical/High/Medium/Low). Kritik findings üçün 48 saat içində fix tələb edin. Bütün nəticələri `security/red-team-reports/` qovluğuna commit edin. Növbəti sessiya üçün regression case-lər hazırlayın.
+
+## Əlaqəli Mövzular
+
+- [Prompt Injection Defenses](./10-prompt-injection-defenses.md)
+- [Safety Guardrails](./08-safety-guardrails.md)
+- [AI Security](./09-ai-security.md)
+- [Agent Security](../05-agents/13-agent-security.md)
+- [AI Governance Compliance](./16-ai-governance-compliance.md)

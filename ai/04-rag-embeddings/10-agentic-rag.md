@@ -1209,3 +1209,30 @@ Return JSON with scores and brief reasoning.
 - Anti-pattern: hər sorğuya agentic — əksər case-lər klassik RAG ilə yaxşı həll olunur
 - Pragmatic yanaşma: klassik RAG default, agent complex sorğular üçün (router əsaslı seçim)
 - Multi-source və multi-hop sorğular agentic paradiqmanı həqiqətən qazandırır
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Tək Tool ilə Agent Qur
+
+Yalnız `search_docs(query, top_k)` tool-u olan minimal agentic RAG implement et. 20 müxtəlif sorğu ilə çalışdır. Hər sorğu üçün iteration sayını, final answer-ı və tool call tarixçəsini log et. Hansı sorğu tiplərinin 1 iteration, hansının 3+ iteration istədiyini kateqoriyalaşdır. Bu məlumat hansı sorğuları klassik RAG-a yönləndirəcəyini müəyyənləşdirir.
+
+### Tapşırıq 2: Cost Circuit Breaker
+
+`AgenticRagService`-ə token budget tracker əlavə et. Hər tool call-dan əvvəl hesabla: `total_input_tokens + estimated_output_tokens > budget`. Budget aşıldıqda agent-i dayandır, partial result qaytar, `circuit_broken = true` flag-ini log-a yaz. 30 günlük circuit break hadisələrini analiz et — hansı sorğular sistematik olaraq budget-ı aşır?
+
+### Tapşırıq 3: Trajectory Evaluation
+
+`agent_traces` cədvəlindəki son 500 agent session-ını analiz et. Hesabla: (a) average iteration count, (b) tool accuracy (tool call-ın nəticəsinin final cavaba töhfə verdiyi faiz), (c) unnecessary iteration rate (eyni query-nin iki dəfə çağrılması). Bu 3 metrika ilə agent-in prompt-unu optimallaşdır — max iteration azalt, tool description-ları dəqiqləşdir.
+
+---
+
+## Əlaqəli Mövzular
+
+- `03-rag-architecture.md` — Klassik RAG pipeline — agentic ilə müqayisə bazası
+- `07-contextual-retrieval.md` — Retrieval keyfiyyəti artırıldıqda agentic iteration azalır
+- `08-knowledge-graph-ai.md` — Multi-hop sorğularda graph traversal agentic loop-u əvəz edə bilər
+- `11-rag-evaluation-rerank.md` — Trajectory eval metrikalarının ölçülməsi
+- `../05-agents/08-agent-orchestration-patterns.md` — Multi-agent ilə agentic RAG-ın fərqi
+- Multi-source və multi-hop sorğular agentic paradiqmanı həqiqətən qazandırır

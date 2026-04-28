@@ -647,3 +647,27 @@ CREATE INDEX ai_logs_slow        ON ai_call_logs(latency_ms DESC) WHERE latency_
 | Circuit vəziyyəti  | Provayder sağlamlığını izlə              | Redis + Prometheus   |
 | Xüsusiyyət başına xərc | Bahalı xüsusiyyətləri tap            | ai_call_logs         |
 | Tenant başına xərc | Hesablama və anomaliya aşkarlaması       | ai_call_logs         |
+
+## Praktik Tapşırıqlar
+
+### 1. Strukturlaşdırılmış AI Log Pipeline
+`ai_call_logs` cədvəli qurun, Laravel middleware ilə hər Claude request-ini avtomatik log edin. `request_id`, `model`, `input_tokens`, `output_tokens`, `latency_ms`, `user_id`, `feature` sütunları olsun. Sonra `feature` üzrə günlük xərc hesablaması əldə edin:
+```sql
+SELECT feature, SUM(input_tokens * 0.000003 + output_tokens * 0.000015) AS daily_cost
+FROM ai_call_logs WHERE created_at >= NOW() - INTERVAL 1 DAY
+GROUP BY feature ORDER BY daily_cost DESC;
+```
+
+### 2. Latency Percentile Dashboard
+Langfuse və ya özünüzün custom Prometheus eksporter-ini qoşun. `p50`, `p95`, `p99` latency-ni hər model üzrə ayrıca izləyin. Alert qaydasını belə qurun: `p99 > 10s` olduqda PagerDuty notification göndər. `histogram_quantile(0.99, rate(ai_latency_seconds_bucket[5m]))` Prometheus sorğusu ilə başlayın.
+
+### 3. Circuit Breaker Status Monitor
+Redis-də provayder sağlamlıq vəziyyətini saxlayan sadə dashboard qurun. Hər provider üçün son 60 saniyədə uğursuzluq faizini hesablayın, `>50%` olduqda otomatik `open` vəziyyətinə keçin. Vəziyyət keçidlərini `ai_circuit_events` cədvəlinə yazın, Slack-a xəbərdarlıq göndərin.
+
+## Əlaqəli Mövzular
+
+- [LLM Observability: Tracing, Xərc](./03-llm-observability.md)
+- [AI Xərclərinin Optimallaşdırılması](./04-cost-optimization.md)
+- [AI Testing Strategies](./06-ai-testing-strategies.md)
+- [Model Drift Monitoring](./07-model-drift-quality-monitoring.md)
+- [Multi-Provider Failover](./15-multi-provider-failover.md)

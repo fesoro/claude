@@ -439,3 +439,167 @@ CREATE INDEX document_chunks_tenant_idx ON document_chunks(tenant_id);
 | Çox kiracılı izolyasiya   | Kiracı başına sxem       | Sıra-səviyyəli təhlükəsizlik | Sıra-səviyyəli daha yaxşı miqyaslanır    |
 | Model fallback            | Eyni provayder (pillar)  | Çarpaz-provayder      | Həqiqi dayanıqlılıq üçün çarpaz-provayder    |
 | Prompt saxlama            | Kod                      | DB + xüsusiyyət flag-ları| DB deploy etmədən isti dəyişiklik imkanı verir|
+
+---
+
+## 8. Xəta İzolyasiyası və Dayanıqlılıq Patternləri
+
+AI sistemlərinin ənənəvi sistemlərdən fərqli xəta növləri var:
+
+```
+Ənənəvi API:
+  ✓ Uğur → dəqiq nəticə
+  ✗ Uğursuzluq → exception, retry mümkün
+
+AI API:
+  ✓ Uğur → mənalı nəticə (çox vaxt)
+  ✗ Uğursuzluq → rate limit (429), server error (5xx), timeout
+  ⚠ "Uğur" amma zəif nəticə → hallucination, format xətası
+```
+
+```php
+<?php
+// app/Services/AI/ResilientAIService.php
+
+namespace App\Services\AI;
+
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+
+class ResilientAIService
+{
+    private int $circuitBreakerThreshold = 5;  // 5 uğursuzluqdan sonra aç
+    private int $circuitBreakerTimeout   = 60; // 60 saniyə açıq qal
+
+    public function __construct(
+        private readonly ClaudeService $claude,
+        private readonly FallbackService $fallback,
+    ) {}
+
+    public function complete(string $prompt, array $options = []): string
+    {
+        // Circuit breaker yoxla
+        if ($this->isCircuitOpen('claude')) {
+            Log::warning('Claude circuit breaker açıqdır, fallback-a keçilir');
+            return $this->fallback->complete($prompt, $options);
+        }
+
+        try {
+            $result = $this->claude->messages(
+                messages: [['role' => 'user', 'content' => $prompt]],
+                ...$options,
+            );
+
+            $this->recordSuccess('claude');
+            return $result;
+
+        } catch (\Exception $e) {
+            $this->recordFailure('claude');
+            Log::error('Claude xətası, fallback-a keçilir', [
+                'error' => $e->getMessage(),
+                'prompt_length' => strlen($prompt),
+            ]);
+
+            return $this->fallback->complete($prompt, $options);
+        }
+    }
+
+    private function isCircuitOpen(string $provider): bool
+    {
+        $failures = Cache::get("circuit:{$provider}:failures", 0);
+        $openAt   = Cache::get("circuit:{$provider}:open_at");
+
+        if ($openAt && now()->diffInSeconds($openAt) < $this->circuitBreakerTimeout) {
+            return true;
+        }
+
+        return $failures >= $this->circuitBreakerThreshold;
+    }
+
+    private function recordFailure(string $provider): void
+    {
+        $failures = Cache::increment("circuit:{$provider}:failures", 1, now()->addMinutes(5));
+
+        if ($failures >= $this->circuitBreakerThreshold) {
+            Cache::put("circuit:{$provider}:open_at", now(), 120);
+        }
+    }
+
+    private function recordSuccess(string $provider): void
+    {
+        Cache::forget("circuit:{$provider}:failures");
+        Cache::forget("circuit:{$provider}:open_at");
+    }
+}
+```
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Üç Rejimi Müqayisə Etmək
+
+**Aşağıdakı ssenarilərdən hər biri üçün hansı rejimin uyğun olduğunu müəyyən edin:**
+
+```
+1. İstifadəçi chat mesajı göndərir, cavab gözləyir
+   Rejim: _____ (Sinxron / Asinxron / Axın)
+
+2. Gecə yarısı 10,000 sənəd öz-özünə emal edilir
+   Rejim: _____
+
+3. ChatGPT kimi hərfi-hərfinə token-by-token görünür
+   Rejim: _____
+
+4. İstifadəçi "analiz et" düyməsinə basır, başqa iş görür
+   Rejim: _____
+```
+
+### Tapşırıq 2: Vəziyyətsiz Servis Yoxlaması
+
+```php
+// Bu servis vəziyyətli mi, vəziyyətsiz mi? Niyə?
+class BadChatService
+{
+    private array $conversationHistory = []; // ← Problem?
+
+    public function addMessage(string $role, string $content): void
+    {
+        $this->conversationHistory[] = ['role' => $role, 'content' => $content];
+    }
+
+    public function respond(string $userInput): string
+    {
+        $this->addMessage('user', $userInput);
+        $response = $this->claude->messages($this->conversationHistory);
+        $this->addMessage('assistant', $response);
+        return $response;
+    }
+}
+// Problemi müəyyən edin: çoxlu worker instance olduqda nə baş verir?
+```
+
+### Tapşırıq 3: Çox Kiracılı İzolyasiya Testi
+
+```php
+// İki müxtəlif kiracı üçün TenantAIContext yaradın
+$tenant1 = TenantAIContext::forTenant(1); // vectorNamespace: "tenant_1"
+$tenant2 = TenantAIContext::forTenant(2); // vectorNamespace: "tenant_2"
+
+// Sual: Tenant 1-in sənədləri tenant 2-nin RAG nəticələrindəmi görünə bilər?
+// Cavab: _____ (Niyə? vektorNamespace-ə baxın)
+
+// Rate limit testı:
+// $tenant1 üçün 61 sorğu göndərin (limit 60/dəq)
+// Nə baş verər?
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [02-observability-logging.md](02-observability-logging.md) — AI sistem observability
+- [04-cost-optimization.md](04-cost-optimization.md) — FinOps LLM
+- [05-latency-optimization.md](05-latency-optimization.md) — p99 latency idarəsi
+- [15-multi-provider-failover.md](15-multi-provider-failover.md) — Çarpaz-provayder fallback
+- [../04-rag-embeddings/03-rag-architecture.md](../04-rag-embeddings/03-rag-architecture.md) — RAG sistem arxitekturası

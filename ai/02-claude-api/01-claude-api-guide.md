@@ -981,4 +981,25 @@ Keyfiyyət metriklər:
 
 ---
 
-*Əvvəlki: [05 — Multimodal AI](../01-fundamentals/07-multimodal-ai.md) | Növbəti: [07 — Prompt Engineering](./02-prompt-engineering.md)*
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: İlk API Çağırışı
+
+`ClaudeService` PHP sinifi yaz. `Anthropic-PHP` paketi ilə `messages.create` endpoint-ini çağır, system prompt + user message göndər. Response-dan `content[0].text`-i çıxar. `ANTHROPIC_API_KEY`-i `.env`-dən götür. `ClaudeService::message(array $messages, string $model): string` metodunu implement et.
+
+### Tapşırıq 2: Xəta İdarəetməsi
+
+`RateLimitException` (429), `OverloadedException` (529), `ApiException` (digər) üçün ayrı catch blokları yaz. `429`-da exponential backoff (1s, 2s, 4s, max 3 cəhd) implement et. `ClaudeException` base exception-ı yarat, bütün xəta növlərini ona wrap et.
+
+### Tapşırıq 3: Laravel Service Provider
+
+`ClaudeServiceProvider`-i `config/services.php`-dəki konfiqurasiyadan `ClaudeService`-i singleton kimi container-ə qeyd et. `$claude = app(ClaudeService::class)` ilə istifadə edilə bilsın. `php artisan tinker`-dan test et.
+
+---
+
+## Əlaqəli Mövzular
+
+- `02-prompt-engineering.md` — Effektiv prompt dizaynı
+- `09-prompt-caching.md` — API xərclərini azaltmaq üçün caching
+- `11-rate-limits-retry-php.md` — Production-grade retry və backoff
+- `../01-fundamentals/02-models-overview.md` — Hansı modeli seçmək haqqında

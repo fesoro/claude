@@ -694,3 +694,22 @@ jobs:
 | Hər commit-də eval testlərini işlətmək | Çox yavaş və bahalıdır                | Gecəlik cədvəllə                 |
 | Kassetaları versiya idarəsinə almamaq  | Təkrarlanmayan test icraları           | Kassetaları git-ə commit et      |
 | Testlərdə produksiya prompt-larını istifadə etmək | Prompt dəyişdikdə testlər uğursuz olur | Davranışla test et, prompt-la yox |
+
+## Praktik Tapşırıqlar
+
+### 1. Kasseta (Cassette) Test Suite
+`php-vcr` kitabxanasını quraşdırın. 20 real Claude sorğusunu kasseta kimi record edin. Bu kassetalar üzərindən deterministic unit test suite yazın. CI pipeline-a əlavə edin: `phpunit --testsuite=ai-unit`. Bütün testlər API açarı olmadan işləməlidir. Kassetaları `tests/cassettes/` qovluğuna git-ə commit edin.
+
+### 2. Nightly Eval Runner
+Laravel Command yazın: `php artisan ai:eval-nightly`. Bu command 50 benchmark sorğusunu real API-ə göndərir, LLM-as-judge ilə score-ları hesablayır, nəticəni `eval_runs` cədvəlinə yazır. Əgər ortalama score əvvəlki gecəyə nisbətən `>5%` azalıbsa, sabah sübh Slack-a xəbərdarlıq göndərir. GitHub Actions cron (`0 2 * * *`) ilə avtomatlaşdırın.
+
+### 3. Regression Test Dataset
+Production-dan keçmiş 200 uğurlu AI sorğusu toplayın (user-approved və ya high-score). Bunları `eval_golden_set` cədvəlinə əlavə edin. Hər yeni model/prompt dəyişikliyindən əvvəl bu dataset üzərindən eval keçirin. Regression `>3%` olduqda deploy blokla. CI pipeline-da `php artisan ai:regression-check --threshold=0.03` kimi işləyin.
+
+## Əlaqəli Mövzular
+
+- [LLM Observability](./03-llm-observability.md)
+- [Model Drift Monitoring](./07-model-drift-quality-monitoring.md)
+- [Canary Shadow Deploy](./14-canary-shadow-llm-deploy.md)
+- [Agent Evaluation Patterns](../05-agents/12-ai-agent-evaluation-patterns.md)
+- [Observability Logging](./02-observability-logging.md)

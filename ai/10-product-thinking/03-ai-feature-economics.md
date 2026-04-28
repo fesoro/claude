@@ -912,3 +912,22 @@ AI feature-i sənin platformadakı utility qatı-dır. Sən onu eyni disiplinlə
 Əgər bu 4 data point-u göstərə bilmirsənsə, pricing dəyişmə — əvvəlcə ölç. AI biznesində **intuiton sənin düşmənindir**. Rəqəmlər isə dostun.
 
 Bu sənədi düzəltdikcə, sənin öz app-ın üçün oxşar spreadsheet hazırla: hər satırda bir feature, sütunlar revenue/COGS/margin. Hər həftə baxmaq, hər ay düzəltmək — AI margin-ə sevgi məktubu budur.
+
+## Praktik Tapşırıqlar
+
+### 1. Feature Unit Economics Spreadsheet
+Layihənizdəki bir AI feature üçün tam unit economics hesablayın. Hər sorğunun: input token xərci, output token xərci, ortalama cache hit rate, DB sorğusu xərci, total COGS-u. Revenue: bu feature üçün ödəniş var? Freemium limitmi? Margin hesablayın. 1000 DAU-da aylıq gəlir vs xərc nə olacaq?
+
+### 2. Cost Attribution Dashboard
+`ai_call_logs`-dan feature-based xərc attribution qurun. SQL: `SELECT feature, SUM(cost_usd) as monthly_cost, COUNT(*) as call_count, AVG(cost_usd) as avg_cost_per_call FROM ai_call_logs WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY) GROUP BY feature ORDER BY monthly_cost DESC`. Bu sorğunu həftəlik Slack report-a daxil edin. Ən bahalı feature-i müəyyən edib optimizasiya planı hazırlayın.
+
+### 3. Pricing Model Eksperimenti
+Model routing ilə xərc-keyfiyyət balansını test edin. Sadə sorğular üçün Haiku, mürəkkəblər üçün Sonnet. 2 həftəlik test: ortalama xərc/sorğu, keyfiyyət score (LLM-as-judge). Fərqi ölçün. İdeal split nə olmalıdır? Bu data ilə pricing tier-ları müəyyən edin: Starter plan → Haiku only, Pro plan → Sonnet.
+
+## Əlaqəli Mövzular
+
+- [Build vs Buy](./02-build-vs-buy-ai.md)
+- [Measuring AI Success](./05-measuring-ai-success.md)
+- [Cost Optimization](../08-production/04-cost-optimization.md)
+- [Observability Logging](../08-production/02-observability-logging.md)
+- [AI MVP Playbook](./01-ai-mvp-playbook.md)

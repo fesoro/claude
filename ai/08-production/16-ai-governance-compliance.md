@@ -1451,4 +1451,21 @@ AI governance 2026-da **enterprise strict requirement**-dir — legal, operation
 14. **File 60 red team** — robustness/security obligations üçün referens
 15. **File 62 moderation** — content safety obligations üçün referens
 
-Bu fayllarla (35, 38, 41, 43, 44, 51-54, 59, 60, 61, 62, 63) senior engineer-in production LLM application üçün ehtiyac duyduğu governance + safety + operations stack-i tam əhatə olunur.
+## Praktik Tapşırıqlar
+
+### 1. AI Risk Register
+Layihəniz üçün risk registry cədvəli qurun: `risk_id`, `category` (bias/privacy/accuracy/misuse), `severity` (1-5), `likelihood` (1-5), `mitigation`, `owner`, `review_date`. Hər yeni AI feature üçün risk assessment mandatory edin. Quarterly review prosesi müəyyən edin. EU AI Act-ın "high-risk system" meyarlarını yoxlayın — layihəniz həmin kateqoriyadadırmı?
+
+### 2. GDPR Compliance Checklist
+AI feature-lar üçün GDPR checklist-i implement edin: (1) `privacy_notices` cədvəlindən istifadəçiyə AI istifadəsini bildirin, (2) `user_consents` cədvəlindən razılığı yoxlayın, (3) `DELETE /api/user/ai-data` endpoint-i ilə "right to erasure" tətbiq edin, (4) `ai_call_logs`-da retention period müəyyən edin (30 gün), (5) data processor agreement Anthropic ilə rəsmiləşdirin.
+
+### 3. Audit Trail System
+Bütün AI qərarlarını izlənən hala gətirin. `ai_decision_audit` cədvəli: `request_id`, `user_id`, `feature`, `model`, `input_hash`, `output_hash`, `decision_type`, `confidence_score`, `human_reviewed`. High-stakes qərarlar (kredit, işə qəbul, tibbi) üçün `human_reviewed = false` olduqda uyarı göndərin. 90 günlük audit trail-i immutable storage-da saxlayın.
+
+## Əlaqəli Mövzular
+
+- [AI Security](./09-ai-security.md)
+- [Safety Guardrails](./08-safety-guardrails.md)
+- [PII Data Redaction](./11-pii-data-redaction.md)
+- [Red Teaming Adversarial](./12-red-teaming-adversarial.md)
+- [Model Drift Monitoring](./07-model-drift-quality-monitoring.md)

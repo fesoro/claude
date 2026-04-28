@@ -837,3 +837,28 @@ Tapşırıq ardıcıldırmı?
 ```
 
 > **Başlanğıc nöqtəsi:** Işə yarayacaq ən sadə pattern ilə başlayın. Mürəkkəbliyi yalnız daha mürəkkəb pattern-in lazım olduğuna dair sübutunuz olduqda (metriklər, keyfiyyət benchmarkları) artırın.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Chaining Pattern
+
+Müştəri emailini 3 addımlı zəncirdə emal et: (1) dili müəyyən et, (2) mövzunu klassifisiya et, (3) cavab draft et. Hər addımı ayrı LLM call kimi implement et. Tək LLM call vs 3-addımlı zəncirin keyfiyyəti müqayisə et. Hansı daha yaxşı cavab verir?
+
+### Tapşırıq 2: Parallelization
+
+10 competitor-ın vebsaytından məlumat topla. Hər vebsayt üçün ayrı LLM call-ı `Laravel\Http\Client` ilə paralel çalışdır. Bütün nəticəni bir yekun analiz prompt-una ver. Sequential vs parallel execution vaxtını müqayisə et.
+
+### Tapşırıq 3: Routing Pattern
+
+Support ticket classification router qur: `BillingAgent`, `TechnicalAgent`, `GeneralAgent`. Router: ilk LLM call ilə ticketin növünü müəyyən et, uyğun specialist agent-ə yönləndir. 50 ticket üzərindən routing accuracy-ni ölç.
+
+---
+
+## Əlaqəli Mövzular
+
+- `01-ai-pipeline-laravel.md` — Pipeline pattern-lərinin Laravel implementasiyası
+- `03-laravel-queue-ai-patterns.md` — Async workflow üçün queue pattern-ləri
+- `../05-agents/08-agent-orchestration-patterns.md` — Multi-agent workflow pattern-ləri
+- `../05-agents/02-agent-reasoning-patterns.md` — ReAct, Plan-and-Execute pattern-ləri

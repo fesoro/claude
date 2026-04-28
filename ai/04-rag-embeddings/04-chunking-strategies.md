@@ -844,3 +844,156 @@ FROM knowledge_chunks;
 -- Heç vaxt əldə edilməyən chunk-ları tap (zəif keyfiyyət siqnalı)
 -- Sorğuları işlətdikdən sonra, hansı chunk_id-lər rag_queries.retrieved_chunks-da görünür?
 ```
+
+### Semantik Chunking PHP İmplementasiyası
+
+```php
+/**
+ * Semantik chunking: bitişik cümlələr arasında cosine similarity hesabla,
+ * threshold-dan aşağı düşən nöqtələrdən böl.
+ *
+ * Bu ən dəqiq strategiyadır, amma ən bahalısıdır:
+ * N cümlə = N embedding API çağırışı (batch mümkündürsə 1 çağırış).
+ *
+ * @param callable $embedFn fn(string[]): float[][] — batch embedding funksiyası
+ */
+public function semanticChunking(
+    string $text,
+    callable $embedFn,
+    float $threshold = 0.75,
+    int $maxChunkTokens = 512,
+    array $baseMetadata = [],
+): array {
+    $sentences = $this->splitIntoSentences($text);
+
+    if (count($sentences) <= 1) {
+        return [[
+            'text' => $text,
+            'metadata' => array_merge($baseMetadata, ['strategy' => 'semantic']),
+            'token_count' => $this->estimateTokens($text),
+        ]];
+    }
+
+    // Bütün cümlələri bir batch-da embed et (API xərclərini azaldır)
+    $embeddings = $embedFn($sentences);
+
+    // Bitişik cümlə cütləri arasında cosine similarity
+    $similarities = [];
+    for ($i = 0; $i < count($sentences) - 1; $i++) {
+        $similarities[] = $this->cosineSimilarity($embeddings[$i], $embeddings[$i + 1]);
+    }
+
+    // Aşağı similarity = semantik qırılma nöqtəsi
+    $chunks = [];
+    $current = [$sentences[0]];
+    $currentTokens = $this->estimateTokens($sentences[0]);
+
+    for ($i = 0; $i < count($similarities); $i++) {
+        $next = $sentences[$i + 1];
+        $nextTokens = $this->estimateTokens($next);
+        $isSemanticBreak = $similarities[$i] < $threshold;
+        $isTokenOverflow = ($currentTokens + $nextTokens) > $maxChunkTokens;
+
+        if ($isSemanticBreak || $isTokenOverflow) {
+            $chunks[] = implode(' ', $current);
+            $current = [$next];
+            $currentTokens = $nextTokens;
+        } else {
+            $current[] = $next;
+            $currentTokens += $nextTokens;
+        }
+    }
+
+    if (!empty($current)) {
+        $chunks[] = implode(' ', $current);
+    }
+
+    return array_map(fn($chunkText, $idx) => [
+        'text' => trim($chunkText),
+        'metadata' => array_merge($baseMetadata, [
+            'strategy' => 'semantic',
+            'chunk_index' => $idx,
+            'avg_similarity_threshold' => $threshold,
+        ]),
+        'token_count' => $this->estimateTokens($chunkText),
+    ], $chunks, array_keys($chunks));
+}
+
+private function cosineSimilarity(array $a, array $b): float
+{
+    $dot = 0.0;
+    $magA = 0.0;
+    $magB = 0.0;
+
+    foreach ($a as $i => $val) {
+        $bVal = $b[$i] ?? 0.0;
+        $dot  += $val * $bVal;
+        $magA += $val * $val;
+        $magB += $bVal * $bVal;
+    }
+
+    $denom = sqrt($magA) * sqrt($magB);
+    return $denom > 0.0 ? $dot / $denom : 0.0;
+}
+```
+
+**İstifadə nümunəsi** (EmbeddingService-dən batch funksiyası keçir):
+
+```php
+$chunks = $chunkingService->semanticChunking(
+    text: $documentText,
+    embedFn: fn(array $sentences) => $embeddingService->embedBatch($sentences),
+    threshold: 0.72,
+    maxChunkTokens: 512,
+    baseMetadata: ['document_id' => $doc->id],
+);
+```
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Strategiya Müqayisəsi
+
+Eyni 1000 sözlük mətni (məs., Laravel sənədi) 4 fərqli strategiya ilə chunk-layın. Hər strategiya üçün:
+- Chunk sayını qeyd edin
+- Ən qısa və ən uzun chunk-un token sayını ölçün
+- Bir sorğu (`laravel queue retry`) ilə axtarış edin, hansının daha yaxşı nəticə verdiyini müqayisə edin
+
+```bash
+# Artisan command yazın:
+php artisan rag:benchmark-chunking --file=docs/laravel.md
+# Output: strategy, chunk_count, avg_tokens, retrieval_hit@5
+```
+
+### Tapşırıq 2: Semantic Threshold Tuning
+
+`SemanticChunking`-da threshold dəyərini (0.6, 0.72, 0.85) dəyişərək:
+- Hər threshold üçün ortalama chunk sayını müşahidə edin
+- 10 sorğu ilə precision@5 ölçün (manually labeled gold answers)
+- Öz data set-iniz üçün optimal threshold tapın
+
+```php
+foreach ([0.60, 0.70, 0.75, 0.80, 0.85] as $threshold) {
+    $chunks = $service->semanticChunking($text, $embedFn, $threshold);
+    // precision@5 ölç, en yaxşı threshold seç
+}
+```
+
+### Tapşırıq 3: İyerarxik Chunk-lar ilə Retrieval
+
+`ChunkMetadataService::buildHierarchical()` istifadə edərək:
+1. Valideyn (1024 token) + uşaq (256 token) chunk-lar yaradın
+2. Yalnız uşaq chunk-larını pgvector-a index edin
+3. Retrieval zamanı uşağın parent_text-ini LLM-ə göndərin
+4. Tək-səviyyəli 512-token chunking ilə NDCG@5 müqayisə edin
+
+---
+
+## Əlaqəli Mövzular
+
+- `05-embedding-models.md` — embedding modeli seçimi (Cohere, OpenAI, lokal) chunk ölçüsünə təsir edir
+- `06-reranking-hybrid-search.md` — chunking-dən sonrakı addım: hybrid search + rerank
+- `07-contextual-retrieval.md` — chunk-ı embed etməzdən əvvəl LLM kontekst əlavə edir
+- `03-rag-architecture.md` — tam RAG pipeline-ında chunking-in yeri
+- `11-rag-evaluation-rerank.md` — chunking keyfiyyətini NDCG/MRR ilə ölçmək

@@ -776,4 +776,29 @@ FROM knowledge_chunks kc
 JOIN rrf_scores ON kc.id = rrf_scores.id
 ORDER BY rrf_scores.rrf_score DESC
 LIMIT 10;
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: BM25 + Dense Hybrid
+
+Mövcud RAG sisteminizə BM25 axtarışı əlavə et (PostgreSQL `tsvector` + GIN index). Eyni sorğu üçün: (a) yalnız dense (pgvector), (b) yalnız sparse (BM25), (c) RRF fusion ilə hibrid. NDCG@5 üçlüklü müqayisə apar. Keyword-heavy sorğularda BM25-in necə üstün olduğunu müşahidə et.
+
+### Tapşırıq 2: Cohere Reranker İnteqrasiyası
+
+Top-20 retrieved chunk-ı Cohere Rerank API-yə göndər. Rerank nəticəsindəki top-5 ilə ilk retrieval-ın top-5-ini müqayisə et. Hansı chunk-lar pozisiya dəyişdirib? Rerank API-nin əlavə latency-si nə qədərdir? Bu latency LLM latency-sinə nisbətdə əhəmiyyətlidir mi?
+
+### Tapşırıq 3: RRF Tuning
+
+RRF formulasındakı `k` parametrini (default 60) dəyiş: `k=10`, `k=60`, `k=100`. 30 sorğu üzərindən NDCG@5-ə təsirini ölç. `k` parametri dense vs sparse balansına təsir edirmi?
+
+---
+
+## Əlaqəli Mövzular
+
+- `01-embeddings-vector-search.md` — Dense retrieval komponenti
+- `05-query-transformation-hyde.md` — Reranking öncəsi query keyfiyyətini artır
+- `07-contextual-retrieval.md` — Contextual BM25 hybrid search üçün
+- `11-rag-evaluation-rerank.md` — Reranker-in NDCG@K üzərindəki təsirini ölç
 ```

@@ -841,3 +841,28 @@ class AIQueueRouter
 3. **Xərclərə uyğun retry-lar** — Eksponensial backoff ödənişli API-ların daim yüklənməsinin qarşısını alır. Rate limit istisnaları release etməlidir, retry deyil.
 4. **Model fallback** — Həmişə yerli bir fallback-iniz olsun (Ollama). Hətta aşağı keyfiyyətli çıxış iş uğursuzluğundan yaxşıdır.
 5. **Observability birinci** — Hər çağırışda istifadə olunan modeli, gecikməni və token sayını qeyd edin. Ölçmədiyiniz şeyi optimallaşdıra bilməzsiniz.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: İlk AI Pipeline
+
+Sənəd emalı pipeline-ı qur: `upload → queue → extract → validate → store`. Her addım ayrı `Job`-dur. Laravel `Bus::chain()` ilə addımları birləşdir. Bir addım uğursuz olduqda `failed_jobs`-a düşsün, manual retry mümkün olsun.
+
+### Tapşırıq 2: Partial Failure Recovery
+
+100 sənədlik batch emal pipeline-ı qurun. 10 sənədi bilerek səhv format-da hazırla. `allowFailures()` ilə batch-ı çalışdır. Uğursuz sənədlər digərlərini bloklamamalıdır. Failure rate-i, recovered job-ların sayını, final success rate-i ölç.
+
+### Tapşırıq 3: Pipeline Observability
+
+Pipeline-daki hər job üçün: start time, end time, duration, model, tokens, cost, status log et. `pipeline_runs` cədvəlindən Filament dashboard-da: ortalama pipeline sürəti, ən yavaş addım, uğursuzluq nöqtəsi qrafiği.
+
+---
+
+## Əlaqəli Mövzular
+
+- `03-laravel-queue-ai-patterns.md` — Queue job pattern-lərinin dərinliyi
+- `04-ai-idempotency-circuit-breaker.md` — Pipeline addımlarının idempotency-si
+- `../08-production/02-observability-logging.md` — Pipeline monitoring
+- `02-ai-workflow-patterns.md` — Pipeline pattern-lərinin alternativləri

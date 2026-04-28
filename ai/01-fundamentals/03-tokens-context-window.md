@@ -1073,4 +1073,25 @@ Qayda: İstifadə vəziyyətinizə etibarlı şəkildə sığan ən kiçik conte
 
 ---
 
-*Əvvəlki: [02 — Modellərə Baxış](./02-models-overview.md) | Növbəti: [04 — Temperature və Parametrlər](./04-temperature-parameters.md)*
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Token Sayı Audit
+
+Layihəndəki 5 ən tez-tez istifadə olunan sistem promptunu götür. `claude-tokenizer` (ya da Anthropic-in online token counter-ı) ilə token sayını ölç. Sonra bu promtların aylıq token xərcini hesabla: `token_sayı × çağırış_tezliyi × qiymət`. Ən bahalı prompt-u optimallaşdır.
+
+### Tapşırıq 2: "Lost in the Middle" Eksperimenti
+
+30,000 token-lik sənəd hazırla. Fakt-ı sənədin başında, ortasında, sonunda yerləşdir. Claude-dan hər dəfə həmin faktı tapmağı xahiş et. Hansı mövqedə faktın tapılma dəqiqliyi aşağı düşür? Bu, context window arxitekturası ilə necə əlaqəlidir?
+
+### Tapşırıq 3: Context Window Management
+
+Uzun söhbət (50+ mesaj) üçün "sliding window" implement et: hər yeni mesajdan əvvəl əgər `estimated_tokens > 150_000` olarsa, ən köhnə mesajları sil. `cl100k_base` tokenizer-dən istifadə edərək Laravel-də `ContextManager` servisi yaz.
+
+---
+
+## Əlaqəli Mövzular
+
+- `04-temperature-parameters.md` — Token sampling prosesi
+- `11-llm-pricing-economics.md` — Token sayı xərc hesablamalarının əsasıdır
+- `../02-claude-api/09-prompt-caching.md` — Token xərcini azaltmaq üçün caching
+- `../04-rag-embeddings/09-long-context-vs-rag.md` — Long context vs RAG seçimi meyarları

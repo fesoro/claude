@@ -1064,4 +1064,34 @@ Cache hit rate 80%-dən aşağıdırsa, ya sənədlər çox kiçikdir (hər docu
 - Uplift 35-49% retrieval failure reduction; reranking əlavə etdikdə 67%
 - Laravel implementation: queue job + rate limiter + status sütunu + fallback
 - Qonşu texnikalar: late chunking (qısa sənədlər üçün ucuz), ColBERT (çox böyük corpus üçün güclü, amma infrastruktur bahalı)
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Contextual vs Klassik Retrieval Benchmark
+
+50 sual + bəlgəli cavab cütü olan gold-set dataset yarat. Eyni corpus üzərindən iki pipeline qur:
+- **Klassik**: chunk → embed → pgvector search
+- **Contextual**: chunk → Haiku prefix → contextual embed + BM25 → hybrid search
+
+Hər sorğu üçün top-5 retrieved chunk-ın içindəki ground-truth coverage-ı ölç. NDCG@5 metrikasını müqayisə et. Fərq 10%-dən aşağıdırsa, cost-benefit yenidən düşün.
+
+### Tapşırıq 2: Prompt Caching Cost Audit
+
+`ContextualRetrievalJob` üzərindən `cache_creation_input_tokens` vs `cache_read_input_tokens` ratio-nu 1000 chunk emal etdikdən sonra hesabla. Sənəd başına ardıcıl job dispatch (sequential, cache-warm) ilə paralel dispatch (cache-cold) arasındakı xərc fərqini `claude_usage_logs` cədvəlindən pull et. Caching 80%+ hit rate-ə çatmırsa, dispatch sequence-ni araşdır.
+
+### Tapşırıq 3: Prefix Hallucination Audit
+
+100 generasiya olunmuş prefix-i nəzərdən keçir. Hər prefix üçün yoxla: (a) raw chunk-da real əsası varmı, (b) LLM onu genişlədib-genişlətməyib, (c) "the company" kimi vague reference-i konkret adla əvəz edib-etməyib. Hallucinated prefix-ləri flag et, system prompt-u korrektə et, eval loop-u yenidən çalışdır.
+
+---
+
+## Əlaqəli Mövzular
+
+- `04-chunking-strategies.md` — Chunk ölçüsü contextual prefix uzunluğuna birbaşa təsir edir
+- `05-embedding-models.md` — Contextualized content üçün model seçimi
+- `06-reranking-hybrid-search.md` — Contextual BM25 + dense hybrid + reranker kombinasiyası
+- `10-agentic-rag.md` — Contextual Retrieval agentic loop-un retrieval addımını gücləndirir
+- `11-rag-evaluation-rerank.md` — NDCG@K, Recall@K metrikaları ilə uplift ölçmə
 - Gold-set eval olmadan rollout etmə — bəzi domenlərdə uplift marginaldır

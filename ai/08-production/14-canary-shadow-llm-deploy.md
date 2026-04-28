@@ -1288,4 +1288,21 @@ LLM deployment klassik deploy-dan fundamentally fərqlidir. **Kod + prompt + mod
 9. **Auto-rollback** — insan deyil, dəqiqələr hesab edilir
 10. **Multi-axis simultaneous change — yox**, ayrı deploy-lar
 
-Sonrakı fayl (62) — content moderation: toxic, NSFW, CSAM, PII filtering.
+## Praktik Tapşırıqlar
+
+### 1. Shadow Mode Tətbiqi
+Mövcud Laravel AI feature-ınızda shadow mode aktiv edin. Hər real sorğunu eyni anda ikinci (yeni) modelə göndərin — lakin cavabı istifadəçiyə göstərməyin. Hər iki cavabı `shadow_comparisons` cədvəlinə yazın. 1000 sorğu toplandıqdan sonra: latency fərqi, xərc fərqi, LLM-as-judge keyfiyyət fərqini hesablayın. Yalnız hamısı müsbət olarsa rollout edin.
+
+### 2. Automated Canary Rollout
+Feature flag sistemi (LaunchDarkly və ya özünüzün sadə Redis-based variantı) ilə canary tətbiq edin. 5% → 20% → 50% → 100% addımları. Hər addımdan sonra 30 dəqiqə gözləyin: `error_rate < 1%`, `p95_latency < threshold`. Əgər şərt pozulursa, flag-ı sıfıra qaytarın (avtomatik rollback). Bütün keçidlər audit log-a yazılsın.
+
+### 3. Blue-Green AI Service
+İki Laravel queue worker qrupu qurun: `ai-blue` (köhnə model) və `ai-green` (yeni model). Nginx upstream-i dəyişərək traffic yönləndirilsin. Rollback planı: Nginx konfiqurasiyasını köhnə vəziyyətə qaytarın (30 saniyə). Switch-i test edin: `ab -n 100 -c 10` ilə hər iki endpoint-i yoxlayın. Canary metrics dashboard hazırlayın.
+
+## Əlaqəli Mövzular
+
+- [Model Drift Monitoring](./07-model-drift-quality-monitoring.md)
+- [AI Testing Strategies](./06-ai-testing-strategies.md)
+- [LLM Observability](./03-llm-observability.md)
+- [Multi-Provider Failover](./15-multi-provider-failover.md)
+- [AI Governance Compliance](./16-ai-governance-compliance.md)

@@ -1260,3 +1260,22 @@ class GetPendingJobsTool implements McpToolInterface
 // McpServiceProvider-da qeydiyyatdan keçir:
 $registry->register(new GetPendingJobsTool());
 ```
+
+## Praktik Tapşırıqlar
+
+### 1. İlk MCP Tool Tətbiqi
+Layihəniz üçün `GetActiveOrdersTool` yazın. `ToolInterface`-i implement edin: `getName()`, `getDescription()`, `getInputSchema()`, `execute()`. Input schema: `{"user_id": "integer", "status": "string", "limit": "integer"}`. Tool DB-dən sifarişləri çəksin, JSON formatında qaytarsın. Claude Code-da `claude mcp add` ilə qeydiyyat edin, test edin.
+
+### 2. Resource Endpoint
+`resources/` endpointini tətbiq edin. `ResourceProviderInterface`-i implement edin: `list()` mövcud resursları qaytarır, `read(string $uri)` məzmunu qaytarır. Məsələn: `laravel://config/app` → `config/app.php` məzmunu, `laravel://routes` → route siyahısı. Claude Code-da `@laravel://routes` ilə çağırın. MIME type-ları düzgün set edin.
+
+### 3. Authentication + Rate Limiting
+MCP server-ə Bearer token authentication əlavə edin. Laravel Sanctum ilə API token generasiya edin. Hər tool call-da token yoxlayın. Rate limiting: bir token üçün saatda `>100` sorğu → 429 qaytarın. `mcp_audit_log` cədvəlinə: `token_id`, `tool_name`, `args_hash`, `called_at` yazın. Production deployment üçün `nginx` arxasında SSL terminate edin.
+
+## Əlaqəli Mövzular
+
+- [MCP Fundamentals](../03-mcp/02-mcp-fundamentals.md)
+- [MCP Tools Resources Prompts](../03-mcp/03-mcp-tools-resources-prompts.md)
+- [HR Internal Bot](./07-laravel-internal-hr-bot.md)
+- [MCP Security](../03-mcp/09-mcp-security.md)
+- [MCP Clients Compared](../03-mcp/07-mcp-clients-compared.md)

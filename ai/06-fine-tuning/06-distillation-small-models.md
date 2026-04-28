@@ -1219,3 +1219,28 @@ async def collect_cot_data(prompts: list[str]) -> list[dict]:
 7. **Production-a qatı rollback hazırlığı olmadan çıxarma.** Circuit breaker, canary, shadow mode — bunların hamısı distillation rollout-un ayrılmaz hissəsidir.
 
 8. **Data keyfiyyəti distillation-ın ürəyidir.** Teacher response-larını LLM-judge ilə filter et. 5-10% keyfiyyətsiz data bütün layihəni zədələyə bilər.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Teacher-Student Pipeline
+
+Claude Sonnet (teacher) ilə 500 domain sorğusunu cavabla, nəticəni saxla. Bu dataset-i Llama-3.2-1B (student) modeli üçün fine-tuning dataseti kimi istifadə et. Student model accuracy-sini baseline (pretrained) vs distilled versiyada müqayisə et.
+
+### Tapşırıq 2: Quality Filter
+
+Teacher response-larını LLM-as-judge ilə filter et: 4/5-dən aşağı cavabları dataset-dən çıxar. Filter olmadan vs olduqda student model-in accuracy-sini müqayisə et. 10% keyfiyyətsiz data-nın student performance-a təsirini ölç.
+
+### Tapşırıq 3: Cost-Quality Trade-off
+
+3 scenario müqayisə et: (a) Claude Sonnet direkt istifadə, (b) distilled 3B model, (c) distilled 1B model. Hər biri üçün 1000 sorğu üzərindən: accuracy, latency, cost per query. Student model hansı accuracy threshold-da teacher modelini əvəz edə bilər?
+
+---
+
+## Əlaqəli Mövzular
+
+- `04-lora-qlora-peft.md` — Student modelin efficient fine-tuning-i
+- `05-create-custom-model-finetune.md` — Full fine-tuning pipeline
+- `08-ft-dataset-curation.md` — Distillation dataset-inin keyfiyyət idarəsi
+- `09-vllm-model-serving.md` — Distilled modeli production-da serve et

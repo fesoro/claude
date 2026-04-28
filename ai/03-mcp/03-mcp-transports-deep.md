@@ -983,3 +983,28 @@ Client hər POST-da `Mcp-Session-Id` başlığını daxil etməyə bilər. Səni
 - Hər transport üçün PHP-də kritik məsələlər: **stdout təmiz saxlanmalı**, **output buffering söndürülməli**, **stderr-ə log edilməli**.
 - Şirkətin üçün MCP server = **Streamable HTTP + OAuth Bearer + Laravel Octane**. Bu 22-ci faylda tam göstərilir.
 - Laravel Passport OAuth və `08-mcp-oauth-auth.md`-dəki scope middleware-ı Streamable HTTP-lə birbaşa inteqrasiya olur.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: stdio vs HTTP Latency Müqayisəsi
+
+Eyni MCP server-i stdio və Streamable HTTP kimi implement et. 100 tool call üçün latency ölç. stdio-da process start overhead nə qədərdir? HTTP-də ilk bağlantı vs sonrakı bağlantılar fərqlənirmi?
+
+### Tapşırıq 2: Output Buffering Testi
+
+PHP stdio server-ə `echo "test";` satırı əlavə et (stdout-a birbaşa). Claude Desktop-da bu server-i çağır. Nə baş verir? `ob_end_clean()` + `ob_implicit_flush(true)` əlavə et. Fərqi müşahidə et — bu, stdout çirklənməsinin nə qədər mühim olduğunu sübut edir.
+
+### Tapşırıq 3: Streamable HTTP Session-less Konfiqurasiya
+
+`StreamableHTTPServerTransport({sessionIdGenerator: undefined})` ilə stateless server qur. Eyni `file_id`-i iki ardıcıl sorğuda server-ə göndər. Server session state saxlamır — bu, horizontal scaling-i necə asanlaşdırır?
+
+---
+
+## Əlaqəli Mövzular
+
+- `04-mcp-server-build-node.md` — HTTP transport Node.js implementasiyası
+- `05-mcp-server-build-php.md` — PHP stdio transport
+- `08-mcp-oauth-auth.md` — Streamable HTTP + OAuth inteqrasiyası
+- `07-mcp-clients-compared.md` — Client-lər hansı transport-u dəstəkləyir

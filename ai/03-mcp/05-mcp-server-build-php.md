@@ -915,3 +915,28 @@ Server qoşulmursa, Claude Desktop-un MCP loglarını yoxlayın:
 2. **Output buffering** — PHP stdout-u bufferə ala bilər; əmrdəki `ob_end_clean()` bunu idarə edir
 3. **Verilənlər bazası qoşulmur** — env dəyişənlərinin `claude_desktop_config.json`-un `env` blokunda təyin edildiyinə əmin olun
 4. **Yanlış iş qovluğu** — hər yerdə mütləq yollardan istifadə edin; `php artisan` cwd-ni layihə köküne dəyişir
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: İlk PHP MCP Tool
+
+`mcp:serve` Artisan command-ı yaz. `get_user(id: int)` tool-unu implement et — Eloquent `User` modelindən data çəkir, JSON qaytarır. `claude_desktop_config.json`-a əlavə et. Claude Desktop-da `@` ilə server-i çağır, tool-u test et.
+
+### Tapşırıq 2: Stdout Pollution Fix
+
+Mövcud Laravel project-ə `mcp:serve` əmri əlavə etdikdə `ob_end_clean()` olmadan çalışdır. Laravel-in output buffering-inin JSON-RPC cavabını necə korlaya biləcəyini müşahidə et. `ob_end_clean()` + `ob_implicit_flush(true)` əlavə et, problemi həll et.
+
+### Tapşırıq 3: Multi-Tool Server
+
+Ən azı 3 tool olan MCP server qur: `search_products`, `get_order_status`, `list_customers`. Hər tool üçün JSON schema tərif et. Claude-a mürəkkəb sual ver ki, birdən çox tool çağırılsın. Tool call sequence-i log et.
+
+---
+
+## Əlaqəli Mövzular
+
+- `02-mcp-resources-tools-prompts.md` — Tool, Resource, Prompt primitiv ayrımı
+- `03-mcp-transports-deep.md` — stdio transport-un texniki detalları
+- `09-mcp-security-patterns.md` — Input sanitization, permission model
+- `11-mcp-for-company-laravel.md` — Şirkətin üçün production-grade MCP server

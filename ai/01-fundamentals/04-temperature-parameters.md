@@ -1000,4 +1000,31 @@ class TestAIParameters extends Command
 
 ---
 
-*Əvvəlki: [03 — Tokenlər və Kontekst Pəncərələri](./03-tokens-context-window.md) | Növbəti: [05 — Multimodal AI](./07-multimodal-ai.md)*
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Task-based Parameter Presets
+
+Laravel-də `config/ai.php`-ə task presets əlavə et:
+- `extraction`: `temperature=0.0, top_p=1.0`
+- `classification`: `temperature=0.1`
+- `creative_writing`: `temperature=0.9, top_p=0.95`
+- `code_generation`: `temperature=0.2`
+
+Hər preset ilə 10 sorğu çalışdır. Extraction task-da `temperature=0.9` ilə nə baş verir?
+
+### Tapşırıq 2: Deterministiklik Testi
+
+`temperature=0.0` ilə eyni kod review prompt-unu 10 dəfə çalışdır. Cavablar identikdir? Fərqliliklər haradandır? (`top_k`, nucleus sampling-in internal mexanizmi ilə əlaqəlidir.)
+
+### Tapşırıq 3: A/B Test — Temperature Effect on Code Quality
+
+Kod generasiya task-ı üçün `temperature=0.0` vs `temperature=0.4` A/B testi qur. 50 sorğu, hər birinə iki cavab al. Kod keyfiyyətini (syntax, logic, edge cases) ölç. Hansı temperature daha dəqiq, hansı daha creativity-rich nəticə verir?
+
+---
+
+## Əlaqəli Mövzular
+
+- `01-how-ai-works.md` — Sampling parametrlərinin transformer inference-ə təsiri
+- `02-models-overview.md` — Müxtəlif model ailələrinin default parameter-ları
+- `../02-claude-api/02-prompt-engineering.md` — Prompt + parameter kombinasiyasının optimallaşdırılması
+- `../07-workflows/07-ai-ab-testing.md` — Parameter dəyişikliklərini A/B test ilə ölçmə

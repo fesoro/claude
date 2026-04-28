@@ -605,3 +605,29 @@ Hər PR-də tam run = $10 × 20 PR/gün = $200/gün. **Slice stratejisi**:
 - **CI inteqrasiyası**: `ai-regression` group, cost budget assert, PR-də slice-only, nightly full run.
 - **Laravel Pest setup**: custom `expect()->toMatchRubric()` extension.
 - **Flakiness**: temperature 0, seed fix, 3-5 sample orta.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Trajectory vs End-State Müqayisəsi
+
+Eyni 15 agent tapşırığı üçün iki eval metodunu tətbiq et: (a) trajectory match (beklenen tool call sequence-ə uyğunluq), (b) end-state correctness (yalnız final nəticənin doğruluğu). Nəticələri müqayisə et — hansı tapşırıqlarda trajectory match yanılır, amma end-state doğrudur? Bu tapşırıqlar üçün trajectory eval-ı silib yalnız end-state istifadə et.
+
+### Tapşırıq 2: SWE-bench Slice Benchmark
+
+Layihənin kod generasiya agent-ini SWE-bench-in ilk 20 issue-su ilə test et. Hər issue üçün: agent-in generasiya etdiyi patch-i tətbiq et, test suite-i çalışdır, pass/fail log et. Resolve rate-i hesabla. Prompt dəyişikliyindən əvvəl və sonra bu resolve rate-i müqayisə et — bu, kod generasiya agent-i üçün regression guard kimi işləyir.
+
+### Tapşırıq 3: Multi-Turn Eval Setup
+
+Müştəri dəstəyi agent-i üçün 10 multi-turn ssenari yaz (hər ssenari 4-6 turn). Hər ssenari üçün final turn-da beklenen cavabı qeyd et. Laravel Pest-də custom `expect()->toMatchRubric()` matcher implement et. Bu test-ləri CI pipeline-a əlavə et. Kontekst carryover-i (əvvəlki mesajların agent-in son cavabına təsiri) ölç.
+
+---
+
+## Əlaqəli Mövzular
+
+- `11-agent-evaluation-evals.md` — Eval ümumi giriş: LLM-as-judge, gold-set, Laravel EvalRunner
+- `08-agent-orchestration-patterns.md` — Multi-agent sistemlər üçün trajectory eval ölçüsü
+- `09-human-in-the-loop.md` — HITL approval qərarlarını eval nümunəsi kimi qeydiyyat
+- `../08-production/07-model-drift-canary.md` — Eval nəticələri ilə drift aşkarlanması
+- `../02-claude-api/02-prompt-engineering.md` — PromptEvaluator + CI eval pipeline

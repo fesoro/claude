@@ -648,3 +648,28 @@ $experiment = AIExperiment::create([
 3. **Giriş tipi ilə seqmentasiya edin** — ümumiyyətlə qalibi gələn model müəyyən giriş kateqoriyaları üçün uduza bilər. Həmişə alt qrup performansını yoxlayın.
 4. **Erkən dayandırmayın** — AI metriklər klik dərəcələrindən daha yüksək dispersiyaya malikdir. Erkən dayandırmaya ehtiyacınız varsa ardıcıl test metodlarından istifadə edin.
 5. **LLM hakimlərin kalibrasiyası lazımdır** — model sürüşməsini aşkar etmək üçün hakim ballarını vaxtaşırı insan reytinqləri ilə yoxlayın.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Prompt A/B Test
+
+İki sistem prompt variantı hazırla (A: qısa, B: uzun+detailed). `ab_tests` cədvəlinə experiment yazın. Gələn hər sorğunu 50/50 nisbətdə A ya da B-yə yönləndir. 100 sorğu sonra LLM-as-judge ilə hər iki variant-ın cavablarını qiymətləndir. Statistik significant fərq varmı?
+
+### Tapşırıq 2: Model A/B Test
+
+`claude-haiku-4-5` vs `claude-sonnet-4-6` üçün A/B test qur. Eyni use case (email classification). 200 sorğu üzərindən: accuracy, latency, cost per query ölç. Haiku accuracy-si Sonnet-in 95%-indən yuxarıdırsa, Haiku-ya keç qərarını ver.
+
+### Tapşırıq 3: Statistical Significance
+
+A/B test nəticəsini chi-square testi ilə yoxla. Minimum sample size hesabla: `80% power, 5% significance, 5% effect size`. Statistik significant nəticə əldə etmədən experiment-i erkən dayandırmanın niyə yanlış olduğunu sübut et.
+
+---
+
+## Əlaqəli Mövzular
+
+- `../08-production/07-model-drift-quality-monitoring.md` — A/B test nəticələri drift detection-a inteqrasiya
+- `../05-agents/11-agent-evaluation-evals.md` — A/B test-in eval ilə əlaqəsi
+- `../01-fundamentals/10-model-selection-decision.md` — A/B test nəticəsinə görə model seçimi
+- `../02-claude-api/02-prompt-engineering.md` — Prompt variant-larını sınaqdan keçir

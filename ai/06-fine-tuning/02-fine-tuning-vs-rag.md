@@ -363,3 +363,81 @@ Bir modeli incə tənzimləmək və sonra onu bahalı bulud GPU-larında işlət
 ```
 
 Bunu API xərci ilə müqayisə edin. Zərər-mənfəət nöqtəsi istifadə həcminə görə dəyişir.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: İstifadə Halı Təsnifatı
+
+Aşağıdakı hər ssenari üçün ən uyğun yanaşmanı müəyyən edin:
+
+```
+1. E-ticarət saytınızda real vaxtda məhsul qiyməti dəyişir
+   Cavab: _____ (RAG — bilik dəyişkəndir)
+
+2. Müştəri dəstəyi botunuz həmişə formal Azərbaycan dilindədir
+   Cavab: _____ (Fine-tune — üslub ardıcıllığı)
+
+3. Yeni funksiya üçün MVP prototipi 2 gündə hazır olmalıdır
+   Cavab: _____ (Prompt engineering — sürətli iterasiya)
+
+4. 500,000 daxili sənədə əsaslanan sual-cavab sistemi
+   Cavab: _____ (RAG — sənəd həcmi çox böyükdür)
+
+5. İllik 2M sorğu, xərc 80% azalmalıdır
+   Cavab: _____ (Open-source fine-tune — iqtisadiyyat)
+```
+
+### Tapşırıq 2: Hibrid Sistem Dizaynı
+
+**Ssenario:** E-ticarət müştəri dəstəyi botu qurun.
+
+- Müştəri tarixəsini bilməlidir (fərdiləşdirilmiş kontekst)
+- Brend səsini qorumalıdır (ardıcıl ton)
+- Cari məhsul kataloqu haqqında suallara cavab verməlidir
+
+**Həll:**
+```
+Komponent 1: ____________ → müştəri tarixəsi üçün
+Komponent 2: ____________ → məhsul kataloqu üçün
+Komponent 3: ____________ → brend səsi üçün
+```
+
+Gözlənilən cavab: RAG (tarix+kataloq) + Fine-tune (brend üslubu) + Prompt (tapşırıq konteksti)
+
+### Tapşırıq 3: Həqiqi Xərc Hesabı
+
+```php
+// Laravel-də aylıq xərci hesablayın
+class AIApproachCostCalculator
+{
+    public function compareApproaches(int $monthlyRequests): array
+    {
+        // Claude Haiku ilə prompt engineering
+        $haiku = $monthlyRequests * 0.003; // $3/1000 sorğu
+
+        // İncə tənzimlənmiş Llama 3.1 8B (RunPod RTX 4090)
+        $requestsPerHour = 1000; // 8B model, qısa sorğular
+        $hoursPerMonth   = $monthlyRequests / $requestsPerHour;
+        $fineTune        = ($hoursPerMonth * 0.45) + 15; // $15 bir dəfəlik train
+
+        return [
+            'prompt_engineering_monthly' => $haiku,
+            'fine_tune_monthly'          => $fineTune,
+            'savings_percent'            => round(($haiku - $fineTune) / $haiku * 100),
+            'breakeven_months'           => ceil(15 / max($haiku - $fineTune, 0.01)),
+        ];
+    }
+}
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [01-fine-tuning-overview.md](01-fine-tuning-overview.md) — Fine-tuning əsasları
+- [03-open-source-models-ollama.md](03-open-source-models-ollama.md) — Lokal model seçimi
+- [04-lora-qlora-peft.md](04-lora-qlora-peft.md) — LoRA texnikası
+- [../04-rag-embeddings/03-rag-architecture.md](../04-rag-embeddings/03-rag-architecture.md) — RAG arxitekturası
+- [../02-claude-api/02-prompt-engineering.md](../02-claude-api/02-prompt-engineering.md) — Prompt mühəndisliyi

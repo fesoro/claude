@@ -973,3 +973,29 @@ Senior həyatda **tək agent + geniş tool ilə başla**, ölçü böyüyəndə 
 ---
 
 **Növbəti fayl:** `09-human-in-the-loop.md` — agent-lərin kritik aksiyaları üçün insan approval pattern-ləri.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Supervisor + 3 Specialist Implement Et
+
+`ResearchOrchestrator` qur: Supervisor → `WebSearchAgent`, `DocumentAgent`, `SummaryAgent`. Supervisor hər tapşırığı specialist-lərə routing edir, cavabları birləşdirir. 10 müxtəlif research sorğusu ilə çalışdır. Hər sorğu üçün hansı agent-lərin çağrıldığını, neçə token istifadə olunduğunu və final cavabın keyfiyyətini log et. Tək agent ilə müqayisə et.
+
+### Tapşırıq 2: Blackboard Event Broadcasting
+
+`agent_blackboard` cədvəlinə `event_type`, `payload`, `processed_by` sütunları əlavə et. İki müstəqil agent qur: `DataCollectorAgent` (blackboard-a yazır) + `AnalyzerAgent` (yeni event-ləri oxuyub analiz edir). Laravel `queue:work` ilə hər ikisini eyni anda çalışdır. Race condition-ları müşahidə et, `processed_by` lock məntiqi ilə həll et.
+
+### Tapşırıq 3: Pipeline vs Swarm Müqayisəsi
+
+"Arxiv paper-ı axtarıb xülasəsini hazırla" tapşırığı üçün iki implementasiya yaz: (a) deterministik Pipeline (fetch → parse → summarize → format), (b) Swarm (agent-lər handoff edir). Hər birini 20 sorğu üzərində çalışdır. Ölç: latency, token cost, error rate, nəticə keyfiyyəti. Nəticəni cədvəldə göstər, hansının bu use case üçün daha uyğun olduğunu əsaslandır.
+
+---
+
+## Əlaqəli Mövzular
+
+- `09-human-in-the-loop.md` — Kritik agent aksiyaları üçün insan approval
+- `11-agent-evaluation-evals.md` — Multi-agent sistem üçün trajectory eval metrikaları
+- `13-agent-security.md` — Agent-lərarası güvən modeli, prompt injection qorunması
+- `../02-claude-api/07-tool-design.md` — Specialist agent tool-larının düzgün dizaynı
+- `../04-rag-embeddings/10-agentic-rag.md` — Agentic RAG multi-agent kontekstdə

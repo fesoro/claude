@@ -930,3 +930,28 @@ $queryBuilder->where('knowledge_chunks.metadata->>"tenant_id"', $tenantId);
 ```
 
 Yaxud kiracı başına ayrı pgvector cədvəlləri istifadə et (daha yaxşı izolyasiya, silinmə daha asan, bir qədər daha mürəkkəb).
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Tam RAG Pipeline Qur
+
+Şirkətin daxili sənədlərini (10 PDF) RAG sisteminə qoşun: (a) sənədləri chunk et (512 token), (b) embed et (Voyage), (c) pgvector-ə yaz, (d) sorğu gəldikdə top-5 chunk-ı çəkib Claude-a göndər, (e) cavabı qaytar. "İşçi məzuniyyəti neçə gündür?" sualı ilə test et.
+
+### Tapşırıq 2: Retrieval Quality Evaluation
+
+Gold-set: 30 sual + doğru cavab + doğru chunk. RAG sisteminizin hər sual üçün doğru chunk-ı top-5-ə daxil etdiyini yoxla. Recall@5 hesabla. 70%-dən aşağıdırsa, chunk ölçüsünü dəyiş, ya da contextual retrieval tətbiq et.
+
+### Tapşırıq 3: Context Window Management
+
+Çox chunk retrieve olduqda context window dolarsa nə baş verir? `context_window = retrieved_chunks + system_prompt + user_message + answer_space`. Max `answer_space` üçün neçə chunk sığır? Chunk sayını dinamik limit edən `ContextAssembler` sinifi yaz.
+
+---
+
+## Əlaqəli Mövzular
+
+- `01-embeddings-vector-search.md` — Embedding pipeline qurmaq
+- `04-chunking-strategies.md` — Chunk ölçüsü seçimi
+- `07-contextual-retrieval.md` — Contextual prefix ilə retrieval keyfiyyətini artır
+- `10-agentic-rag.md` — RAG pipeline-ı agentic loop-a çevirmək

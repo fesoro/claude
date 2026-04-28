@@ -1264,4 +1264,24 @@ Həssas sənədlər üçün (tibbi, hüquqi, maliyyə):
 
 ---
 
-*Əvvəlki: [04 — Temperature və Parametrlər](./04-temperature-parameters.md) | Növbəti: [06 — Claude API Bələdçisi](../02-claude-api/01-claude-api-guide.md)*
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Invoice PDF Extractor
+
+Mühasibat fakturalarını (PDF) Claude API-yə göndərərək strukturlaşdırılmış JSON çıxar: `{invoice_number, date, vendor, line_items, total_amount}`. `Files API` ilə faylı bir dəfə yüklə, birdən çox sorğuda istifadə et. Token xərclərini ölç.
+
+### Tapşırıq 2: Image Resolution Cost Testi
+
+Eyni şəkli 3 fərqli ölçüdə göndər (300×300, 1024×768, 2048×1536). Hər ölçü üçün token sayını və latency-ni qeyd et. Claude-un şəkli hansı ölçüdə daha dəqiq analiz etdiyini müəyyənləşdir. Hansı ölçü cost-accuracy optimumdur?
+
+### Tapşırıq 3: Sənəd Müqayisəsi
+
+İki versiyalı müqavilə sənədini (PDF) Claude-a ver. "Bu iki versiya arasındakı əsas fərqləri tapıb siyahı şəklində ver" prompt-u ilə müqayisəli analiz al. `Files API`-dən istifadə edərək hər iki faylı bir session-da saxla.
+
+---
+
+## Əlaqəli Mövzular
+
+- `../02-claude-api/06-vision-pdf-support.md` — Vision API-nin texniki implementasiyası
+- `../02-claude-api/08-files-api-citations.md` — Fayl yüklə, təkrar istifadə et, citation al
+- `../04-rag-embeddings/12-multimodal-rag.md` — Şəkil + mətn embedding-ləri ilə multimodal RAG

@@ -1277,3 +1277,28 @@ Claude Agent SDK, agent pattern-in "enterprise-ready" implementasiyasını verir
 PHP developer kimi rəsmi SDK olmadığına görə bu pattern-ları özün tətbiq edirsən. `ClaudeAgent` servis-class-ı Laravel-də eyni dəyəri verir — yalnız daha çox boilerplate ilə. Uzunmüddətli baxanda bu kod bazasının hissəsi olur, update-lərdən asılı deyilsən, Laravel ekosisteminə natural inteqrasiya edir.
 
 Agent-lər gələcəyin əsas LLM istifadə modelidir. Senior developer kimi həm SDK-nın nə verdiyini, həm də bu primitivləri PHP-də necə qurmağı başa düşmək — uzunmüddətli fayda verəcək.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: PHP Agent Loop
+
+`ClaudeAgent` sinifi yaz. `run(string $task): string` metodu: (1) LLM-ə tapşırığı göndər, (2) `stop_reason === 'tool_use'`-dan tool call-ları icra et, (3) tool result-larını messages-ə əlavə et, (4) loop davam et. 3 fərqli tool ilə (search, calculate, format) test et.
+
+### Tapşırıq 2: Max Iteration Guard
+
+Agent loop-una `$iteration` counter əlavə et. `MAX_ITERATIONS = 10`-dan keçdikdə loop-u dayandır, `['status' => 'max_iterations_reached', 'partial' => $lastResponse]` qaytar. 20 sorğu üzərindən ortalama iteration sayını ölç. Çox iteration tələb edən tapşırıqlar hansılardır?
+
+### Tapşırıq 3: Agent Trace Logging
+
+`agent_traces` cədvəlinə hər agent session-ını log et: `session_id`, `task`, `iterations`, `tool_calls` (JSON), `final_response`, `total_tokens`, `duration_ms`. Filament-də agent trace viewer qur. Ən bahalı agent session-larını müəyyənləşdir.
+
+---
+
+## Əlaqəli Mövzular
+
+- `04-tool-use.md` — Tool use mexanizmi — agent loop-unun əsası
+- `../05-agents/05-build-custom-agent-laravel.md` — PHP-də tam agent implementasiyası
+- `../05-agents/06-claude-agent-sdk-deep.md` — Agent SDK dərin araşdırma
+- `../05-agents/11-agent-evaluation-evals.md` — Agent-i eval ilə qiymətləndir

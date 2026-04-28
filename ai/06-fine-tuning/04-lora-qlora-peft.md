@@ -973,3 +973,28 @@ Bu metriklər time-series-də degradasiyanı avtomatik aşkar etməyə imkan ver
 6. **LoRA adapter versioningi git-də saxla.** Rollback-ı dəqiqələrlə edə bilmək production-a etimadın əsasıdır.
 
 7. **DoRA, rsLoRA, ReFT — bunları edge cases üçün yadda saxla.** Əksər problemlər üçün adi LoRA/QLoRA kifayət edir. Lazımsız mürəkkəblik əlavə etmə.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: LoRA vs Full Fine-Tuning Müqayisəsi
+
+Eyni dataset (500 nümunə) üzərindən: (a) LoRA `r=8, alpha=16` ilə, (b) full fine-tuning ilə train et. Hər iki halda: GPU yaddaşı, training vaxtı, final accuracy, checkpoint ölçüsünü qeyd et. LoRA-nın neçə dəfə daha effektiv olduğunu sübut et.
+
+### Tapşırıq 2: QLoRA Memory Footprint
+
+7B parametrli Llama modelini 4-bit QLoRA ilə fine-tune et. `bitsandbytes` ilə quantization tətbiq et. `nvidia-smi` ilə GPU yaddaşını izlə: BF16 vs INT4 arasındakı yaddaş fərqi nə qədərdir? Consumer GPU-da (16GB VRAM) bu fərq niyə kritikdir?
+
+### Tapşırıq 3: LoRA Adapter Versioning
+
+Fine-tuned LoRA adapter-lərini git-də versiyon et: hər experiment üçün ayrı branch, `adapter_config.json` + `adapter_model.safetensors` commit et. İki adapter-i merge et (`add_weighted_adapter`). Rollback prosesini sınaqdan keçir: köhnə adapter-i yüklə, performance-ı yoxla.
+
+---
+
+## Əlaqəli Mövzular
+
+- `05-create-custom-model-finetune.md` — LoRA adapter-i istifadə edərək tam fine-tuning pipeline
+- `06-distillation-small-models.md` — Distillation + LoRA kombinasiyası
+- `03-open-source-models-ollama.md` — LoRA adapter-i Ollama ilə serve et
+- `09-vllm-model-serving.md` — Fine-tuned modeli vLLM ilə production-a çıxar

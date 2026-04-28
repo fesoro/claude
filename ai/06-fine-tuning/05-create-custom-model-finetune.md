@@ -726,3 +726,28 @@ GGUF ixracı:
 ```
 
 Ayda 100K sorğu ilə Claude Haiku-ya nisbətən təxmini aylıq nəticəçıxarma qənaəti: ~$270.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Dataset Hazırlama
+
+Domain-specific fine-tuning üçün 200 nümunə hazırla. Format: `{"messages": [{"role": "user", "content": "..."}, {"role": "assistant", "content": "..."}]}`. `DatasetValidator`-dən keçir: minimal uzunluq, format uyğunluğu, duplicate check. Train/validation split: 80/20. `jsonl` format-da export et.
+
+### Tapşırıq 2: Training Pipeline
+
+`unsloth` + `TRL` ilə Llama-3.2-3B-Instruct modelini fine-tune et. Learning rate: `2e-4`, batch size: `4`, max steps: `100`. Training loss-u izlə. Validation loss artmağa başlayanda early stop tətbiq et. Final adapter-i `safetensors` formatında saxla.
+
+### Tapşırıq 3: Before/After Evaluation
+
+20 test sualı hazırla. Base model vs fine-tuned model-in cavablarını müqayisə et. LLM-as-judge ilə (Claude Haiku) hər cavabı 1-5 ilə qiymətləndir. Fərqi hesabla. Fine-tuning real improvement gətiribmi, ya da sadəcə format uyğunluğu?
+
+---
+
+## Əlaqəli Mövzular
+
+- `08-ft-dataset-curation.md` — Keyfiyyətli dataset hazırlama
+- `04-lora-qlora-peft.md` — LoRA texnikası ilə efficient fine-tuning
+- `09-vllm-model-serving.md` — Fine-tuned modeli production-a çıxar
+- `07-rlhf-dpo-alignment.md` — SFT-dən sonra alignment training

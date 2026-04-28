@@ -657,3 +657,28 @@ Precedence: local > project > user > default.
 - **settings.json ierarxiyası**: local > project > user > default.
 - **Təhlükəsizlik**: hook shell icra edir — code review məcburidir, `.claude/settings.local.json` `.gitignore`-a.
 - **Debug**: stderr, log fayl, `/hooks list`.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Dangerous Command Hook
+
+`PreToolUse` hook yaz. `tool_name === "Bash"` olduqda `input.command`-i yoxla: `rm -rf /` ya da `git push --force origin main` (production branch) kimi pattern-lər varsa `{"decision": "block", "reason": "Dangerous command"}` qaytar. `.claude/settings.json`-a əlavə et, test et.
+
+### Tapşırıq 2: Auto-Format Hook
+
+`PostToolUse` hook yaz. `tool_name === "Edit"` və `.php` fayl dəyişdirildikdə `./vendor/bin/pint {file_path}` icra et. `PostToolUse` hook əgər format dəyişikliyi edirsə `{"decision": "continue"}` qaytar. Laravel Pint-in formatlaşdırdığı faylları Claude-un daha sonra dəyişdirmədiyini yoxla.
+
+### Tapşırıq 3: Session Start Context Injection
+
+`SessionStart` hook yaz. Hook çalışdıqda: `git log --oneline -5` çalışdır (son 5 commit), `cat CLAUDE.md` oxu, nəticəni birləşdirərək `{"context": "..."}` format-da qaytar. Claude Code hər yeni session-da bu konteksti avtomatik alır. Kontekst olmadan vs olduqda Claude-un ilk cavablarının fərqini müqayisə et.
+
+---
+
+## Əlaqəli Mövzular
+
+- `../03-mcp/11-mcp-for-company-laravel.md` — MCP tools ilə Skills arasındakı fərq
+- `../02-claude-api/13-claude-agent-sdk.md` — Claude Code-un istifadə etdiyi SDK
+- `../08-production/06-ai-testing-strategies.md` — Hook-ların test edilməsi
+- `13-agent-security.md` — Hook-lardan gələn input-un sanitization-u

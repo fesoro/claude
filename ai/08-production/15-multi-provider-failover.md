@@ -654,4 +654,21 @@ if ($forced) {
 
 **Yadda saxla**: failover pattern **day 1-də qurul**. Sonradan retrofit etmək 3x daha çox iş tələb edir. Gateway + interface abstraction faktiki maliyyət: 200 sətir kod. Reward: incident zamanı downtime eliminasiya.
 
-Növbəti: `/home/orkhan/Projects/claude/ai/07-workflows/04-ai-idempotency-circuit-breaker.md` — circuit breaker dərindən.
+## Praktik Tapşırıqlar
+
+### 1. Provider Gateway Tətbiqi
+`AiGateway` interface yazın: `complete(string $prompt, array $options): string`. `ClaudeProvider`, `OpenAiProvider`, `GeminiProvider` implementasiyaları yaradın. Laravel service container-ə `app()->bind(AiGateway::class, fn() => new FailoverGateway([new ClaudeProvider, new OpenAiProvider]))` qeydiyyatı edin. Health check endpoint: `GET /api/ai/health` hər provider-ın vəziyyətini göstərsin.
+
+### 2. Circuit Breaker + Redis State
+Redis-də circuit state saxlayın: `ai:circuit:{provider}` → `closed|open|half-open`. Uğursuzluq sayı `>5` olduqda `open` edin, 60 saniyə gözlə, `half-open`-a keçin, bir test sorğusu göndər. Uğurlu olarsa `closed`. Bütün keçidlər event fire etsin. Grafana dashboard-da real-time circuit status göstərin. Load test ilə (`wrk -t 4 -c 100`) failover-u real sınaqdan keçirin.
+
+### 3. Cost-Aware Routing
+Hər request növü üçün provider prioriteti müəyyən edin: sadə sorğular → Haiku (ən ucuz), mürəkkəb → Sonnet, kritik → Opus. `routing_config.json` faylında: `{"classification": "haiku", "generation": "sonnet", "analysis": "opus"}`. Aylıq xərc hesabatında hər provider-ın pay-ını göstərin. Hədəf: keyfiyyəti qoruyaraq 30%+ xərc azaltmaq.
+
+## Əlaqəli Mövzular
+
+- [AI Xərclərinin Optimallaşdırılması](./04-cost-optimization.md)
+- [Latency Optimallaşdırması](./05-latency-optimization.md)
+- [Observability Logging](./02-observability-logging.md)
+- [Canary Shadow Deploy](./14-canary-shadow-llm-deploy.md)
+- [AI Idempotency Circuit Breaker](../07-workflows/04-ai-idempotency-circuit-breaker.md)

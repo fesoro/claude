@@ -1347,3 +1347,28 @@ Rate limit, retry və backoff — LLM production-un üç ayağıdır:
 Senior PHP developer kimi bu pattern-ları öz ClaudeService-in içində bir dəfə implement etdikdə, bütün şirkət üçün dayanıqlı bir özül yaratmış olursan. Əks halda hər feature team öz naive retry-ını yazır və Anthropic outage zamanı sistem dizdən qatlanır.
 
 Bu sənəddə göstərilən `ClaudeService` — Laravel-in bütün primitive-lərini istifadə edərək Anthropic API-nin bütün xırdalıqlarını adi developer-dən gizlədir. Nəticə: feature team-lər yalnız `$claude->message([...])` çağırır — və rest infrastruktur öz işini görür.
+
+---
+
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Exponential Backoff Testi
+
+429 xətasını simulate et (test environment-də mock istifadə et). `ClaudeService`-in backoff davranışını yoxla: 1→2→4 saniyə gözləyir? Max retry sayına çatanda exception atır? Hər retry cəhdini log-a yazar? Retry-ların `claude_retries` log cədvəlinde izlənilməsini test et.
+
+### Tapşırıq 2: Circuit Breaker Monitoring
+
+`ClaudeCircuitBreaker`-i Filament dashboard-da göstər. Son 100 sorğu üçün: success rate, average latency, circuit state (open/closed/half-open). Circuit `open` vəziyyətinə keçdikdə Slack-ə alert göndər. Circuit `half-open`-dan `closed`-a keçəndə auto-recovery confirm et.
+
+### Tapşırıq 3: Header Parsing
+
+Real 429 response-undan `retry-after` header-ini parse et. `x-ratelimit-reset-requests` və `x-ratelimit-reset-tokens` header-lərini log et. Token limit vs request limit ayrımını anla. Token limit reseti gözlədikdə request limit reseti gözləməyə qalxırsınmı?
+
+---
+
+## Əlaqəli Mövzular
+
+- `01-claude-api-guide.md` — API əsasları
+- `../07-workflows/04-ai-idempotency-circuit-breaker.md` — Circuit breaker pattern-i dərinləşdir
+- `../08-production/15-multi-provider-failover.md` — Rate limit zamanı provayder dəyişikliyi
+- `../01-fundamentals/09-llm-provider-comparison.md` — Provayderlər üzrə rate limit müqayisəsi

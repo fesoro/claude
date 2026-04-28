@@ -1325,4 +1325,21 @@ Content moderation 2026-da **legal, operational, and ethical mandate** təşkil 
 13. **Transparency reports** — quarterly, automated generation
 14. **File 43 ilə** — refusal policies; **file 53 ilə** — PII redaction (bu faylın complement-i)
 
-Sonrakı fayl (63) — AI Governance və compliance: EU AI Act, GDPR, SOC 2, ISO 42001.
+## Praktik Tapşırıqlar
+
+### 1. Layered Content Filter
+Laravel middleware yaradın. Birinci qat: local regex (toxicity keywords siyahısı). İkinci qat: Perspective API (Google) — `toxicity > 0.8` olduqda bloklayın. Üçüncü qat: Claude-un özünə moderation classifier kimi soruşun (yalnız borderline hallarda). Hər bloku `content_violations` cədvəlinə yazın. Real-time dashboard-da violation rate-i izləyin.
+
+### 2. CSAM Prevention Pipeline
+Upload xüsusiyyəti olan tətbiqlər üçün: PhotoDNA hash (Microsoft) və ya NCMEC API integrasiyası tətbiq edin. Hash müsbətdirsə: content sil, user blokla, 24 saat içində NCMEC-ə report et, incident log-a yaz. Bu pipeline-ı automated test ilə yoxlayın (bilinen test hash-larla). Hər upload-u scan edin — yalnız şübhəliləri deyil.
+
+### 3. Appeals Workflow
+İstifadəçilər yanlış blok üçün appeal edə bilsin. `content_appeals` cədvəli qurun: `violation_id`, `user_id`, `appeal_reason`, `status`, `reviewed_by`. Appeal-ları human review queue-ya göndərin. 48 saat içində cavab vermə SLA qurun. Appeal qəbul olunarsa: content bərpa, false positive dataset-ə əlavə, classifier-i yenidən train etmək üçün flag.
+
+## Əlaqəli Mövzular
+
+- [Safety Guardrails](./08-safety-guardrails.md)
+- [PII Data Redaction](./11-pii-data-redaction.md)
+- [Prompt Injection Defenses](./10-prompt-injection-defenses.md)
+- [AI Governance Compliance](./16-ai-governance-compliance.md)
+- [Red Teaming Adversarial](./12-red-teaming-adversarial.md)

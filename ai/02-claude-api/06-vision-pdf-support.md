@@ -1187,4 +1187,25 @@ Upload → Validate size/type → Detect MIME →
 
 ---
 
-*Növbəti: [17 — Files API və Citations](./08-files-api-citations.md)*
+## Praktik Tapşırıqlar
+
+### Tapşırıq 1: Document Intelligence Pipeline
+
+Mühasibat sənədlərini (invoice, receipt) Laravel queue job vasitəsilə emal et: PDF → base64 encode → Claude vision → JSON extract → database-ə yaz. `ProcessDocumentJob`-ı yaz. 50 sənəd üzərindən extraction accuracy-ni ölç.
+
+### Tapşırıq 2: Image Resolution Optimization
+
+Eyni şəkli 4 fərqli ölçüdə göndər (thumbnail, small, medium, large). Hər ölçü üçün token sayı + latency + extraction quality qeyd et. "Lazımi minimum keyfiyyət" üçün optimal ölçünü müəyyənləşdir — bu, aylıq token xərclərini əhəmiyyətli azalda bilər.
+
+### Tapşırıq 3: Multi-Page PDF Analysis
+
+10+ səhifəlik müqavilə PDF-ini yüklə. Claude-a "Bu müqavilənin əsas öhdəliklərini, ödəniş şərtlərini, fəsih şərtlərini çıxar" tapşır. Cavabın hansı məlumatları əhatə etdiyini yoxla. `max_tokens` limitini doğru konfiqurasiya etdiyini həmçinin yoxla.
+
+---
+
+## Əlaqəli Mövzular
+
+- `08-files-api-citations.md` — Faylları bir dəfə yüklə, çox istifadə et
+- `03-structured-output.md` — Vision çıxışını strukturlaşdırılmış JSON-a çevir
+- `../01-fundamentals/07-multimodal-ai.md` — Multimodal AI konseptləri
+- `../04-rag-embeddings/12-multimodal-rag.md` — Şəkil + mətn RAG sistemləri
