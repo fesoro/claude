@@ -424,3 +424,23 @@ AWS_DEFAULT_REGION=eu-central-1
 8. **Reserved Instances** alın - Production üçün endirim
 9. **Backup** strategiyası qurun - RDS snapshot, S3 lifecycle
 10. **Cost monitoring** edin - AWS Budgets ilə xərc limiti
+
+---
+
+## Praktik Tapşırıqlar
+
+1. AWS CLI ilə tam Laravel infrastructure qurun: VPC (10.0.0.0/16), public + private subnet, Internet Gateway, NAT Gateway, Security Groups (web: 80/443, db: 3306 yalnız daxili), EC2 t3.micro + RDS MySQL — hər əmri yazın, `--dry-run` ilə test edin
+2. S3-də Laravel file storage qurun: bucket yaradın, versioning aktiv edin, lifecycle policy (`30 gün → IA, 90 gün → Glacier`), IAM policy (yalnız Laravel app-ın bucket-ə giriş icazəsi), `.env`-də `AWS_BUCKET` konfiqurə edin; `php artisan tinker`-də `Storage::put()` test edin
+3. RDS Multi-AZ failover test edin: `aws rds reboot-db-instance --force-failover`, failover zamanı Laravel-in neçə saniyə əlçatmaz olduğunu ölçün; `DB_HOST`-u endpoint DNS-ə bağlayın ki failover avtomatik olsun
+4. IAM Least Privilege policy yazın: Lambda function-a yalnız spesifik S3 bucket-ə `GetObject`/`PutObject`, spesifik SQS queue-ya `SendMessage`/`ReceiveMessage` icazəsi verin; `aws iam simulate-principal-policy` ilə icazələri test edin
+5. CloudFront distribution qurun: S3 static assets üçün, custom domain + ACM certificate, cache behavior (`*.jpg, *.css, *.js` — 1 year), Laravel-dən `asset()` helper-i CloudFront URL-ə yönləndirin; before/after latency müqayisə edin
+6. Route53 routing policy test edin: iki EC2 instance arasında weighted routing (90/10), health check əlavə edin; bir instance-ı söndürün, 100% trafikin digərinə keçdiyini `curl` loop ilə yoxlayın
+
+## Əlaqəli Mövzular
+
+- [GCP Əsasları](15-gcp-basics.md) — GCE, GKE, Cloud SQL, Cloud Run
+- [Azure Əsasları](16-azure-basics.md) — VM, AKS, App Service, Blob Storage
+- [AWS Advanced](26-aws-advanced.md) — ECS, Lambda, SQS, CloudWatch
+- [Terraform Əsasları](23-terraform-basics.md) — IaC ilə AWS konfigurasiyası
+- [Secrets Management](28-secrets-management.md) — AWS Secrets Manager
+- [Backup Strategiyaları](17-backup-strategies.md) — S3 backup, RDS snapshot

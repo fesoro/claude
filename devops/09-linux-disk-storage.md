@@ -500,3 +500,22 @@ $schedule->command('monitor:disk --threshold=80')->hourly();
 8. **Database üçün RAID 10** - Ən yaxşı performans və etibarlılıq
 9. **Swap-ı düzgün konfiqurasiya edin** - Server tipinə görə swappiness ayarlayın
 10. **Müntəzəm disk audit** - Ayda bir böyük faylları və lazımsız data-nı yoxlayın
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Disk dolması krizini simulyasiya edin: `fallocate -l 10G /tmp/bigfile` ilə diski doldurun; `df -h`, `du -sh /*` ilə ən böyük qovluğu tapın; Laravel storage-da köhnə log faylları silin; `df` ilə yenidən yoxlayın
+2. LVM genişləndirilməsi: yeni virtual disk əlavə edin, `pvcreate`→`vgextend`→`lvextend`→`resize2fs` addımlarını keçin; `lsblk` + `df -h` ilə hər addımdan sonra vəziyyəti yoxlayın; reboot olmadan canlı genişləndirin
+3. `/etc/fstab` konfiqurasiyası: yeni partition üçün UUID ilə mount nöqtəsi əlavə edin; `noatime`, `nodiratime` mount options əlavə edin (performans); `mount -a` ilə test edin; xətalı fstab-ın boot problem yaratdığını öyrənin (recovery modeda düzəliş)
+4. Inode tükənməsi senariyosu: `for i in $(seq 1 100000); do touch /tmp/itest/file_$i; done` ilə minlərlə boş fayl yaradın; `df -i` ilə inode-ların bitdiyini görün; `find /tmp/itest -name 'file_*' -delete` ilə lazımsız faylları silin
+5. `rsync` ilə backup script yazın: `--archive`, `--compress`, `--delete`, `--link-dest` (hardlink ilə inkremental) parametrləri ilə həftəlik backup qurun; backup-ı remote serverə `rsync -e ssh` ilə sinxronizasiya edin
+6. RAID 1 (mirror) qurun: iki virtual disk-i `mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sdb /dev/sdc`; `mdadm --detail /dev/md0` ilə statusu izləyin; bir diski simulyasiya olaraq fail edin (`mdadm --fail`), rebuild prosesini izləyin
+
+## Əlaqəli Mövzular
+
+- [Linux Əsasları](01-linux-basics.md) — fayl sistemi, icazələr
+- [Linux Şəbəkə](08-linux-networking.md) — NFS mount, uzaq storage
+- [Backup Strategiyaları](17-backup-strategies.md) — DB/fayl backup, rsync, disaster recovery
+- [Performance Tuning](30-performance-tuning.md) — disk I/O tuning, noatime
+- [AWS Əsasları](14-aws-basics.md) — EBS volume tipi seçimi, S3 storage

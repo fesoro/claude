@@ -615,3 +615,22 @@ C: Chaos engineering SRE alətlərindən biridir – sistem resiliency test etm�
 16. **Deploy safety**: Canary, gradual rollout, automated rollback.
 17. **Learning culture**: Postmortem-ləri share et, blameless psixoloji təhlükəsizlik.
 18. **SRE/Dev əməkdaşlığı**: Joint on-call, joint postmortem, shared ownership.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Laravel servisiniz üçün SLO müəyyən edin: availability SLO (%99.9 = 43.8 dəqiqə/ay), latency SLO (p99 < 300ms), error budget hesablayın; Prometheus-da SLO tracking dashboard yaradın; bu rəqəmlər üçün Alertmanager alert yazın
+2. Error budget policy yazın: error budget > 50% — yeni feature deploy; 25-50% — kritik fix only; < 25% — feature freeze, reliability work; bu policy-ni team-lə paylaşın; son 30 günün error budget-ini hesablayın
+3. Runbook yaradın: top-5 ən çox baş verən incident üçün; hər biri üçün — detection criteria, immediate action, investigation steps, resolution, follow-up; runbook-u simulation ilə test edin
+4. On-call handoff prosesi qurun: shift dəyişəndə — aktiv incident-lər, son 24 saatın alert-ləri, deployment-lar, növbəti 8 saatın planlı işləri; Slack-da standart handoff template istifadə edin
+5. Toil-i ölçün: 2 həftəlik log tutun — hər manual, repetitive task nə qədər vaxt apardı; toil > 50% varsa automation planı yazın; ilk olaraq ən çox vaxt aparan toil-i avtomatlaşdırın
+6. SRE review keçirin: son 3 ayın postmortem-lərini analiz edin; təkrarlanan root cause-ları müəyyən edin; systemic fix üçün quarter plan yaradın; reliability improvement-ın DORA metriklerinə təsirini ölçün
+
+## Əlaqəli Mövzular
+
+- [SLA/SLO/SLI](43-sla-slo-sli.md) — error budget, burn rate, SLO hesablama
+- [Incident Response](31-incident-response.md) — on-call, postmortem, runbook
+- [Chaos Engineering](33-chaos-engineering.md) — resilience testing, GameDay
+- [DORA Metrics](45-dora-metrics.md) — reliability metrikləri
+- [Observability](42-observability.md) — SLO tracking üçün metrics/logs/traces

@@ -509,3 +509,22 @@ EOF
 8. **.terraform.lock.hcl** Git-ə əlavə edin - provider versiya sabitliyi
 9. **CI/CD** ilə inteqrasiya edin - Manual apply etməyin
 10. **Kiçik adımlarla** dəyişiklik edin - Böyük dəyişikliklər risklidir
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Laravel infrastructure üçün Terraform yazın: `provider "aws"`, VPC + subnet + security group + EC2 + RDS; `variables.tf`-də `environment`, `instance_type`, `db_password`; `terraform plan` çıxışını oxuyun, `terraform apply` edin, `terraform destroy` ilə silin
+2. Remote state konfigurasiya edin: S3 bucket + DynamoDB table yaradın (manual), `backend "s3"` bloku əlavə edin, `terraform init -migrate-state`; başqa terminal-dan `terraform plan` işlədib state lock-u izləyin
+3. Data source istifadə edin: `data "aws_ami" "ubuntu"` ilə ən son Ubuntu 24.04 AMI-ni dynamik tapın, `data "aws_availability_zones"` ilə mövcud zone-ları çəkin; hardcode-suz infrastructure yazın
+4. `count` vs `for_each` fərqini praktiki göstərin: eyni konfiqurasiyanı hər iki üsulla yazın — 3 subnet yaradın; `count` istifadəsindəki index problem-ini (`count.index` vs resource silinməsi) müəyyən edin; `for_each` ilə daha güvənli variantını yazın
+5. `terraform import` ilə mövcud resursu state-ə əlavə edin: AWS console-da manual S3 bucket yaradın, `terraform import aws_s3_bucket.manual <bucket-name>`, `terraform plan`-da heç bir dəyişiklik olmadığını yoxlayın; `moved` bloku ilə resursu rename edin
+6. Terraform module yaradın: `modules/laravel-server` — EC2 + security group + Elastic IP — input variables (instance_type, app_name, vpc_id), output (public_ip, instance_id); root module-dan `module "web" { source = "./modules/laravel-server" }` ilə çağırın
+
+## Əlaqəli Mövzular
+
+- [Terraform Advanced](24-terraform-advanced.md) — modules, workspaces, remote state
+- [AWS Əsasları](14-aws-basics.md) — AWS resursları, IAM
+- [Ansible](25-ansible.md) — Terraform (provision) + Ansible (configure) kombinasiyası
+- [Secrets Management](28-secrets-management.md) — Terraform-da sensitive variable
+- [CI/CD Deployment](39-cicd-deployment.md) — Terraform CI/CD pipeline

@@ -598,3 +598,22 @@ stopwaitsecs=3600
 8. **Check mode** istifadə edin - `--check --diff` (dry-run)
 9. **Handler** istifadə edin - Service restart-ı optimallaşdırın
 10. **Logging** aktiv edin - `ANSIBLE_LOG_PATH` environment variable
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Laravel server provisioning playbook yazın: Nginx, PHP 8.3-FPM, MySQL, Redis qurulsun; PHP extensions (`pdo_mysql`, `redis`, `gd`, `zip`), Composer install; `www-data` user konfigurasiyası; idempotent — iki dəfə işlətdikdə dəyişiklik olmamalıdır
+2. Ansible Vault ilə secret idarə edin: `ansible-vault create vars/secrets.yml` — `db_password`, `app_key`; playbook-da `vars_files: vars/secrets.yml`; `--vault-password-file ~/.vault_pass` ilə; CI/CD-də vault password environment variable-dan oxusun
+3. Rolling deployment playbook yazın: `serial: 1` ilə instance-ları bir-bir yeniləyin; hər instance-dan əvvəl load balancer-dən çıxarın, deploy edin, health check keçərsə geri qoyun; fail olarsa `max_fail_percentage: 0` ilə dərhal dayanın
+4. Jinja2 template ilə dinamik Nginx konfigurasiya yaradın: `domain_name`, `php_fpm_socket`, `worker_processes`, `ssl_cert_path` variable-larından `nginx.conf.j2` template; `validate: /usr/sbin/nginx -t -c %s` ilə deploy-öncəsi syntax check
+5. Role yaradın: `ansible-galaxy init roles/laravel-app`; tasks, handlers, templates, defaults, vars, meta qovluqları doldurun; `meta/main.yml`-də `galaxy_info` yazın; `ansible-galaxy install -r requirements.yml` ilə dependency role install edin
+6. Ad-hoc əmrlərlə production debug edin: bütün web server-lərdə eyni anda `php --version` yoxlayın, disk istifadəsini görün, Nginx-i yenidən yükləyin; `ansible webservers -m shell -a "systemctl status nginx"` — parallel execution-u izləyin
+
+## Əlaqəli Mövzular
+
+- [Terraform Əsasları](23-terraform-basics.md) — Terraform (cloud provision) + Ansible (configure) birliyi
+- [Linux Shell Scripting](10-linux-shell-scripting.md) — bash vs Ansible müqayisəsi
+- [CI/CD Deployment](39-cicd-deployment.md) — Ansible CI/CD pipeline inteqrasiyası
+- [Secrets Management](28-secrets-management.md) — Ansible Vault, Vault integration
+- [Zero-Downtime Deployment](41-zero-downtime-deployment.md) — Ansible rolling deploy

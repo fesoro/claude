@@ -410,3 +410,22 @@ grep "^DB_HOST" /var/www/laravel/.env | cut -d= -f2
 8. **Firewall** - UFW/iptables ilə yalnız lazımi portları açın
 9. **Log rotation** - logrotate ilə log fayllarını idarə edin
 10. **Backup** - Critical faylları mütəmadi backup edin
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Yeni server qurduqdan sonra ilk 10 əmri yazın: sistem məlumatını öyrənin (`uname -a`, `lsb_release -a`), disk yoxlayın (`df -h`), RAM yoxlayın (`free -h`), CPU yoxlayın (`nproc`), network interface-ləri görün (`ip a`)
+2. Laravel layihəsi üçün düzgün fayl icazələrini qurun: `storage/` və `bootstrap/cache/` — `775`, owner `www-data:www-data`, `.env` — `640`; sonra `stat` əmri ilə yoxlayın
+3. `find` əmri ilə aşağıdakıları tapın: 7 gündən köhnə log fayllar, ölçüsü 100MB-dan böyük fayllar, `777` icazəsi olan fayllar (security risk); hər biri üçün əmr yazın
+4. `journalctl` ilə PHP-FPM və Nginx loglarını real-time izləyin: son 100 sətir, `ERROR` keyword-ü filter edin, son 1 saatın log-larını çəkin
+5. Yeni Linux user yaradın, `www-data` group-a əlavə edin, password-suz sudo icazəsi verin, SSH key əlavə edin, sonra bütün dəyişiklikləri yoxlayın
+6. Bash script yazın: hər 5 dəqiqədə disk, RAM, CPU istifadəsini yoxlasın; hər biri 80%-dən çox olsa `/var/log/system-alert.log`-a timestamp ilə yazıb email göndərsin (mail əmri)
+
+## Əlaqəli Mövzular
+
+- [Linux Proses İdarəetmə](07-linux-process-management.md) — systemd, cron, PHP-FPM proses idarəsi
+- [Linux Şəbəkə](08-linux-networking.md) — firewall, DNS, server setup
+- [Linux Disk & Yaddaş](09-linux-disk-storage.md) — LVM, RAID, filesystem
+- [Shell Scripting](10-linux-shell-scripting.md) — bash, deployment scripts
+- [Performance Tuning](30-performance-tuning.md) — Linux kernel tuning, sysctl parametrləri

@@ -479,3 +479,22 @@ C: (1) **Service dependency graph** – hansı service hansını çağırır. (2
 13. **Retention policy** – trace-ləri uzun saxlama (7-14 gün kifayətdir adətən).
 14. **Collector high availability** – queue/batching ilə data loss-un qarşısını al.
 15. **Dashboard-lar** – service latency, error rate, top operation by duration.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Jaeger qurun və Laravel servisindən trace göndərin: Docker Compose-da `jaeger/all-in-one`, OTel PHP SDK ilə `JaegerExporter`, checkout flow üçün trace yaradın (HTTP handler → DB query → external API call → response); Jaeger UI-da full trace izləyin
+2. Context propagation test edin: Laravel-dən HTTP request göndərin, ikinci servis (Go/Node) `traceparent` header-ını extract edib öz span-larını parent-ə bağlasın; Jaeger-də iki servisi əhatə edən complete trace görün
+3. Sampling strategiyasını konfigurasiya edin: `/api/health` endpoint-i %0 sample, `/api/payment` %100 sample, qalan endpoint-lər %10 sample; high-traffic-də Jaeger storage-ın artmadığını yoxlayın; trace-lərin nə qədərinin Jaeger-ə çatdığını sayın
+4. Slow query trace-i tapın: DB-də qəsdən yavaş sorğu yaradın (`SELECT SLEEP(2)`), Jaeger-də `db.statement` attribute-u olan span-ları filtərləyin; P99 span duration-a görə sıralayın; bottleneck-i müəyyən edin
+5. Error trace-i analiz edin: qəsdən exception throw edin, `span->setStatus(StatusCode::ERROR, 'message')`, `span->recordException($e)`; Jaeger-də `error=true` flag ilə trace tapın; exception stack trace-ni span-ın event-ləri içərisindən oxuyun
+6. Trace retention policy qurun: Jaeger Elasticsearch backend ilə `--es.index-rollover-frequency=day`, `--es.max-span-age=168h` (7 gün); `kubectl top pods` ilə Jaeger-in resource istifadəsini izləyin; production-da trace storage xərci hesablayın
+
+## Əlaqəli Mövzular
+
+- [OpenTelemetry](21-opentelemetry.md) — OTel SDK, Collector, trace export
+- [Prometheus](18-monitoring-prometheus.md) — metrics vs traces
+- [Observability](42-observability.md) — traces pillar, correlation
+- [ELK Stack](20-elk-stack.md) — log-trace korrelyasiyası
+- [Service Mesh](32-service-mesh.md) — Istio distributed tracing, Envoy span

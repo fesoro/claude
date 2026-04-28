@@ -373,3 +373,22 @@ class NetworkCheck extends Command
 8. **Network segmentation** - App, DB, cache ayrı subnet-lərdə olsun
 9. **Log network events** - Connection attempts, firewall blocks log olsun
 10. **Regular audits** - Açıq portları və firewall rules-ı mütəmadi yoxlayın
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Production server-in şəbəkə konfiqurasiyasını auditləyin: `ip a`, `ip route`, `ss -tlnp` ilə aktiv interfeys, default gateway, dinlənən portları çıxarın; gözlənilməyən port açıq olarsa araşdırın
+2. UFW firewall qurun: default deny all in, allow SSH (22), HTTP (80), HTTPS (443), PostgreSQL yalnız internal IP-dən (192.168.0.0/24); `ufw status verbose` ilə yoxlayın; test üçün 80-i müvəqqəti bağlayıb Laravel-in cavab vermədiyini görün
+3. `tcpdump` ilə Laravel API sorğusunu capture edin: `tcpdump -i eth0 -nn 'host <api-server> and port 443' -w api.pcap`; Wireshark-da TLS Client Hello-nu tapın; certificate details-ı oxuyun
+4. DNS problem debug senariyosu: `/etc/resolv.conf` nameserver-ini 1.1.1.1-ə dəyişin, `dig @1.1.1.1 domain.com`, `dig @8.8.8.8 domain.com` ilə fərqi müqayisə edin; `nslookup` ilə MX record-ları yoxlayın
+5. `curl` ilə Laravel API-ni komanda xəttindən test edin: POST request + JSON body + Bearer token + custom header; response header-larını (`-I` flag), redirect chain-i (`-L`) izləyin; response time-ı ölçün (`-w "%{time_total}"`)
+6. `iptables` ilə port forwarding qurun: server-in 8080 port-unu daxili şəbəkədəki başqa host-un 80-inə yönləndir (`PREROUTING DNAT`); `iptables-save` ilə persist edin; reboot-dan sonra işlədiyini yoxlayın
+
+## Əlaqəli Mövzular
+
+- [Şəbəkə Əsasları](02-networking-basics.md) — OSI, TCP/IP, DNS, HTTP/HTTPS
+- [Linux Əsasları](01-linux-basics.md) — fayl sistemi, əsas komandalar
+- [Nginx](11-nginx.md) — reverse proxy, firewall ilə birlikdə konfiqurasiya
+- [SSL/TLS](13-ssl-tls.md) — mTLS, HTTPS, certificate verification
+- [AWS Əsasları](14-aws-basics.md) — Security Groups, VPC networking

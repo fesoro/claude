@@ -502,3 +502,23 @@ class MetricsService
 8. **Exporter-ləri ayrı container** kimi işlədin
 9. **/metrics endpoint** qoruyun - basic auth və ya internal network
 10. **Grafana ilə inteqrasiya** edin - PromQL sorğularını vizuallaşdırın
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Laravel üçün custom Prometheus metrik yaradın: `promphp/prometheus_client_php` quruyun, HTTP request sayını (method + endpoint + status) counter, response time-ı histogram kimi ölçün; `php artisan tinker`-də metrik artırın, `/metrics` endpoint-ə `curl` ilə yoxlayın
+2. Alertmanager qurun: Prometheus alert qaydasını yazın (`error_rate > 5%` 5 dəqiqə davam edərsə), Alertmanager routing (critical → PagerDuty, warning → Slack); `amtool alert add` ilə test alert göndərin; Slack-da bildiriş alındığını yoxlayın
+3. PromQL sorğuları yazın: son 5 dəqiqədə P99 latency (`histogram_quantile(0.99, ...)`), error rate by endpoint (`rate(http_requests_total{status=~"5.."}[5m])`), memory saturation (`node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes`); Grafana-da test edin
+4. Node Exporter qurun: server-ə install edin, scrape config-ə əlavə edin; CPU throttling, disk I/O wait, network saturation metriklerini Grafana-da panel kimi vizualizasiya edin
+5. Recording rules yaradın: tez-tez istifadə olunan ağır PromQL sorğusunu `record: job:http_requests:rate5m` kimi precompute edin; query time-ı recording rule ilə vs olmadan müqayisə edin
+6. Prometheus retention və storage planlaşdırın: `--storage.tsdb.retention.time=30d`, `--storage.tsdb.retention.size=10GB`; mövcud metrik count-a görə disk istifadəsini hesablayın; remote write ilə Thanos/Cortex-ə uzunmüddətli storage qurun
+
+## Əlaqəli Mövzular
+
+- [Grafana](19-monitoring-grafana.md) — dashboard, panel, RED/USE method
+- [ELK Stack](20-elk-stack.md) — log aggregation, Kibana
+- [OpenTelemetry](21-opentelemetry.md) — OTel Collector Prometheus scraping
+- [Logging & Monitoring](38-logging-monitoring.md) — structured logs, alerting
+- [Observability](42-observability.md) — metrics/logs/traces üçlüyü
+- [SLA/SLO/SLI](43-sla-slo-sli.md) — error budget, alert threshold

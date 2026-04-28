@@ -536,3 +536,22 @@ C: Encryption at-rest – saxlanma yerində şifrələnmə (disk, database, S3).
 13. **Secret manager inteqrasiya**: AWS Secrets Manager, Vault ilə Laravel-i inteqrasiya et.
 14. **Break-glass procedure**: Emergency access prosedurunu dokumentləşdir.
 15. **Regular secret audit**: İstifadə olunmayan secret-ləri silin, expired olanları yenilə.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. `gitleaks` ilə mövcud Git repo-nu skan edin: `gitleaks detect --source=.` — hardcoded secret tapın; `git log --all --full-history` ilə köhnə commit-ləri də skan edin; tapılan secret-i revoke edin, commit history-dən silin (`git-filter-repo`), force push edin
+2. HashiCorp Vault qurun: Docker-da dev mode, `vault kv put secret/laravel db_password=secret123 app_key=base64:...`; Laravel ServiceProvider-da Vault HTTP API-dən secret oxuyun; Vault Agent sidecar ilə secret-i fayldan oxuyun (`.env` yerinə)
+3. AWS Secrets Manager-da Laravel secret-lərini saxlayın: `aws secretsmanager create-secret --name laravel/production`, JSON format; EC2 instance role ilə (credentials olmadan) `aws secretsmanager get-secret-value`; secret rotation qurun (30 gün)
+4. SOPS ilə `.env` faylını şifrələyin: AWS KMS key yaradın, `sops --kms arn:aws:kms:... .env.production` ilə şifrələyin, `sops -d .env.production` ilə deşifrə edin; şifrələnmiş `.env`-i Git-ə commit edin; CI/CD-də `sops -d` əmri
+5. Docker secrets ilə Laravel konfigurasiya edin: `docker secret create app_key`, Compose-da `secrets:` bloku, container-də `/run/secrets/app_key` yolundan oxuyun; environment variable ilə müqayisə edin (security aspekti)
+6. Vault dynamic database credentials qurun: PostgreSQL engine enable edin, role yaradın (TTL: 1h), Laravel-in hər request-də fresh credential almasını test edin; manual `vault lease revoke` ilə credential-ı ləğv edin, Laravel-in yeni credential aldığını görün
+
+## Əlaqəli Mövzular
+
+- [Container Security](29-container-security.md) — Docker/K8s secrets, pod security
+- [AWS Əsasları](14-aws-basics.md) — AWS Secrets Manager, IAM policies
+- [Terraform Advanced](24-terraform-advanced.md) — Terraform sensitive variables, Vault provider
+- [CI/CD Deployment](39-cicd-deployment.md) — CI/CD-də secret injection
+- [Linux Shell Scripting](10-linux-shell-scripting.md) — secret-ləri skriptlərdən istifadə

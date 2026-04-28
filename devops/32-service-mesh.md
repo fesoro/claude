@@ -603,3 +603,22 @@ C: (1) 5-dən az microservice varsa; (2) Monolith-dirsə; (3) Performance-critic
 15. **Alert threshold**: Error rate, P99 latency, circuit breaker events.
 16. **Test fault injection**: Chaos engineering üçün (delay, abort).
 17. **Documentation**: VirtualService/DestinationRule-lar nə üçündür kommentlə.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Istio qurun: `istioctl install --set profile=demo`, namespace-ə `istio-injection: enabled` label əlavə edin; Laravel pod-un sidecar proxy aldığını `kubectl describe pod`-da görün; `istioctl proxy-status` ilə mesh sağlamlığını yoxlayın
+2. mTLS policy tətbiq edin: `PeerAuthentication` `mode: STRICT` — bütün service-to-service trafiki mTLS tələb etsin; `PERMISSIVE` modedən STRICT-ə keçid zamanı nə baş verdiyini görün; `kubectl exec` ilə pod içindən plain HTTP request edib rədd edildiyini test edin
+3. Traffic splitting qurun: `VirtualService` ilə Laravel v1 90%, v2 10% — canary deployment simulyasiya edin; `curl`-u 100 dəfə çağıran loop yazın, v2-yə 10% getdiyini sayın; v1-in `HTTP 500` verdiyi vaxt Istio-nun retry etdiyini test edin
+4. Circuit breaker konfigurasiya edin: `DestinationRule` `outlierDetection` — 5 serverdən 1-i xəta verərsə 30 saniyə ejection; downstream servisi dayandırın, Kiali dashboard-da circuit açıldığını görün; servis bərpa edildikdən sonra trafik avtomatik geri döndü?
+5. Fault injection edin: `VirtualService` `fault: delay: fixedDelay: 5s, percentage: 50%` — istifadəçilərin 50%-i 5s gecikmə yaşasın; Laravel-in bu gecikmə zamanı timeout tənzimləməsini görün; `fault: abort: httpStatus: 503, percentage: 20%` əlavə edin
+6. Jaeger ilə distributed trace izləyin: Istio sidecar-ın avtomatik yaratdığı span-ları Jaeger UI-da görün; Laravel → internal API → database chain-i trace edin; latency bottleneck-i müəyyən edin; `sampling: 100%`-dən `10%`-ə endirin, trace azaldığını yoxlayın
+
+## Əlaqəli Mövzular
+
+- [Container Security](29-container-security.md) — mTLS, pod security, Network Policy
+- [Distributed Tracing](22-distributed-tracing.md) — Jaeger, Istio trace integration
+- [Deployment Strategies](44-deployment-strategies.md) — Istio ilə canary, traffic splitting
+- [Observability](42-observability.md) — service mesh observability, Kiali
+- [Site Reliability](34-site-reliability.md) — SRE reliability patterns

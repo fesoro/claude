@@ -1216,3 +1216,23 @@ Laravel Telescope-u production mühitinə deploy etmək — hər request, query,
 
 **6. Health check-in yalnız process-in ayaqda olmasını yoxlaması**
 Kubernetes liveness probe-u `return response('ok')` ilə tətbiq etmək — servis cavab verir, amma DB bağlantısı yoxdur, Redis əlçatmazdır; servis "sağlam" görünür, amma real sorğulara xidmət edə bilmir. Readiness probe-a dependency yoxlamalarını (DB ping, cache ping, queue lag) daxil et.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Mövcud layihənizin observability maturity modelini qiymətləndirin: metrics, logs, traces hər biri üçün — "heç yox (0)" dan "tam avtomatlaşdırılmış alerting (4)"-ə skalanı doldurun; boşluqları müəyyən edin; ilk 1 aylıq improvement planı yazın
+2. Correlation ID (request tracing) tətbiq edin: Laravel Middleware-də `X-Request-Id` header oxuyun (yoxdursa UUID yaradın), `Log::withContext(['request_id' => $id])` ilə hər log-a əlavə edin; downstream API-lərə bu header-ı göndərin; Kibana-da bir request-in bütün log-larını `request_id` ilə tapın
+3. Golden Signal dashboard yaradın: Traffic (req/s), Errors (error rate %), Latency (p50/p95/p99), Saturation (CPU %, memory %) — 4 panel; hər metrik üçün threshold (SLO limit); single-page health overview; team-ə "bu dashboarda baxın" deyin
+4. Log, metric, trace üçlüyünü bir insident-də istifadə edin: production xəta simulyasiya edin; əvvəl metric-dən tapın (error rate spike), log-dan root cause-u anlayın (exception message), trace-dən hansı service-in guilty olduğunu görün; üç tool-un tamamlayıcı rolunu sənədləyin
+5. Proactive alert qurun: "heç bir problem yox iken" işləyən alert — DB connection pool 80% dolu (saturation), disk 75% dolu (proaktif), queue lag 5 dəqiqədən çox (latent problem); threshold-ları on-call actionable olacaq şəkildə tənzimləyin
+6. Observability as Code tətbiq edin: Grafana dashboard-ları JSON kimi Git-də saxlayın; Alertmanager config-i Git-də idarə edin; Terraform ilə CloudWatch alarm yaradın; "dashboard-ı silsəm Git-dən bərpa edə bilərəm" ssenarionu test edin
+
+## Əlaqəli Mövzular
+
+- [Prometheus](18-monitoring-prometheus.md) — metrics, PromQL, exporters
+- [Grafana](19-monitoring-grafana.md) — dashboards, alerts
+- [ELK Stack](20-elk-stack.md) — logs aggregation, Kibana
+- [OpenTelemetry](21-opentelemetry.md) — traces, OTel Collector
+- [Logging & Monitoring](38-logging-monitoring.md) — structured logging, alerting
+- [SLA/SLO/SLI](43-sla-slo-sli.md) — observability ilə error budget tracking

@@ -619,3 +619,23 @@ C: **Xeyir** – tək lock-in motivi kifayət deyil. Multi-cloud-un **real xərc
 13. **Chaos engineering** – cross-cloud failover kvartalda bir məşq et.
 14. **Documentation critical** – hər cloud-a deploy prosesi, runbook yazılı olmalı.
 15. **Komanda training** – cloud-specific expertise çox olmadan multi-cloud riskli.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Multi-cloud disaster recovery planı hazırlayın: primary AWS, DR GCP; aktiv-passiv arxitektura — RTO < 1 saat, RPO < 15 dəqiqə; data replication strategiyası (DB logical replication, S3 → GCS cross-cloud sync); failover runbook yazın; ildə iki dəfə DR drill keçirin
+2. Crossplane ilə cloud-agnostic infrastructure yazın: `provider-aws` + `provider-gcp` quruyun; eyni `Composition` ilə AWS RDS və GCP Cloud SQL yaradın; `CompositeResourceDefinition` (XRD) — developer yalnız `db-size: small/medium/large` seçir, cloud abstracted olur
+3. Vendor lock-in audit edin: mövcud arxitekturada AWS-specific component-ləri siyahılayın (SQS, SES, Cognito, DynamoDB); hər biri üçün cloud-agnostic alternativ (RabbitMQ, SMTP, Laravel Socialite, PostgreSQL) tapın; migration xərci hesablayın
+4. Multi-cloud network qurun: AWS VPC ↔ GCP VPC arası VPN (AWS VPN Gateway + GCP Cloud VPN); latency ölçün (`ping` + `iperf3`); private IP-lərlə servislərin bir-birini görməsini yoxlayın; BGP routing konfigurasiyası
+5. Cloud-agnostic monitoring qurun: Prometheus-u ikinci cloud-da da işlədin; Thanos `sidecar` + `querier` ilə mərkəzləşdirilmiş metrics sorğusu; `external_labels: {cloud: aws}` ilə cloud-specific filtrasiya; Grafana-da multi-cloud dashboard yaradın
+6. Active-active database replikasiyası test edin: AWS Aurora Global Database + GCP ilə logical replication simulyasiyası; write conflict resolution strategiyası; primary region down olduqda failover zamanını ölçün; Laravel DB connection pool-un failover-i necə idarə etdiyini görün
+
+## Əlaqəli Mövzular
+
+- [AWS Əsasları](14-aws-basics.md) — AWS-specific servisler
+- [GCP Əsasları](15-gcp-basics.md) — GCP-specific servisler
+- [Azure Əsasları](16-azure-basics.md) — Azure-specific servisler
+- [Terraform Advanced](24-terraform-advanced.md) — multi-provider Terraform konfigurasiyası
+- [FinOps](36-finops.md) — multi-cloud cost optimization
+- [Site Reliability](34-site-reliability.md) — multi-cloud reliability, DR

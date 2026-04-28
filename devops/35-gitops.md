@@ -435,3 +435,22 @@ C: **Flagger** service mesh-ə əsaslanır (Istio, Linkerd, App Mesh, NGINX, Glo
 13. **Disaster recovery** – ArgoCD-nin özünü də Git-dən idarə et (bootstrap skripti ilə qur).
 14. **Read-only tokens** işlət Git repo üçün – write yalnız CI-dən olsun.
 15. **Health checks** tərif et – deployment health-ini ArgoCD düzgün anlasın.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Argo CD qurun: `kubectl create namespace argocd`, `kubectl apply -n argocd -f install.yaml`; Laravel Helm chart-ı Git repo-ya yerləşdirin; `Application` CRD yazın (`repoURL`, `path`, `targetRevision: HEAD`); `argocd app sync` ilə ilk sync edin; UI-da sağlamlığı yoxlayın
+2. Automated sync konfigurasiya edin: `syncPolicy: automated: prune: true, selfHeal: true`; deployment YAML-da image tag-ı manual dəyişdirin, Argo CD-nin 3 dəqiqə içərisində geri qaytardığını görün; selfHeal-in "drift" yarandıqda trigger etdiyini anlayın
+3. ApplicationSet ilə multi-environment qurun: `generators: [{list: {elements: [{env: dev}, {env: staging}, {env: prod}]}}]`; hər environment üçün ayrı namespace, ayrı values.yaml; `git push` edib üç mühitin eyni vaxtda sync-lənməsini izləyin
+4. Argo Rollouts ilə canary deployment: `Rollout` resource yazın, `canary: steps: [{setWeight: 10}, {pause: {duration: 5m}}, {setWeight: 100}]`; `kubectl argo rollouts promote` ilə manual promote; error rate yüksəkdirsə `kubectl argo rollouts abort` edin
+5. Git repo secret-lərini idarə edin: Argo CD-yə private repo giriş üçün SSH key konfigurasiya edin (`argocd repo add`); Bitnami Sealed Secrets quruyun — `kubeseal` ilə secret-i şifrələyin, Git-ə commit edin; cluster-da avtomatik decrypt olduğunu görün
+6. Argo CD RBAC qurun: `dev` roluna yalnız staging namespace-a sync icazəsi verin, production-a yalnız `lead` rolu sync etsin; `argocd proj role create` ilə proje role-ları; SSO (GitHub OAuth) ilə Argo CD login konfigurasiya edin
+
+## Əlaqəli Mövzular
+
+- [CI/CD Deployment](39-cicd-deployment.md) — GitOps ilə CI/CD birliyi
+- [Deployment Strategies](44-deployment-strategies.md) — Argo Rollouts, canary, progressive
+- [Terraform Advanced](24-terraform-advanced.md) — Terraform GitOps workflow, Atlantis
+- [Secrets Management](28-secrets-management.md) — Sealed Secrets, Vault Agent
+- [DORA Metrics](45-dora-metrics.md) — GitOps-un deployment frequency-ə təsiri

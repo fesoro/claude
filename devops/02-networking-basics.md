@@ -516,3 +516,22 @@ C: RFC 1918 private range-ləri: 10.0.0.0/8 (böyük şəbəkələr üçün), 17
 13. **VPN client routing**: Split-tunnel və ya full-tunnel – ehtiyaca görə seçin.
 14. **Load balancer sticky session**: Yalnız zəruri olduqda (session storage external olmalıdır).
 15. **Network monitoring**: Prometheus + Blackbox Exporter ilə endpoint-ləri yoxlayın.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. `dig` əmri ilə öz domain-inizi analiz edin: A, AAAA, MX, TXT, NS, CNAME record-larını çəkin; TTL dəyərlərini oxuyun; trace mode ilə (`+trace`) DNS query path-i izləyin
+2. `nmap` ilə öz server-inizdə açıq portları skan edin, gözlənilməyən açıq port varsa UFW ilə bağlayın; `ss -tlnp` ilə həmin portlara baxan prosesləri müəyyən edin
+3. Wireshark/tcpdump ilə HTTP əl sıxışmasını capture edin: `tcpdump -i eth0 -w capture.pcap port 80`; Wireshark-da TCP SYN/SYN-ACK/ACK axınını izləyin
+4. Laravel `.env`-də `APP_URL` dəyərini, `TrustProxies` middleware-ini, CORS konfiqurasiyasını qurun; development mühitdə `curl -v` ilə header-ları yoxlayın
+5. Öz VPC subnet planınızı çəkin: /16 VPC, /24 public subnet (web), /24 private subnet (app), /24 database subnet; NAT Gateway üzərindən private subnet-dən internet çıxışını konfiqurasiya edin
+6. `/etc/hosts`-u redaktə edərək local development domenləri qurun; `dnsmasq` ilə local wildcard DNS resolver konfiqurasiya edin; `.test` TLD üçün avtomatik resolve edin
+
+## Əlaqəli Mövzular
+
+- [Linux Əsasları](01-linux-basics.md) — fayl sistemi, icazələr, əsas komandalar
+- [Linux Şəbəkə](08-linux-networking.md) — firewall konfiqurasiyası, DNS setup
+- [Nginx](11-nginx.md) — reverse proxy, load balancing
+- [SSL/TLS](13-ssl-tls.md) — HTTPS, sertifikatlar
+- [AWS Əsasları](14-aws-basics.md) — VPC, Security Groups, Route53

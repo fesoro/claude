@@ -512,3 +512,22 @@ C: (1) **Tagging + visibility** – heç kim görmədiyi xərci optimize edə bi
 13. **Unit economics** KPI – cost-per-request biznesə bağlı olsun.
 14. **FinOps komitəsi** – Finance, Engineering, Product nümayəndələri aylıq görüş.
 15. **Cloud Custodian / AWS Config** – idle resource, unattached EBS, old snapshot avtomatik silsin.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. AWS Cost Explorer ilə mövcud xərclər auditini edin: top-5 ən baha servis, son 3 ay trend, mühit üzrə breakdown (dev/staging/prod tag-larla); `aws ce get-cost-and-usage` CLI ilə avtomatik aylıq report çəkin
+2. Rightsizing tövsiyələri tətbiq edin: `aws compute-optimizer get-ec2-instance-recommendations` çalışdırın; over-provisioned instance-ları müəyyən edin; non-prod mühitdə bir instance-ı endir (t3.medium → t3.small), performance metriklerini izləyin
+3. S3 lifecycle policy yazın: uploads/ bucket-i üçün — 30 gün sonra Intelligent-Tiering, 90 gün sonra Glacier, 365 gün sonra delete; `aws s3api put-bucket-lifecycle-configuration`; 1 ay sonra xərcin neçə faiz azaldığını hesablayın
+4. Reserved Instance vs On-Demand analiz edin: mövcud production EC2 instance-larının son 3 aylıq utilization-ını görün; 1 illik RI alındıqda qənaəti hesablayın; break-even point tapın; Savings Plan ilə RI-nı müqayisə edin
+5. Infracost-u CI/CD-ə inteqrasiya edin: `infracost breakdown --path=terraform/` ilə Terraform dəyişikliyinin xərc təsirini PR-da göstərin; threshold qurun — aylıq $500-dan artıq xərc artımı varsa PR-ı bloklasın; aylıq xərc forecast çıxarın
+6. Idle resource-ları tapın: `aws ec2 describe-instances --filters Name=instance-state-name,Values=stopped` ilə dayandırılmış EC2-ları tapın; attached olmayan EBS volume-ları tapın (`aws ec2 describe-volumes --filters Name=status,Values=available`); köhnə snapshot-ları tapın; hamısını terminate edin
+
+## Əlaqəli Mövzular
+
+- [AWS Əsasları](14-aws-basics.md) — AWS pricing modeli, instance tipi seçimi
+- [AWS Advanced](26-aws-advanced.md) — Auto Scaling, Spot instance
+- [Terraform Əsasları](23-terraform-basics.md) — Infracost Terraform inteqrasiyası
+- [Site Reliability](34-site-reliability.md) — reliability vs cost trade-off
+- [Multi-Cloud](37-multi-cloud.md) — multi-cloud cost optimization

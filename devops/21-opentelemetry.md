@@ -511,3 +511,22 @@ C: Adətən 1-5% CPU overhead, bir neçə MB RAM. Batch exporter və sampling pe
 13. **OTEL_SDK_DISABLED=true** environment variable ilə tez söndürə biləsən (development/test).
 14. **Version pinning** – SDK və Collector version-larını sabitləşdir.
 15. **Dashboard və alert** yarat – OTel-in özünün sağlamlığı üçün.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Laravel-ə OTel PHP SDK inteqrasiya edin: `open-telemetry/opentelemetry-php` quruyun, `TracerProvider` bootstrap-da initialize edin; hər HTTP request üçün span yaradın, DB sorğularını child span kimi əlavə edin; Jaeger UI-da trace görün
+2. OTel Collector qurun: `otelcol-contrib` Docker image-i işlətdin, `receivers: [otlp]`, `exporters: [jaeger, prometheus, logging]`, `processors: [batch, memory_limiter]`; Laravel-dən trace göndərin, Collector-da log çıxışını izləyin
+3. Trace sampling konfigurasiya edin: parent-based sampler (production: 10%), `always_on` sampler (development); error olan span-ların 100% sample edilməsini konfigurasiya edin (`ParentBasedSampler` + custom rule); sampling nisbətini məlumat həcmi vs dəyər müqayisəsi ilə əsaslandırın
+4. Custom span attribute əlavə edin: `user.id`, `order.id`, `tenant.id` — business-specific context; `span->setAttribute('db.query', $sql)`, `span->setAttribute('http.request_content_length', $size)`; Jaeger-də attribute filtresi ilə axtarış edin
+5. Log-trace korrelyasiyası qurun: Monolog handler yazın ki hər log entry-də `trace_id` + `span_id` olsun; Kibana-da log-u tapdıqda Jaeger-ə link izləyin; distributed trace-in hər servis hissəsini log + trace birlikdə debug edin
+6. OTel Collector high availability qurun: iki Collector replica, Laravel-dən gRPC OTLP, load balancer; bir Collector-u dayandırın, trace-lərin digərinə keçdiyini yoxlayın; `otelcol_exporter_sent_spans` metrikini Prometheus-dan izləyin
+
+## Əlaqəli Mövzular
+
+- [Distributed Tracing](22-distributed-tracing.md) — Jaeger, Tempo, span, context propagation
+- [Prometheus](18-monitoring-prometheus.md) — OTel → Prometheus metrics export
+- [ELK Stack](20-elk-stack.md) — OTel → Elasticsearch log shipping
+- [Observability](42-observability.md) — traces pillar, maturity model
+- [Logging & Monitoring](38-logging-monitoring.md) — structured logs, trace korrelyasiyası

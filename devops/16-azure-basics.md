@@ -520,3 +520,22 @@ C: (1) App Service-də System-assigned Managed Identity aktiv et. (2) Key Vault-
 13. **Terraform/BICEP state-i** Storage Account-da saxla (locking, versioning).
 14. **Microsoft Defender for Cloud** – security posture management.
 15. **Backup və Disaster Recovery** – Azure Backup, Geo-redundancy, Failover Groups.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Azure App Service-də Laravel deploy edin: `az webapp create`, PHP 8.3 runtime, `az webapp config appsettings set` ilə env variables, GitHub Actions ilə CI/CD; deployment slot (staging) qurun, swap əməliyyatı ilə blue-green deploy edin
+2. AKS cluster qurun: `az aks create --node-count 2`, `kubectl` credentials əldə edin, Helm ilə Laravel deploy edin, Managed Identity ilə Key Vault-dan secret-ləri oxuyun; `az aks scale` ilə node say dəyişdirin
+3. Azure Key Vault + Managed Identity qurun: system-assigned identity aktiv edin, Key Vault-da secret yaradın, `az keyvault set-policy` ilə oxuma icazəsi verin; Laravel ServiceProvider-da Azure SDK ilə secret oxuyun (password hardcode etmədən)
+4. Blob Storage üçün Laravel konfigurasiya edin: `azure` disk driver (flysystem-azure), connection string yerinə Managed Identity ilə auth; `php artisan tinker`-də `Storage::disk('azure')->put('test.txt', 'hello')` test edin; private URL imzalayın
+5. Azure Monitor + Application Insights qurun: PHP SDK-nı laravel app-a inteqrasiya edin, custom event göndərin; Log Analytics workspace-də KQL ilə xəta sorğusu yazın: `traces | where message contains "Exception" | summarize count() by bin(timestamp, 1h)`
+6. BICEP template yazın: App Service Plan + Web App + MySQL Flexible Server + Key Vault — parametrize edin (environment: dev/staging/prod); `az deployment group create --what-if` ilə preview edin; `az bicep decompile` ilə mövcud resource-dan BICEP generasiya edin
+
+## Əlaqəli Mövzular
+
+- [AWS Əsasları](14-aws-basics.md) — AWS ilə müqayisə
+- [GCP Əsasları](15-gcp-basics.md) — GCP ilə müqayisə
+- [Terraform Əsasları](23-terraform-basics.md) — azurerm Terraform provider
+- [Secrets Management](28-secrets-management.md) — Azure Key Vault, Managed Identity
+- [Container Security](29-container-security.md) — AKS pod security, RBAC

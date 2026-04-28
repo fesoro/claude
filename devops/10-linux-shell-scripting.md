@@ -644,3 +644,22 @@ protected function schedule(Schedule $schedule)
 8. **İnput validation** edin - argumentləri yoxlayın
 9. **Idempotent** scriptlər yazın - təkrar icra eyni nəticəni versin
 10. **README/usage** əlavə edin - `--help` flag dəstəkləyin
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Laravel deployment script yazın: `set -euo pipefail`, rəngli log funksiyası, backup əvvəlki versiyadan, `git pull`, `composer install --no-dev`, `php artisan migrate --force`, `php artisan config:cache`, `php artisan queue:restart`, Nginx+FPM restart, health check; xəta baş verərsə avtomatik rollback
+2. Log analiz script-i yazın: Nginx access log-undan `awk`/`grep` ilə top-10 ən çox ziyarət edən IP, top-10 ən yavaş endpoint (response time > 1s), saatlıq request count-u çıxarın; nəticələri `/var/log/daily-report.log`-a yazın
+3. Server health check script-i yazın: disk > 80% olanda, RAM > 90% olanda, 5 dəqiqəlik CPU load > nproc*0.8 olanda email + Slack webhook bildiriş göndərsin; cron-la hər 5 dəqiqədə işləsin
+4. `sed` ilə multi-environment konfiqurasiya dəyişimi: `.env.example`-dan `.env` yaradın, `DB_HOST=__DB_HOST__` kimi placeholder-ləri environment variable-larla əvəz edin; `sed -i "s/__DB_HOST__/${DB_HOST}/g"` pattern istifadə edin
+5. Batch fayl emalı script-i: `/var/www/storage/app/uploads/` altındakı 30 gündən köhnə faylları tapın, tar.gz-ə arxivləyin, S3-ə upload edin (`aws s3 cp`), yerli faylı silin; `find -mtime +30 -exec` istifadə edin
+6. Monitoring dashboard script-i: `watch -n 2` ilə real-time `ps aux --sort=-%cpu | head -15`, disk + RAM + network interface traffic-i ($rx/$tx bytes) eyni terminaldə göstərin; ANSI escape codes ilə rənglendirin
+
+## Əlaqəli Mövzular
+
+- [Linux Əsasları](01-linux-basics.md) — fayl sistemi, icazələr, əsas komandalar
+- [Linux Proses İdarəetmə](07-linux-process-management.md) — systemd, cron
+- [CI/CD Deployment](39-cicd-deployment.md) — deployment pipeline-da shell skriptlər
+- [Backup Strategiyaları](17-backup-strategies.md) — backup skriptləri, cron
+- [Performance Tuning](30-performance-tuning.md) — monitoring, log analiz

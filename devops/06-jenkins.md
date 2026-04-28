@@ -653,3 +653,22 @@ stage('Integration Test') {
 8. **Notifications** - Build nəticələrini Slack/email ilə bildirin
 9. **Backup** - Jenkins home directory-ni mütəmadi backup edin
 10. **Plugin Management** - Yalnız lazımi pluginləri quraşdırın, aktual saxlayın
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Deklarativ Jenkinsfile yazın: `agent { docker { image 'php:8.3' } }`, `stages`: checkout → composer → test → build → deploy; `post { failure { mail to: '...', subject: '...' } }` əlavə edin
+2. Shared Library yaradın: `vars/deployLaravel.groovy` — `call(Map config)` method-u, SSH deployment məntiqi, rollback funksiyası; digər layihənin Jenkinsfile-ında `@Library('my-shared-lib')` ilə çağırın
+3. Multibranch Pipeline konfiqurasiya edin: Git repo-dan avtomatik branch detect etsin, `main` branch-da production, `develop`-da staging deploy olsun; yeni branch yaradılanda avtomatik pipeline yaransın
+4. `input` addımı ilə manual approval gate qurun: staging deploy-dan sonra production deploy əvvəl 30 dəqiqə gözləsin; approve/reject edən user adını `BUILD_USER` kimi log-a yazın
+5. Jenkins Credentials Store-a SSH key, API token, DB password daxil edin; Jenkinsfile-da `withCredentials([sshUserPrivateKey(credentialsId: '...', keyFileVariable: 'SSH_KEY')])` ilə istifadə edin; credential-ın log-da görünmədiyini yoxlayın
+6. Parallel test execution qurun: unit test-ləri 3 agent-da paralel işlədin (`parallel { stage('Unit 1') {...} stage('Unit 2') {...} }`); build time-ı sequential ilə müqayisə edin; test report-ları `junit` plugin ilə birləşdirin
+
+## Əlaqəli Mövzular
+
+- [GitHub Actions](04-github-actions.md) — workflow syntax, reusable workflows
+- [GitLab CI/CD](05-gitlab-ci.md) — .gitlab-ci.yml, DAG pipeline
+- [CI/CD Konseptləri](03-cicd-concepts.md) — pipeline design, fail-fast
+- [CI/CD Deployment](39-cicd-deployment.md) — artifact management, deploy stages
+- [Ansible](25-ansible.md) — Jenkins Agent-da Ansible playbook işlətmə

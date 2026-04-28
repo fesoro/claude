@@ -516,3 +516,22 @@ C: VPC Endpoint – AWS xidmətlərinə (S3, DynamoDB, SQS və s.) internet üz�
 13. **Lambda concurrency limit**: Runaway function-lara qarşı reserved concurrency təyin edin.
 14. **SQS Long Polling**: ReceiveMessageWaitTimeSeconds=20 qoyun (empty response sayını azaldır).
 15. **Health Checks**: ALB + ECS health check-lər Laravel `/health` endpoint-inə yönəldilməlidir.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. ECS Fargate-də Laravel API deploy edin: task definition JSON (CPU: 512, Memory: 1024, env vars from Secrets Manager), service yaradın (desired count: 2), ALB target group, health check `/health`; `aws ecs update-service --force-new-deployment` ilə zero-downtime update edin
+2. Lambda ilə SQS-i birləşdirin: Laravel Queue job-unu Bref ilə Lambda-ya çevirin, `handler.php` yazın; SQS trigger konfigurasiya edin (batch size: 10, visibility timeout: 60s); DLQ əlavə edin; Lambda log-larını CloudWatch-da izləyin
+3. CloudWatch custom metric göndərin: Laravel-dən `aws cloudwatch put-metric-data` ilə `CheckoutDuration` metric-i (namespace: `Laravel/App`); `MetricAlarm` yaradın — ortalama > 2s olduqda SNS → email; alarm state-ni test edin
+4. Auto Scaling target tracking qurun: ECS service üçün `cpu_utilization` target 60% — load test əsnasında (`ab -n 10000 -c 100`) scale-out baş verdiyini izləyin; `aws application-autoscaling describe-scaling-activities` ilə event log oxuyun
+5. ElastiCache Redis cluster qurun: replication group (1 primary + 1 replica), multi-AZ failover; Laravel `REDIS_HOST`, `REDIS_PORT` konfigurasiyası; `redis-cli -h <endpoint> PING`, cache hit/miss ratio-nu CloudWatch-da görün; primary-ni failover edin
+6. SQS FIFO queue ilə order processing qurun: `ContentBasedDeduplication`, `MessageGroupId = order_id` (eyni sifarişin paralel işlənməməsi); `MaxReceiveCount: 3` → DLQ; Laravel-də `ShouldQueue` + `onQueue('orders.fifo')` işləyin; `aws sqs get-queue-attributes` ilə ApproximateNumberOfMessages izləyin
+
+## Əlaqəli Mövzular
+
+- [AWS Əsasları](14-aws-basics.md) — EC2, S3, VPC, IAM əsasları
+- [Container Security](29-container-security.md) — ECS task IAM role, secret injection
+- [Secrets Management](28-secrets-management.md) — AWS Secrets Manager, Parameter Store
+- [Terraform Əsasları](23-terraform-basics.md) — ECS/Lambda Terraform konfiqurasiyası
+- [Logging & Monitoring](38-logging-monitoring.md) — CloudWatch Logs, structured logging

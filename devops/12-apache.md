@@ -467,3 +467,22 @@ max_input_vars = 5000
 8. **.env faylını qoruyun** - FilesMatch ilə deny edin
 9. **Log rotation** konfiqurasiya edin - logrotate istifadə edin
 10. **SSL/TLS aktiv edin** - Let's Encrypt ilə pulsuz sertifikat alın
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Apache ilə Laravel virtual host qurun: `sites-available/laravel.conf` faylı yaradın, `DocumentRoot` `/public`-a yönləndirin, `AllowOverride All` aktiv edin, `mod_rewrite` enable edin; `apache2ctl configtest` ilə yoxlayın
+2. Apache-dən Nginx-ə miqrasiya planı hazırlayın: mövcud `.htaccess` qaydalarını Nginx `location` bloklarına çevirin; `rewrite` qaydalarını test edin; migration zamanı downtime-sız keçid strategiyasını yazın
+3. `mod_status` aktivləşdirin və Apache performans metriklerini oxuyun: aktiv worker sayı, idle worker-lər, requests per second; bu məlumatları əsas alaraq `MaxRequestWorkers` dəyərini ayarlayın
+4. Apache ilə SSL qurun: Let's Encrypt + Certbot (`certbot --apache`), HTTP→HTTPS redirect, HSTS header əlavə edin; `SSLLabs.com` skan nəticəsini A+ etmək üçün cipher suite konfiqurasiya edin
+5. `.htaccess` faylında rate limiting simulyasiyası: `mod_evasive` module-u quruyun, DDoS mühafizəsi konfiqurasiya edin; 60 saniyədə 100-dən artıq sorğu gələndə IP-ni blok edin
+6. Apache error log analiz edin: son 1 saatın 500 xətalarını çəkin; unique error count-u hesablayın; ən çox xəta verən endpoint-ləri tapın (`awk` istifadə edərək)
+
+## Əlaqəli Mövzular
+
+- [Nginx](11-nginx.md) — reverse proxy, load balancing, FastCGI cache
+- [SSL/TLS](13-ssl-tls.md) — Let's Encrypt, HTTPS konfiqurasiyası
+- [Linux Proses İdarəetmə](07-linux-process-management.md) — systemd, PHP-FPM pool
+- [Performance Tuning](30-performance-tuning.md) — PHP-FPM tuning, OPcache
+- [Linux Şəbəkə](08-linux-networking.md) — firewall, port açma

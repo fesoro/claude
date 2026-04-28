@@ -570,3 +570,23 @@ C: (1) **Hər SEV1/SEV2-dən sonra postmortem məcburi** – 5 iş günü içind
 13. **Rollback-ı asan et** – 1 əmr/klik ilə əvvəlki versiyaya.
 14. **Error budget** – SLO-ya görə incident impact-i əsaslandır.
 15. **Postmortem publishing** – komanda daxili, sonra şirkət daxili paylaş.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Layihəniz üçün incident severity matrisi yaradın: SEV1-4 hər biri üçün — hansı simptom, kim xəbər tutulur, cavab müddəti, eskalasiya proseduru; real keçmiş incident-ləri bu matrisə uyğunlaşdırın
+2. Critical servis üçün runbook yazın: Laravel API down ssenariyosu — health check steps, common causes checklist, bərpa əmrləri, rollback addımları, kime eskalasiya; runbook-u team-dən birinin test etməsini istəyin
+3. Blameless postmortem şablonu doldurun: real və ya simulyasiya edilmiş incident seçin; timeline reconstruct edin, 5 Whys tətbiq edin, root cause müəyyən edin, action items yazın (assignee + deadline ilə); sonrakı incident-dən öyrənilən dərs
+4. PagerDuty/OpsGenie-də on-call rotation qurun: weekly rotation, eskalasiya policy (5 dəqiqə cavab yoxdursa ikinci şəxsə), business hours vs after-hours fərqli routing; test alert göndərin, rotation-ın düzgün işlədiyini yoxlayın
+5. Alert noise-u azaldın: mövcud Prometheus/Alertmanager alert-lərini analiz edin; 7 gündə neçə dəfə fire edilmiş, neçəsi action tələb etmiş; `inhibit_rules` ilə əlaqəli alert-ləri suppress edin; `group_wait: 5m` ilə flap alert-ləri gecikdirin
+6. GameDay keçirin: production-u əhatə etməyən staging mühitdə failure inject edin — DB-ni dayandırın, network partition simulyasiya edin; incident response prosesini real olaraq keçin; tapılan boşluqları runbook-da düzəldin
+
+## Əlaqəli Mövzular
+
+- [SLA/SLO/SLI](43-sla-slo-sli.md) — error budget, burn rate, SLO violation trigger
+- [Prometheus](18-monitoring-prometheus.md) — alert rules, Alertmanager routing
+- [Observability](42-observability.md) — metrics/logs/traces incident zamanı
+- [Logging & Monitoring](38-logging-monitoring.md) — structured logs, alerting
+- [Chaos Engineering](33-chaos-engineering.md) — GameDay, failure injection
+- [Site Reliability](34-site-reliability.md) — SRE on-call, postmortem culture

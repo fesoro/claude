@@ -517,3 +517,22 @@ echo "All services restarted"
 8. **Health checks** - Servislərin sağlamlığını avtomatik yoxlayın
 9. **Restart policies** - systemd Restart=always ilə servisləri avtomatik bərpa edin
 10. **OOM Killer** - Critical servislərdə OOMScoreAdjust=-1000 ilə qoruyun
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Laravel üçün systemd service unit yazın: `laravel-worker.service` faylı yaradın, `User=www-data`, `Restart=always`, `RestartSec=3`, `StandardOutput=journal`, `StandardError=journal` konfiqurasiya edin; enable + start edin, `journalctl -u laravel-worker -f` ilə log izləyin
+2. PHP-FPM pool konfiqurasiyasını RAM-a görə hesablayın: mövcud RAM-ı, hər FPM worker-in yaddaş istifadəsini tapın; `pm = static`, `pm.max_children` dəyərini hesablayın; `php-fpm -tt` ilə konfiqurasiya yoxlayın
+3. `top`/`htop` ilə yüksək CPU/RAM istifadəsi edən prosesləri tapın; `strace -p <pid>` ilə prosesin nə etdiyini izləyin; `lsof -p <pid>` ilə açıq fayl/socket-ləri görün
+4. Cron idarəetməsi: `crontab -e` ilə Laravel scheduler üçün `* * * * * php /var/www/artisan schedule:run` əlavə edin; `cron.log`-a çıxışı redirect edin; `systemd timer` ilə eyni işi görün və müqayisə edin
+5. Zombie proses senariyosunu simulyasiya edin: bash script-lə zombie yaradın, `ps aux | grep Z` ilə tapın, parent proses-i kill edərək zombie-ni təmizləyin
+6. OOM Killer davranışını test edin: `stress --vm 1 --vm-bytes 90%` ilə RAM doldurun; `dmesg | grep -i "oom"` ilə hansı prosesin kill edildiyini görün; PHP-FPM üçün `OOMScoreAdjust=-500` ilə qoruma əlavə edin
+
+## Əlaqəli Mövzular
+
+- [Linux Əsasları](01-linux-basics.md) — fayl sistemi, əsas komandalar
+- [Linux Shell Scripting](10-linux-shell-scripting.md) — bash skriptləri, deployment avtomatlaşması
+- [Performance Tuning](30-performance-tuning.md) — PHP-FPM tuning, OPcache, sysctl
+- [Nginx](11-nginx.md) — Nginx worker_processes, PHP-FPM socket
+- [CI/CD Deployment](39-cicd-deployment.md) — deployment pipeline-da proses idarəsi

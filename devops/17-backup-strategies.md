@@ -516,3 +516,22 @@ C: GFS (Grandfather-Father-Son) strategy: daily (7 gün), weekly (4 həftə), mo
 15. **Database consistency**: `--single-transaction` (MySQL), WAL archiving (PostgreSQL).
 16. **Exclude unnecessary**: vendor/, node_modules/, cache files – backup yer tutmasın.
 17. **Disaster communication plan**: Incident zamanı kim kimə xəbər verir?
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Spatie Laravel Backup qurun: `composer require spatie/laravel-backup`, config publish edin, `disks: ['s3']`, `keepAllBackupsForDays: 7`, `keepDailyBackupsForDays: 30`, `keepWeeklyBackupsForDays: 52`; `php artisan backup:run` ilə test edin, S3-də faylı yoxlayın
+2. Tam `mysqldump` backup script-i yazın: `--single-transaction --routines --triggers`, gzip compress, timestamp-lı fayl adı, S3-ə yüklə (`aws s3 cp`), 30 gündən köhnəni sil; cron-a əlavə edin; script-i test edin, restore edin (`mysql < dump.sql.gz`)
+3. Backup verification script-i yazın: hər gün backup faylını S3-dən endir, MD5 checksum yoxla, test DB-yə restore et, `SELECT COUNT(*)` sorğusu işlət, nəticəni email ilə göndər; "backup var" ilə "backup işlər" arasındakı fərqi praktiki göstərin
+4. XtraBackup ilə incremental backup qurun: bazar ertəsi full backup, çərşənbə axşamı-şənbə incremental; backup apply edilmiş directory-dən restore prosesini step-by-step keçin; `mysqldump` ilə performans müqayisəsi edin
+5. Point-in-Time Recovery (PITR) test edin: MySQL binlog aktiv edin, 3 saat boyunca dummy data insert edin, sonra spesifik timestamp-a restore edin; "15 dəqiqə əvvəlin database-ini geri qaytarın" ssenariyosunu simulyasiya edin
+6. DR (Disaster Recovery) drill keçirin: production backup-ından tam yeni environment qurun — DB restore, kod deploy, env variables, DNS dəyişikliyi; RTO (neçə saata hazır oldu) ölçün; proseduru runbook kimi sənədləyin
+
+## Əlaqəli Mövzular
+
+- [Linux Disk & Yaddaş](09-linux-disk-storage.md) — LVM snapshot, disk management
+- [Linux Shell Scripting](10-linux-shell-scripting.md) — backup skriptləri, cron
+- [AWS Əsasları](14-aws-basics.md) — S3 storage classes, RDS snapshot
+- [Incident Response](31-incident-response.md) — DR plan, runbook
+- [SLA/SLO/SLI](43-sla-slo-sli.md) — RTO/RPO hədəfləri

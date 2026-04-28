@@ -528,3 +528,22 @@ C: MTTR (Mean Time To Recovery) – orta bərpa müddəti. Aşağı olmalıdır 
 15. **Kombine test**: Network + DB + traffic spike – real scenarios.
 16. **Learning mindset**: Məqsəd: sistem qırmaq deyil, zəiflik öyrənmək.
 17. **Application-level resilience**: Retry, timeout, circuit breaker, bulkhead – kod səviyyəsində.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Steady state hypothesis müəyyən edin: Laravel API üçün — checkout success rate > 99.5%, p99 latency < 500ms, queue processing lag < 60s; Prometheus-da bu metrikləri izlədiyinizi yoxlayın; baseline dəyərlərini ölçüb qeyd edin
+2. Chaos Monkey-ni staging-də işlədin: `netflix/chaosmonkey` və ya `pumba` Docker tool-u ilə random pod terminate edin; `kubectl get pods -w` ilə Kubernetes-in pods-ları bərpa etdiyini izləyin; bərpa müddətini ölçün
+3. Pumba ilə network failure inject edin: `pumba netem --tc-image gaiadocker/iproute2 delay --time 500 laravel-app`; 500ms network gecikməsi altında Laravel-in nasıl davrandığını test edin; timeout threshold-larını ayarlayın; netem `loss 20%` ilə packet loss test edin
+4. Database failure ssenariyosu keçirin: MySQL-i `SIGSTOP` ilə dondur, Laravel-in `DB::reconnect()` edib etmədiyini izləyin; connection pool exhaustion zamanı ne baş verir; `mysql --connect-timeout=5` ilə timeout sınayın; circuit breaker işləyirmi?
+5. Load spike chaos edin: staging-də normal trafiki işlədərkən qəfil 10x spike verin (`ab -n 5000 -c 500`); auto-scaling tetiklendi? Rate limiting işlədi? Queue worker-lar geridə qaldımı? Metrikləri Grafana-da izləyin; disaster yaranmadan recovery olduğunu yoxlayın
+6. GameDay planı yazın: 2 saatlıq GameDay — 30 dəqiqə hazırlıq, 4 failure scenario (DB down, network partition, disk full, high load), hər scenarioda incident response prosesini keçin, 30 dəqiqə retrospektiv; tapılan boşluqları sənədləyin
+
+## Əlaqəli Mövzular
+
+- [Incident Response](31-incident-response.md) — GameDay, postmortem, runbook
+- [Site Reliability](34-site-reliability.md) — error budget, resilience testing
+- [Observability](42-observability.md) — chaos experiment zamanı monitoring
+- [Service Mesh](32-service-mesh.md) — Istio fault injection
+- [Load Testing](46-load-testing.md) — k6, stress test, chaos ilə kombinasiya

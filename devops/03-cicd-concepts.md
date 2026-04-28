@@ -492,3 +492,22 @@ QUEUE_CONNECTION=redis
 8. **Branch Protection** - Main branch-a direct push qadağan, PR required, CI must pass
 9. **Monitoring After Deploy** - Deploy-dan sonra metrics və logs izlənilməlidir
 10. **Documentation** - Pipeline-ların dokumentasiyası aktual saxlanılmalıdır
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Mövcud manual deployment prosesini audit edin: hər addımı yazın (git pull, composer install, migrate, restart FPM), sonra bu addımların hansını avtomatlaşdırmaq olar siyahı hazırlayın
+2. Trunk-based development qaydaları qurun: main branch-a push qadağanı aktiv edin, PR review məcburi edin, CI keçməyincə merge bloklandığını test edin
+3. Bir test pipeline-ı konseptual olaraq dizayn edin: lint → unit test → integration test → build → staging deploy → smoke test → production deploy; hər stage-in hansı hallarda fail etməsi lazım olduğunu yazın
+4. Feature flag həyata keçirin: Laravel Pennant ilə yeni feature 5% user-ə açın, rəqəm artıraraq 100%-ə çatdırın; tam deployment olmadan feature release-ni simulyasiya edin
+5. "Pipeline as Code" anlayışını tətbiq edin: GitHub Actions və ya GitLab CI YAML yazın ki `.env.example`-da olmayan dəyişən varsa deployment fail olsun
+6. CI/CD metrikləri hesablayın: deployment frequency (həftə neçə deploy), lead time (commit-dən production-a neçə dəqiqə), MTTR (son 3 incidetdə ortalama bərpa müddəti) — rəqəmləri DORA metrik benchmark-larla müqayisə edin
+
+## Əlaqəli Mövzular
+
+- [GitHub Actions](04-github-actions.md) — workflow syntax, Laravel CI/CD
+- [GitLab CI/CD](05-gitlab-ci.md) — .gitlab-ci.yml, stages, pipeline
+- [Jenkins](06-jenkins.md) — Jenkinsfile, Laravel deploy
+- [CI/CD Deployment](39-cicd-deployment.md) — pipeline dizaynı, artifact management
+- [DORA Metrics](45-dora-metrics.md) — deployment frequency, lead time, MTTR

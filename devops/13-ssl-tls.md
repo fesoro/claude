@@ -390,3 +390,23 @@ SESSION_SECURE_COOKIE=true
 8. **Private key-i qoruyun** - 600 permission, root-a məxsus
 9. **SSL Labs test** keçirin - A+ reytinq hədəfləyin
 10. **Certificate Transparency** izləyin - Sizin domain-ə yanlış sertifikat verilməsini izləyin
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Let's Encrypt ilə production sertifikat alın: Certbot `--nginx` plugin ilə, wildcard sertifikat üçün DNS challenge (`--preferred-challenges dns-01`), avtomatik yenilənmə `cron`/`systemd timer`; `certbot renew --dry-run` ilə test edin
+2. SSL konfiqurasiyasını sertifikasiya edin: `openssl s_client -connect domain.com:443 -tls1_2` ilə TLS 1.2 dəstəyini, `openssl s_client -connect domain.com:443 -tls1_3` ilə TLS 1.3 dəstəyini yoxlayın; SSL Labs (ssllabs.com/ssltest) ilə A+ reytinq əldə edin
+3. Self-signed sertifikat ilə mTLS qurun: CA sertifikatı, server sertifikatı, client sertifikatı yaradın; Nginx-də `ssl_verify_client on; ssl_client_certificate /etc/nginx/client-ca.crt`; `curl --cert client.crt --key client.key` ilə test edin
+4. HSTS preload qurun: Nginx-də `Strict-Transport-Security: max-age=31536000; includeSubDomains; preload`; `hstspreload.org` ilə eligibility check edin; Laravel-də `SecureHeaders` middleware əlavə edin
+5. Sertifikat expire monitoring qurun: bash script ilə `openssl s_client -connect domain.com:443 | openssl x509 -noout -dates` — expire tarixi < 30 gün olarsa email göndərsin; cron-la hər gün işləsin
+6. Laravel-i tam HTTPS-ə konfiqurasiya edin: `URL::forceScheme('https')`, `TrustProxies` middleware (AWS ALB üçün `$proxies = '*'`), `session.secure = true`, `cookie.secure = true`; `curl -v http://domain.com` ilə 301 redirect-i yoxlayın
+
+## Əlaqəli Mövzular
+
+- [Nginx](11-nginx.md) — SSL/TLS Nginx konfiqurasiyası, cipher suite
+- [Apache](12-apache.md) — mod_ssl, SSL virtual host
+- [Şəbəkə Əsasları](02-networking-basics.md) — TLS handshake, PKI
+- [AWS Əsasları](14-aws-basics.md) — ACM (AWS Certificate Manager), ALB HTTPS
+- [Container Security](29-container-security.md) — mTLS service-to-service
+- [Secrets Management](28-secrets-management.md) — sertifikat private key idarəsi

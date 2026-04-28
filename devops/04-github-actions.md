@@ -658,3 +658,23 @@ jobs:
 8. **Reusable workflows** - Təkrarlanan pipeline-ları workflow_call ilə paylaşın
 9. **Status badges** - README-ə workflow status badge əlavə edin
 10. **Dependabot** - Dependency update-ləri avtomatlaşdırın
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Laravel layihəsi üçün tam CI workflow yazın: `push` + `pull_request` trigger, PHP 8.3 matrix, `composer install --no-dev`, `php artisan test --parallel`, test fail olarsa deploy dayandırılsın
+2. Reusable workflow yaradın: `deploy.yml` adlı workflow, `environment` input parametri qəbul etsin (staging/production), SSH ilə server-ə qoşulub deployment script-i işlətsin; başqa workflow-dan `uses:` ilə çağırın
+3. GitHub Secrets qurun: `SSH_PRIVATE_KEY`, `APP_KEY`, `DB_PASSWORD`; workflow-da `${{ secrets.SSH_PRIVATE_KEY }}`ilə istifadə edin; secret-i echo ilə mask-lanmasını test edin
+4. Composer cache konfiqurasiya edin: `actions/cache@v4` ilə `vendor/` cache edin, cache key-i `composer.lock` hash-inə bağlayın; iki ardıcıl run arasında sürət fərqini ölçün
+5. Matrix build qurun: `php: [8.1, 8.2, 8.3]` × `laravel: [10, 11]` — 6 paralel job yaradın; yalnız PHP 8.3 + Laravel 11 kombinasiyasında production deploy baş versin
+6. `workflow_run` trigger ilə CI→CD chain qurun: test workflow keçəndən sonra avtomatik deploy workflow başlasın; manual approval üçün `environment: production` protection rule qurun
+
+## Əlaqəli Mövzular
+
+- [GitLab CI/CD](05-gitlab-ci.md) — .gitlab-ci.yml, stages, Laravel pipeline
+- [Jenkins](06-jenkins.md) — Jenkinsfile, shared library
+- [CI/CD Konseptləri](03-cicd-concepts.md) — pipeline stages, trunk-based development
+- [CI/CD Deployment](39-cicd-deployment.md) — artifact management, deploy stages
+- [Container Security](29-container-security.md) — CI/CD-də image scanning
+- [DORA Metrics](45-dora-metrics.md) — deployment frequency ölçmə

@@ -653,3 +653,22 @@ C: Image scan statik analiz, runtime security isə işləyən container-in davra
 15. **Runtime security**: Falco ilə anomaly detection, audit logs.
 16. **Regular patching**: Base image-ləri rebuild edin (həftəlik), dependencies update.
 17. **CIS benchmarks**: Docker Bench, kube-bench ilə yoxlayın.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Laravel Dockerfile-ı Trivy ilə skan edin: `trivy image --severity HIGH,CRITICAL laravel-app:latest`; tapılan vulnerability-ləri base image yeniləməklə (`FROM php:8.3-fpm-alpine`) azaldın; CI/CD-ə `trivy image --exit-code 1 --severity CRITICAL` əlavə edin
+2. Non-root user ilə secure Dockerfile yazın: `RUN addgroup -S app && adduser -S app -G app`, `COPY --chown=app:app`, `USER app`; `.dockerignore` yaradın; `docker run --read-only --tmpfs /tmp` ilə işlədib Laravel-in `/tmp`-yə yazmasını yoxlayın
+3. Kubernetes Network Policy qurun: `default-deny-all` ingress + egress policy yaradın, sonra explicit allow (Laravel → MySQL, Laravel → Redis, Nginx → Laravel); `kubectl run test --image=busybox --rm -it -- wget http://mysql-service` ilə bloklandığını yoxlayın
+4. K8s RBAC qurun: `laravel-app` namespace üçün ServiceAccount, Role (`get/list` pods, `create` jobs), RoleBinding; `kubectl auth can-i delete deployments --as=system:serviceaccount:laravel-app:laravel-app` ilə test edin
+5. Kyverno policy yazın: `latest` tag-lı image-ləri deploy etməyi qadağan edin; `runAsNonRoot: true` olmayan pod-ları reject edin; `kubectl apply` ilə policy test edin, violation hallarda aldığınız xəta mesajını oxuyun
+6. Docker Bench for Security işlədin: `docker run --net host --pid host --userns host --cap-add audit_control docker/docker-bench-security`; WARN və FAIL olan maddələri tapın; kritik olanları fix edib yenidən skan edin; score-u artırın
+
+## Əlaqəli Mövzular
+
+- [Secrets Management](28-secrets-management.md) — Docker/K8s secret-lər, Vault Agent
+- [AWS Advanced](26-aws-advanced.md) — ECS task IAM role, ECR image scanning
+- [CI/CD Deployment](39-cicd-deployment.md) — CI/CD-də image security check
+- [Service Mesh](32-service-mesh.md) — mTLS, Istio policy
+- [Infrastructure Patterns](27-infrastructure-patterns.md) — immutable infrastructure, image build

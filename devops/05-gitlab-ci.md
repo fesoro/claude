@@ -644,3 +644,22 @@ push-latest:
 8. **Artifact expire** - Artifacts-a expire_in qoyun, disk space qənaət edin
 9. **Retry on failure** - Flaky infrastructure failures üçün retry istifadə edin
 10. **interruptible** - Yeni push olanda köhnə pipeline-ı cancel edin
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Laravel üçün GitLab CI pipeline yazın: `stages: [lint, test, build, deploy]`, PHP 8.3 image, `composer install`, `phpstan` lint, `artisan test`, staging deploy; `rules:` ilə yalnız `main` branch-da production deploy olsun
+2. Review Apps konfiqurasiya edin: hər MR üçün unikal `$CI_COMMIT_REF_SLUG` subdomain yaradılsın, Docker Compose ilə ayağa qalxsın; MR bağlanan kimi `on_stop:` ilə silinsin
+3. `artifacts` vs `cache` fərqini praktiki test edin: composer vendor-u cache-ə qoyun (job-lar arası paylaşıq), test report-u artifact kimi saxlayın (download üçün); hər ikisinin məzmununu MR-da görün
+4. Shared Runner konfiqurasiya edin: öz serverinizə GitLab Runner quruyun (`gitlab-runner register`), Docker executor seçin; `tags:` ilə yalnız specific runner-ların spesifik job-ları işlətməsini test edin
+5. `needs:` keyword-ü ilə DAG pipeline qurun: test job-ları bir-birindən asılı olmadan paralel işlətsin, amma deploy yalnız hamısı keçəndən sonra başlasın; klassik sequential pipeline ilə sürəti müqayisə edin
+6. GitLab CI-da secret idarəetməsi: CI/CD Variables-a `SSH_KEY`, `APP_ENV` daxil edin; `protected` + `masked` seçin; `.gitlab-ci.yml`-də `before_script`-də istifadə edin; pipeline log-unda mask edilmiş göründüyünü yoxlayın
+
+## Əlaqəli Mövzular
+
+- [GitHub Actions](04-github-actions.md) — workflow syntax, triggers, matrix
+- [Jenkins](06-jenkins.md) — Jenkinsfile, pipeline-as-code
+- [CI/CD Konseptləri](03-cicd-concepts.md) — pipeline stages, trunk-based
+- [CI/CD Deployment](39-cicd-deployment.md) — pipeline dizaynı, artifact
+- [GitOps](35-gitops.md) — Argo CD, Flux CD ilə GitLab entegrasiyası

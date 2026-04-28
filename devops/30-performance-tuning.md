@@ -540,3 +540,22 @@ C: Supervisor ilə idarə edin (avtomatik restart). Worker sayı = CPU core * 2.
 15. **Regular profiling**: Blackfire, Xdebug ilə profiler, bottleneck-ləri tap.
 16. **File descriptors**: `ulimit -n 65535`, systemd override ilə.
 17. **Swap-ı azalt**: `vm.swappiness=10`, swap-ı minimuma endir (memory yaxşıdır).
+
+---
+
+## Praktik Tapşırıqlar
+
+1. PHP-FPM worker sayını hesablayın: `ps aux | grep php-fpm | awk '{print $6}' | sort -n` ilə worker-lərin ortalama RAM istifadəsini tapın; `free -m` ilə mövcud RAM-ı görün; formul tətbiq edin (`pm.max_children = (RAM * 0.8) / avg_worker_mb`); dəyişiklikdən əvvəl/sonra `wrk` ilə benchmark edin
+2. OPcache-i tune edin: `php -i | grep opcache` ilə cari vəziyyəti görün; `opcache.memory_consumption=256`, `opcache.validate_timestamps=0`, `opcache.jit=tracing`, `opcache.jit_buffer_size=64M` konfiqurasiyası; `opcache_get_status()` ilə hit ratio-nu yoxlayın (> 95% olmalıdır)
+3. MySQL slow query log aktivləşdirin: `slow_query_log=1`, `long_query_time=0.1` (100ms), `log_queries_not_using_indexes=1`; `mysqldumpslow -s t -t 10 /var/log/mysql/slow.log` ilə top-10 ən yavaş sorğunu çıxarın; `EXPLAIN` ilə analyze edin
+4. `sysctl` parametrlərini tune edin: `net.core.somaxconn=65535`, `net.ipv4.tcp_tw_reuse=1`, `fs.file-max=1000000`, `vm.swappiness=10`; dəyişiklikdən əvvəl `ss -s` ilə connection stats görün; `sysctl -p` ilə tətbiq edin; load test ilə fərqi ölçün
+5. Laravel N+1 query problemini tapın: `Debugbar` və ya `Telescope` ilə query sayını izləyin; N+1 olan bir endpoint tapın; `with()` eager loading əlavə edin; query sayını azaltın; `EXPLAIN ANALYZE` ilə yeni sorğunun necə işlədiyini görün
+6. `k6` ilə benchmark qurun: əvvəl baseline ölçün (100 VU, 60s), sonra OPcache + FPM tuning tətbiq edin, yenidən ölçün; `RPS`, `p95 latency`, `error rate` metriklerini müqayisə edin; optimization-ın nə qədər təsir etdiyini rəqəmlərlə göstərin
+
+## Əlaqəli Mövzular
+
+- [Linux Proses İdarəetmə](07-linux-process-management.md) — PHP-FPM pool, worker management
+- [Nginx](11-nginx.md) — FastCGI cache, worker_processes
+- [Load Testing](46-load-testing.md) — k6, wrk, Locust ilə benchmark
+- [Observability](42-observability.md) — performance metric-lərin izlənməsi
+- [Prometheus](18-monitoring-prometheus.md) — PHP-FPM metrikləri, custom metrics

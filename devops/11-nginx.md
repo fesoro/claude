@@ -452,3 +452,23 @@ sudo chmod -R 775 /var/www/laravel/bootstrap/cache
 8. **Ayrı log faylları** - Hər virtual host üçün ayrı access/error log
 9. **Gizli faylları bloklayın** - `.env`, `.git` kimi faylları deny edin
 10. **SSL best practices** - TLS 1.2+, güclü cipher-lər, HSTS aktiv edin
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Laravel üçün production-ready Nginx server block yazın: HTTPS-only (HTTP redirect), SSL sertifikat, security headers (HSTS, X-Frame-Options, CSP), `try_files`, PHP-FPM socket, static fayl cache (1 year), `/health` endpoint üçün ayrı location; `nginx -t` ilə test edin
+2. Rate limiting konfiqurasiya edin: login endpoint `/api/auth/login`-ə dəqiqəyə 10 sorğu, ümumi API-yə saniyəyə 100 sorğu; `limit_req_zone` + `limit_req` ilə; test üçün `ab -n 200 -c 10` işlədin, 429 cavabını görün
+3. Upstream load balancer qurun: 3 backend server (127.0.0.1:9001, 9002, 9003), `least_conn` algoritmi, `health_check` (Nginx Plus olmadan `ngx_http_upstream_module`), `backup` server; bir backend-i dayandırın, digərlərinə trafikin keçdiyini yoxlayın
+4. FastCGI cache qurun: `/var/cache/nginx` cache zone, 1GB limit, `$cookie_session` varsa bypass, `200` status-ları 60 saniyə cache; `curl -I` ilə `X-Cache-Status: HIT/MISS` header-ını izləyin; cache invalidation üçün PHP-dən `nginx -s reload` trigger
+5. Nginx access log-unu JSON formatına çevirin: `log_format json_combined` ilə `$remote_addr`, `$request`, `$status`, `$upstream_response_time`, `$request_time` fields; sonra `jq` ilə slow request-ləri filtr edin (> 1s)
+6. `ngx_pagespeed` və ya Nginx-in öz compression-ını test edin: `gzip on; gzip_comp_level 6; gzip_types text/plain application/json`; `curl -H 'Accept-Encoding: gzip' -I` ilə `Content-Encoding: gzip` header-ını görün; before/after ölçüsü müqayisəsi
+
+## Əlaqəli Mövzular
+
+- [Apache](12-apache.md) — virtual hosts, mod_rewrite, müqayisə
+- [SSL/TLS](13-ssl-tls.md) — Let's Encrypt, HTTPS konfiqurasiyası
+- [Linux Şəbəkə](08-linux-networking.md) — firewall, port açma
+- [Performance Tuning](30-performance-tuning.md) — PHP-FPM tuning, OPcache ilə Nginx birlikdə
+- [Linux Proses İdarəetmə](07-linux-process-management.md) — PHP-FPM pool, worker idarəsi
+- [Zero-Downtime Deployment](41-zero-downtime-deployment.md) — Nginx upstream switch, health check

@@ -517,3 +517,22 @@ resource "local_file" "env" {
 8. **Moved blocks** refactoring üçün istifadə edin - state manual manipulyasiya yox
 9. **terraform fmt** ilə kodu formatlayin
 10. **terraform validate** CI pipeline-da çalışdırın
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Reusable Terraform module yaradın: `modules/rds-cluster` — Multi-AZ RDS, parameter group, subnet group, security group — versioning (`source = "git::https://..."`, `?ref=v1.2.0`); semver tag-ları yaradın; başqa layihədən module-u versiya ilə çağırın
+2. Workspace-lərlə multi-environment idarə edin: `terraform workspace new staging`, `terraform workspace new production`; `locals { env_config = { staging = {...}, production = {...} } }` ilə mühitə görə fərqli instance type seçin; `terraform workspace show` ilə cari workspace-i yoxlayın
+3. `lifecycle` qaydaları test edin: `prevent_destroy = true` olan RDS instance-i `terraform destroy`-da nə baş verdiğini görün; `create_before_destroy = true` ilə security group replace-ini sıfır downtime ilə edin; `ignore_changes = [ami]` ilə AMI manual dəyişikliyinin Terraform tərəfindən override edilmədiyini test edin
+4. Dynamic blocks yazın: EC2 security group-un inbound rules-larını list variable-dan `dynamic "ingress"` bloku ilə generasiya edin; `for_each = var.allowed_ports` ilə; plan output-da bütün rule-ların yarandığını yoxlayın
+5. GitHub Actions-da Terraform CI/CD qurun: `terraform fmt -check`, `terraform validate`, `terraform plan -out=tfplan` (PR-da), `terraform apply tfplan` (merge sonrası); OIDC ilə AWS-ə auth edin (secret olmadan); plan output-unu PR comment-ə yazın
+6. `terraform state` əmrləri ilə state surgery edin: `terraform state list` ilə resursları görün, `terraform state mv` ilə modulu rename edin, `terraform state rm` ilə resursu state-dən çıxarın (silmədən), `terraform state pull/push` ilə state-i export/import edin
+
+## Əlaqəli Mövzular
+
+- [Terraform Əsasları](23-terraform-basics.md) — IaC, providers, resources, state
+- [AWS Əsasları](14-aws-basics.md) — AWS resource tipleri
+- [GitOps](35-gitops.md) — Terraform GitOps workflow, Atlantis
+- [Secrets Management](28-secrets-management.md) — Vault Terraform provider, sensitive outputs
+- [CI/CD Deployment](39-cicd-deployment.md) — Terraform CI/CD pipeline

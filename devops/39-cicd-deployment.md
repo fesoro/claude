@@ -1457,3 +1457,23 @@ Bütün istifadəçilərə birdən yeni funksiyanı açmaq — gizli bug bütün
 
 **6. Rollback planı olmadan deploy etmək**
 "Əgər bir şey sınarsa görərik" münasibətiylə deploy etmək — kritik xəta zamanı əvvəlki versiyaya qayıtmaq üçün prosedur bilinmir, downtime uzanır. Hər deploy üçün rollback addımlarını əvvəlcədən sənədlə, Blue-Green deployment-da köhnə mühiti hazır saxla, database migration-larını revertible et.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Artifact-based pipeline qurun: `docker build -t app:$GIT_SHA`, `docker push registry/app:$GIT_SHA`; staging-ə bu artifact deploy edin, test keçsin, eyni artifact production-a gedsin; "build once, deploy many" prinsipi; artifact-ın staging-dən production-a getdiğini doğrulayın
+2. Blue-green deployment pipeline yazın: GitHub Actions-da iki target group (blue/green), mövcud active-i tapın, inactive-ə yeni versiyonu deploy edin, health check keçərsə ALB-i switch edin; manual approval gate əlavə edin; rollback addımını yazın
+3. DB migration CI/CD-ə inteqrasiya edin: `artisan migrate --pretend` ilə dry-run (SQL-i göstər), `artisan migrate:status`-u check edin; `--force` production-da; migration-ı deployment-dan ayrı pipeline stage-ə keçirin; rollback migration hazırlığı
+4. Deployment notification qurun: pipeline başlayanda, keçəndə, fail olduqda Slack-a webhook göndərin; mesajda environment, commit SHA, author, duration; fail olduqda direct link to failed job; "kimə bildiriş getsin" access control qurun
+5. Canary deployment pipeline yazın: GitHub Actions + AWS ALB weighted routing — ilk 5%, 30 dəqiqə izlə, sonra 50%, 1 saat izlə, sonra 100%; izləmə mərhələlərini Prometheus alert-lərlə avtomatlaşdırın; error rate yüksəkdirsə pipeline dayansin
+6. Pipeline performance optimize edin: ən yavaş stage-i tapın, test paralel işlədilsin, Docker layer cache istifadə edin, composer package cache əlavə edin; baseline ilə optimized version arasında pipeline sürtünü müqayisə edin; 50% azaltmağı hədəfləyin
+
+## Əlaqəli Mövzular
+
+- [GitHub Actions](04-github-actions.md) — workflow syntax, matrix, artifacts
+- [GitLab CI/CD](05-gitlab-ci.md) — .gitlab-ci.yml, environments
+- [Jenkins](06-jenkins.md) — Jenkinsfile, pipeline stages
+- [Deployment Strategies](44-deployment-strategies.md) — canary, blue-green, rolling
+- [Zero-Downtime Deployment](41-zero-downtime-deployment.md) — DB migration koordinasiyası
+- [GitOps](35-gitops.md) — Argo CD progressive delivery

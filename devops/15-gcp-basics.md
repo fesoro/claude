@@ -497,3 +497,22 @@ C: (1) **Stateless** olmalıdır – sessionlar Redis/Memorystore-a çıxarılma
 13. **Infrastructure as Code** – Terraform state-i GCS-də saxla (versioning + locking).
 14. **Audit Logs** incələ – kim, nə vaxt, nə etdi.
 15. **CIS GCP Benchmark** ilə security posture yoxla.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Cloud Run-da Laravel deploy edin: `Dockerfile` yazın (PHP 8.3 + Nginx), `gcloud run deploy`, `--add-cloudsql-instances` flag ilə Cloud SQL qoşun, `--set-env-vars` ilə environment variables qurun; URL-i `gcloud run services describe` ilə əldə edin
+2. GKE Autopilot cluster qurun: `gcloud container clusters create-auto`, Helm ilə Laravel app deploy edin, `HorizontalPodAutoscaler` konfigurasiya edin; `kubectl get pods -w` ilə auto-scaling izləyin
+3. Workload Identity konfigurasiya edin: Kubernetes ServiceAccount → GCP Service Account binding; `gcloud iam service-accounts add-iam-policy-binding`; pod-da `GOOGLE_APPLICATION_CREDENTIALS` olmadan GCS-ə yazma testi edin
+4. Cloud Build pipeline yazın: `cloudbuild.yaml` — composer install, phpunit, Docker build+push (Artifact Registry), Cloud Run deploy; trigger-i GitHub push event-inə bağlayın; build logs-u real-time izləyin
+5. Cloud SQL HA failover test edin: `gcloud sql instances failover` əmri işlədin; Laravel `DB_HOST`-u Cloud SQL proxy socket-ə bağladıqda failover zamanı connection-ların necə işlədiyini yoxlayın
+6. GCP IAM Least Privilege qurun: custom role yaradın — yalnız `cloudsql.instances.connect`, `storage.objects.create`, `storage.objects.get`; service account-a bu rolu atayın; `gcloud projects get-iam-policy` ilə yoxlayın
+
+## Əlaqəli Mövzular
+
+- [AWS Əsasları](14-aws-basics.md) — AWS ilə müqayisə, migration
+- [Azure Əsasları](16-azure-basics.md) — Azure ilə müqayisə
+- [Terraform Əsasları](23-terraform-basics.md) — GCP Terraform provider
+- [Container Security](29-container-security.md) — GKE pod security, Workload Identity
+- [CI/CD Deployment](39-cicd-deployment.md) — Cloud Build pipeline

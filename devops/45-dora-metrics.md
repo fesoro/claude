@@ -265,10 +265,13 @@ DORA yalnız delivery speed-i ölçür. SPACE daha geniş:
 3. Aylıq DORA report Artisan command yaz: 4 metrikin cari dəyəri + "Elite/High/Medium/Low" klasifikasiyası
 4. Grafana dashboard: 30 günlük rolling window ilə 4 DORA metrik qraf
 5. "Lead time" ölçmə: Git commit timestamp-dən GitHub Actions deploy finish-ə qədər
+6. DORA benchmark-larını komandanızla müqayisə edin: Elite/High/Medium/Low klasterlərini tapın; zəif olan metrikdə 3 aylıq improvement plan yazın; plan əvvəl/sonra ölçümü ehtiva etsin
 
 ## Əlaqəli Mövzular
-- [Architecture Decision Records](208-architecture-decision-records.md)
-- [CI/CD & Deployment](080-ci-cd-and-deployment.md)
-- [SLA/SLO/SLI/Error Budget](158-sla-slo-sli-error-budget.md)
-- [Observability](145-observability-metrics-tracing.md)
-- [Zero-Downtime Deployment](131-zero-downtime-deployment.md)
+
+- [CI/CD Konseptləri](03-cicd-concepts.md) — pipeline design, trunk-based development
+- [CI/CD Deployment](39-cicd-deployment.md) — deployment pipeline, artifact management
+- [SLA/SLO/SLI](43-sla-slo-sli.md) — error budget, SLO — DORA-nın reliability tərəfi
+- [Observability](42-observability.md) — DORA metriklerini ölçmək üçün monitoring
+- [Zero-Downtime Deployment](41-zero-downtime-deployment.md) — change failure rate azaltma
+- [Incident Response](31-incident-response.md) — MTTR azaltma, postmortem

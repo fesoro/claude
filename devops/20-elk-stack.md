@@ -515,3 +515,22 @@ public function report(Throwable $e)
 8. **Alert** qurun - Error spike olduqda xəbərdar olun
 9. **Disk space** monitorinq edin - Elasticsearch çox disk istifadə edir
 10. **Kibana saved searches** yaradın - Tez-tez istifadə olunan axtarışları saxlayın
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Laravel Monolog-u ELK-ə konfigurasiya edin: `SocketHandler` ilə Logstash-a JSON log göndərin; `tap` ilə custom `RequestIdProcessor` əlavə edib `request_id` hər log sətrini əlavə edin; Kibana-da `request_id` ilə bütün bir request-in log-larını filtər edin
+2. Logstash grok pattern yazın: Nginx access log üçün (`$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent`) — `%{IPORHOST:client_ip}` kimi field-lar çıxarın; `logstash -t` ilə konfiqurasiya test edin; Kibana-da `status:5*` filtresi edin
+3. Index Lifecycle Management (ILM) policy qurun: Hot (active indexing, 7 gün), Warm (replicas 0, 30 gün), Cold (frozen, 90 gün), Delete (1 il sonra) fazaları; `GET /_ilm/policy/laravel-logs` ilə statusu yoxlayın
+4. Kibana-da anomaly detection qurun: Laravel error log-larında anomaly detection job yaradın; normal saatlıq error count-u baseline olarak alın; spike zamanı alert göndərsin; `GET /_ml/anomaly_detectors` ilə job statusunu görün
+5. Filebeat ilə Laravel, Nginx, MySQL slow query log-larını toplayın: `filebeat.yml`-də multiline PHP stack trace konfigurasiya edin (`pattern: '^\[', negate: true, match: after`); hər log source üçün ayrı index pattern istifadə edin
+6. Elasticsearch performans tuning edin: `indices.memory.index_buffer_size: 30%`, `index.refresh_interval: 30s` (ingest ağır olduğunda), `number_of_replicas: 0` (initial load), `_forcemerge` (read-only index); `GET /_cat/indices?v` ilə shard sağlamlığını yoxlayın
+
+## Əlaqəli Mövzular
+
+- [Prometheus](18-monitoring-prometheus.md) — metrics monitoring, Prometheus vs ELK
+- [Grafana](19-monitoring-grafana.md) — Elasticsearch data source, log panel
+- [OpenTelemetry](21-opentelemetry.md) — OTel → Elasticsearch log shipping
+- [Logging & Monitoring](38-logging-monitoring.md) — structured logging, log pipeline
+- [Observability](42-observability.md) — logs pillar, maturity model

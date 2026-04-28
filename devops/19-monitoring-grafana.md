@@ -461,3 +461,22 @@ app(GrafanaService::class)->addAnnotation(
 8. **Consistent naming** - Panel/dashboard adları standart olsun
 9. **Link-lər əlavə edin** - Dashboard-lar arası drill-down
 10. **Backup** edin - Grafana data-sını və dashboard JSON-larını backup edin
+
+---
+
+## Praktik Tapşırıqlar
+
+1. Laravel üçün RED method dashboard yaradın: Request Rate (rpm), Error Rate (%), Duration (p50/p95/p99 latency) — hər biri ayrı panel; Prometheus data source-dan PromQL sorğular yazın; threshold (kırmızı/sarı/yaşıl) konfigurasiya edin
+2. Alert qurun: HTTP error rate > 5% olduqda Slack bildirişi göndərsin; alert evaluation interval 1m, for: 5m (flap azaltmaq); contact point yaradın, notification policy qurun; test alert göndərib Slack-da alındığını yoxlayın
+3. Variables ilə multi-environment dashboard yaradın: `$environment` (dev/staging/prod), `$instance` (dropdown, Prometheus label-larından) variables; bir dashboard bütün mühitlər üçün işlətsin; variable dəyişincə bütün panellərin yenilənməsini görün
+4. USE method ilə infra dashboard yaradın: CPU (Utilization/Saturation/Errors), Memory (available bytes, swap), Disk (iops read/write, latency, errors), Network (bytes in/out, error rate) — Node Exporter metrikləri; Grafana template-ləri araşdırın (ID: 1860)
+5. Grafana as Code: dashboard JSON-unu export edin, Git-ə commit edin; Grafana Terraform provider (`grafana_dashboard` resource) ilə dashboard-ı kod kimi idarə edin; dəyişikliyi tətbiq edin, Grafana-da göründüyünü yoxlayın
+6. Composite health indicator yaradın: DB connection count, queue depth, cache hit rate, error rate — dördünü birləşdirən "overall health" `Stat` paneli; 80% sağlam olarsa yaşıl, 50-80% sarı, < 50% kırmızı göstərin
+
+## Əlaqəli Mövzular
+
+- [Prometheus](18-monitoring-prometheus.md) — metrics, PromQL, exporters
+- [ELK Stack](20-elk-stack.md) — Kibana ilə müqayisə
+- [Observability](42-observability.md) — pillars, maturity model
+- [Logging & Monitoring](38-logging-monitoring.md) — structured logs, alerting
+- [SLA/SLO/SLI](43-sla-slo-sli.md) — error budget dashboard
