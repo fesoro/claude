@@ -1,4 +1,4 @@
-# Hotel Booking App — DB Design (Booking.com / Hotels.com style)
+# Hotel Booking App — DB Design (Middle ⭐⭐)
 
 ## Tövsiyə olunan DB Stack
 

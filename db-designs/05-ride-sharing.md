@@ -1,4 +1,4 @@
-# Ride Sharing App — DB Design (Uber/Bolt)
+# Ride Sharing App — DB Design (Senior ⭐⭐⭐)
 
 ## Tövsiyə olunan DB Stack
 ```

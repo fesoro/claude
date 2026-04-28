@@ -1,4 +1,4 @@
-# Google Drive — DB Design
+# Google Drive — DB Design (Senior ⭐⭐⭐)
 
 ## Tövsiyə olunan DB Stack
 
@@ -318,4 +318,72 @@ Anti-patterns:
 ✗ Eager permission check (N+1) → single recursive query
 ✗ Sync upload → async + webhook
 ✗ Storing full path string → hierarchy sorğuları çətin
+```
+
+---
+
+## Tanınmış Sistemlər
+
+```
+Google Drive:
+  Metadata:   Spanner (global ACID) + Bigtable
+  Content:    Google Colossus (GFS)
+  Sync:       Custom protocol (XMPP-based)
+  Diff sync:  Delta encoding (only changed parts)
+  "My Drive" folder = personal namespace per user
+
+Dropbox:
+  Metadata:   MySQL (sharded by user_id)
+  Content:    Amazon S3 + custom chunking
+  Dedup:      Content-addressed (SHA-256 blocks)
+  Block size: 4MB chunks
+  Delta sync: Block-level diff (only changed blocks)
+  Magic Pocket: Custom object storage (2016, left S3)
+
+OneDrive (Microsoft):
+  Metadata:   Azure Cosmos DB
+  Content:    Azure Blob Storage
+  Office integration: Real-time co-authoring (CRDT)
+  SharePoint: Underlying storage engine
+
+Box:
+  MySQL + PostgreSQL
+  Enterprise focus: audit trail, compliance, DLP
+  Separate metadata DB per enterprise tenant
+
+Əsas fərqlər:
+  Dropbox:  block-level sync → bandwidth efficient
+  Drive:    file-level sync → simpler
+  Box:      enterprise compliance features first
+```
+
+---
+
+## Kritik Öyrəniləcəklər
+
+```
+1. Content addressing = deduplication:
+   SHA-256(content) → storage key
+   Eyni fayl 2 user → 1 storage object
+   Reference counting: ref_count = 0 → GC
+
+2. Chunked upload = resumable:
+   Network kəsilsə → yalnız çatışan chunk-lar
+   S3 Multipart Upload API
+   Redis: chunk progress state
+
+3. Recursive CTE = hierarchy:
+   PostgreSQL WITH RECURSIVE
+   Folder tree traversal + breadcrumb
+   Depth limit: sonsuz nesting qarşısı
+
+4. Inheritance vs explicit permissions:
+   Folder permission → children miras alır
+   Override: spesifik fayl daha az permission
+   "Most specific wins" qayda
+
+5. Soft delete → hard delete pipeline:
+   is_trashed = true → 30 gün sonra cron sil
+   User yanlışlıqla silib? Recovery window
+   ref_count azaldılır, storage ayrıca GC
 ```

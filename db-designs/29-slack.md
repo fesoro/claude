@@ -1,4 +1,4 @@
-# Slack — DB Design & Technology Stack
+# Slack — DB Design & Technology Stack (Senior ⭐⭐⭐)
 
 ## Actual DB Stack
 

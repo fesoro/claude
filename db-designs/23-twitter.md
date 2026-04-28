@@ -1,4 +1,4 @@
-# Twitter/X — DB Design & Technology Stack
+# Twitter/X — DB Design & Technology Stack (Lead ⭐⭐⭐⭐)
 
 ## Actual DB Stack
 

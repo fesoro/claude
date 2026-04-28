@@ -1,4 +1,4 @@
-# Job Board — DB Design (LinkedIn Jobs / Indeed style)
+# Job Board — DB Design (Junior ⭐)
 
 ## Tövsiyə olunan DB Stack
 

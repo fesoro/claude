@@ -1,4 +1,4 @@
-# Discord — DB Design & Technology Stack
+# Discord — DB Design & Technology Stack (Senior ⭐⭐⭐)
 
 ## Actual DB Stack
 

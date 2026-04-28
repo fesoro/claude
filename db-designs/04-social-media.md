@@ -1,4 +1,4 @@
-# Social Media App — DB Design
+# Social Media App — DB Design (Senior ⭐⭐⭐)
 
 ## Tövsiyə olunan DB Stack
 ```

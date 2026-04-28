@@ -1,4 +1,4 @@
-# Banking / FinTech App — DB Design
+# Banking / FinTech App — DB Design (Lead ⭐⭐⭐⭐)
 
 ## Tövsiyə olunan DB Stack
 ```

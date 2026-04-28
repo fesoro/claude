@@ -1,4 +1,4 @@
-# PayPal — DB Design & Technology Stack
+# PayPal — DB Design & Technology Stack (Lead ⭐⭐⭐⭐)
 
 ## Actual DB Stack
 

@@ -2,61 +2,77 @@
 
 Real sistemlərin database arxitekturası. Hər fayl konkret bir tətbiqin schema dizaynını, DB seçimini və **niyə bu seçim edilib** sualına cavab verir.
 
-**Toplam: 33 fayl** (16 ümumi tətbiq + 16 tanınmış sistem + 1 seçim bələdçisi)
+**Toplam: 37 fayl** (19 ümumi tətbiq + 16 tanınmış sistem + 2 bələdçi)
+
+---
+
+## Səviyyə Sistemi
+
+| Level | Stars |
+|-------|-------|
+| Junior | ⭐ |
+| Middle | ⭐⭐ |
+| Senior | ⭐⭐⭐ |
+| Lead | ⭐⭐⭐⭐ |
+| Architect | ⭐⭐⭐⭐⭐ |
 
 ---
 
 ## Ümumi Tətbiq Dizaynları
 
-| Fayl | Tətbiq | Tövsiyə olunan DB |
-|------|--------|-------------------|
-| [01-blog-cms.md](01-blog-cms.md) | Blog / CMS | PostgreSQL + Redis |
-| [02-chat-app.md](02-chat-app.md) | Mesajlaşma tətbiqi | Cassandra + Redis |
-| [03-e-commerce.md](03-e-commerce.md) | E-ticarət | PostgreSQL + Redis + Elasticsearch |
-| [04-social-media.md](04-social-media.md) | Sosial media | PostgreSQL + Cassandra + Redis |
-| [05-ride-sharing.md](05-ride-sharing.md) | Taksi tətbiqi | PostgreSQL + Redis (geospatial) |
-| [06-food-delivery.md](06-food-delivery.md) | Yemək çatdırılması | PostgreSQL + Redis |
-| [07-banking-fintech.md](07-banking-fintech.md) | Bank / FinTech | PostgreSQL (ACID) |
-| [08-video-streaming.md](08-video-streaming.md) | Video streaming | Cassandra + MySQL + S3 |
-| [09-google-drive.md](09-google-drive.md) | Cloud file storage | PostgreSQL + S3 + Redis |
-| [10-youtube.md](10-youtube.md) | Video platform | MySQL (Vitess) + Bigtable + S3 |
-| [11-hotel-booking.md](11-hotel-booking.md) | Otel rezervasiyası | PostgreSQL + Redis + Elasticsearch |
-| [12-stock-trading.md](12-stock-trading.md) | Birja / Trading | PostgreSQL + Redis + TimescaleDB |
-| [13-event-ticketing.md](13-event-ticketing.md) | Bilet satışı | PostgreSQL + Redis (seat lock) |
-| [14-healthcare-ehr.md](14-healthcare-ehr.md) | Sağlıq / EHR | PostgreSQL (HIPAA) |
-| [15-online-learning.md](15-online-learning.md) | Online təhsil | PostgreSQL + Redis + S3 |
-| [16-job-board.md](16-job-board.md) | İş elanları | PostgreSQL + Elasticsearch |
+| Fayl | Tətbiq | Level | Tövsiyə olunan DB |
+|------|--------|-------|-------------------|
+| [01-blog-cms.md](01-blog-cms.md) | Blog / CMS | Junior ⭐ | PostgreSQL + Redis |
+| [16-job-board.md](16-job-board.md) | İş elanları | Junior ⭐ | PostgreSQL + Elasticsearch |
+| [06-food-delivery.md](06-food-delivery.md) | Yemək çatdırılması | Middle ⭐⭐ | PostgreSQL + Redis |
+| [11-hotel-booking.md](11-hotel-booking.md) | Otel rezervasiyası | Middle ⭐⭐ | PostgreSQL + Redis + Elasticsearch |
+| [15-online-learning.md](15-online-learning.md) | Online təhsil | Middle ⭐⭐ | PostgreSQL + Redis + S3 |
+| [02-chat-app.md](02-chat-app.md) | Mesajlaşma tətbiqi | Middle ⭐⭐ | Cassandra + Redis |
+| [03-e-commerce.md](03-e-commerce.md) | E-ticarət | Senior ⭐⭐⭐ | PostgreSQL + Redis + Elasticsearch |
+| [04-social-media.md](04-social-media.md) | Sosial media | Senior ⭐⭐⭐ | PostgreSQL + Cassandra + Redis |
+| [05-ride-sharing.md](05-ride-sharing.md) | Taksi tətbiqi | Senior ⭐⭐⭐ | PostgreSQL + Redis (geospatial) |
+| [08-video-streaming.md](08-video-streaming.md) | Video streaming | Senior ⭐⭐⭐ | Cassandra + MySQL + S3 |
+| [09-google-drive.md](09-google-drive.md) | Cloud file storage | Senior ⭐⭐⭐ | PostgreSQL + S3 + Redis |
+| [13-event-ticketing.md](13-event-ticketing.md) | Bilet satışı | Senior ⭐⭐⭐ | PostgreSQL + Redis (seat lock) |
+| [34-multi-tenant-saas.md](34-multi-tenant-saas.md) | Multi-Tenant SaaS | Senior ⭐⭐⭐ | PostgreSQL (RLS / schemas) |
+| [35-notification-system.md](35-notification-system.md) | Notification System | Senior ⭐⭐⭐ | PostgreSQL + Redis + Kafka |
+| [37-search-system.md](37-search-system.md) | Search System | Senior ⭐⭐⭐ | Elasticsearch + PostgreSQL + Redis |
+| [07-banking-fintech.md](07-banking-fintech.md) | Bank / FinTech | Lead ⭐⭐⭐⭐ | PostgreSQL (ACID) |
+| [10-youtube.md](10-youtube.md) | Video platform | Lead ⭐⭐⭐⭐ | MySQL (Vitess) + Bigtable + S3 |
+| [12-stock-trading.md](12-stock-trading.md) | Birja / Trading | Lead ⭐⭐⭐⭐ | PostgreSQL + Redis + TimescaleDB |
+| [14-healthcare-ehr.md](14-healthcare-ehr.md) | Sağlıq / EHR | Lead ⭐⭐⭐⭐ | PostgreSQL (HIPAA) |
 
 ---
 
 ## Tanınmış Sistemlərin DB Dizaynları
 
-| Fayl | Sistem | Actual DB Stack |
-|------|--------|-----------------|
-| [17-netflix.md](17-netflix.md) | Netflix | Cassandra + MySQL + CockroachDB |
-| [18-instagram.md](18-instagram.md) | Instagram | PostgreSQL + Cassandra + Redis |
-| [19-whatsapp.md](19-whatsapp.md) | WhatsApp | Mnesia (Erlang) + MySQL |
-| [20-amazon.md](20-amazon.md) | Amazon | DynamoDB + Aurora + RDS |
-| [21-paypal.md](21-paypal.md) | PayPal | Oracle → MySQL + PostgreSQL |
-| [22-uber.md](22-uber.md) | Uber | MySQL + Schemaless + H3 |
-| [23-twitter.md](23-twitter.md) | Twitter/X | MySQL + Manhattan (custom) + Redis |
-| [24-airbnb.md](24-airbnb.md) | Airbnb | MySQL + Amazon RDS |
-| [25-discord.md](25-discord.md) | Discord | ScyllaDB + PostgreSQL + Redis |
-| [26-google.md](26-google.md) | Google | Bigtable + Spanner + BigQuery |
-| [27-linkedin.md](27-linkedin.md) | LinkedIn | Espresso + Kafka + Voldemort |
-| [28-github.md](28-github.md) | GitHub | MySQL (Vitess) + Git objects |
-| [29-slack.md](29-slack.md) | Slack | MySQL (Vitess) + Redis + Flannel |
-| [30-spotify.md](30-spotify.md) | Spotify | PostgreSQL + Cassandra + GCP |
-| [31-tiktok.md](31-tiktok.md) | TikTok | TiDB + ClickHouse + Cassandra |
-| [32-shopify.md](32-shopify.md) | Shopify | MySQL (Vitess) + Redis |
+| Fayl | Sistem | Level | Actual DB Stack |
+|------|--------|-------|-----------------|
+| [24-airbnb.md](24-airbnb.md) | Airbnb | Senior ⭐⭐⭐ | MySQL + Amazon RDS |
+| [25-discord.md](25-discord.md) | Discord | Senior ⭐⭐⭐ | ScyllaDB + PostgreSQL + Redis |
+| [29-slack.md](29-slack.md) | Slack | Senior ⭐⭐⭐ | MySQL (Vitess) + Redis + Flannel |
+| [30-spotify.md](30-spotify.md) | Spotify | Senior ⭐⭐⭐ | PostgreSQL + Cassandra + GCP |
+| [32-shopify.md](32-shopify.md) | Shopify | Senior ⭐⭐⭐ | MySQL (Vitess) + Redis |
+| [17-netflix.md](17-netflix.md) | Netflix | Lead ⭐⭐⭐⭐ | Cassandra + MySQL + CockroachDB |
+| [18-instagram.md](18-instagram.md) | Instagram | Lead ⭐⭐⭐⭐ | PostgreSQL + Cassandra + Redis |
+| [19-whatsapp.md](19-whatsapp.md) | WhatsApp | Lead ⭐⭐⭐⭐ | Mnesia (Erlang) + MySQL |
+| [21-paypal.md](21-paypal.md) | PayPal | Lead ⭐⭐⭐⭐ | Oracle → MySQL + PostgreSQL |
+| [22-uber.md](22-uber.md) | Uber | Lead ⭐⭐⭐⭐ | MySQL + Schemaless + H3 |
+| [23-twitter.md](23-twitter.md) | Twitter/X | Lead ⭐⭐⭐⭐ | MySQL + Manhattan (custom) + Redis |
+| [27-linkedin.md](27-linkedin.md) | LinkedIn | Lead ⭐⭐⭐⭐ | Espresso + Kafka + Voldemort |
+| [28-github.md](28-github.md) | GitHub | Lead ⭐⭐⭐⭐ | MySQL (Vitess) + Git objects |
+| [31-tiktok.md](31-tiktok.md) | TikTok | Lead ⭐⭐⭐⭐ | TiDB + ClickHouse + Cassandra |
+| [36-stripe.md](36-stripe.md) | Stripe | Lead ⭐⭐⭐⭐ | PostgreSQL + Redis + Kafka |
+| [20-amazon.md](20-amazon.md) | Amazon | Architect ⭐⭐⭐⭐⭐ | DynamoDB + Aurora + RDS |
+| [26-google.md](26-google.md) | Google | Architect ⭐⭐⭐⭐⭐ | Bigtable + Spanner + BigQuery |
 
 ---
 
-## DB Seçim Bələdçisi
+## Bələdçilər
 
-| Fayl | Mövzu |
-|------|-------|
-| [33-db-selection-guide.md](33-db-selection-guide.md) | Hansı DB-ni seçmək lazımdır? CAP, PACELC, consistency model-ləri |
+| Fayl | Mövzu | Level |
+|------|-------|-------|
+| [33-db-selection-guide.md](33-db-selection-guide.md) | Hansı DB-ni seçmək lazımdır? CAP, PACELC, consistency, NewSQL, Vector DB | Senior ⭐⭐⭐ |
 
 ---
 
@@ -70,19 +86,46 @@ Real sistemlərin database arxitekturası. Hər fayl konkret bir tətbiqin schem
 5. Data structure → relational, document, columnar, graph
 6. Access patterns first → schema follows (especially NoSQL)
 7. Sharding: son çarə — önce vertical scale, sonra horizontal
+8. Multi-tenancy: tenant_id scope > schema isolation > separate DB
+9. Idempotency: ödəniş və kritik əməliyyatlarda mütləq
+10. Fan-out strategy: write vs read — follower sayına görə seç
 ```
+
+---
 
 ## Tez Axtarış
 
 ```
 ACID lazımdır?         → PostgreSQL / MySQL
 Write-heavy, scale?    → Cassandra / ScyllaDB
-Real-time analytics?   → ClickHouse
+Real-time analytics?   → ClickHouse / Apache Pinot
 Global SQL?            → Spanner / CockroachDB / TiDB
-Full-text search?      → Elasticsearch
-Geospatial?            → PostgreSQL + PostGIS
+Full-text search?      → Elasticsearch / Solr (bax: 37-search-system)
+Geospatial?            → PostgreSQL + PostGIS / S2
 Cache / session?       → Redis
-Object storage?        → S3 / GCS
+Object storage?        → S3 / GCS / Azure Blob
 Time-series?           → TimescaleDB / InfluxDB
 Graph?                 → Neo4j / Neptune
+Multi-tenant SaaS?     → PostgreSQL + tenant_id scope (RLS)
+Payments?              → PostgreSQL + Idempotency keys
+Notifications?         → PostgreSQL + Redis + Kafka
 ```
+
+---
+
+## Reading Paths
+
+### Backend Developer başlanğıcı:
+01 → 16 → 02 → 06 → 11 → 03 → 15 → 34 → 35
+
+### System design hazırlığı:
+04 → 05 → 08 → 10 → 12 → 13 → 33 → 26 → 20
+
+### Real company arxitekturası:
+17 → 18 → 19 → 29 → 25 → 36 → 22 → 27 → 28 → 26
+
+### FinTech / Payments yolu:
+07 → 12 → 21 → 36 → 20 → 26
+
+### Search & Discovery yolu:
+37 → 03 → 24 → 30 → 31 → 27

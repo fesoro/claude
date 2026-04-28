@@ -1,4 +1,4 @@
-# TikTok — DB Design & Technology Stack
+# TikTok — DB Design & Technology Stack (Lead ⭐⭐⭐⭐)
 
 ## Actual DB Stack
 

@@ -1,4 +1,4 @@
-# Food Delivery App — DB Design (Wolt/Bolt Food)
+# Food Delivery App — DB Design (Middle ⭐⭐)
 
 ## Tövsiyə olunan DB Stack
 ```

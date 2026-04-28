@@ -1,4 +1,4 @@
-# Event Ticketing — DB Design (Ticketmaster / Eventbrite style)
+# Event Ticketing — DB Design (Senior ⭐⭐⭐)
 
 ## Tövsiyə olunan DB Stack
 

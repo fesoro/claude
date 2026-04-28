@@ -1,4 +1,4 @@
-# Stock Trading Platform — DB Design (Robinhood / Binance style)
+# Stock Trading Platform — DB Design (Lead ⭐⭐⭐⭐)
 
 ## Tövsiyə olunan DB Stack
 

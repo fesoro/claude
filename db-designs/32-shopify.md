@@ -1,4 +1,4 @@
-# Shopify — DB Design & Technology Stack
+# Shopify — DB Design & Technology Stack (Senior ⭐⭐⭐)
 
 ## Actual DB Stack
 

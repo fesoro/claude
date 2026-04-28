@@ -1,4 +1,4 @@
-# Google — DB Design & Technology Stack
+# Google — DB Design & Technology Stack (Architect ⭐⭐⭐⭐⭐)
 
 ## Google-un Database Ekosistemi
 
@@ -212,6 +212,188 @@ When to use:
   Spanner:    Multi-region financial apps, global inventory
   PostgreSQL: Standard transactional apps
   BigQuery:   Analytics, reporting, ML datasets
+```
+
+---
+
+## Google Search: İnverted Index Arxitekturası
+
+```
+"Bu sözü hansı sənədlər ehtiva edir?" — Search-in əsas sualı
+
+Inverted Index (tərsinə çevrilmiş indeks):
+  Normal (forward) index:
+    doc_1 → ["salam", "dünya", "hello"]
+    doc_2 → ["hello", "world", "python"]
+  
+  Inverted index:
+    "hello" → [doc_1, doc_2]
+    "world" → [doc_2]
+    "salam" → [doc_1]
+
+Google Search DB Stack:
+  ┌──────────────────────────────────────────────────┐
+  │  Crawl DB        │  Bigtable (raw web pages)     │
+  │  Index Store     │  Colossus/GFS (inverted index) │
+  │  Document DB     │  Bigtable (doc metadata)       │
+  │  Link Graph      │  Custom (PageRank graph)        │
+  │  Query cache     │  Memcache/Redis               │
+  └──────────────────────────────────────────────────┘
+
+Index creation pipeline:
+  Web → Crawl → Parse → Canonicalize → Index
+  
+  Indexing:
+    Shard by URL hash
+    Update frequency: hours to days
+    
+Serving:
+  Query → spell check → query expansion
+       → parallel shard lookup
+       → scoring (PageRank + 200+ signals)
+       → ranking → results
+  
+  Latency target: < 200ms
+  Scale: trillions of URLs indexed
+```
+
+---
+
+## Google Maps: Geospatial Data
+
+```
+Google Maps DB stack:
+  ┌────────────────────────────────────────────────────────┐
+  │  Map tiles       │  Bigtable (pre-rendered tiles)      │
+  │  Street data     │  Custom spatial DB (roads, buildings)│
+  │  Business data   │  Spanner (POI, business listings)   │
+  │  User data       │  Spanner (reviews, photos)          │
+  │  Traffic         │  Bigtable (real-time probe data)    │
+  │  Satellite imgs  │  GCS (Google Cloud Storage)         │
+  └────────────────────────────────────────────────────────┘
+
+Map tiles:
+  World → zoom levels (0-22)
+  z=0: 1 tile (whole world)
+  z=10: 1M tiles (city level)
+  z=20: 1T tiles (building level)
+  
+  Tile key: z/{x}/{y}.png → Bigtable row key
+  Pre-rendered + cached
+  
+  CDN caching:
+    Static tiles → CloudCDN (months TTL)
+    Traffic tiles → short TTL (minutes)
+
+Geospatial Indexing:
+  S2 Library (Google's open source):
+    Earth surface → cells (hierarchy)
+    Cell ID: 64-bit integer
+    Level 0: 6 faces (whole earth)
+    Level 30: ~1cm² cells
+    
+  Point: lat/lng → S2 cell ID
+  Range query: S2 cell range covering bounding box
+  
+  "Find restaurants within 2km":
+    1. User location → S2 cell IDs (covering 2km radius)
+    2. Bigtable range scan by cell ID
+    3. Filter by exact distance
+
+Real-time Traffic:
+  Probe data: Android/iOS Maps app
+    → GPS location every N seconds
+    → Bigtable: time-series per road segment
+  
+  Aggregate: road speed = avg(probe speeds, last 5 min)
+  
+  ETA calculation:
+    Graph traversal (Dijkstra / A*)
+    Edge weight = travel time (from traffic)
+    Distributed graph computation
+```
+
+---
+
+## Google Ads: Real-Time Bidding DB
+
+```
+Google Ads ekosistemi:
+  AdWords (search ads)   → Spanner
+  DoubleClick (display)  → Bigtable + Spanner
+  AdSense (publisher)    → MySQL + Bigtable
+  
+  Revenue: $224B/year (2023) — Google-un 77%-i
+  
+RTB (Real-Time Bidding) pipeline:
+  User page load → Ad request
+  → 10ms auction
+  → Winner ad served
+  → Impression tracked
+  → Click tracked
+  → Conversion tracked
+  
+Ad Serving latency budget: 10ms total
+  Query targeting: 2ms
+  Auction: 3ms
+  Ad selection + rendering: 5ms
+  
+Targeting data storage:
+  ┌──────────────────────────────────────────────┐
+  │  User profiles     │  Bigtable               │
+  │  - demographics   │  Row: user_id           │
+  │  - interests      │  Col: interest_ids       │
+  │  - purchase intent│  TTL: 30-90 days         │
+  │                   │                          │
+  │  Keyword bids     │  Spanner                 │
+  │  Campaign data    │  Spanner                 │
+  │  Budget tracking  │  Spanner (ACID required) │
+  └──────────────────────────────────────────────┘
+
+Click/Impression logging:
+  High-volume events → Pub/Sub → Bigtable
+  
+  fraud detection: ML model on click patterns
+  
+Budget depletion:
+  Problem: 1000 ad servers, shared budget
+  "Race condition: overspend!"
+  
+  Çözüm (Token Bucket):
+    Central budget server (Spanner)
+    Each ad server: local token bucket
+    Refill: every N ms from central server
+    Spend locally → no lock contention
+```
+
+---
+
+## Cloud SQL / AlloyDB
+
+```
+Google Cloud SQL:
+  Managed MySQL, PostgreSQL, SQL Server
+  Standard use: OLTP web apps
+  
+AlloyDB (2022):
+  PostgreSQL-compatible
+  Separation of compute and storage
+  
+  Architecture:
+    Read/Write instance → log shipping
+    Read replicas       → from shared storage
+    Storage: Colossus   → automatic replication
+    
+  Performance claims:
+    4x faster than CloudSQL PostgreSQL (OLTP)
+    100x faster analytics queries
+    
+  Columnar engine:
+    Auto-detects frequently scanned columns
+    Column cache: in-memory columnar format
+    OLAP queries: use columnar
+    OLTP queries: use row format
+    "HTAP without ETL"
 ```
 
 ---

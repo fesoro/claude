@@ -1,4 +1,4 @@
-# DB Seçim Bələdçisi
+# DB Seçim Bələdçisi (Senior ⭐⭐⭐)
 
 ## Hansı DB-ni nə vaxt seçmək lazımdır?
 
@@ -307,4 +307,97 @@ Rule of thumb:
   ACID SQL databases → linearizable (single node)
   Distributed SQL (Spanner, CockroachDB) → linearizable (multi-node)
   NoSQL (Cassandra, DynamoDB) → eventual by default
+```
+
+---
+
+## NewSQL Müqayisəsi
+
+```
+NewSQL = SQL semantics + horizontal scale
+Problem: "MySQL/PostgreSQL scale olmur, amma Cassandra-da ACID yoxdur"
+
+┌──────────────┬──────────────┬──────────────┬──────────────┐
+│              │ CockroachDB  │ TiDB         │ Spanner      │
+├──────────────┼──────────────┼──────────────┼──────────────┤
+│ Uyğunluq     │ PostgreSQL   │ MySQL        │ Öz SQL       │
+│ Storage      │ RocksDB      │ TiKV (RocksDB)│ Colossus    │
+│ Consistency  │ Serializable │ Snapshot     │ External     │
+│              │ (Raft)       │ (Raft)       │ (TrueTime)   │
+│ ACID         │ ✓ global     │ ✓ global     │ ✓ global     │
+│ Multi-region │ ✓            │ Limited      │ ✓ (primary)  │
+│ Open source  │ BSL/CCL      │ Apache 2.0   │ ✗ (GCP only) │
+│ Self-hosted  │ ✓            │ ✓            │ ✗            │
+│ Latency      │ 5-20ms       │ 5-20ms       │ 5-10ms (same │
+│              │              │              │  region)     │
+│ Who uses it  │ Netflix,     │ TikTok,      │ Google Ads,  │
+│              │ Comcast      │ ByteDance    │ Shopify      │
+└──────────────┴──────────────┴──────────────┴──────────────┘
+
+Ne zaman NewSQL?
+  ✓ MySQL/PostgreSQL horizontal scale limit-ə çatıb
+  ✓ ACID transactions lazımdır (Cassandra işləmir)
+  ✓ Application kodu dəyişdirmək istəmirsən (MySQL/PG compat)
+  ✓ Global multi-region (fintech, marketplace)
+  
+  ✗ Sadə workload → PostgreSQL + read replica daha ucuzdur
+  ✗ Write-heavy without ACID → Cassandra daha yaxşıdır
+  ✗ Analytics → ClickHouse/BigQuery daha yaxşıdır
+```
+
+---
+
+## Vector DB Müqayisəsi
+
+```
+Vector DB = AI/ML era üçün yeni kateqoriya
+Use case: "Bu cümləyə ən oxşar məzmunları tap"
+  LLM RAG (Retrieval-Augmented Generation)
+  Semantic search
+  Image/audio similarity
+  Recommendation (embedding-based)
+
+Necə işləyir:
+  Text/image → Embedding model → Float[] vector
+  [0.12, -0.34, 0.89, ...] (1536 dimensions for OpenAI)
+  
+  "Oxşar vectors = oxşar məzmun"
+  Cosine similarity / dot product
+  ANN (Approximate Nearest Neighbor) search
+
+┌──────────────┬──────────────┬──────────────┬──────────────┐
+│              │ pgvector     │ Pinecone     │ Qdrant       │
+├──────────────┼──────────────┼──────────────┼──────────────┤
+│ Tip          │ PostgreSQL   │ Managed SaaS │ Open-source  │
+│              │ extension    │              │ Rust-based   │
+│ Dimensions   │ 2000 limit   │ 1536         │ Unlimited    │
+│ HNSW index   │ ✓            │ ✓            │ ✓            │
+│ Filtering    │ SQL WHERE    │ Metadata     │ Payload      │
+│              │ combined     │ filter       │ filter       │
+│ Hybrid search│ SQL + vector │ ✓            │ ✓            │
+│ Self-hosted  │ ✓            │ ✗            │ ✓            │
+│ Cost         │ PostgreSQL   │ Per vector   │ Infra cost   │
+│              │ hosting      │ stored       │ only         │
+│ Best for     │ Existing PG  │ Fast start,  │ High perf,   │
+│              │ apps, ≤500K  │ managed      │ self-host    │
+│              │ vectors      │              │ millions+    │
+└──────────────┴──────────────┴──────────────┴──────────────┘
+
+PHP/Laravel üçün praktik seçim:
+  pgvector:
+    composer require pgvector/pgvector
+    Mövcud PostgreSQL-ə əlavə et
+    RAG, semantic search üçün ideal başlanğıc
+    
+  ALTER TABLE products
+  ADD COLUMN embedding vector(1536);
+  
+  CREATE INDEX ON products
+  USING ivfflat (embedding vector_cosine_ops);
+  
+  -- "Bu məhsula ən oxşar 5 məhsul"
+  SELECT id, name
+  FROM products
+  ORDER BY embedding <=> :query_vector
+  LIMIT 5;
 ```

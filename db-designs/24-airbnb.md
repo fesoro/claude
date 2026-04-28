@@ -1,4 +1,4 @@
-# Airbnb — DB Design & Technology Stack
+# Airbnb — DB Design & Technology Stack (Senior ⭐⭐⭐)
 
 ## Actual DB Stack
 

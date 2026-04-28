@@ -1,4 +1,4 @@
-# GitHub — DB Design & Technology Stack
+# GitHub — DB Design & Technology Stack (Lead ⭐⭐⭐⭐)
 
 ## Actual DB Stack
 

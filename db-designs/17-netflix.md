@@ -1,4 +1,4 @@
-# Netflix — DB Design & Technology Stack
+# Netflix — DB Design & Technology Stack (Lead ⭐⭐⭐⭐)
 
 ## Actual DB Stack
 

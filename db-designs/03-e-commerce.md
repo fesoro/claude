@@ -1,4 +1,4 @@
-# E-Commerce App — DB Design
+# E-Commerce App — DB Design (Senior ⭐⭐⭐)
 
 ## Tövsiyə olunan DB Stack
 ```

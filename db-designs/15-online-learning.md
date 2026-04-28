@@ -1,4 +1,4 @@
-# Online Learning Platform — DB Design (Udemy / Coursera style)
+# Online Learning Platform — DB Design (Middle ⭐⭐)
 
 ## Tövsiyə olunan DB Stack
 

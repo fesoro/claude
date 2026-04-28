@@ -1,4 +1,4 @@
-# YouTube — DB Design & Technology Stack
+# YouTube — DB Design & Technology Stack (Lead ⭐⭐⭐⭐)
 
 ## Actual DB Stack (Google/YouTube)
 

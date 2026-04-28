@@ -1,4 +1,4 @@
-# Healthcare / EHR — DB Design (Electronic Health Records)
+# Healthcare / EHR — DB Design (Lead ⭐⭐⭐⭐)
 
 ## Tövsiyə olunan DB Stack
 

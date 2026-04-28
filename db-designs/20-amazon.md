@@ -1,4 +1,4 @@
-# Amazon — DB Design & Technology Stack
+# Amazon — DB Design & Technology Stack (Architect ⭐⭐⭐⭐⭐)
 
 ## Actual DB Stack
 

@@ -1,4 +1,4 @@
-# LinkedIn — DB Design & Technology Stack
+# LinkedIn — DB Design & Technology Stack (Lead ⭐⭐⭐⭐)
 
 ## Actual DB Stack
 

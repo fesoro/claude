@@ -1,4 +1,4 @@
-# Spotify — DB Design & Technology Stack
+# Spotify — DB Design & Technology Stack (Senior ⭐⭐⭐)
 
 ## Actual DB Stack
 

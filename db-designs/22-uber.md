@@ -1,4 +1,4 @@
-# Uber — DB Design & Technology Stack
+# Uber — DB Design & Technology Stack (Lead ⭐⭐⭐⭐)
 
 ## Actual DB Stack
 

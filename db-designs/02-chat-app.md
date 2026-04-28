@@ -1,4 +1,4 @@
-# Chat App — DB Design
+# Chat App — DB Design (Middle ⭐⭐)
 
 ## Tövsiyə olunan DB Stack
 ```

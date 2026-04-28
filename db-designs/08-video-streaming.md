@@ -1,4 +1,4 @@
-# Video Streaming App — DB Design (Netflix-style)
+# Video Streaming App — DB Design (Senior ⭐⭐⭐)
 
 ## Tövsiyə olunan DB Stack
 ```

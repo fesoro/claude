@@ -1,4 +1,4 @@
-# Blog / CMS App — DB Design
+# Blog / CMS App — DB Design (Junior ⭐)
 
 ## Tövsiyə olunan DB Stack
 ```
