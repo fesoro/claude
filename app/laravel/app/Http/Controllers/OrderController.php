@@ -17,6 +17,8 @@ use Src\Shared\Application\Bus\QueryBus;
 use Src\Order\Application\Commands\CreateOrder\CreateOrderCommand;
 use Src\Order\Application\Commands\CancelOrder\CancelOrderCommand;
 use Src\Order\Application\Commands\UpdateOrderStatus\UpdateOrderStatusCommand;
+use Src\Order\Application\DTOs\CreateOrderDTO;
+use Src\Order\Application\DTOs\CreateOrderItemDTO;
 use Src\Order\Application\Queries\GetOrder\GetOrderQuery;
 use Src\Order\Application\Queries\ListOrders\ListOrdersQuery;
 use Src\Order\Infrastructure\Models\OrderModel;
@@ -71,10 +73,23 @@ class OrderController extends Controller
      */
     public function store(CreateOrderRequest $request): JsonResponse
     {
+        $address = $request->input('address', []);
+        $itemsData = $request->input('items', []);
+
         $command = new CreateOrderCommand(
-            userId: $request->input('user_id'),
-            items: $request->input('items', []),
-            address: $request->input('address', []),
+            dto: new CreateOrderDTO(
+                userId: $request->input('user_id'),
+                street: $address['street'] ?? '',
+                city: $address['city'] ?? '',
+                zip: $address['zip'] ?? '',
+                country: $address['country'] ?? '',
+                items: array_map(fn ($item) => new CreateOrderItemDTO(
+                    productId: $item['product_id'],
+                    quantity: (int) $item['quantity'],
+                    price: (float) $item['price'],
+                    currency: $item['currency'] ?? 'AZN',
+                ), $itemsData),
+            ),
         );
 
         $orderId = $this->commandBus->dispatch($command);
@@ -166,7 +181,10 @@ class OrderController extends Controller
         $order = OrderModel::findOrFail($id);
         $this->authorize('cancel', $order);
 
-        $command = new CancelOrderCommand(orderId: $id);
+        $command = new CancelOrderCommand(
+            orderId: $id,
+            reason: $request->input('reason', ''),
+        );
         $this->commandBus->dispatch($command);
 
         return ApiResponse::success(message: 'Sifariş ləğv edildi');

@@ -49,7 +49,9 @@ public class TwoFactorController {
     public ApiResponse<List<String>> confirm(@AuthenticationPrincipal UUID userId,
                                               @RequestBody Map<String, Object> body) {
         String secret = (String) body.get("secret");
-        int code = Integer.parseInt(body.get("code").toString());
+        Object rawCode = body.get("code");
+        if (rawCode == null) throw new DomainException("'code' sahəsi tələb olunur");
+        int code = Integer.parseInt(rawCode.toString());
 
         if (!twoFactorService.verifyCode(secret, code)) {
             throw new DomainException("2FA kodu yanlışdır");
@@ -76,7 +78,9 @@ public class TwoFactorController {
     @PostMapping("/verify")
     public ApiResponse<Map<String, String>> verify(@RequestBody Map<String, Object> body) {
         UUID userId = UUID.fromString((String) body.get("user_id"));
-        int code = Integer.parseInt(body.get("code").toString());
+        Object rawCode = body.get("code");
+        if (rawCode == null) throw new DomainException("'code' sahəsi tələb olunur");
+        int code = Integer.parseInt(rawCode.toString());
 
         User user = repository.findById(new UserId(userId))
                 .orElseThrow(() -> new EntityNotFoundException("User", userId.toString()));

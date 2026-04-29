@@ -301,6 +301,13 @@ class AuthController extends Controller
         $email = $request->validated()['email'];
         $user = UserModel::where('email', $email)->first();
 
+        // Email enumeration qoruması: istifadəçi tapılmasa eyni cavab qaytarırıq
+        if (!$user) {
+            return ApiResponse::success(
+                message: 'Şifrə sıfırlama linki email ünvanınıza göndərildi'
+            );
+        }
+
         // Token yarat
         $token = Str::random(60);
 

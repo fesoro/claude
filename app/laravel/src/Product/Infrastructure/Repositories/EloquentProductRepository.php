@@ -10,6 +10,7 @@ use Src\Product\Domain\ValueObjects\ProductId;
 use Src\Product\Domain\ValueObjects\ProductName;
 use Src\Product\Domain\ValueObjects\Money;
 use Src\Product\Domain\ValueObjects\Stock;
+use Src\Shared\Infrastructure\Bus\EventDispatcher;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -30,8 +31,12 @@ use Illuminate\Support\Facades\DB;
  */
 class EloquentProductRepository implements ProductRepositoryInterface
 {
-    /** Verilənlər bazasındakı cədvəl adı */
     private const TABLE = 'products';
+
+    public function __construct(
+        private readonly EventDispatcher $eventDispatcher,
+    ) {
+    }
 
     /**
      * ID-yə görə məhsul tapır.
@@ -58,9 +63,7 @@ class EloquentProductRepository implements ProductRepositoryInterface
     public function save(Product $product): void
     {
         DB::table(self::TABLE)->updateOrInsert(
-            // Axtarış şərti - bu ID ilə sətir varmı?
             ['id' => $product->id()->value()],
-            // Saxlanacaq məlumatlar
             [
                 'name' => $product->name()->value(),
                 'price_amount' => $product->price()->amount(),
@@ -69,6 +72,8 @@ class EloquentProductRepository implements ProductRepositoryInterface
                 'updated_at' => now(),
             ]
         );
+
+        $this->eventDispatcher->dispatch($product->pullDomainEvents());
     }
 
     /**

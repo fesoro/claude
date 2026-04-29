@@ -47,43 +47,50 @@ func SubscribeAll(ctx context.Context, conn *amqp.Connection, listeners *applica
 	}
 
 	// Hər queue üçün consumer goroutine
-	go consume(ctx, ch, "notifications.order.created", func(body []byte) {
+	go consume(ctx, ch, "notifications.order.created", func(body []byte) bool {
 		var ev orderDomain.OrderCreatedIntegrationEvent
 		if err := json.Unmarshal(body, &ev); err != nil {
-			slog.Warn("decode error", "err", err)
-			return
+			slog.Warn("decode error", "queue", "notifications.order.created", "err", err)
+			return false
 		}
 		listeners.OnOrderCreated(ctx, ev)
+		return true
 	})
 
-	go consume(ctx, ch, "notifications.payment.completed", func(body []byte) {
+	go consume(ctx, ch, "notifications.payment.completed", func(body []byte) bool {
 		var ev paymentDomain.PaymentCompletedIntegrationEvent
 		if err := json.Unmarshal(body, &ev); err != nil {
-			return
+			slog.Warn("decode error", "queue", "notifications.payment.completed", "err", err)
+			return false
 		}
 		listeners.OnPaymentCompleted(ctx, ev)
+		return true
 	})
 
-	go consume(ctx, ch, "notifications.payment.failed", func(body []byte) {
+	go consume(ctx, ch, "notifications.payment.failed", func(body []byte) bool {
 		var ev paymentDomain.PaymentFailedIntegrationEvent
 		if err := json.Unmarshal(body, &ev); err != nil {
-			return
+			slog.Warn("decode error", "queue", "notifications.payment.failed", "err", err)
+			return false
 		}
 		listeners.OnPaymentFailed(ctx, ev)
+		return true
 	})
 
-	go consume(ctx, ch, "notifications.product.stock.low", func(body []byte) {
+	go consume(ctx, ch, "notifications.product.stock.low", func(body []byte) bool {
 		var ev productDomain.LowStockIntegrationEvent
 		if err := json.Unmarshal(body, &ev); err != nil {
-			return
+			slog.Warn("decode error", "queue", "notifications.product.stock.low", "err", err)
+			return false
 		}
 		listeners.OnLowStock(ctx, ev)
+		return true
 	})
 
 	return nil
 }
 
-func consume(ctx context.Context, ch *amqp.Channel, queue string, handler func([]byte)) {
+func consume(ctx context.Context, ch *amqp.Channel, queue string, handler func([]byte) bool) {
 	msgs, err := ch.Consume(queue, "", false, false, false, false, nil)
 	if err != nil {
 		slog.Error("consume start failed", "queue", queue, "err", err)
@@ -99,8 +106,11 @@ func consume(ctx context.Context, ch *amqp.Channel, queue string, handler func([
 			if !ok {
 				return
 			}
-			handler(msg.Body)
-			_ = msg.Ack(false)
+			if handler(msg.Body) {
+				_ = msg.Ack(false)
+			} else {
+				_ = msg.Nack(false, false) // requeue=false → DLQ-ya göndər
+			}
 		}
 	}
 }

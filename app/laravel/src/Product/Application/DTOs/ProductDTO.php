@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Src\Product\Application\DTOs;
 
 use Src\Product\Domain\Entities\Product;
+use Src\Product\Infrastructure\Models\ProductModel;
 
 /**
  * ProductDTO - Məhsul məlumatlarını daşıyan Data Transfer Object.
@@ -48,6 +49,23 @@ final readonly class ProductDTO
             priceAmount: $product->price()->amount(),
             priceCurrency: $product->price()->currency(),
             stock: $product->stock()->quantity(),
+        );
+    }
+
+    /**
+     * ProductModel Eloquent model-indən DTO yaradır.
+     *
+     * ListProductsHandler kimi query handler-lər ProductModel::query() ilə
+     * birbaşa Eloquent-dən oxuyur. Bu metod həmin model-i DTO-ya çevirir.
+     */
+    public static function fromModel(ProductModel $model): self
+    {
+        return new self(
+            id: $model->id,
+            name: $model->name,
+            priceAmount: (int) $model->price,
+            priceCurrency: $model->currency,
+            stock: $model->stock,
         );
     }
 }

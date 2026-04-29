@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Src\Order\Application\DTOs;
 
 use Src\Order\Domain\Entities\Order;
+use Src\Order\Infrastructure\Models\OrderModel;
 
 /**
  * ORDER DTO (Data Transfer Object)
@@ -62,6 +63,31 @@ readonly class OrderDTO
      * @param Order $order Domain entity-si
      * @return self DTO
      */
+    public static function fromModel(OrderModel $model): self
+    {
+        $itemDTOs = $model->items->map(fn ($item) => new OrderItemDTO(
+            productId: $item->product_id,
+            quantity: (int) $item->quantity,
+            price: (float) $item->price,
+            currency: $item->currency,
+            lineTotal: (float) $item->price * (int) $item->quantity,
+        ))->all();
+
+        return new self(
+            id: $model->id,
+            userId: $model->user_id,
+            status: $model->status,
+            totalAmount: (float) $model->total_amount,
+            currency: $model->currency,
+            street: $model->address_street ?? '',
+            city: $model->address_city ?? '',
+            zip: $model->address_zip ?? '',
+            country: $model->address_country ?? '',
+            items: $itemDTOs,
+            createdAt: $model->created_at?->format('c') ?? '',
+        );
+    }
+
     public static function fromEntity(Order $order): self
     {
         // Hər OrderItem Value Object-i OrderItemDTO-ya çevir

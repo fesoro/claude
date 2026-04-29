@@ -134,17 +134,9 @@ class UserResource extends JsonResource
             'email' => $this->email,
 
             /**
-             * Boolean sahə — API-dən true/false olaraq qaytarılır.
-             * Bəzən DB-də 0/1 saxlanır, Resource isə düzgün tip qaytarır.
+             * Tarix — UserDTO-da createdAt (camelCase) kimi saxlanır.
              */
-            'is_active' => (bool) $this->is_active,
-
-            /**
-             * Tarix formatlaması — ISO 8601 formatında qaytarırıq.
-             * Bu API standartıdır — frontend asanlıqla parse edə bilər.
-             * Carbon obyekti olduğu üçün format() və ya toISOString() istifadə edirik.
-             */
-            'created_at' => $this->created_at?->toISOString(),
+            'created_at' => $this->createdAt,
         ];
     }
 }

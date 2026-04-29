@@ -3,6 +3,7 @@ package az.ecommerce.notification.application.listener;
 import az.ecommerce.notification.infrastructure.channel.EmailChannel;
 import az.ecommerce.product.domain.event.LowStockIntegrationEvent;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,9 @@ import java.util.Map;
 public class LowStockListener {
 
     private final EmailChannel emailChannel;
+
+    @Value("${app.notification.admin-email:admin@ecommerce.az}")
+    private String adminEmail;
 
     public LowStockListener(EmailChannel emailChannel) {
         this.emailChannel = emailChannel;
@@ -30,7 +34,7 @@ public class LowStockListener {
     }
 
     private void send(LowStockIntegrationEvent event) {
-        emailChannel.send("admin@ecommerce.az", "Az qalıq xəbərdarlığı", "low-stock-alert",
+        emailChannel.send(adminEmail, "Az qalıq xəbərdarlığı", "low-stock-alert",
                 Map.of("productName", event.productName(), "currentStock", event.currentStock()));
     }
 }

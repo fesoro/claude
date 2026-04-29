@@ -98,7 +98,7 @@ class OrderFactory
             $item = new OrderItem(
                 productId: $itemData->productId,
                 quantity: $itemData->quantity,
-                price: new Money($itemData->price, $itemData->currency),
+                price: new Money((int) round($itemData->price * 100), $itemData->currency),
             );
 
             // addItem() daxilində:

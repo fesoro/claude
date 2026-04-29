@@ -57,25 +57,14 @@ use Src\Notification\Application\Services\NotificationApplicationService;
  */
 class LowStockListener
 {
-    /**
-     * Admin email — konfiqurasiyadan gəlməlidir.
-     * Real proyektdə bu config('notification.admin_email') olardı.
-     * Burada öyrənmə məqsədi ilə sabit qiymət istifadə edirik.
-     */
-    private const ADMIN_EMAIL = 'admin@ecommerce.az';
+    private string $adminEmail;
+    private string $adminPhone;
 
-    /**
-     * Admin telefon nömrəsi — SMS bildirişlər üçün.
-     * Real proyektdə bu da konfiqurasiyadan gələrdi.
-     */
-    private const ADMIN_PHONE = '+994501234567';
-
-    /**
-     * Dependency Injection — service konstruktor vasitəsilə verilir.
-     */
     public function __construct(
         private readonly NotificationApplicationService $notificationService,
     ) {
+        $this->adminEmail = config('notification.admin_email', 'admin@ecommerce.az');
+        $this->adminPhone = config('notification.admin_phone', '+994501234567');
     }
 
     /**
@@ -113,7 +102,7 @@ class LowStockListener
 
         // Email göndəririk — admin-ə ətraflı məlumat.
         $this->notificationService->send(
-            to: self::ADMIN_EMAIL,
+            to: $this->adminEmail,
             subject: $emailSubject,
             body: $emailBody,
             channel: 'email',
@@ -121,13 +110,11 @@ class LowStockListener
 
         // ─── 2-ci KANAL: SMS (qısa, təcili xəbərdarlıq) ───
 
-        // SMS-lər qısa olmalıdır — yalnız vacib məlumat.
         $smsBody = "AZ STOK: {$productName} - cəmi {$currentStock} ədəd qalıb! "
             . "Təcili sifariş verin.";
 
-        // SMS göndəririk — admin dərhal xəbərdar olur.
         $this->notificationService->send(
-            to: self::ADMIN_PHONE,
+            to: $this->adminPhone,
             subject: 'Az Stok Xəbərdarlığı',
             body: $smsBody,
             channel: 'sms',

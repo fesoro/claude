@@ -44,10 +44,15 @@ infrastructure/← JPA entity, controller, gateway impl
 ## Test
 
 ```bash
-./mvnw test                                    # bütün testlər
+./mvnw test                                    # bütün testlər (unit + feature)
 ./mvnw test -Dtest=MoneyValueObjectTest        # tək test
+./mvnw test -Dtest="*ApiTest"                  # feature testlər
 ./mvnw verify                                  # integration test-lər (Testcontainers)
 ```
+
+## Endpoint Nümunələri
+
+📋 [`../laravel/HTTP_EXAMPLES.md`](../laravel/HTTP_EXAMPLES.md) — bütün 3 stack üçün curl nümunələri (eyni `localhost:8080` portu).
 
 ## Şifrlər və mənbələr
 

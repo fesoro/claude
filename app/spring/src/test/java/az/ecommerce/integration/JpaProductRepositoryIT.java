@@ -13,6 +13,7 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,6 +23,12 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * Spring: Real MySQL container (Testcontainers) — production parity.
  * Bu test JpaProductRepository-nin Hibernate map-ini doğru saxladığını yoxlayır.
+ *
+ * Yoxlananlar:
+ * - Product save + findById round-trip
+ * - Stok azaldılması persist olunur
+ * - FindAll siyahı qaytarır
+ * - Mövcud olmayan ID üçün empty qaytarır
  */
 @SpringBootTest
 @ActiveProfiles("test")
@@ -60,7 +67,34 @@ class JpaProductRepositoryIT {
     }
 
     @Test
+    void shouldPersistStockDecrease() {
+        Product product = Product.create(
+                new ProductName("Stok Test"), "Test",
+                Money.of(500, Currency.AZN), Stock.of(30));
+
+        repository.save(product);
+
+        product.decreaseStock(10);
+        repository.save(product);
+
+        Product updated = repository.findById(product.id()).orElseThrow();
+        assertEquals(20, updated.stock().quantity());
+    }
+
+    @Test
     void shouldReturnEmptyForUnknownId() {
         assertTrue(repository.findById(new ProductId(UUID.randomUUID())).isEmpty());
+    }
+
+    @Test
+    void shouldFindAllProducts() {
+        for (int i = 0; i < 3; i++) {
+            repository.save(Product.create(
+                    new ProductName("Məhsul " + i), "Test",
+                    Money.of(100 * (i + 1), Currency.AZN), Stock.of(10)));
+        }
+
+        List<Product> products = repository.findAll(0, 10);
+        assertFalse(products.isEmpty());
     }
 }

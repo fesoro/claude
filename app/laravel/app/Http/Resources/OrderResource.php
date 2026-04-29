@@ -34,7 +34,7 @@ class OrderResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_id' => $this->user_id,
+            'user_id' => $this->userId,
             'status' => $this->status,
 
             /**
@@ -42,42 +42,27 @@ class OrderResource extends JsonResource
              * Ümumi məbləği obyekt olaraq qaytarırıq (ProductResource-dəki kimi).
              */
             'total_amount' => [
-                'amount' => (float) $this->total_amount,
+                'amount' => (float) $this->totalAmount,
                 'currency' => $this->currency ?? 'USD',
             ],
 
             /**
-             * whenLoaded() İSTİFADƏSİ:
-             * ────────────────────────
-             * $this->whenLoaded('items') yoxlayır ki, 'items' əlaqəsi
-             * eager load edilib ya yox.
-             *
-             * Əgər edilib → OrderItemResource::collection() ilə formatlanır
-             * Əgər edilməyib → bu sahə JSON cavabdan tamamilə silinir (null yox, yoxdur!)
-             *
-             * Bu niyə vacibdir?
-             * - Siyahı endpoint-ində (GET /orders) items lazım deyil → yükləmirik
-             * - Detal endpoint-ində (GET /orders/1) items lazımdır → with('items') ilə yükləyirik
-             * - Eyni Resource hər iki halda işləyir!
+             * OrderDTO-da items artıq hazır OrderItemDTO[] array-dir.
+             * whenLoaded() Eloquent-ə xasdır — burada birbaşa istifadə edirik.
              */
-            'items' => OrderItemResource::collection($this->whenLoaded('items')),
+            'items' => OrderItemResource::collection($this->items),
 
             /**
-             * İÇ İÇƏ OBYEKTLƏRİN ŞƏRTLI GÖSTƏRİLMƏSİ:
-             * Ünvan (address) əlaqəsi yüklənibsə, iç içə obyekt olaraq qaytarırıq.
-             * Burada ayrı Resource yox, birbaşa array istifadə edirik — çünki
-             * address sadə bir obyektdir, mürəkkəb formatlama lazım deyil.
+             * Ünvan sahələri OrderDTO-da birbaşa mövcuddur.
              */
-            'address' => $this->when($this->relationLoaded('address'), function () {
-                return [
-                    'street' => $this->address->street ?? null,
-                    'city' => $this->address->city ?? null,
-                    'zip' => $this->address->zip ?? null,
-                    'country' => $this->address->country ?? null,
-                ];
-            }),
+            'address' => [
+                'street' => $this->street,
+                'city' => $this->city,
+                'zip' => $this->zip,
+                'country' => $this->country,
+            ],
 
-            'created_at' => $this->created_at?->toISOString(),
+            'created_at' => $this->createdAt,
         ];
     }
 }

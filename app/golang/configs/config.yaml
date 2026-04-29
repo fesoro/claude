@@ -3,6 +3,7 @@ app:
   name: ecommerce-go
   port: 8080
   env: dev   # dev | docker | test
+  reset_password_url: https://app.ecommerce.az/reset-password
 
 # 4 ayrı DB (Database-per-Bounded-Context)
 database:

@@ -75,26 +75,15 @@ class OrderListProjector extends Projector
      */
     protected function onItemAdded(OrderItemAddedEvent $event): void
     {
-        $lineTotal = $event->priceAmount() * $event->quantity();
+        $lineTotal = (int) ($event->priceAmount() * $event->quantity());
 
-        /**
-         * SQL INJECTION MÜDAFİƏSİ:
-         * DB::raw() ilə dəyişəni birbaşa string-ə qoşmaq SQL injection riski yaradır.
-         * Hətta $lineTotal integer olsa belə, event datasından gəldiyi üçün etibarlı deyil.
-         *
-         * Düzgün yol: parametrized binding istifadə et.
-         * DB::raw('total_amount + ?') + addBinding() — dəyər SQL-ə escape olunmuş şəkildə daxil olur.
-         *
-         * YANLIŞ:  DB::raw("total_amount + {$lineTotal}")   ← injection riski
-         * DOĞRU:   DB::raw('total_amount + ?') + binding    ← təhlükəsiz
-         */
+        // increment() — tam ədəd artım üçün Laravel-in parametrized metodu
         DB::connection($this->connection())->table($this->tableName())
             ->where('order_id', $event->orderId())
-            ->update([
-                'total_amount' => DB::raw('total_amount + ' . (int) $lineTotal),
-                'item_count'   => DB::raw('item_count + 1'),
-                'currency'     => $event->priceCurrency(),
-                'updated_at'   => now(),
+            ->increment('total_amount', $lineTotal, [
+                'item_count' => DB::raw('item_count + 1'),
+                'currency'   => $event->priceCurrency(),
+                'updated_at' => now(),
             ]);
     }
 

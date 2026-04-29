@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"errors"
+	"log/slog"
 	"time"
 
 	"github.com/google/uuid"
@@ -90,8 +91,15 @@ func toModel(p *domain.Product) *ProductModel {
 
 func toDomain(m *ProductModel) *domain.Product {
 	name, _ := domain.NewProductName(m.Name)
-	currency, _ := domain.ParseCurrency(m.PriceCurrency)
-	price, _ := domain.NewMoney(m.PriceAmount, currency)
+	currency, err := domain.ParseCurrency(m.PriceCurrency)
+	if err != nil {
+		slog.Error("toDomain: DB-də yanlış currency", "product_id", m.ID, "currency", m.PriceCurrency)
+	}
+	price, err := domain.NewMoney(m.PriceAmount, currency)
+	if err != nil {
+		slog.Error("toDomain: DB-də yanlış money", "product_id", m.ID, "amount", m.PriceAmount)
+		price, _ = domain.NewMoney(0, currency)
+	}
 	stock, _ := domain.NewStock(m.StockQuantity)
 	return domain.Reconstitute(domain.ProductID(m.ID), name, m.Description, price, stock)
 }

@@ -2,7 +2,6 @@ package az.ecommerce.user.application.service;
 
 import az.ecommerce.notification.infrastructure.channel.EmailChannel;
 import az.ecommerce.shared.domain.exception.DomainException;
-import az.ecommerce.shared.domain.exception.EntityNotFoundException;
 import az.ecommerce.user.domain.User;
 import az.ecommerce.user.domain.repository.UserRepository;
 import az.ecommerce.user.domain.valueobject.Email;
@@ -10,12 +9,14 @@ import az.ecommerce.user.domain.valueobject.Password;
 import az.ecommerce.user.infrastructure.persistence.PasswordResetTokenEntity;
 import az.ecommerce.user.infrastructure.persistence.PasswordResetTokenRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Laravel: AuthController::forgotPassword + resetPassword
@@ -33,6 +34,9 @@ public class PasswordResetService {
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     private final SecureRandom secureRandom = new SecureRandom();
 
+    @Value("${app.reset-password-url:https://app.ecommerce.az/reset-password}")
+    private String resetPasswordUrl;
+
     public PasswordResetService(UserRepository userRepository,
                                  PasswordResetTokenRepository tokenRepository,
                                  EmailChannel emailChannel) {
@@ -43,8 +47,12 @@ public class PasswordResetService {
 
     @Transactional(transactionManager = "userTransactionManager")
     public void requestReset(String email) {
-        User user = userRepository.findByEmail(new Email(email))
-                .orElseThrow(() -> new EntityNotFoundException("User", email));
+        // Email enumeration qoruması: istifadəçi tapılmasa da uğur qaytarırıq
+        Optional<User> userOpt = userRepository.findByEmail(new Email(email));
+        if (userOpt.isEmpty()) {
+            return;
+        }
+        User user = userOpt.get();
 
         String rawToken = generateToken();
         PasswordResetTokenEntity entity = new PasswordResetTokenEntity();
@@ -52,7 +60,7 @@ public class PasswordResetService {
         entity.setToken(encoder.encode(rawToken));   // hash store
         tokenRepository.save(entity);
 
-        String resetUrl = "https://app.ecommerce.az/reset-password?email=" + email + "&token=" + rawToken;
+        String resetUrl = resetPasswordUrl + "?email=" + email + "&token=" + rawToken;
         emailChannel.send(email, "Şifrə bərpası", "password-reset",
                 Map.of("userName", user.name(), "resetUrl", resetUrl));
     }

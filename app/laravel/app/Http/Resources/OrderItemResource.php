@@ -24,19 +24,15 @@ class OrderItemResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'product_id' => $this->product_id,
+            'product_id' => $this->productId,
             'quantity' => (int) $this->quantity,
             'price' => (float) $this->price,
+            'currency' => $this->currency,
 
             /**
-             * HESABLANMIŞ SAHƏ — total = price × quantity
-             * DB-də saxlanmaya bilər, Resource özü hesablayır.
-             *
-             * round(x, 2) — ondalık hissəni 2 rəqəmə yuvarlaqlaşdırır.
-             * Məsələn: 29.99 × 3 = 89.97 (89.97000000001 yox)
+             * lineTotal — OrderItemDTO-da hazır hesablanmış sahədir.
              */
-            'total' => round((float) $this->price * (int) $this->quantity, 2),
+            'line_total' => (float) $this->lineTotal,
         ];
     }
 }

@@ -46,7 +46,10 @@ func (c *ProductImageController) Index(ctx *gin.Context) {
 		return
 	}
 	var images []ProductImage
-	c.db.Where("product_id = ?", productID).Order("sort_order ASC").Find(&images)
+	if err := c.db.Where("product_id = ?", productID).Order("sort_order ASC").Find(&images).Error; err != nil {
+		ctx.Error(err)
+		return
+	}
 	ctx.JSON(http.StatusOK, api.Success(images))
 }
 
@@ -63,7 +66,6 @@ func (c *ProductImageController) Store(ctx *gin.Context) {
 		return
 	}
 
-	// Real-da S3 və ya local file system
 	id := uuid.New()
 	img := ProductImage{
 		ID:        id,
@@ -72,7 +74,10 @@ func (c *ProductImageController) Store(ctx *gin.Context) {
 		FileSize:  file.Size,
 		MimeType:  file.Header.Get("Content-Type"),
 	}
-	c.db.Create(&img)
+	if err := c.db.Create(&img).Error; err != nil {
+		ctx.Error(err)
+		return
+	}
 	ctx.JSON(http.StatusCreated, api.SuccessWithMessage(img, "Şəkil yükləndi"))
 }
 
@@ -83,24 +88,36 @@ func (c *ProductImageController) Destroy(ctx *gin.Context) {
 		ctx.Error(err)
 		return
 	}
-	c.db.Delete(&ProductImage{}, "id = ?", imageID)
+	if err := c.db.Delete(&ProductImage{}, "id = ?", imageID).Error; err != nil {
+		ctx.Error(err)
+		return
+	}
 	ctx.JSON(http.StatusOK, api.SuccessWithMessage(nil, "Silindi"))
 }
 
 // PATCH /api/products/:id/images/:imageId/primary
 func (c *ProductImageController) SetPrimary(ctx *gin.Context) {
-	productID, _ := uuid.Parse(ctx.Param("id"))
+	productID, err := uuid.Parse(ctx.Param("id"))
+	if err != nil {
+		ctx.Error(err)
+		return
+	}
 	imageID, err := uuid.Parse(ctx.Param("imageId"))
 	if err != nil {
 		ctx.Error(err)
 		return
 	}
-	// Bütün primary-ləri sıfırla
-	c.db.Model(&ProductImage{}).Where("product_id = ?", productID).
-		Update("is_primary", false)
-	// Bu image-i primary et
-	c.db.Model(&ProductImage{}).Where("id = ?", imageID).
-		Update("is_primary", true)
+
+	if err := c.db.Model(&ProductImage{}).Where("product_id = ?", productID).
+		Update("is_primary", false).Error; err != nil {
+		ctx.Error(err)
+		return
+	}
+	if err := c.db.Model(&ProductImage{}).Where("id = ?", imageID).
+		Update("is_primary", true).Error; err != nil {
+		ctx.Error(err)
+		return
+	}
 	ctx.JSON(http.StatusOK, api.SuccessWithMessage(nil, "Primary olaraq təyin edildi"))
 }
 

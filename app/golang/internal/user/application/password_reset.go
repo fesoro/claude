@@ -5,6 +5,8 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"errors"
+	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/orkhan/ecommerce/internal/notification/infrastructure/channel"
@@ -28,20 +30,41 @@ func (PasswordResetToken) TableName() string { return "password_reset_tokens" }
 // Laravel: AuthController::forgotPassword + resetPassword
 // Spring: PasswordResetService.java
 type PasswordResetService struct {
-	userRepo userDomain.Repository
-	db       *gorm.DB
-	email    *channel.EmailChannel
+	userRepo         userDomain.Repository
+	db               *gorm.DB
+	email            *channel.EmailChannel
+	resetPasswordURL string
 }
 
-func NewPasswordResetService(userRepo userDomain.Repository, db *gorm.DB, email *channel.EmailChannel) *PasswordResetService {
-	return &PasswordResetService{userRepo: userRepo, db: db, email: email}
+func NewPasswordResetService(userRepo userDomain.Repository, db *gorm.DB, email *channel.EmailChannel, resetPasswordURL string) *PasswordResetService {
+	if resetPasswordURL == "" {
+		resetPasswordURL = "https://app.ecommerce.az/reset-password"
+	}
+	return &PasswordResetService{userRepo: userRepo, db: db, email: email, resetPasswordURL: resetPasswordURL}
 }
 
 const passwordResetTokenTTL = time.Hour
-const passwordResetTpl = `<h2>Salam, {{.UserName}}!</h2>
+
+// Şifrə sıfırlama email şablonunun fallback-i.
+// Əsl şablon: templates/emails/password-reset.html
+// Laravel: resources/views/emails/password-reset.blade.php
+// Spring:  src/main/resources/templates/password-reset.html
+const fallbackPasswordResetTpl = `<h2>Salam, {{.UserName}}!</h2>
 <p>Şifrənizi bərpa etmək üçün aşağıdakı linkə klikləyin:</p>
 <p><a href="{{.ResetURL}}">{{.ResetURL}}</a></p>
 <p>Link 1 saat ərzində etibarlıdır.</p>`
+
+// loadPasswordResetTemplate — templates/emails/password-reset.html-dən yükləyir,
+// fayl yoxdursa inline fallback istifadə edir.
+func loadPasswordResetTemplate() string {
+	// Notification listeners ilə eyni templates dir
+	templatesDir := "templates/emails"
+	data, err := os.ReadFile(filepath.Join(templatesDir, "password-reset.html"))
+	if err != nil {
+		return fallbackPasswordResetTpl
+	}
+	return string(data)
+}
 
 // RequestReset — yeni token yaradır + email göndərir
 func (s *PasswordResetService) RequestReset(ctx context.Context, email string) error {
@@ -53,8 +76,10 @@ func (s *PasswordResetService) RequestReset(ctx context.Context, email string) e
 	if err != nil {
 		return err
 	}
+	// Email enumeration qoruması: istifadəçi tapılmasa da uğur qaytarırıq.
+	// Bunu kənar tərəf həmin emailin qeydiyyatda olub-olmadığını anlaya bilməsin.
 	if user == nil {
-		return sharedDomain.NewEntityNotFoundError("User", email)
+		return nil
 	}
 
 	rawToken, err := generateToken(32)
@@ -72,10 +97,12 @@ func (s *PasswordResetService) RequestReset(ctx context.Context, email string) e
 		Email: email, Token: string(hashed), CreatedAt: time.Now(),
 	})
 
-	resetURL := "https://app.ecommerce.az/reset-password?email=" + email + "&token=" + rawToken
+	resetURL := s.resetPasswordURL + "?email=" + email + "&token=" + rawToken
 	if s.email != nil {
-		_ = s.email.Send(email, "Şifrə bərpası", passwordResetTpl, map[string]any{
-			"UserName": user.Name(), "ResetURL": resetURL,
+		tpl := loadPasswordResetTemplate()
+		_ = s.email.Send(email, "Şifrə bərpası", tpl, map[string]any{
+			"UserName": user.Name(),
+			"ResetURL": resetURL,
 		})
 	}
 	return nil

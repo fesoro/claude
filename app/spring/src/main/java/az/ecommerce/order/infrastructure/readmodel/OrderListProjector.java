@@ -32,9 +32,9 @@ public class OrderListProjector {
         entity.setOrderId(event.orderId().value());
         entity.setUserId(event.userId());
         entity.setStatus("PENDING");
-        entity.setTotalAmount(0);
-        entity.setTotalCurrency("AZN");
-        entity.setItemCount(0);
+        entity.setTotalAmount(event.totalAmount());
+        entity.setTotalCurrency(event.currency());
+        entity.setItemCount(event.itemCount());
         entity.setLastUpdatedAt(Instant.now());
         repository.save(entity);
     }

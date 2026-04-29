@@ -46,7 +46,7 @@ final class CreateProductHandler implements CommandHandler
      * @param CreateProductCommand $command Yaradılacaq məhsulun məlumatları
      * @throws DomainException Əgər biznes qaydaları pozularsa
      */
-    public function handle(CreateProductCommand $command): void
+    public function handle(CreateProductCommand $command): string
     {
         $dto = $command->dto;
 
@@ -69,5 +69,7 @@ final class CreateProductHandler implements CommandHandler
 
         // 4. Repository vasitəsilə saxlayırıq
         $this->repository->save($product);
+
+        return $id->value();
     }
 }

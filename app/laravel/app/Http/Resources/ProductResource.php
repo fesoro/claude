@@ -46,8 +46,8 @@ class ProductResource extends JsonResource
              * }
              */
             'price' => [
-                'amount' => (float) $this->price,
-                'currency' => $this->currency ?? 'USD',
+                'amount' => (float) $this->priceAmount,
+                'currency' => $this->priceCurrency ?? 'USD',
             ],
 
             'stock' => (int) $this->stock,

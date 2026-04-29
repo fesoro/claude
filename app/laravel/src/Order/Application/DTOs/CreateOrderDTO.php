@@ -43,16 +43,3 @@ readonly class CreateOrderDTO
     ) {}
 }
 
-/**
- * Sifariş sətri (item) üçün input DTO.
- * Hər məhsulun ID-si, miqdarı, qiyməti və valyutası.
- */
-readonly class CreateOrderItemDTO
-{
-    public function __construct(
-        public string $productId,
-        public int $quantity,
-        public float $price,
-        public string $currency = 'AZN',
-    ) {}
-}

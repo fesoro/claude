@@ -55,6 +55,10 @@ spring:
 # 4 ayrıca datasource — Laravel-də config/database.php-də 4 connection
 # =====================================================================
 app:
+  reset-password-url: ${APP_RESET_PASSWORD_URL:https://app.ecommerce.az/reset-password}
+  notification:
+    admin-email: ${ADMIN_EMAIL:admin@ecommerce.az}
+    customer-fallback-email: ${CUSTOMER_FALLBACK_EMAIL:customer@example.com}
   datasource:
     user:
       jdbc-url: jdbc:mysql://${DB_USER_HOST:localhost}:${DB_USER_PORT:3306}/user_db

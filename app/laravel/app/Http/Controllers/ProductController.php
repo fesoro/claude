@@ -126,7 +126,7 @@ class ProductController extends Controller
         $command = new CreateProductCommand(
             dto: new CreateProductDTO(
                 name: $request->input('name'),
-                priceAmount: (int) ($request->input('price') * 100), // AZN → qəpik
+                priceAmount: (int) round($request->input('price') * 100), // AZN → qəpik
                 currency: $request->input('currency', 'AZN'),
                 stock: (int) $request->input('stock'),
             ),

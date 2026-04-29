@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use Src\Product\Domain\Repositories\ProductRepositoryInterface;
 use Src\Product\Infrastructure\Repositories\EloquentProductRepository;
 use Src\Product\Infrastructure\Repositories\CachedProductRepository;
+use Src\Shared\Infrastructure\Bus\EventDispatcher;
 use Src\Shared\Infrastructure\Cache\TaggedCacheService;
 
 /**
@@ -50,7 +51,9 @@ class ProductServiceProvider extends ServiceProvider
             ProductRepositoryInterface::class,
             function ($app) {
                 // Əvvəlcə əsl repository yaradırıq
-                $eloquentRepository = new EloquentProductRepository();
+                $eloquentRepository = new EloquentProductRepository(
+                    $app->make(EventDispatcher::class),
+                );
 
                 // Sonra cache Decorator-unu üstünə qoyuruq
                 // Bu, Decorator pattern-in tətbiqidir:

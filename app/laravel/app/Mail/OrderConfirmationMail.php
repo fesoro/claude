@@ -105,14 +105,14 @@ class OrderConfirmationMail extends Mailable
      *   Yəni $this->orderId yazmağa ehtiyac yoxdur — Laravel özü ötürür.
      *   Əgər property private olsa, content() metodunda with: [...] ilə ötürməlisiniz.
      *
-     * @param int    $orderId     Sifariş nömrəsi
+     * @param string $orderId     Sifariş ID-si (UUID)
      * @param string $userEmail   Müştərinin email adresi
      * @param float  $totalAmount Ümumi məbləğ (məsələn: 150.50)
      * @param array  $items       Sifariş edilən məhsulların siyahısı
      *                            Hər element: ['name' => 'Laptop', 'quantity' => 1, 'price' => 999.99]
      */
     public function __construct(
-        public readonly int $orderId,
+        public readonly string $orderId,
         public readonly string $userEmail,
         public readonly float $totalAmount,
         public readonly array $items,

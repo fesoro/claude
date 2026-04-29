@@ -14,6 +14,8 @@ Endpoint: `http://localhost:8080/api/health`
 
 📖 [DOCUMENTATION.md](DOCUMENTATION.md) — Laravel ↔ Spring ↔ **Go** üç-versiyalı müqayisə (öyrənmə üçün).
 
+📋 [../laravel/HTTP_EXAMPLES.md](../laravel/HTTP_EXAMPLES.md) — bütün 3 stack üçün curl nümunələri (eyni `localhost:8080` portu).
+
 ## Texnoloji stack
 
 - **Go 1.23** + Generics
@@ -46,9 +48,10 @@ infrastructure/ ← GORM model, controller, gateway
 ## Test
 
 ```bash
-go test ./test/unit/...                   # tək package testləri
-go test ./test/integration/...            # Testcontainers (Docker lazımdır)
-go test -cover ./internal/...             # coverage
+go test ./test/unit/...                            # unit testlər (domain VO-lar)
+go test ./test/feature/...                         # feature testlər (HTTP layer, in-memory)
+go test -tags=integration ./test/integration/...   # Testcontainers (Docker lazımdır)
+go test -cover ./internal/...                      # coverage
 ```
 
 ## Faydalı detal

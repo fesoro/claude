@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!--
+  Az stok xəbərdarlıq email şablonu (admin üçün)
+  Go template sintaksisi: {{.FieldName}}
+
+  Ötürülən dəyişənlər (map[string]any):
+  - .ProductName  → Məhsulun adı (string)
+  - .CurrentStock → Hazırkı stok miqdarı (int)
+-->
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0;padding:0;background-color:#f4f4f4;font-family:Arial,sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f4;padding:20px;">
+    <tr>
+        <td align="center">
+            <table width="600" cellpadding="0" cellspacing="0"
+                   style="background-color:#ffffff;border-radius:8px;overflow:hidden;">
+
+                <!-- Başlıq — narıncı rəng xəbərdarlığı bildirir -->
+                <tr>
+                    <td style="background-color:#f59e0b;color:#ffffff;padding:30px;text-align:center;">
+                        <h1 style="margin:0;font-size:24px;">Stok Xəbərdarlığı</h1>
+                        <p style="margin:10px 0 0;font-size:16px;">Məhsulun stoku azdır!</p>
+                    </td>
+                </tr>
+
+                <!-- Məzmun -->
+                <tr>
+                    <td style="padding:30px;">
+
+                        <div style="padding:20px;background-color:#fffbeb;border-radius:6px;border:1px solid #fde68a;margin-bottom:20px;">
+                            <table width="100%" style="font-size:14px;color:#555555;">
+                                <tr>
+                                    <td style="padding:8px 0;"><strong>Məhsul:</strong></td>
+                                    <td style="padding:8px 0;text-align:right;font-weight:bold;color:#333333;">
+                                        {{.ProductName}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:8px 0;"><strong>Hazırkı stok:</strong></td>
+                                    <td style="padding:8px 0;text-align:right;font-weight:bold;font-size:18px;color:#d97706;">
+                                        {{.CurrentStock}} ədəd
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <p style="color:#555555;font-size:14px;line-height:1.6;">
+                            Bu məhsulun stoku minimum həddən aşağıya düşdüyü üçün
+                            bu xəbərdarlıq avtomatik göndərildi. Zəhmət olmasa,
+                            admin panelindən stoku yeniləyib tədarükçü ilə əlaqə saxlayın.
+                        </p>
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td style="background-color:#f8f8f8;padding:20px;text-align:center;font-size:12px;color:#999999;">
+                        <p style="margin:0;">Bu avtomatik sistem xəbərdarlığıdır.</p>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

@@ -91,7 +91,11 @@ func (c *AuthController) Register(ctx *gin.Context) {
 		return
 	}
 
-	token, _ := c.jwt.Issue(id, req.Email)
+	token, err := c.jwt.Issue(id, req.Email)
+	if err != nil {
+		ctx.Error(err)
+		return
+	}
 	ctx.JSON(http.StatusCreated, api.SuccessWithMessage(
 		gin.H{"user_id": id, "token": token}, "Qeydiyyat uğurla tamamlandı"))
 }
@@ -131,7 +135,11 @@ func (c *AuthController) Login(ctx *gin.Context) {
 		return
 	}
 
-	token, _ := c.jwt.Issue(user.ID().UUID(), user.Email().Value())
+	token, err := c.jwt.Issue(user.ID().UUID(), user.Email().Value())
+	if err != nil {
+		ctx.Error(err)
+		return
+	}
 	ctx.JSON(http.StatusOK, api.Success(gin.H{"token": token}))
 }
 

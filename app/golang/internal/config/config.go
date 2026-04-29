@@ -26,9 +26,10 @@ type Config struct {
 }
 
 type AppConfig struct {
-	Name string `mapstructure:"name"`
-	Port int    `mapstructure:"port"`
-	Env  string `mapstructure:"env"`
+	Name             string `mapstructure:"name"`
+	Port             int    `mapstructure:"port"`
+	Env              string `mapstructure:"env"`
+	ResetPasswordURL string `mapstructure:"reset_password_url"`
 }
 
 type DBConn struct {

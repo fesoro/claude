@@ -30,7 +30,7 @@ class PaymentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'order_id' => $this->order_id,
+            'order_id' => $this->orderId,
 
             /**
              * Məbləğ və valyuta ayrı-ayrı sahə olaraq saxlanılır.
@@ -72,7 +72,7 @@ class PaymentResource extends JsonResource
              */
             'transaction_id' => $this->when(
                 $this->status === 'completed',
-                $this->transaction_id
+                $this->transactionId
             ),
 
             /**
@@ -85,10 +85,8 @@ class PaymentResource extends JsonResource
              */
             'failure_reason' => $this->when(
                 $this->status === 'failed',
-                $this->failure_reason
+                $this->failureReason
             ),
-
-            'created_at' => $this->created_at?->toISOString(),
         ];
     }
 }

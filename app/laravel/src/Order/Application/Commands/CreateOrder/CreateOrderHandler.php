@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Src\Order\Application\Commands\CreateOrder;
 
-use Src\Order\Application\DTOs\OrderDTO;
 use Src\Order\Domain\Events\OrderCreatedIntegrationEvent;
 use Src\Order\Domain\Factories\OrderFactory;
 use Src\Order\Domain\Repositories\OrderRepositoryInterface;
@@ -54,9 +53,9 @@ class CreateOrderHandler implements CommandHandler
      * Sifariş yaratma əmrini emal et.
      *
      * @param Command $command CreateOrderCommand olmalıdır
-     * @return OrderDTO Yaradılmış sifarişin DTO-su
+     * @return string Yaradılmış sifarişin ID-si
      */
-    public function handle(Command $command): OrderDTO
+    public function handle(Command $command): string
     {
         /** @var CreateOrderCommand $command */
 
@@ -88,7 +87,6 @@ class CreateOrderHandler implements CommandHandler
 
         $this->outboxRepository->save($outboxMessage);
 
-        // 5. DTO qaytarır — domain obyekti xaricə çıxmır
-        return OrderDTO::fromEntity($order);
+        return $order->orderId()->value();
     }
 }

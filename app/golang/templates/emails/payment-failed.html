@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!--
+  Ödəniş uğursuz email şablonu
+  Go template sintaksisi: {{.FieldName}}
+
+  Ötürülən dəyişənlər (map[string]any):
+  - .OrderID → Sifariş UUID (string)
+  - .Reason  → Uğursuzluğun səbəbi (string)
+-->
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0;padding:0;background-color:#f4f4f4;font-family:Arial,sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f4;padding:20px;">
+    <tr>
+        <td align="center">
+            <table width="600" cellpadding="0" cellspacing="0"
+                   style="background-color:#ffffff;border-radius:8px;overflow:hidden;">
+
+                <!-- Başlıq — qırmızı rəng uğursuzluğu bildirir -->
+                <tr>
+                    <td style="background-color:#dc2626;color:#ffffff;padding:30px;text-align:center;">
+                        <h1 style="margin:0;font-size:24px;">Ödəniş Uğursuz Oldu</h1>
+                        <p style="margin:10px 0 0;font-size:16px;">Üzr istəyirik</p>
+                    </td>
+                </tr>
+
+                <!-- Məzmun -->
+                <tr>
+                    <td style="padding:30px;">
+                        <p style="color:#333333;font-size:16px;margin:0 0 20px;">
+                            Sifarişiniz üçün ödəniş emal edilə bilmədi.
+                        </p>
+
+                        <table width="100%" style="font-size:14px;color:#555555;background-color:#fff5f5;border-radius:6px;border:1px solid #fecaca;">
+                            <tr>
+                                <td style="padding:12px 15px;border-bottom:1px solid #fecaca;">
+                                    <strong>Sifariş ID:</strong>
+                                </td>
+                                <td style="padding:12px 15px;border-bottom:1px solid #fecaca;text-align:right;">
+                                    {{.OrderID}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:12px 15px;">
+                                    <strong>Səbəb:</strong>
+                                </td>
+                                <td style="padding:12px 15px;text-align:right;color:#dc2626;">
+                                    {{.Reason}}
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p style="color:#555555;font-size:14px;margin:20px 0 0;">
+                            Zəhmət olmasa, ödəniş məlumatlarınızı yoxlayıb yenidən cəhd edin
+                            və ya digər ödəniş üsulu seçin.
+                        </p>
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td style="background-color:#f8f8f8;padding:20px;text-align:center;font-size:12px;color:#999999;">
+                        <p style="margin:0 0 5px;">Yardım lazımdırsa: support@eshop.az</p>
+                        <p style="margin:0;">Bu email avtomatik olaraq göndərilib.</p>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

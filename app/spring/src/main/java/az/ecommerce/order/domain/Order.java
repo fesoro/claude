@@ -51,7 +51,7 @@ public class Order extends AggregateRoot {
     public static Order create(UUID userId, List<OrderItem> items, Address address, Currency currency) {
         OrderId id = OrderId.generate();
         Order order = new Order(id, userId, items, address, currency);
-        order.recordEvent(OrderCreatedEvent.of(id, userId));
+        order.recordEvent(OrderCreatedEvent.of(id, userId, order.totalAmount.amount(), currency, items.size()));
         order.recordEvent(new OrderCreatedIntegrationEvent(
                 UUID.randomUUID(), java.time.Instant.now(),
                 id.value(), userId, order.totalAmount.amount(), currency.name()));
@@ -81,11 +81,13 @@ public class Order extends AggregateRoot {
     public void ship() {
         status.requireTransitionTo(OrderStatusEnum.SHIPPED);
         this.status = OrderStatusEnum.SHIPPED;
+        recordEvent(OrderShippedEvent.of(id));
     }
 
     public void deliver() {
         status.requireTransitionTo(OrderStatusEnum.DELIVERED);
         this.status = OrderStatusEnum.DELIVERED;
+        recordEvent(OrderDeliveredEvent.of(id));
     }
 
     public void cancel(String reason) {

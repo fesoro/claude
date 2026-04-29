@@ -180,6 +180,7 @@ func NewApplication(cfg *config.Config, logger *slog.Logger) (*Application, erro
 		paymentGateway.NewCreditCard(uint32(cfg.CircuitBreaker.FailureThreshold), 30),
 		paymentGateway.NewPayPal(),
 		paymentGateway.NewBankTransfer(),
+		paymentGateway.NewStripe(),
 	)
 	paymentACL := paymentApp.NewGatewayACL(paymentStrategy)
 	bus.Register[paymentApp.ProcessPaymentCommand, paymentApp.PaymentResult](cmdBus,
@@ -188,7 +189,7 @@ func NewApplication(cfg *config.Config, logger *slog.Logger) (*Application, erro
 		paymentApp.NewGetPaymentHandler(paymentRepo))
 
 	// Password reset service
-	passwordReset := userApp.NewPasswordResetService(userRepo, dbs.User, emailChannel)
+	passwordReset := userApp.NewPasswordResetService(userRepo, dbs.User, emailChannel, app.cfg.App.ResetPasswordURL)
 
 	// === 7. Outbox publisher-lər hər context üçün artıq yuxarıda göndərilib (goroutine) ===
 
@@ -205,7 +206,7 @@ func NewApplication(cfg *config.Config, logger *slog.Logger) (*Application, erro
 	notifPrefCtrl := notifWeb.NewPreferenceController(dbs.User)
 	whCtrl := webhookCtrl.New(dbs.User)
 	healthCtrl := health.New(dbs, rdb, cfg.RabbitMQ.URL)
-	searchCtrl := search.New()
+	searchCtrl := search.New(queryBus)
 	adminCtrl := admin.New(messaging.NewDLQRepository(dbs.Order))
 
 	// === 9. Route registration ===

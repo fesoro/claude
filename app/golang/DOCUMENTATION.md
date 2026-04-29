@@ -51,7 +51,14 @@ golang/
 │   ├── unit/                ← JUnit əvəzi: testify
 │   ├── integration/         ← Testcontainers
 │   └── feature/             ← MockMvc əvəzi: httptest
-├── templates/               ← email template
+├── templates/emails/        ← 5 HTML email şablonu (Go text/template sintaksisi)
+│   │                          Laravel: resources/views/emails/*.blade.php
+│   │                          Spring:  src/main/resources/templates/*.html
+│   ├── order-confirmation.html
+│   ├── payment-receipt.html
+│   ├── payment-failed.html
+│   ├── low-stock-alert.html
+│   └── password-reset.html
 ├── go.mod / go.sum
 ├── Dockerfile (multi-stage)
 ├── docker-compose.yml
@@ -227,8 +234,9 @@ go mod tidy
 go run ./cmd/api
 
 # 3. Test
-go test ./test/unit/...
-go test ./test/integration/...  # Testcontainers
+go test ./test/unit/...                            # unit testlər (domain VO-lar)
+go test ./test/feature/...                         # HTTP layer testləri (in-memory)
+go test -tags=integration ./test/integration/...   # Testcontainers (Docker lazımdır)
 
 # 4. CLI
 go run ./cmd/cli outbox:publish

@@ -63,7 +63,8 @@ final class ProcessPaymentHandler implements CommandHandler
     public function handle(Command $command): string
     {
         // 1. Value Object-ləri yarat — ham (raw) data-dan domain obyektlərinə çevir
-        $money = new Money($command->amount, $command->currency);
+        // $command->amount AZN-dədir (float: 29.99), Money isə qəpik (int: 2999) gözləyir
+        $money = new Money((int) round($command->amount * 100), $command->currency);
         $method = PaymentMethod::fromString($command->paymentMethod);
 
         // 2. Payment Aggregate yaradılır — status: PENDING

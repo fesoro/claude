@@ -4,9 +4,9 @@ import az.ecommerce.shared.infrastructure.bus.EventDispatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
  * Laravel: src/Shared/Infrastructure/Messaging/OutboxRelay.php
@@ -35,11 +35,11 @@ public class OutboxRelay {
     }
 
     /**
-     * @TransactionalEventListener default phase = AFTER_COMMIT, amma biz bunu
-     * BEFORE_COMMIT istəyirik ki, eyni transaction-da yazılsın.
+     * BEFORE_COMMIT phase: eyni aktiv transaction-da işləyir.
+     * Hansı bounded context event publish edirsə, həmin contextin
+     * transaction-ı daxilində outbox-a yazılır — ayrı TX manager lazım deyil.
      */
-    @EventListener
-    @Transactional(transactionManager = "orderTransactionManager")
+    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void onOutboxEvent(EventDispatcher.OutboxEvent wrapper) {
         try {
             var event = wrapper.integrationEvent();

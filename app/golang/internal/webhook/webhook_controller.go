@@ -72,7 +72,10 @@ func (c *Controller) Toggle(ctx *gin.Context) {
 		return
 	}
 	w.IsActive = !w.IsActive
-	c.db.Save(&w)
+	if err := c.db.Save(&w).Error; err != nil {
+		ctx.Error(err)
+		return
+	}
 	ctx.JSON(http.StatusOK, api.Success(w))
 }
 
@@ -83,7 +86,10 @@ func (c *Controller) Destroy(ctx *gin.Context) {
 		ctx.Error(err)
 		return
 	}
-	c.db.Delete(&webhookInfra.Webhook{}, "id = ?", id)
+	if err := c.db.Delete(&webhookInfra.Webhook{}, "id = ?", id).Error; err != nil {
+		ctx.Error(err)
+		return
+	}
 	ctx.JSON(http.StatusOK, api.SuccessWithMessage(nil, "Silindi"))
 }
 

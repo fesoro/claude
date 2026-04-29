@@ -77,7 +77,7 @@ class SendOrderConfirmationListener implements ShouldQueue
 
         \Illuminate\Support\Facades\Mail::to($user->email)->queue(
             new \App\Mail\OrderConfirmationMail(
-                orderId: (int) $event->orderId,
+                orderId: $event->orderId,
                 userEmail: $user->email,
                 totalAmount: $event->totalAmount,
                 items: [], // Order items ayrıca sorğu ilə alına bilər

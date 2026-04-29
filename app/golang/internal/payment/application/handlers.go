@@ -62,11 +62,11 @@ func DTOFromDomain(p *domain.Payment) PaymentDTO {
 // === COMMANDS / QUERIES ===
 
 type ProcessPaymentCommand struct {
-	OrderID  uuid.UUID `validate:"required"`
-	UserID   uuid.UUID `validate:"required"`
-	Amount   int64     `validate:"gt=0"`
-	Currency string    `validate:"required,oneof=USD EUR AZN"`
-	Method   string    `validate:"required,oneof=CREDIT_CARD PAYPAL BANK_TRANSFER STRIPE"`
+	OrderID  uuid.UUID `binding:"required" validate:"required"`
+	UserID   uuid.UUID `binding:"required" validate:"required"`
+	Amount   int64     `binding:"required,gt=0" validate:"gt=0"`
+	Currency string    `binding:"required,oneof=USD EUR AZN" validate:"required,oneof=USD EUR AZN"`
+	Method   string    `binding:"required,oneof=CREDIT_CARD PAYPAL BANK_TRANSFER STRIPE" validate:"required,oneof=CREDIT_CARD PAYPAL BANK_TRANSFER STRIPE"`
 }
 
 type GetPaymentQuery struct {
@@ -137,8 +137,10 @@ func (h *ProcessPaymentHandler) process(ctx context.Context, cmd ProcessPaymentC
 		return PaymentResult{}, err
 	}
 
-	gr, _ := h.acl.ProcessCharge(payment.Method(), amount, cmd.OrderID.String())
-	if gr.Success {
+	gr, err := h.acl.ProcessCharge(payment.Method(), amount, cmd.OrderID.String())
+	if err != nil {
+		_ = payment.Fail(err.Error())
+	} else if gr.Success {
 		_ = payment.Complete(gr.TransactionID)
 	} else {
 		_ = payment.Fail(gr.ErrorMessage)

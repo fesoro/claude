@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"github.com/orkhan/ecommerce/internal/shared/domain"
 )
 
@@ -26,6 +27,7 @@ func ErrorHandler() gin.HandlerFunc {
 		var notFound *domain.EntityNotFoundError
 		var validation *domain.ValidationError
 		var domainErr *domain.DomainError
+		var ginValidation validator.ValidationErrors
 
 		switch {
 		case errors.As(err, &notFound):
@@ -34,6 +36,12 @@ func ErrorHandler() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, ValidationFailed(validation.Errors))
 		case errors.As(err, &domainErr):
 			c.JSON(http.StatusUnprocessableEntity, Error(domainErr.Error()))
+		case errors.As(err, &ginValidation):
+			errs := make(map[string]string)
+			for _, ve := range ginValidation {
+				errs[ve.Field()] = ve.Tag() + " qaydası pozulub"
+			}
+			c.JSON(http.StatusBadRequest, ValidationFailed(errs))
 		default:
 			slog.Error("internal error", "err", err, "path", c.Request.URL.Path)
 			c.JSON(http.StatusInternalServerError, Error("Daxili server xətası"))

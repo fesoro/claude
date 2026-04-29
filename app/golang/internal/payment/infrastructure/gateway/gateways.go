@@ -65,3 +65,14 @@ func (g *BankTransfer) SupportedMethod() domain.PaymentMethod { return domain.Pa
 func (g *BankTransfer) Charge(amount productDomain.Money, reference string) domain.GatewayResult {
 	return domain.GatewayOK("BT-" + uuid.New().String())
 }
+
+// === STRIPE ===
+type Stripe struct{}
+
+func NewStripe() *Stripe { return &Stripe{} }
+
+func (g *Stripe) SupportedMethod() domain.PaymentMethod { return domain.PaymentMethodStripe }
+
+func (g *Stripe) Charge(amount productDomain.Money, reference string) domain.GatewayResult {
+	return domain.GatewayOK("ST-" + uuid.New().String())
+}

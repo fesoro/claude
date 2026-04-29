@@ -70,8 +70,10 @@ public class HealthCheckController {
     }
 
     private String checkRedis() {
-        try { redis.getConnectionFactory().getConnection().ping(); return "UP"; }
-        catch (Exception e) { return "DOWN: " + e.getMessage(); }
+        try {
+            redis.execute(conn -> conn.ping());
+            return "UP";
+        } catch (Exception e) { return "DOWN: " + e.getMessage(); }
     }
 
     private String checkRabbit() {
