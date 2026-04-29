@@ -934,7 +934,7 @@ Hər yeni commit-dən sonra yenidən review.
 ```json
 "require_signed_commits": true
 ```
-Identity spoofing-dən qoruma. Bax: `26-signed-commits.md`.
+Identity spoofing-dən qoruma. Bax: `24-signed-commits.md`.
 
 ### 9. Linear history
 `required_linear_history: true` — təmiz tarixçə, asan debug.

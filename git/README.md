@@ -57,6 +57,7 @@ PHP/Laravel developer üçün Git — əsaslardan komanda workflow-larına, böy
 | 30 | [30-git-performance-large-repos.md](30-git-performance-large-repos.md) | Git Performance in Large Repos — partial clone, sparse checkout, fsmonitor |
 | 31 | [31-git-maintenance.md](31-git-maintenance.md) | Git Maintenance — gc, repack, prune, fsck, commit-graph |
 | 33 | [33-git-advanced.md](33-git-advanced.md) | Git Advanced — rerere, notes, replace, alternates, grafts |
+| 34 | [34-gitops.md](34-gitops.md) | GitOps — Git as deployment source of truth, push/pull model, ArgoCD, environment branches |
 
 ### ⭐⭐⭐⭐⭐ Architect
 
@@ -78,7 +79,10 @@ PHP/Laravel developer üçün Git — əsaslardan komanda workflow-larına, böy
 13 → 14 → 17 → 18 → 22 → 26
 
 ### Böyük layihə idarəetməsi (Lead)
-19 → 28 → 29 → 30 → 31
+19 → 28 → 29 → 30 → 31 → 33 → 34
+
+### Deployment və GitOps (Senior → Lead)
+17 → 22 → 26 → 29 → 34
 
 ### Git dərinliyi (Architect)
-21 → 23 → 32
+21 → 23 → 33 → 32

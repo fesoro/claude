@@ -745,7 +745,7 @@ Tarixçə yenidən yazıldıqdan sonra hamı repository-ni yenidən clone etməl
 Əks halda köhnə obyektlər təkrar push olunar.
 
 ### 6. Böyük faylları Git LFS-ə keçir
-Video, binary asset, SQL dump faylları → LFS. Bax: `27-git-lfs.md`.
+Video, binary asset, SQL dump faylları → LFS. Bax: `25-git-lfs.md`.
 
 ### 7. `gc.auto` default-u dəyişmə
 `gc.auto=6700` Git-in balans etdiyi dəyərdir. 0 etməklə background GC-ni bağlama
