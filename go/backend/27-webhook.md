@@ -484,7 +484,7 @@ func (h *PaymentEventHandler) Handle(w http.ResponseWriter, r *http.Request) {
 
 ## Əlaqəli Mövzular
 
-- [33-http-server.md](33-http-server.md) — HTTP server
-- [62-security.md](62-security.md) — HMAC, imza yoxlama
-- [83-event-bus.md](83-event-bus.md) — Event-driven pattern
-- [34-http-client.md](34-http-client.md) — HTTP client (webhook göndərmək üçün)
+- [01-http-server.md](01-http-server.md) — HTTP server
+- [62-security.md](../advanced/07-security.md) — HMAC, imza yoxlama
+- [15-event-bus.md](../advanced/15-event-bus.md) — Event-driven pattern
+- [02-http-client.md](02-http-client.md) — HTTP client (webhook göndərmək üçün)

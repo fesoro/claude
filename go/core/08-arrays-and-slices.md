@@ -198,4 +198,4 @@ func main() {
 - [06-loops.md](06-loops.md) — for range ilə slice-lar
 - [09-maps.md](09-maps.md) — map məlumat strukturu
 - [07-functions.md](07-functions.md) — funksiyalarda slice parametrlər
-- [41-slice-advanced.md](41-slice-advanced.md) — slice daxili mexanizmi dərindən
+- [34-slice-advanced.md](34-slice-advanced.md) — slice daxili mexanizmi dərindən

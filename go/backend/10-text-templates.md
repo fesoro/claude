@@ -1,4 +1,4 @@
-# Text və HTML Templates (Senior)
+# Text və HTML Templates (Middle)
 
 ## İcmal
 
@@ -475,8 +475,8 @@ PHP-də Blade (Laravel) və Twig (Symfony) kimi template mühərrikləri xarici 
 
 ## Əlaqəli Mövzular
 
-- [20-json-encoding](20-json-encoding.md) — JSON serialization
-- [30-io-reader-writer](30-io-reader-writer.md) — io.Writer interfeysi
-- [31-go-embed](31-go-embed.md) — Template fayllarını binary-ə daxil etmək
-- [33-http-server](33-http-server.md) — HTTP handler-lərdə template istifadəsi
-- [50-xml-and-url](50-xml-and-url.md) — XML serialization
+- [20-json-encoding](../core/20-json-encoding.md) — JSON serialization
+- [30-io-reader-writer](../core/30-io-reader-writer.md) — io.Writer interfeysi
+- [31-go-embed](../core/31-go-embed.md) — Template fayllarını binary-ə daxil etmək
+- [01-http-server](01-http-server.md) — HTTP handler-lərdə template istifadəsi
+- [14-xml-and-url](14-xml-and-url.md) — XML serialization

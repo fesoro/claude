@@ -453,7 +453,7 @@ PHP-də statik fayllar həmişə disk-dən oxunur; deployment zamanı fayl struk
 
 - `14-packages-and-modules` — Go module sistemi
 - `13-file-operations` — adi fayl oxuma ilə müqayisə
-- `33-http-server` — HTTP static file server
-- `46-text-templates` — `html/template` ilə işləmək
-- `37-database` — migration runner
-- `39-environment-and-config` — konfiqurasiya idarəsi
+- `../backend/01-http-server` — HTTP static file server
+- `../backend/10-text-templates` — `html/template` ilə işləmək
+- `../backend/05-database` — migration runner
+- `../backend/07-environment-and-config` — konfiqurasiya idarəsi

@@ -437,7 +437,7 @@ increment(&x) // x indi 6
 
 - [11-pointers](11-pointers.md) — Pointer əsasları
 - [17-interfaces](17-interfaces.md) — Interface və method set
-- [42-struct-advanced](42-struct-advanced.md) — Struct-ların dərin analizi
-- [45-functional-options](45-functional-options.md) — Pointer receiver ilə options pattern
-- [68-profiling-and-benchmarking](68-profiling-and-benchmarking.md) — Performance ölçmə
-- [69-memory-management](69-memory-management.md) — Stack vs heap allocation
+- [35-struct-advanced](35-struct-advanced.md) — Struct-ların dərin analizi
+- [45-functional-options](../backend/09-functional-options.md) — Pointer receiver ilə options pattern
+- [68-profiling-and-benchmarking](../advanced/21-profiling-and-benchmarking.md) — Performance ölçmə
+- [69-memory-management](../advanced/22-memory-management.md) — Stack vs heap allocation

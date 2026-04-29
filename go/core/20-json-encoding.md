@@ -372,6 +372,6 @@ func main() {
 - [17-interfaces.md](17-interfaces.md) — `MarshalJSON`/`UnmarshalJSON` interface metodu kimi
 - [19-type-assertions.md](19-type-assertions.md) — `interface{}` decode zamanı float64 tuzağı
 - [21-enums.md](21-enums.md) — enum-ların JSON serialize edilməsi
-- [33-http-server.md](33-http-server.md) — HTTP handler-də JSON encode/decode
-- [34-http-client.md](34-http-client.md) — external API-dən JSON cavabı parse etmək
-- [39-environment-and-config.md](39-environment-and-config.md) — JSON konfiqürasiya faylları
+- [01-http-server.md](../backend/01-http-server.md) — HTTP handler-də JSON encode/decode
+- [02-http-client.md](../backend/02-http-client.md) — external API-dən JSON cavabı parse etmək
+- [07-environment-and-config.md](../backend/07-environment-and-config.md) — JSON konfiqürasiya faylları

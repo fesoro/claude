@@ -514,9 +514,9 @@ PHP/Laravel-də handler testləri `$this->getJson('/api/users')` şəklindəydi 
 
 ## Əlaqəli Mövzular
 
-- [33-http-server](33-http-server.md) — HTTP handler yazma əsasları
-- [35-middleware-and-routing](35-middleware-and-routing.md) — Middleware pattern-ları
-- [24-testing](24-testing.md) — Go-da testing fundamentals
-- [52-mocking-and-testify](52-mocking-and-testify.md) — Testify + mock-lar
-- [34-http-client](34-http-client.md) — HTTP client test etmək
-- [28-context](28-context.md) — Context ilə test timeout-ları
+- [01-http-server](01-http-server.md) — HTTP handler yazma əsasları
+- [03-middleware-and-routing](03-middleware-and-routing.md) — Middleware pattern-ları
+- [24-testing](../core/24-testing.md) — Go-da testing fundamentals
+- [16-mocking-and-testify](16-mocking-and-testify.md) — Testify + mock-lar
+- [02-http-client](02-http-client.md) — HTTP client test etmək
+- [28-context](../core/28-context.md) — Context ilə test timeout-ları

@@ -436,9 +436,9 @@ PHP/Laravel-də PDO bu rolu oynayırdı, Eloquent isə üstündə ORM idi. Go-da
 
 ## Əlaqəli Mövzular
 
-- [38-orm-and-sqlx](38-orm-and-sqlx.md) — GORM və sqlx ilə yüksək səviyyəli abstraction
-- [28-context](28-context.md) — Context ilə query timeout
-- [39-environment-and-config](39-environment-and-config.md) — DB DSN-ni environment-dən almaq
-- [54-project-structure](54-project-structure.md) — Repository pattern
-- [55-repository-pattern](55-repository-pattern.md) — Repository pattern implementation
-- [18-error-handling](18-error-handling.md) — DB xətalarını wrap etmək
+- [06-orm-and-sqlx](06-orm-and-sqlx.md) — GORM və sqlx ilə yüksək səviyyəli abstraction
+- [28-context](../core/28-context.md) — Context ilə query timeout
+- [07-environment-and-config](07-environment-and-config.md) — DB DSN-ni environment-dən almaq
+- [18-project-structure](18-project-structure.md) — Repository pattern
+- [19-repository-pattern](19-repository-pattern.md) — Repository pattern implementation
+- [18-error-handling](../core/18-error-handling.md) — DB xətalarını wrap etmək

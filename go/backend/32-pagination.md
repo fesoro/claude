@@ -310,8 +310,8 @@ SimplePaginator              →   CursorResult[T] struct
 
 ## Əlaqəli Mövzular
 
-- [37-database.md](37-database.md) — database/sql, query yazma
-- [38-orm-and-sqlx.md](38-orm-and-sqlx.md) — sqlx, GORM pagination
-- [29-generics.md](29-generics.md) — generic wrapper tipləri
-- [82-api-versioning.md](82-api-versioning.md) — API dizayn qaydaları
-- [93-swagger-openapi.md](93-swagger-openapi.md) — pagination response annotation
+- [05-database.md](05-database.md) — database/sql, query yazma
+- [38-orm-and-sqlx.md](06-orm-and-sqlx.md) — sqlx, GORM pagination
+- [29-generics.md](../core/29-generics.md) — generic wrapper tipləri
+- [25-api-versioning.md](25-api-versioning.md) — API dizayn qaydaları
+- [93-swagger-openapi.md](31-swagger-openapi.md) — pagination response annotation

@@ -721,12 +721,12 @@ func (s *UserService) GetActiveUsers(ctx context.Context) ([]*User, error) {
 
 ## Əlaqəli Mövzular
 
-- [17-interfaces](17-interfaces.md) — Interface əsasları
-- [37-database](37-database.md) — database/sql paketi
-- [38-orm-and-sqlx](38-orm-and-sqlx.md) — ORM və sqlx
-- [42-struct-advanced](42-struct-advanced.md) — Struct dizaynı
-- [45-functional-options](45-functional-options.md) — Repository konfiqurasiyası
-- [52-mocking-and-testify](52-mocking-and-testify.md) — Mock ilə test
-- [54-project-structure](54-project-structure.md) — Layihə strukturunda yerləşdirmə
-- [64-dependency-injection](64-dependency-injection.md) — DI ilə birlikdə istifadə
-- [74-clean-architecture](74-clean-architecture.md) — Clean architecture kontekstdə
+- [17-interfaces](../core/17-interfaces.md) — Interface əsasları
+- [05-database](05-database.md) — database/sql paketi
+- [06-orm-and-sqlx](06-orm-and-sqlx.md) — ORM və sqlx
+- [42-struct-advanced](../core/35-struct-advanced.md) — Struct dizaynı
+- [45-functional-options](09-functional-options.md) — Repository konfiqurasiyası
+- [16-mocking-and-testify](16-mocking-and-testify.md) — Mock ilə test
+- [18-project-structure](18-project-structure.md) — Layihə strukturunda yerləşdirmə
+- [64-dependency-injection](../advanced/09-dependency-injection.md) — DI ilə birlikdə istifadə
+- [74-clean-architecture](../advanced/27-clean-architecture.md) — Clean architecture kontekstdə

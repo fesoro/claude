@@ -416,9 +416,9 @@ PHP/Laravel-də middleware `app/Http/Middleware` sinfləri idi, route-lar `route
 
 ## Əlaqəli Mövzular
 
-- [33-http-server](33-http-server.md) — HTTP server əsasları
-- [34-http-client](34-http-client.md) — HTTP client
-- [36-httptest](36-httptest.md) — Handler və middleware testləri
-- [28-context](28-context.md) — Context vasitəsilə məlumat ötürmə
-- [65-jwt-and-auth](65-jwt-and-auth.md) — JWT ilə authentication middleware
-- [51-rate-limiting](51-rate-limiting.md) — Rate limiting implementasiyası
+- [01-http-server](01-http-server.md) — HTTP server əsasları
+- [02-http-client](02-http-client.md) — HTTP client
+- [04-httptest](04-httptest.md) — Handler və middleware testləri
+- [28-context](../core/28-context.md) — Context vasitəsilə məlumat ötürmə
+- [65-jwt-and-auth](../advanced/10-jwt-and-auth.md) — JWT ilə authentication middleware
+- [51-rate-limiting](15-rate-limiting.md) — Rate limiting implementasiyası

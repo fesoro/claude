@@ -733,8 +733,8 @@ PHP/Laravel-dən gələnlər üçün microservices ən böyük düşüncə dəyi
 
 ## Əlaqəli Mövzular
 
-- [72-message-queues.md](72-message-queues.md) — Asinxron servislərarası kommunikasiya
-- [74-clean-architecture.md](74-clean-architecture.md) — Hər microservice-in daxili strukturu
-- [70-docker-and-deploy.md](70-docker-and-deploy.md) — Docker + Kubernetes deployment
-- [71-monitoring-and-observability.md](71-monitoring-and-observability.md) — Distributed tracing
-- [67-grpc.md](67-grpc.md) — gRPC ətraflı
+- [72-message-queues.md](25-message-queues.md) — Asinxron servislərarası kommunikasiya
+- [27-clean-architecture.md](27-clean-architecture.md) — Hər microservice-in daxili strukturu
+- [70-docker-and-deploy.md](23-docker-and-deploy.md) — Docker + Kubernetes deployment
+- [71-monitoring-and-observability.md](24-monitoring-and-observability.md) — Distributed tracing
+- [67-grpc.md](12-grpc.md) — gRPC ətraflı

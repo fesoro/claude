@@ -400,7 +400,7 @@ c.AddFunc("0 0 8 * * 1", sendWeeklyDigest) // bazar ertəsi 08:00
 
 ## Əlaqəli Mövzular
 
-- [53-graceful-shutdown.md](53-graceful-shutdown.md) — Graceful shutdown
-- [48-processes-and-signals.md](48-processes-and-signals.md) — Signal idarəsi
-- [27-goroutines-and-channels.md](27-goroutines-and-channels.md) — Goroutine əsasları
-- [71-monitoring-and-observability.md](71-monitoring-and-observability.md) — Metric
+- [17-graceful-shutdown.md](17-graceful-shutdown.md) — Graceful shutdown
+- [12-processes-and-signals.md](12-processes-and-signals.md) — Signal idarəsi
+- [27-goroutines-and-channels.md](../core/27-goroutines-and-channels.md) — Goroutine əsasları
+- [71-monitoring-and-observability.md](../advanced/24-monitoring-and-observability.md) — Metric

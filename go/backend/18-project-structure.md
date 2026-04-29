@@ -484,9 +484,9 @@ app/Providers/                  cmd/api/main.go (composition root)
 
 ## Əlaqəli Mövzular
 
-- [14-packages-and-modules](14-packages-and-modules.md) — Paket əsasları
-- [22-init-and-modules](22-init-and-modules.md) — Go modules
-- [53-graceful-shutdown](53-graceful-shutdown.md) — main.go-da shutdown
-- [55-repository-pattern](55-repository-pattern.md) — Repository pattern
-- [64-dependency-injection](64-dependency-injection.md) — DI patterns
-- [74-clean-architecture](74-clean-architecture.md) — Clean Architecture dərin
+- [14-packages-and-modules](../core/14-packages-and-modules.md) — Paket əsasları
+- [22-init-and-modules](../core/22-init-and-modules.md) — Go modules
+- [17-graceful-shutdown](17-graceful-shutdown.md) — main.go-da shutdown
+- [19-repository-pattern](19-repository-pattern.md) — Repository pattern
+- [64-dependency-injection](../advanced/09-dependency-injection.md) — DI patterns
+- [74-clean-architecture](../advanced/27-clean-architecture.md) — Clean Architecture dərin

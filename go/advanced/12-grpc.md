@@ -669,8 +669,8 @@ PHP REST API ilə müqayisədə: JSON → Protobuf (binary, ~3-10x kiçik), HTTP
 
 ## Əlaqəli Mövzular
 
-- [33-http-server](33-http-server.md) — HTTP server ilə müqayisə
-- [34-http-client](34-http-client.md) — REST client
-- [65-jwt-and-auth](65-jwt-and-auth.md) — gRPC auth interceptor
-- [56-advanced-concurrency](56-advanced-concurrency.md) — concurrent streaming
-- [73-microservices](73-microservices.md) — microservice arxitekturası
+- [01-http-server](../backend/01-http-server.md) — HTTP server ilə müqayisə
+- [34-http-client](../backend/02-http-client.md) — REST client
+- [65-jwt-and-auth](10-jwt-and-auth.md) — gRPC auth interceptor
+- [01-advanced-concurrency](01-advanced-concurrency.md) — concurrent streaming
+- [26-microservices](26-microservices.md) — microservice arxitekturası

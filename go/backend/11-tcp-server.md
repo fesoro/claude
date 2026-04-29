@@ -523,9 +523,9 @@ Avtomatik reconnect edən TCP client yazın. Bağlantı kəsilsə exponential ba
 
 ## Əlaqəli Mövzular
 
-- [27-goroutines-and-channels](27-goroutines-and-channels.md) — Goroutine əsasları
-- [28-context](28-context.md) — Context ilə connection idarəsi
-- [33-http-server](33-http-server.md) — HTTP server (TCP üzərindən)
-- [53-graceful-shutdown](53-graceful-shutdown.md) — Server-in düzgün bağlanması
-- [61-websocket](61-websocket.md) — WebSocket (TCP upgrade)
-- [67-grpc](67-grpc.md) — gRPC (HTTP/2 üzərindən)
+- [27-goroutines-and-channels](../core/27-goroutines-and-channels.md) — Goroutine əsasları
+- [28-context](../core/28-context.md) — Context ilə connection idarəsi
+- [01-http-server](01-http-server.md) — HTTP server (TCP üzərindən)
+- [17-graceful-shutdown](17-graceful-shutdown.md) — Server-in düzgün bağlanması
+- [61-websocket](../advanced/06-websocket.md) — WebSocket (TCP upgrade)
+- [67-grpc](../advanced/12-grpc.md) — gRPC (HTTP/2 üzərindən)

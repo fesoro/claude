@@ -645,8 +645,8 @@ PHP-dəki `__construct` injection ilə Go-nun constructor funksiyaları arasınd
 
 ## Əlaqəli Mövzular
 
-- [17-interfaces](17-interfaces.md) — interface əsasları
-- [45-functional-options](45-functional-options.md) — functional options ətraflı
-- [55-repository-pattern](55-repository-pattern.md) — repository pattern
-- [64-dependency-injection](64-dependency-injection.md) — DI və wire
-- [35-middleware-and-routing](35-middleware-and-routing.md) — HTTP middleware
+- [17-interfaces](../core/17-interfaces.md) — interface əsasları
+- [45-functional-options](../backend/09-functional-options.md) — functional options ətraflı
+- [19-repository-pattern](../backend/19-repository-pattern.md) — repository pattern
+- [64-dependency-injection](09-dependency-injection.md) — DI və wire
+- [35-middleware-and-routing](../backend/03-middleware-and-routing.md) — HTTP middleware

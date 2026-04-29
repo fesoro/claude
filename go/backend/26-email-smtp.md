@@ -411,7 +411,7 @@ asyncSvc.SendWelcomeAsync(user.Email, user.Name, loginURL)
 
 ## Əlaqəli Mövzular
 
-- [46-text-templates.md](46-text-templates.md) — HTML/text template
-- [65-jwt-and-auth.md](65-jwt-and-auth.md) — Token generasiya
-- [75-errgroup.md](75-errgroup.md) — Parallel göndərmə
-- [80-cron-scheduler.md](80-cron-scheduler.md) — Scheduled email
+- [10-text-templates.md](10-text-templates.md) — HTML/text template
+- [65-jwt-and-auth.md](../advanced/10-jwt-and-auth.md) — Token generasiya
+- [20-errgroup.md](20-errgroup.md) — Parallel göndərmə
+- [24-cron-scheduler.md](24-cron-scheduler.md) — Scheduled email

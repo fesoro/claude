@@ -524,8 +524,8 @@ Laravel Sanctum/Passport-dan fərqli olaraq Go-da hər şeyi özünüz qurursunu
 
 ## Əlaqəli Mövzular
 
-- [62-security](62-security.md) — bcrypt, HMAC, təhlükəsizlik
-- [35-middleware-and-routing](35-middleware-and-routing.md) — HTTP middleware
-- [33-http-server](33-http-server.md) — TLS server
-- [63-caching](63-caching.md) — Redis token blacklist
-- [73-microservices](73-microservices.md) — microservice auth
+- [62-security](07-security.md) — bcrypt, HMAC, təhlükəsizlik
+- [35-middleware-and-routing](../backend/03-middleware-and-routing.md) — HTTP middleware
+- [01-http-server](../backend/01-http-server.md) — TLS server
+- [63-caching](08-caching.md) — Redis token blacklist
+- [26-microservices](26-microservices.md) — microservice auth

@@ -317,7 +317,7 @@ result, _, _ := group.Do("user:"+id, func() (interface{}, error) {
 
 ## Əlaqəli Mövzular
 
-- [63-caching.md](63-caching.md) — Caching pattern-lər
-- [56-advanced-concurrency.md](56-advanced-concurrency.md) — sync paketi
-- [75-errgroup.md](75-errgroup.md) — Paralel goroutine idarəsi
-- [27-goroutines-and-channels.md](27-goroutines-and-channels.md) — Goroutine əsasları
+- [63-caching.md](08-caching.md) — Caching pattern-lər
+- [01-advanced-concurrency.md](01-advanced-concurrency.md) — sync paketi
+- [75-errgroup.md](../backend/20-errgroup.md) — Paralel goroutine idarəsi
+- [27-goroutines-and-channels.md](../core/27-goroutines-and-channels.md) — Goroutine əsasları

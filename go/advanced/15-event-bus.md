@@ -389,7 +389,7 @@ bus.Publish(ctx, domain.UserRegistered{...})
 
 ## Əlaqəli Mövzular
 
-- [72-message-queues.md](72-message-queues.md) — Kafka ilə integration events
-- [74-clean-architecture.md](74-clean-architecture.md) — Domain layer, usecase
-- [27-goroutines-and-channels.md](27-goroutines-and-channels.md) — Goroutine əsasları
-- [73-microservices.md](73-microservices.md) — Servislərarası hadisələr
+- [72-message-queues.md](25-message-queues.md) — Kafka ilə integration events
+- [27-clean-architecture.md](27-clean-architecture.md) — Domain layer, usecase
+- [27-goroutines-and-channels.md](../core/27-goroutines-and-channels.md) — Goroutine əsasları
+- [26-microservices.md](26-microservices.md) — Servislərarası hadisələr

@@ -1,4 +1,4 @@
-# Data Structures — Go-da (Senior)
+# Data Structures — Go-da (Middle)
 
 ## İcmal
 
@@ -539,9 +539,9 @@ func (s *Stack[T]) Pop() (T, bool) { ... }
 
 ## Əlaqəli Mövzular
 
-- [08-arrays-and-slices](08-arrays-and-slices.md) — Slice əsasları
-- [09-maps](09-maps.md) — Map əsasları
-- [29-generics](29-generics.md) — Generic type-lar
-- [41-slice-advanced](41-slice-advanced.md) — Slice-ın daxili mexanizmi
-- [56-advanced-concurrency](56-advanced-concurrency.md) — Concurrent data structure-lar
-- [68-profiling-and-benchmarking](68-profiling-and-benchmarking.md) — Data structure benchmark
+- [08-arrays-and-slices](../core/08-arrays-and-slices.md) — Slice əsasları
+- [09-maps](../core/09-maps.md) — Map əsasları
+- [29-generics](../core/29-generics.md) — Generic type-lar
+- [34-slice-advanced](../core/34-slice-advanced.md) — Slice-ın daxili mexanizmi
+- [56-advanced-concurrency](../advanced/01-advanced-concurrency.md) — Concurrent data structure-lar
+- [68-profiling-and-benchmarking](../advanced/21-profiling-and-benchmarking.md) — Data structure benchmark

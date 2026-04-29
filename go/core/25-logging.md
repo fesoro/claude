@@ -471,5 +471,5 @@ Channel               →  Logger.With("service", "orders")
 - `24-testing` — log output-u test etmək (`slog` test handler)
 - `27-goroutines-and-channels` — goroutine-lərdə thread-safe logging
 - `28-context` — context ilə request-scoped logger ötürmək
-- `33-http-server` — HTTP middleware-də logging
-- `39-environment-and-config` — LOG_LEVEL kimi konfiqurasiya
+- `../backend/01-http-server` — HTTP middleware-də logging
+- `../backend/07-environment-and-config` — LOG_LEVEL kimi konfiqurasiya

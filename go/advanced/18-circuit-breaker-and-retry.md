@@ -66,6 +66,102 @@ Backoff with full jitter: rand(0, min(cap, base * 2^attempt))
 - **Open** — bütün request-lər anında xəta ilə bloklanır (servisə çatmır)
 - **Half-open** — bir neçə probe request buraxılır; uğurlu olsa Closed-a keçər
 
+## Nümunələr
+
+### Nümunə 1: Sadə exponential backoff retry
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "math/rand"
+    "time"
+)
+
+func retryWithBackoff(ctx context.Context, maxAttempts int, fn func() error) error {
+    delay := 100 * time.Millisecond
+    for attempt := 0; attempt < maxAttempts; attempt++ {
+        if err := fn(); err == nil {
+            return nil
+        } else if attempt == maxAttempts-1 {
+            return fmt.Errorf("max cəhd (%d) bitdi: %w", maxAttempts, err)
+        }
+        // Full jitter
+        jitter := time.Duration(rand.Int63n(int64(delay)))
+        select {
+        case <-ctx.Done():
+            return ctx.Err()
+        case <-time.After(jitter):
+        }
+        delay = min(delay*2, 30*time.Second)
+    }
+    return nil
+}
+```
+
+### Nümunə 2: Circuit breaker vəziyyət simulyasiyası
+
+```go
+package main
+
+import (
+    "errors"
+    "fmt"
+    "sync/atomic"
+    "time"
+)
+
+type State int32
+
+const (
+    Closed   State = 0
+    Open     State = 1
+    HalfOpen State = 2
+)
+
+type SimpleBreaker struct {
+    state       atomic.Int32
+    failures    atomic.Int32
+    threshold   int32
+    openUntil   atomic.Int64
+    cooldown    time.Duration
+}
+
+func NewBreaker(threshold int, cooldown time.Duration) *SimpleBreaker {
+    return &SimpleBreaker{threshold: int32(threshold), cooldown: cooldown}
+}
+
+var ErrOpen = errors.New("circuit breaker açıqdır")
+
+func (b *SimpleBreaker) Execute(fn func() error) error {
+    switch State(b.state.Load()) {
+    case Open:
+        if time.Now().UnixNano() > b.openUntil.Load() {
+            b.state.CompareAndSwap(int32(Open), int32(HalfOpen))
+        } else {
+            return ErrOpen
+        }
+    }
+
+    err := fn()
+    if err != nil {
+        n := b.failures.Add(1)
+        if n >= b.threshold {
+            b.openUntil.Store(time.Now().Add(b.cooldown).UnixNano())
+            b.state.Store(int32(Open))
+            fmt.Println("circuit OPEN")
+        }
+        return err
+    }
+
+    b.failures.Store(0)
+    b.state.Store(int32(Closed))
+    return nil
+}
+```
+
 ## Praktik Baxış
 
 ### Sadə Retry (cenkalti/backoff)
@@ -328,9 +424,9 @@ sleep(2)                      →   time.Sleep / backoff delay
 
 ## Əlaqəli Mövzular
 
-- [34-http-client.md](34-http-client.md) — HTTP client, connection pool, timeout
-- [28-context.md](28-context.md) — timeout və cancellation
-- [51-rate-limiting.md](51-rate-limiting.md) — gülən sorğu sayını məhdudlaşdır
-- [73-microservices.md](73-microservices.md) — service resilience patterns
-- [71-monitoring-and-observability.md](71-monitoring-and-observability.md) — circuit state monitoring
-- [79-singleflight.md](79-singleflight.md) — thundering herd üçün digər yanaşma
+- [../backend/02-http-client.md](../backend/02-http-client.md) — HTTP client, connection pool, timeout
+- [../core/28-context.md](../core/28-context.md) — timeout və cancellation
+- [51-rate-limiting.md](../backend/15-rate-limiting.md) — gülən sorğu sayını məhdudlaşdır
+- [26-microservices.md](26-microservices.md) — service resilience patterns
+- [71-monitoring-and-observability.md](24-monitoring-and-observability.md) — circuit state monitoring
+- [79-singleflight.md](13-singleflight.md) — thundering herd üçün digər yanaşma

@@ -566,8 +566,8 @@ Bir neçə JSON konfiqurasiya faylını birləşdirən tool: `base.json` + `loca
 
 ## Əlaqəli Mövzular
 
-- [13-file-operations](13-file-operations.md) — Fayl əsasları
-- [30-io-reader-writer](30-io-reader-writer.md) — io.Reader/Writer
-- [31-go-embed](31-go-embed.md) — Faylları binary-ə daxil etmək
-- [48-processes-and-signals](48-processes-and-signals.md) — OS integration
-- [70-docker-and-deploy](70-docker-and-deploy.md) — Container-da fayl sistemi
+- [13-file-operations](../core/13-file-operations.md) — Fayl əsasları
+- [30-io-reader-writer](../core/30-io-reader-writer.md) — io.Reader/Writer
+- [31-go-embed](../core/31-go-embed.md) — Faylları binary-ə daxil etmək
+- [12-processes-and-signals](12-processes-and-signals.md) — OS integration
+- [70-docker-and-deploy](../advanced/23-docker-and-deploy.md) — Container-da fayl sistemi

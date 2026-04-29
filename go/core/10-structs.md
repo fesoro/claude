@@ -257,4 +257,4 @@ func main() {
 - [07-functions.md](07-functions.md) — funksiyalar
 - [17-interfaces.md](17-interfaces.md) — interfeyslər
 - [20-json-encoding.md](20-json-encoding.md) — JSON işləmə
-- [42-struct-advanced.md](42-struct-advanced.md) — struct dərinləşmə
+- [35-struct-advanced.md](35-struct-advanced.md) — struct dərinləşmə

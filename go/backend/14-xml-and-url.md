@@ -556,8 +556,8 @@ u.RawQuery = q.Encode()
 
 ## Əlaqəli Mövzular
 
-- [20-json-encoding](20-json-encoding.md) — JSON encoding ilə müqayisə
-- [33-http-server](33-http-server.md) — HTTP server-də URL işləmə
-- [34-http-client](34-http-client.md) — HTTP client-də URL qurmaq
-- [46-text-templates](46-text-templates.md) — Template ilə XML/HTML generasiyası
-- [62-security](62-security.md) — URL injection qorunması
+- [20-json-encoding](../core/20-json-encoding.md) — JSON encoding ilə müqayisə
+- [01-http-server](01-http-server.md) — HTTP server-də URL işləmə
+- [02-http-client](02-http-client.md) — HTTP client-də URL qurmaq
+- [10-text-templates](10-text-templates.md) — Template ilə XML/HTML generasiyası
+- [62-security](../advanced/07-security.md) — URL injection qorunması

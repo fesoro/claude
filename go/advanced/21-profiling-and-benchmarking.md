@@ -454,7 +454,7 @@ PHP-də profiling üçün Xdebug (`xdebug.profiler_enable=1`) və Blackfire.io k
 
 ## Əlaqəli Mövzular
 
-- [69-memory-management.md](69-memory-management.md) — GC internals, heap/stack, escape analysis
-- [71-monitoring-and-observability.md](71-monitoring-and-observability.md) — Prometheus metrics, OpenTelemetry
-- [56-advanced-concurrency.md](56-advanced-concurrency.md) — Goroutine pool, sync primitives
-- [24-testing.md](24-testing.md) — Go-da test yazma əsasları
+- [69-memory-management.md](22-memory-management.md) — GC internals, heap/stack, escape analysis
+- [71-monitoring-and-observability.md](24-monitoring-and-observability.md) — Prometheus metrics, OpenTelemetry
+- [01-advanced-concurrency.md](01-advanced-concurrency.md) — Goroutine pool, sync primitives
+- [24-testing.md](../core/24-testing.md) — Go-da test yazma əsasları

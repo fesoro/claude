@@ -411,6 +411,6 @@ go 1.22  # bütün workspace modulları bu versiya ilə uyğun olmalıdır
 
 - `14-packages-and-modules` — go.mod, go.sum əsasları
 - `22-init-and-modules` — module init, import yolları
-- `54-project-structure` — mono-repo vs multi-repo qərarı
-- `70-docker-and-deploy` — workspace ilə Docker build
-- `73-microservices` — servislərarası paylaşılan kod
+- `../backend/18-project-structure` — mono-repo vs multi-repo qərarı
+- `../advanced/23-docker-and-deploy` — workspace ilə Docker build
+- `../advanced/26-microservices` — servislərarası paylaşılan kod

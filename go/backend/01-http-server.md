@@ -1,4 +1,4 @@
-# HTTP Server (Senior)
+# HTTP Server (Middle)
 
 ## İcmal
 
@@ -341,9 +341,9 @@ PHP/Laravel-də `php-fpm` + `nginx` birlikdə işləyirdi. Go-da isə bütün bu
 
 ## Əlaqəli Mövzular
 
-- [34-http-client](34-http-client.md) — xarici API-lərə sorğu göndərmək
-- [35-middleware-and-routing](35-middleware-and-routing.md) — Chi router ilə routing, middleware pattern
-- [36-httptest](36-httptest.md) — HTTP handler-lərin test edilməsi
-- [53-graceful-shutdown](53-graceful-shutdown.md) — Graceful shutdown dərindən
-- [28-context](28-context.md) — Request context, timeout, cancellation
-- [25-logging](25-logging.md) — Structured logging
+- [02-http-client](02-http-client.md) — xarici API-lərə sorğu göndərmək
+- [03-middleware-and-routing](03-middleware-and-routing.md) — Chi router ilə routing, middleware pattern
+- [04-httptest](04-httptest.md) — HTTP handler-lərin test edilməsi
+- [17-graceful-shutdown](17-graceful-shutdown.md) — Graceful shutdown dərindən
+- [28-context](../core/28-context.md) — Request context, timeout, cancellation
+- [25-logging](../core/25-logging.md) — Structured logging

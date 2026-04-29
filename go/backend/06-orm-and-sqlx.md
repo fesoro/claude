@@ -483,9 +483,9 @@ PHP/Laravel-də Eloquent ORM aktiv record pattern-i istifadə edirdi — `User::
 
 ## Əlaqəli Mövzular
 
-- [37-database](37-database.md) — database/sql əsasları
-- [54-project-structure](54-project-structure.md) — Layihə strukturu
-- [55-repository-pattern](55-repository-pattern.md) — Repository pattern
-- [28-context](28-context.md) — Context ilə query timeout
-- [39-environment-and-config](39-environment-and-config.md) — DSN environment-dən almaq
-- [24-testing](24-testing.md) — DB testləri — testcontainers
+- [05-database](05-database.md) — database/sql əsasları
+- [18-project-structure](18-project-structure.md) — Layihə strukturu
+- [19-repository-pattern](19-repository-pattern.md) — Repository pattern
+- [28-context](../core/28-context.md) — Context ilə query timeout
+- [07-environment-and-config](07-environment-and-config.md) — DSN environment-dən almaq
+- [24-testing](../core/24-testing.md) — DB testləri — testcontainers

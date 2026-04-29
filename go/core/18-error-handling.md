@@ -328,6 +328,6 @@ func main() {
 - [17-interfaces.md](17-interfaces.md) — `error` bir interface-dir; custom error tipi yaratmaq
 - [19-type-assertions.md](19-type-assertions.md) — `errors.As`-ın daxilindəki mexanizm
 - [24-testing.md](24-testing.md) — xəta hallarını test etmək
-- [33-http-server.md](33-http-server.md) — HTTP handler-də xəta idarəetməsi
-- [37-database.md](37-database.md) — database xətalarını idarə etmək
-- [53-graceful-shutdown.md](53-graceful-shutdown.md) — xəta ilə bağlı graceful shutdown
+- [01-http-server.md](../backend/01-http-server.md) — HTTP handler-də xəta idarəetməsi
+- [05-database.md](../backend/05-database.md) — database xətalarını idarə etmək
+- [17-graceful-shutdown.md](../backend/17-graceful-shutdown.md) — xəta ilə bağlı graceful shutdown

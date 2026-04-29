@@ -1,4 +1,4 @@
-# Go Backend — 33 Mövzu (01-33)
+# Go Backend — 38 Mövzu (01-38)
 
 Go ilə praktiki backend development: HTTP server/client, database, ORM, project structure, testing, real-world patterns. Middle ⭐⭐-dan Senior ⭐⭐⭐-ə qədər.
 
@@ -15,6 +15,7 @@ Go ilə praktiki backend development: HTTP server/client, database, ORM, project
 | 3 | Konfigurasiya & Patterns | 07-10 | Middle ⭐⭐ | Config, data structures, functional options, templates |
 | 4 | Sistem & Alətlər | 11-19 | Senior ⭐⭐⭐ | TCP, processes, files, rate limiting, testing, project, repo |
 | 5 | Production Patterns | 20-33 | Senior ⭐⭐⭐ | Validation, migrations, cron, versioning, email, webhook, SSE, pagination, idempotency |
+| 6 | İnfrastruktur & Observability | 34-38 | Middle–Senior ⭐⭐–⭐⭐⭐ | Redis, sqlc, TLS, health check, OpenTelemetry | |
 
 ---
 
@@ -83,6 +84,18 @@ Go ilə praktiki backend development: HTTP server/client, database, ORM, project
 | [31](31-swagger-openapi.md) | Swagger & OpenAPI | `swaggo/swag`, annotation, Swagger UI, spec generation |
 | [32](32-pagination.md) | Pagination | Offset, cursor, keyset — performans müqayisəsi |
 | [33](33-idempotency-pattern.md) | Idempotency Pattern | Idempotency-Key header, Redis SET NX, atomic replay prevention |
+
+---
+
+## Faza 6: İnfrastruktur & Observability (34-38) — Middle–Senior ⭐⭐–⭐⭐⭐
+
+| # | Fayl | Mövzu |
+|---|------|-------|
+| [34](34-redis-client.md) | Redis Client | go-redis v9, pool, pipeline, pub/sub, distributed lock |
+| [35](35-sqlc.md) | sqlc | Type-safe SQL code generation, `:one/:many/:exec`, repo pattern |
+| [36](36-tls-https.md) | TLS/HTTPS | `tls.Config`, Let's Encrypt autocert, mTLS, HSTS |
+| [37](37-health-check.md) | Health Check | Liveness/readiness probe, dependency check, Kubernetes YAML |
+| [38](38-opentelemetry-tracing.md) | OpenTelemetry Tracing | OTel SDK, OTLP, span, trace propagation, slog inteqrasiyası |
 
 ---
 

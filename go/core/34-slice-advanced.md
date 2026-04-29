@@ -487,6 +487,6 @@ PHP `array` yenidən atananda daima copy olunur (copy-on-write). Go slice-ı is�
 - [08-arrays-and-slices](08-arrays-and-slices.md) — Slice əsasları
 - [29-generics](29-generics.md) — Generic utility funksiyalar
 - [27-goroutines-and-channels](27-goroutines-and-channels.md) — Parallel slice emalı
-- [69-memory-management](69-memory-management.md) — GC, allocation, escape analysis
-- [68-profiling-and-benchmarking](68-profiling-and-benchmarking.md) — Slice performansı ölçmək
-- [44-data-structures](44-data-structures.md) — Daha mürəkkəb data strukturları
+- [69-memory-management](../advanced/22-memory-management.md) — GC, allocation, escape analysis
+- [68-profiling-and-benchmarking](../advanced/21-profiling-and-benchmarking.md) — Slice performansı ölçmək
+- [44-data-structures](../backend/08-data-structures.md) — Daha mürəkkəb data strukturları

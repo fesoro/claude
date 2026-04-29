@@ -534,8 +534,8 @@ Laravel-dəki `Cache::remember()` sadə sintaksis verir — Go-da eyni pattern `
 
 ## Əlaqəli Mövzular
 
-- [56-advanced-concurrency](56-advanced-concurrency.md) — sync.RWMutex, sync.Map
-- [57-advanced-concurrency-2](57-advanced-concurrency-2.md) — singleflight
-- [37-database](37-database.md) — DB connection pool
-- [34-http-client](34-http-client.md) — HTTP response caching
-- [71-monitoring-and-observability](71-monitoring-and-observability.md) — cache metrics
+- [01-advanced-concurrency](01-advanced-concurrency.md) — sync.RWMutex, sync.Map
+- [57-advanced-concurrency-2](02-advanced-concurrency-2.md) — singleflight
+- [37-database](../backend/05-database.md) — DB connection pool
+- [34-http-client](../backend/02-http-client.md) — HTTP response caching
+- [71-monitoring-and-observability](24-monitoring-and-observability.md) — cache metrics

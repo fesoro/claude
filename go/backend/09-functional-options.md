@@ -556,10 +556,10 @@ server := NewServer("localhost",
 
 ## Əlaqəli Mövzular
 
-- [07-functions](07-functions.md) — Funksiya əsasları, variadic parametrlər
-- [17-interfaces](17-interfaces.md) — Interface pattern-ləri
-- [42-struct-advanced](42-struct-advanced.md) — Struct-ların dərin analizi
-- [43-pointers-advanced](43-pointers-advanced.md) — Pointer receiver
-- [54-project-structure](54-project-structure.md) — Layihə strukturunda options pattern
-- [55-repository-pattern](55-repository-pattern.md) — Options pattern repository-də
-- [64-dependency-injection](64-dependency-injection.md) — DI ilə birlikdə istifadə
+- [07-functions](../core/07-functions.md) — Funksiya əsasları, variadic parametrlər
+- [17-interfaces](../core/17-interfaces.md) — Interface pattern-ləri
+- [42-struct-advanced](../core/35-struct-advanced.md) — Struct-ların dərin analizi
+- [36-pointers-advanced](../core/36-pointers-advanced.md) — Pointer receiver
+- [18-project-structure](18-project-structure.md) — Layihə strukturunda options pattern
+- [19-repository-pattern](19-repository-pattern.md) — Options pattern repository-də
+- [64-dependency-injection](../advanced/09-dependency-injection.md) — DI ilə birlikdə istifadə

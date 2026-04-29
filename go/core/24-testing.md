@@ -435,6 +435,6 @@ go test -timeout 30s ./...
 - [18-error-handling.md](18-error-handling.md) — xəta hallarını test etmək, `errors.Is`
 - [17-interfaces.md](17-interfaces.md) — mock yaratmaq üçün interface-lər
 - [23-time-and-scope.md](23-time-and-scope.md) — `time.Now` inject edərək test yazmaq
-- [36-httptest.md](36-httptest.md) — HTTP handler-lərin testinin ətraflı izahı
-- [52-mocking-and-testify.md](52-mocking-and-testify.md) — `testify` paketi ilə daha güclü test
-- [68-profiling-and-benchmarking.md](68-profiling-and-benchmarking.md) — benchmark-ı daha dərin analiz
+- [04-httptest.md](../backend/04-httptest.md) — HTTP handler-lərin testinin ətraflı izahı
+- [16-mocking-and-testify.md](../backend/16-mocking-and-testify.md) — `testify` paketi ilə daha güclü test
+- [21-profiling-and-benchmarking.md](../advanced/21-profiling-and-benchmarking.md) — benchmark-ı daha dərin analiz

@@ -408,8 +408,8 @@ func TestUserRepository_Create(t *testing.T) {
 
 ## Əlaqəli Mövzular
 
-- [24-testing.md](24-testing.md) — Test əsasları
-- [52-mocking-and-testify.md](52-mocking-and-testify.md) — Mock ilə unit test
-- [36-httptest.md](36-httptest.md) — HTTP inteqrasiya testi
-- [77-database-migrations.md](77-database-migrations.md) — Migration test zamanı
-- [37-database.md](37-database.md) — database/sql
+- [24-testing.md](../core/24-testing.md) — Test əsasları
+- [../backend/16-mocking-and-testify.md](../backend/16-mocking-and-testify.md) — Mock ilə unit test
+- [../backend/04-httptest.md](../backend/04-httptest.md) — HTTP inteqrasiya testi
+- [77-database-migrations.md](../backend/22-database-migrations.md) — Migration test zamanı
+- [../backend/05-database.md](../backend/05-database.md) — database/sql

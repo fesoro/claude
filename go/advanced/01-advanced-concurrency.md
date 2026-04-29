@@ -388,8 +388,8 @@ PHP/Laravel-də concurrency demək olar ki yoxdur — hər request öz prosesind
 
 ## Əlaqəli Mövzular
 
-- [27-goroutines-and-channels](27-goroutines-and-channels.md) — goroutine əsasları
-- [28-context](28-context.md) — context ilə goroutine ləğvi
-- [57-advanced-concurrency-2](57-advanced-concurrency-2.md) — errgroup, semaphore, worker pool
-- [58-channel-patterns](58-channel-patterns.md) — fan-out/fan-in, pipeline, tee
-- [68-profiling-and-benchmarking](68-profiling-and-benchmarking.md) — mutex contention profilləşdirməsi
+- [27-goroutines-and-channels](../core/27-goroutines-and-channels.md) — goroutine əsasları
+- [28-context](../core/28-context.md) — context ilə goroutine ləğvi
+- [57-advanced-concurrency-2](02-advanced-concurrency-2.md) — errgroup, semaphore, worker pool
+- [58-channel-patterns](03-channel-patterns.md) — fan-out/fan-in, pipeline, tee
+- [68-profiling-and-benchmarking](21-profiling-and-benchmarking.md) — mutex contention profilləşdirməsi

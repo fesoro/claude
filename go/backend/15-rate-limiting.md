@@ -512,9 +512,9 @@ func RateLimitMiddleware(limit rate.Limit, burst int) func(http.Handler) http.Ha
 
 ## Əlaqəli Mövzular
 
-- [27-goroutines-and-channels](27-goroutines-and-channels.md) — Goroutine ilə limiter
-- [28-context](28-context.md) — Context ilə timeout
-- [33-http-server](33-http-server.md) — HTTP middleware
-- [35-middleware-and-routing](35-middleware-and-routing.md) — Middleware zənciri
-- [63-caching](63-caching.md) — Redis ilə distributed limiting
-- [62-security](62-security.md) — DDoS qorunması
+- [27-goroutines-and-channels](../core/27-goroutines-and-channels.md) — Goroutine ilə limiter
+- [28-context](../core/28-context.md) — Context ilə timeout
+- [01-http-server](01-http-server.md) — HTTP middleware
+- [03-middleware-and-routing](03-middleware-and-routing.md) — Middleware zənciri
+- [63-caching](../advanced/08-caching.md) — Redis ilə distributed limiting
+- [62-security](../advanced/07-security.md) — DDoS qorunması

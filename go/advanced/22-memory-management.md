@@ -465,7 +465,7 @@ Memory management PHP/Laravel-dən gələn developer üçün ən böyük mental 
 
 ## Əlaqəli Mövzular
 
-- [68-profiling-and-benchmarking.md](68-profiling-and-benchmarking.md) — pprof, benchmark metodologiyası
-- [56-advanced-concurrency.md](56-advanced-concurrency.md) — Goroutine pool, sync primitives
-- [27-goroutines-and-channels.md](27-goroutines-and-channels.md) — Goroutine əsasları
-- [11-pointers.md](11-pointers.md) — Pointer əsasları
+- [21-profiling-and-benchmarking.md](21-profiling-and-benchmarking.md) — pprof, benchmark metodologiyası
+- [01-advanced-concurrency.md](01-advanced-concurrency.md) — Goroutine pool, sync primitives
+- [27-goroutines-and-channels.md](../core/27-goroutines-and-channels.md) — Goroutine əsasları
+- [11-pointers.md](../core/11-pointers.md) — Pointer əsasları

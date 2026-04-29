@@ -358,7 +358,7 @@ return nil, &gqlerror.Error{
 // { "errors": [{ "message": "email already exists", "extensions": { "code": "DUPLICATE_EMAIL" } }] }
 ```
 
-## Trade-off-lar
+## Praktik Baxış
 
 | | GraphQL | REST |
 |--|---------|------|
@@ -379,6 +379,88 @@ return nil, &gqlerror.Error{
 - Sadə CRUD API
 - Public API — caching kritikdir
 - File upload ağır istifadə ediləcəkdir
+
+## Nümunələr
+
+### Nümunə 1: Minimal gqlgen server
+
+```go
+// main.go — minimal GraphQL server
+package main
+
+import (
+    "log"
+    "net/http"
+
+    "github.com/99designs/gqlgen/graphql/handler"
+    "github.com/99designs/gqlgen/graphql/playground"
+    "myapp/graph"
+    "myapp/graph/generated"
+)
+
+func main() {
+    resolver := &graph.Resolver{}
+    srv := handler.NewDefaultServer(
+        generated.NewExecutableSchema(generated.Config{Resolvers: resolver}),
+    )
+
+    http.Handle("/graphql", srv)
+    http.Handle("/playground", playground.Handler("GraphQL", "/graphql"))
+    log.Fatal(http.ListenAndServe(":8080", nil))
+}
+```
+
+```graphql
+# schema.graphqls
+type Query {
+    hello: String!
+}
+```
+
+```go
+// graph/schema.resolvers.go
+func (r *queryResolver) Hello(ctx context.Context) (string, error) {
+    return "Salam Dünya!", nil
+}
+```
+
+### Nümunə 2: N+1 problemi və DataLoader həlli
+
+```go
+// N+1 YANLIŞ: hər user üçün ayrıca DB sorğusu
+func (r *userResolver) Orders(ctx context.Context, obj *model.User) ([]*model.Order, error) {
+    // Bu hər user üçün ayrıca SELECT icra edir → N+1!
+    return r.orderRepo.FindByUserID(ctx, obj.ID)
+}
+
+// DÜZGÜN: DataLoader ilə batch
+func (r *userResolver) Orders(ctx context.Context, obj *model.User) ([]*model.Order, error) {
+    loaders := ctx.Value(loadersKey).(*Loaders)
+    userID, _ := strconv.Atoi(obj.ID)
+    // eyni request-dəki bütün user ID-ləri bir SQL IN(...) ilə gətirilir
+    return loaders.UserOrders.Load(ctx, userID)
+}
+```
+
+### Nümunə 3: Custom error
+
+```go
+import "github.com/vektah/gqlparser/v2/gqlerror"
+
+func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUserInput) (*model.User, error) {
+    if err := validate(input); err != nil {
+        return nil, &gqlerror.Error{
+            Message: err.Error(),
+            Extensions: map[string]any{
+                "code":  "VALIDATION_ERROR",
+                "field": "email",
+            },
+        }
+    }
+    // ...
+}
+// JSON response: {"errors": [{"message": "...", "extensions": {"code": "VALIDATION_ERROR"}}]}
+```
 
 ## Praktik Tapşırıqlar
 
@@ -408,10 +490,10 @@ resolve()                    →   Resolver method
 
 ## Əlaqəli Mövzular
 
-- [17-interfaces.md](17-interfaces.md) — Go interface-lər
-- [27-goroutines-and-channels.md](27-goroutines-and-channels.md) — subscription channel-lar
-- [33-http-server.md](33-http-server.md) — HTTP server
-- [37-database.md](37-database.md) — database sorğuları
-- [61-websocket.md](61-websocket.md) — subscription transport
-- [65-jwt-and-auth.md](65-jwt-and-auth.md) — authentication middleware
-- [94-pagination.md](94-pagination.md) — cursor-based pagination pattern
+- [17-interfaces.md](../core/17-interfaces.md) — Go interface-lər
+- [27-goroutines-and-channels.md](../core/27-goroutines-and-channels.md) — subscription channel-lar
+- [../backend/01-http-server.md](../backend/01-http-server.md) — HTTP server
+- [../backend/05-database.md](../backend/05-database.md) — database sorğuları
+- [61-websocket.md](06-websocket.md) — subscription transport
+- [65-jwt-and-auth.md](10-jwt-and-auth.md) — authentication middleware
+- [94-pagination.md](../backend/32-pagination.md) — cursor-based pagination pattern

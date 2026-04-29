@@ -362,9 +362,9 @@ PHP/Laravel-də `Http::get()` — Guzzle HTTP client-i sarmalayan bir facade idi
 
 ## Əlaqəli Mövzular
 
-- [33-http-server](33-http-server.md) — HTTP server yaratmaq
-- [28-context](28-context.md) — Context ilə timeout/cancellation
-- [27-goroutines-and-channels](27-goroutines-and-channels.md) — Parallel HTTP sorğular
-- [18-error-handling](18-error-handling.md) — HTTP xətalarını wrap etmək
-- [20-json-encoding](20-json-encoding.md) — JSON marshal/unmarshal
-- [36-httptest](36-httptest.md) — HTTP client-lərin test edilməsi
+- [01-http-server](01-http-server.md) — HTTP server yaratmaq
+- [28-context](../core/28-context.md) — Context ilə timeout/cancellation
+- [27-goroutines-and-channels](../core/27-goroutines-and-channels.md) — Parallel HTTP sorğular
+- [18-error-handling](../core/18-error-handling.md) — HTTP xətalarını wrap etmək
+- [20-json-encoding](../core/20-json-encoding.md) — JSON marshal/unmarshal
+- [04-httptest](04-httptest.md) — HTTP client-lərin test edilməsi

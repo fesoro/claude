@@ -316,4 +316,4 @@ func main() {
 - [20-json-encoding.md](20-json-encoding.md) — JSON decode zamanı float64 tuzağı
 - [12-strings-and-strconv.md](12-strings-and-strconv.md) — string/int konversiyaları `strconv` ilə
 - [29-generics.md](29-generics.md) — type assertion-ın generics ilə alternativ yolu
-- [60-reflection.md](60-reflection.md) — runtime-da tip məlumatı əldə etmək
+- [05-reflection.md](../advanced/05-reflection.md) — runtime-da tip məlumatı əldə etmək

@@ -376,8 +376,8 @@ php artisan make:request CreateUserRequest  // FormRequest stub
 
 ## Əlaqəli Mövzular
 
-- [17-interfaces.md](17-interfaces.md) — Interface (mockery üçün)
-- [21-enums.md](21-enums.md) — iota enum-lar (stringer üçün)
-- [37-database.md](37-database.md) — database/sql (sqlc üçün)
-- [52-mocking-and-testify.md](52-mocking-and-testify.md) — Mock testlər
-- [67-grpc.md](67-grpc.md) — protoc (gRPC code generation)
+- [17-interfaces.md](../core/17-interfaces.md) — Interface (mockery üçün)
+- [21-enums.md](../core/21-enums.md) — iota enum-lar (stringer üçün)
+- [05-database.md](05-database.md) — database/sql (sqlc üçün)
+- [16-mocking-and-testify.md](16-mocking-and-testify.md) — Mock testlər
+- [67-grpc.md](../advanced/12-grpc.md) — protoc (gRPC code generation)

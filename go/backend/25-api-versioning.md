@@ -371,7 +371,7 @@ mux.HandleFunc("GET /v2/users/{id}", getUserV2)
 
 ## Əlaqəli Mövzular
 
-- [33-http-server.md](33-http-server.md) — HTTP server və routing
-- [35-middleware-and-routing.md](35-middleware-and-routing.md) — Middleware chain
-- [20-json-encoding.md](20-json-encoding.md) — JSON format çevirmə
-- [54-project-structure.md](54-project-structure.md) — Layihə strukturu
+- [01-http-server.md](01-http-server.md) — HTTP server və routing
+- [35-middleware-and-routing.md](03-middleware-and-routing.md) — Middleware chain
+- [20-json-encoding.md](../core/20-json-encoding.md) — JSON format çevirmə
+- [54-project-structure.md](18-project-structure.md) — Layihə strukturu

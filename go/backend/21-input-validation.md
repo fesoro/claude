@@ -363,7 +363,7 @@ type RegisterRequest struct {
 
 ## Əlaqəli Mövzular
 
-- [18-error-handling.md](18-error-handling.md) — Xəta idarəetməsi
-- [33-http-server.md](33-http-server.md) — HTTP server
-- [35-middleware-and-routing.md](35-middleware-and-routing.md) — Middleware
-- [20-json-encoding.md](20-json-encoding.md) — JSON decode
+- [18-error-handling.md](../core/18-error-handling.md) — Xəta idarəetməsi
+- [01-http-server.md](01-http-server.md) — HTTP server
+- [35-middleware-and-routing.md](03-middleware-and-routing.md) — Middleware
+- [20-json-encoding.md](../core/20-json-encoding.md) — JSON decode

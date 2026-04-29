@@ -221,6 +221,95 @@ pool.Put(obj)
 // copy-ni istifadə etmə
 ```
 
+## Nümunələr
+
+### Nümunə 1: Sadə bytes.Buffer pool
+
+```go
+package main
+
+import (
+    "bytes"
+    "fmt"
+    "sync"
+)
+
+var bufPool = sync.Pool{
+    New: func() any {
+        return new(bytes.Buffer)
+    },
+}
+
+func buildMessage(name string) string {
+    buf := bufPool.Get().(*bytes.Buffer)
+    buf.Reset()
+    defer bufPool.Put(buf)
+
+    buf.WriteString("Salam, ")
+    buf.WriteString(name)
+    buf.WriteString("!")
+    return buf.String()
+}
+
+func main() {
+    fmt.Println(buildMessage("Dünya"))
+    fmt.Println(buildMessage("Go"))
+}
+```
+
+### Nümunə 2: JSON handler ilə pool
+
+```go
+var jsonPool = sync.Pool{
+    New: func() any { return new(bytes.Buffer) },
+}
+
+func jsonHandler(w http.ResponseWriter, r *http.Request) {
+    buf := jsonPool.Get().(*bytes.Buffer)
+    buf.Reset()
+    defer jsonPool.Put(buf)
+
+    data := map[string]string{"status": "ok", "message": "pong"}
+    if err := json.NewEncoder(buf).Encode(data); err != nil {
+        http.Error(w, "encode error", http.StatusInternalServerError)
+        return
+    }
+
+    w.Header().Set("Content-Type", "application/json")
+    w.Write(buf.Bytes())
+}
+```
+
+### Nümunə 3: Benchmark müqayisəsi
+
+```go
+var pool = sync.Pool{New: func() any { return new(bytes.Buffer) }}
+
+// Pool olmadan: hər call yeni allokasiya
+func BenchmarkNoPool(b *testing.B) {
+    b.ReportAllocs()
+    for i := 0; i < b.N; i++ {
+        buf := new(bytes.Buffer)
+        buf.WriteString("test data")
+        _ = buf.String()
+    }
+}
+
+// Pool ilə: allokasiya sıfıra yaxın
+func BenchmarkWithPool(b *testing.B) {
+    b.ReportAllocs()
+    for i := 0; i < b.N; i++ {
+        buf := pool.Get().(*bytes.Buffer)
+        buf.Reset()
+        buf.WriteString("test data")
+        _ = buf.String()
+        pool.Put(buf)
+    }
+}
+// BenchmarkNoPool    10000000   150 ns/op   64 B/op   1 allocs/op
+// BenchmarkWithPool  20000000    72 ns/op    0 B/op   0 allocs/op
+```
+
 ## Praktik Tapşırıqlar
 
 1. **JSON handler:** `json.NewEncoder` + `bytes.Buffer` pool-u ilə HTTP JSON handler yaz, `go test -bench -benchmem` ilə allokasiya fərqini ölç
@@ -241,7 +330,7 @@ Go-da isə uzun sürən process var: bir server instance-ı minlərlə request i
 
 ## Əlaqəli Mövzular
 
-- [69-memory-management.md](69-memory-management.md) — GC internals, escape analysis
-- [68-profiling-and-benchmarking.md](68-profiling-and-benchmarking.md) — allokasiya profili, pprof
-- [56-advanced-concurrency.md](56-advanced-concurrency.md) — sync paket
-- [57-advanced-concurrency-2.md](57-advanced-concurrency-2.md) — atomic, lock-free structures
+- [69-memory-management.md](22-memory-management.md) — GC internals, escape analysis
+- [21-profiling-and-benchmarking.md](21-profiling-and-benchmarking.md) — allokasiya profili, pprof
+- [01-advanced-concurrency.md](01-advanced-concurrency.md) — sync paket
+- [57-advanced-concurrency-2.md](02-advanced-concurrency-2.md) — atomic, lock-free structures

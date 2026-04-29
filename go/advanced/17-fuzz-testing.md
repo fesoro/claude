@@ -381,7 +381,7 @@ func FuzzParseEmail(f *testing.F) {
 
 ## Əlaqəli Mövzular
 
-- [24-testing.md](24-testing.md) — Unit test əsasları
-- [52-mocking-and-testify.md](52-mocking-and-testify.md) — Test yardımçı alətlər
-- [84-testcontainers.md](84-testcontainers.md) — İnteqrasiya testlər
-- [68-profiling-and-benchmarking.md](68-profiling-and-benchmarking.md) — Benchmark (fuzz ilə birlikdə)
+- [24-testing.md](../core/24-testing.md) — Unit test əsasları
+- [../backend/16-mocking-and-testify.md](../backend/16-mocking-and-testify.md) — Test yardımçı alətlər
+- [84-testcontainers.md](16-testcontainers.md) — İnteqrasiya testlər
+- [21-profiling-and-benchmarking.md](21-profiling-and-benchmarking.md) — Benchmark (fuzz ilə birlikdə)

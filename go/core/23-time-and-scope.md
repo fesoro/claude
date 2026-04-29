@@ -391,5 +391,5 @@ func main() {
 - [24-testing.md](24-testing.md) — `time.Now()` inject edərək test yazmaq
 - [27-goroutines-and-channels.md](27-goroutines-and-channels.md) — `time.After`, `time.Tick` goroutine-larda
 - [28-context.md](28-context.md) — `context.WithDeadline`, `context.WithTimeout`
-- [33-http-server.md](33-http-server.md) — JWT token expiry, request timeout
-- [53-graceful-shutdown.md](53-graceful-shutdown.md) — shutdown timeout idarəetməsi
+- [01-http-server.md](../backend/01-http-server.md) — JWT token expiry, request timeout
+- [17-graceful-shutdown.md](../backend/17-graceful-shutdown.md) — shutdown timeout idarəetməsi

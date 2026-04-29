@@ -547,8 +547,8 @@ PHP-də build tag konsepti yoxdur — hər mühit `config.php`, `.env` faylı, y
 
 ## Əlaqəli Mövzular
 
-- [14-packages-and-modules](14-packages-and-modules.md) — Go modullar
+- [14-packages-and-modules](../core/14-packages-and-modules.md) — Go modullar
 - [22-init-and-modules](22-init-and-modules.md) — init funksiya
-- [70-docker-and-deploy](70-docker-and-deploy.md) — Docker multi-stage build
-- [24-testing](24-testing.md) — test strukturu
-- [68-profiling-and-benchmarking](68-profiling-and-benchmarking.md) — benchmark tag-lar
+- [70-docker-and-deploy](23-docker-and-deploy.md) — Docker multi-stage build
+- [24-testing](../core/24-testing.md) — test strukturu
+- [68-profiling-and-benchmarking](21-profiling-and-benchmarking.md) — benchmark tag-lar

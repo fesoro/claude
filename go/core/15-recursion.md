@@ -268,4 +268,4 @@ func main() {
 - [08-arrays-and-slices.md](08-arrays-and-slices.md) — slicing rekursiyada
 - [09-maps.md](09-maps.md) — memoization üçün map
 - [10-structs.md](10-structs.md) — ağac strukturları
-- [44-data-structures.md](44-data-structures.md) — data structures dərindən
+- [08-data-structures.md](../backend/08-data-structures.md) — data structures dərindən

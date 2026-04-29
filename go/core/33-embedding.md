@@ -1,22 +1,15 @@
-# Embedding — Struct, Interface, go:embed (Senior)
+# Struct Embedding (Senior)
 
 ## İcmal
 
-Go-da iki fərqli "embedding" anlayışı var: **Struct/Interface Embedding** — Go-nun inheritance-ə alternativ mexanizmi, composition vasitəsilə bir tipin metodlarını digərinə ötürür; **`go:embed` direktivi** — faylları (HTML, CSS, SQL, şəkil) compile zamanı binary-yə daxil edir, deploy zamani ayrı fayl lazım olmur.
+Go-da inheritance yoxdur. Bunun əvəzinə **struct embedding** var — bir struct-ı digərinə anonymous field kimi daxil etməklə metodları "promote" etmək imkanı verir. Bu composition vasitəsilə Go-nun "has-a" münasibətini qurmağın idiomatik yoludur. Interface embedding isə kiçik interfeyslər birləşdirərək daha böyük kontraktlar yaratmağa imkan verir.
 
 ## Niyə Vacibdir
 
-**Struct Embedding:**
 - Go-da inheritance yoxdur — composition onun yerinə keçir
 - Kod təkrarını azaltmağın əsas üsuludur
 - Interface-ləri implement edərkən partial implementation vermək üçün istifadə olunur
 - `http.Handler`-i extend etmək, `sync.Mutex`-i struct-a gömmək kimi real ssenarilər
-
-**`go:embed`:**
-- HTML şablonları, statik fayllar, SQL migration-lar binary-yə daxildir
-- Deploy: bir fayl, asılılıq yoxdur
-- Docker image-lər daha kiçik olur — ayrı static/ qovluğuna ehtiyac yoxdur
-- Compile-time error — göstərilən fayl yoxdursa build uğursuz olur
 
 ## Əsas Anlayışlar
 
@@ -56,41 +49,29 @@ type ReadWriter interface {
 // ReadWriter = Reader + Writer
 ```
 
-**`go:embed` direktivi:**
-
-```go
-//go:embed fayl.txt          // string
-var content string
-
-//go:embed fayl.bin          // byte slice
-var data []byte
-
-//go:embed templates/*       // embed.FS — qovluq
-var templates embed.FS
-```
-
 ## Praktik Baxış
 
-**`go:embed` üstünlükləri vs fayl sistemi:**
+**Embedding qaydaları:**
 
-| | `go:embed` | Fayl sistemi |
-|---|---|---|
-| Deploy | Tək binary | Ayrı fayllar lazım |
-| Compile check | Fayl yoxdursa build uğursuz | Runtime panic |
-| Performans | Yaddaşdan oxu | Disk I/O |
-| Dəyişiklik | Rebuild lazım | Fayl dəyişsə dərhal |
+| Ssenari | Yanaşma |
+|---------|---------|
+| Shared timestamp fields | `Timestamps` struct embed et |
+| Thread-safe struct | `sync.Mutex` embed et |
+| HTTP handler wrap | `http.Handler` embed et |
+| Interface genişləndir | Interface embedding ilə compose et |
+| Inheritance simulyasiyası | Etmə — "is-a" yoxdur |
 
 **Anti-pattern-lər:**
 
 - Çox dərin embedding — zəncir uzanırsa oxunaqlıq azalır
 - Struct-ı həm embed həm xarici field kimi istifadə — ad konflikti
-- `go:embed` ilə böyük binary faylları — binary şişir, RAM istifadəsi artır
 - Embedding-i inheritance kimi düşünmək — "is-a" yoxdur, "has-a" + promotion var
 
 **Trade-off-lar:**
 
-- Struct embedding — sadədir, amma interfeysi tam implement etmirəmsə compile error var
-- `go:embed` vs external config — koda qatılmış şablon dəyişdiriləndə rebuild lazımdır; xarici faylda isə yenidən deploy lazım deyil
+- Embedding sadədir, amma interfeysi tam implement etmirsənsə compile error çıxır
+- Promoted metodun hansı struct-dan gəldiyini görmək çətinləşə bilər — explicit `s.Embedded.Method()` daha aydındır
+- Ad konflikti olduqda promoted metod gizlənir, üst struct-ın metodu qalib gəlir
 
 ## Nümunələr
 
@@ -297,131 +278,6 @@ func main() {
 }
 ```
 
-### Nümunə 5: go:embed — String, Bytes, FS
-
-```go
-package main
-
-import (
-    _ "embed"
-    "embed"
-    "fmt"
-    "io/fs"
-    "net/http"
-)
-
-// Tək fayl — string kimi
-//go:embed templates/welcome.html
-var welcomeHTML string
-
-// Tək fayl — byte slice kimi
-//go:embed static/logo.png
-var logoBytes []byte
-
-// Qovluq — embed.FS kimi
-//go:embed templates
-var templateFS embed.FS
-
-// SQL migration-lar
-//go:embed migrations
-var migrationsFS embed.FS
-
-func main() {
-    // String birbaşa istifadə
-    fmt.Println("Şablon uzunluğu:", len(welcomeHTML))
-
-    // Byte slice — şəkil, fayl göndərmə
-    fmt.Printf("Logo: %d byte\n", len(logoBytes))
-
-    // FS-dən oxumaq
-    content, err := templateFS.ReadFile("templates/welcome.html")
-    if err != nil {
-        fmt.Println("Xəta:", err)
-    }
-    fmt.Println("FS-dən:", len(content), "byte")
-
-    // Qovluq gəzmə
-    fs.WalkDir(templateFS, ".", func(path string, d fs.DirEntry, err error) error {
-        if !d.IsDir() {
-            fmt.Println("Fayl:", path)
-        }
-        return nil
-    })
-
-    // HTTP server — static faylları binary-dən serve et
-    mux := http.NewServeMux()
-
-    // templates qovluğunu sub-FS kimi aç
-    templSub, _ := fs.Sub(templateFS, "templates")
-    mux.Handle("/static/", http.StripPrefix("/static/",
-        http.FileServer(http.FS(templSub)),
-    ))
-
-    mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
-        w.Header().Set("Content-Type", "text/html")
-        w.Write([]byte(welcomeHTML))
-    })
-
-    http.ListenAndServe(":8080", mux)
-}
-```
-
-### Nümunə 6: go:embed — SQL Migration + net/http
-
-```go
-package main
-
-import (
-    "embed"
-    "fmt"
-    "io/fs"
-)
-
-//go:embed migrations/*.sql
-var migrationFS embed.FS
-
-// Migration fayllarını oxu və sırayla icra et
-func runMigrations(db interface{ Exec(string) error }) error {
-    entries, err := fs.ReadDir(migrationFS, "migrations")
-    if err != nil {
-        return err
-    }
-
-    for _, entry := range entries {
-        if entry.IsDir() {
-            continue
-        }
-        name := entry.Name()
-        if len(name) < 4 || name[len(name)-4:] != ".sql" {
-            continue
-        }
-
-        content, err := migrationFS.ReadFile("migrations/" + name)
-        if err != nil {
-            return fmt.Errorf("fayl oxuma %s: %w", name, err)
-        }
-
-        fmt.Printf("Migration icra edilir: %s\n", name)
-        if err := db.Exec(string(content)); err != nil {
-            return fmt.Errorf("migration %s: %w", name, err)
-        }
-    }
-    return nil
-}
-
-// Layihə strukturu:
-// myapp/
-// ├── main.go
-// ├── migrations/
-// │   ├── 001_create_users.sql
-// │   ├── 002_create_posts.sql
-// │   └── 003_add_indexes.sql
-// └── templates/
-//     ├── index.html
-//     └── welcome.html
-//
-// go build → tək binary, bütün fayllar daxildir
-```
 
 ## Praktik Tapşırıqlar
 
@@ -439,24 +295,7 @@ Aşağıdakı interfeyslər:
 
 `UserRepository struct` yaz, bütün interfeysi implement et. Funksiyalar yalnız `Saver` yoxsa `Repository` qəbul etsin — fərqi izah et.
 
-**Tapşırıq 3 — go:embed HTML Server**
-
-```
-templates/
-  index.html
-  about.html
-static/
-  style.css
-```
-
-Bu faylları binary-yə embed et. HTTP server:
-- `/` → `index.html`
-- `/about` → `about.html`
-- `/static/style.css` → CSS fayl
-
-`go build` ilə tək binary yarat, `./templates/` qovluğunu sil, server yenə işləsin.
-
-**Tapşırıq 4 — SafeMap**
+**Tapşırıq 3 — SafeMap**
 
 ```go
 type SafeMap[K comparable, V any] struct {
@@ -502,6 +341,6 @@ u.GetAd() // User.GetAd() çağırılır — promoted method
 - [17-interfaces](17-interfaces.md) — Interface-lər
 - [11-pointers](11-pointers.md) — Pointer receiver-lər
 - [27-goroutines-and-channels](27-goroutines-and-channels.md) — sync.Mutex embedding
-- [31-go-embed](31-go-embed.md) — go:embed dərin baxış
-- [33-http-server](33-http-server.md) — embed.FS ilə static fayl serve
-- [46-text-templates](46-text-templates.md) — HTML şablonlarını embed ilə istifadə
+- [31-go-embed](31-go-embed.md) — go:embed direktivi (faylları binary-yə daxil etmək)
+- [35-struct-advanced](35-struct-advanced.md) — Struct tags, comparison, zero value
+- [46-text-templates](../backend/10-text-templates.md) — HTML şablonlarını embed ilə istifadə

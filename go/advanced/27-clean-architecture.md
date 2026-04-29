@@ -896,8 +896,8 @@ Yeni feature əlavə etmək Laravel-də 2 fayl (controller + model) tələb edə
 
 ## Əlaqəli Mövzular
 
-- [73-microservices.md](73-microservices.md) — Hər microservice Clean Arch-a əsaslanır
-- [55-repository-pattern.md](55-repository-pattern.md) — Repository pattern ətraflı
-- [64-dependency-injection.md](64-dependency-injection.md) — DI pattern-ləri Go-da
-- [52-mocking-and-testify.md](52-mocking-and-testify.md) — Mock ilə test yazma
-- [37-database.md](37-database.md) — Database ilə işləmə
+- [26-microservices.md](26-microservices.md) — Hər microservice Clean Arch-a əsaslanır
+- [../backend/19-repository-pattern.md](../backend/19-repository-pattern.md) — Repository pattern ətraflı
+- [64-dependency-injection.md](09-dependency-injection.md) — DI pattern-ləri Go-da
+- [../backend/16-mocking-and-testify.md](../backend/16-mocking-and-testify.md) — Mock ilə test yazma
+- [../backend/05-database.md](../backend/05-database.md) — Database ilə işləmə

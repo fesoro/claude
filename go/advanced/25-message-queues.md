@@ -765,7 +765,7 @@ PHP/Laravel-dən gələnlər üçün: Laravel Horizon → Kafka/RabbitMQ analoji
 
 ## Əlaqəli Mövzular
 
-- [73-microservices.md](73-microservices.md) — Microservice arxitekturasında mesajlaşma
-- [74-clean-architecture.md](74-clean-architecture.md) — Message handler-in Clean Arch-da yeri
-- [28-context.md](28-context.md) — Context ilə graceful shutdown
-- [53-graceful-shutdown.md](53-graceful-shutdown.md) — Graceful shutdown pattern
+- [26-microservices.md](26-microservices.md) — Microservice arxitekturasında mesajlaşma
+- [27-clean-architecture.md](27-clean-architecture.md) — Message handler-in Clean Arch-da yeri
+- [../core/28-context.md](../core/28-context.md) — Context ilə graceful shutdown
+- [../backend/17-graceful-shutdown.md](../backend/17-graceful-shutdown.md) — Graceful shutdown pattern

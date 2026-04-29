@@ -434,7 +434,7 @@ PHP-də request lifetime avtomatik idarə olunur (Apache/FPM prosesini öldürü
 ## Əlaqəli Mövzular
 
 - `27-goroutines-and-channels` — goroutine ləğvi üçün context.Done()
-- `33-http-server` — HTTP handler-lərdə r.Context() istifadəsi
-- `37-database` — db.QueryContext() ilə database timeout
-- `53-graceful-shutdown` — server shutdown-da context
+- `../backend/01-http-server` — HTTP handler-lərdə r.Context() istifadəsi
+- `../backend/05-database` — db.QueryContext() ilə database timeout
+- `../backend/17-graceful-shutdown` — server shutdown-da context
 - `25-logging` — context vasitəsilə request-scoped logger ötürmək

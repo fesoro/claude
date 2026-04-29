@@ -565,9 +565,9 @@ PHP-FPM-də worker process-lər PHP-FPM / Supervisor / Octane tərəfindən idar
 
 ## Əlaqəli Mövzular
 
-- [27-goroutines-and-channels](27-goroutines-and-channels.md) — Goroutine idarəsi
-- [28-context](28-context.md) — Context ilə timeout
-- [33-http-server](33-http-server.md) — HTTP server
-- [48-processes-and-signals](48-processes-and-signals.md) — OS signal-ları
-- [54-project-structure](54-project-structure.md) — Layihə strukturunda shutdown
-- [70-docker-and-deploy](70-docker-and-deploy.md) — Kubernetes/Docker-da SIGTERM
+- [27-goroutines-and-channels](../core/27-goroutines-and-channels.md) — Goroutine idarəsi
+- [28-context](../core/28-context.md) — Context ilə timeout
+- [01-http-server](01-http-server.md) — HTTP server
+- [12-processes-and-signals](12-processes-and-signals.md) — OS signal-ları
+- [18-project-structure](18-project-structure.md) — Layihə strukturunda shutdown
+- [70-docker-and-deploy](../advanced/23-docker-and-deploy.md) — Kubernetes/Docker-da SIGTERM

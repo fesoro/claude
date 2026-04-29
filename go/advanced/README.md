@@ -1,4 +1,4 @@
-# Go Advanced — 41 Mövzu (01-41)
+# Go Advanced — 44 Mövzu (01-44)
 
 Production-ready arxitektura: advanced concurrency, design patterns, gRPC, security, resilience, observability, microservices, clean architecture, DDD/CQRS/Event Sourcing, Saga, K8s, CI/CD. Senior ⭐⭐⭐-dan Architect ⭐⭐⭐⭐⭐-ə qədər.
 
@@ -17,7 +17,7 @@ Production-ready arxitektura: advanced concurrency, design patterns, gRPC, secur
 | 5 | Arxitektura & İnfrastruktur | 21-27 | Architect ⭐⭐⭐⭐⭐ | Profiling, memory, Docker, observability, microservices |
 | 6 | Architecture Patterns I | 28-34 | Lead–Architect ⭐⭐⭐⭐⭐ | SOLID, Hexagonal, DDD, CQRS, Event Sourcing, Saga, Outbox |
 | 7 | Architecture Patterns II | 35-37 | Lead ⭐⭐⭐⭐ | API Gateway, DB-per-service, Strangler Fig |
-| 8 | Ops & Komandalı İş | 38-41 | Senior–Lead ⭐⭐⭐⭐ | Kubernetes, CI/CD, Multi-tenancy, ADR |
+| 8 | Ops & Komandalı İş | 38-41 | Senior–Lead ⭐⭐⭐⭐ | Kubernetes, CI/CD, Multi-tenancy, ADR |\n| 9 | Testing & Operations | 42-44 | Senior ⭐⭐⭐ | Feature flags, load testing, secret management | |
 
 ---
 
@@ -117,6 +117,16 @@ Production-ready arxitektura: advanced concurrency, design patterns, gRPC, secur
 | [39](39-github-actions-cicd.md) | GitHub Actions CI/CD | ci.yml, cd.yml, GHCR, golangci-lint, staging/prod deploy |
 | [40](40-multi-tenancy.md) | Multi-tenancy | DB-per-tenant, schema-per-tenant, row-level isolation, middleware |
 | [41](41-adr-architecture-decision-records.md) | ADR | Architecture Decision Records, lifecycle, 3 real nümunə |
+
+---
+
+## Faza 9: Testing & Operations (42-44) — Senior ⭐⭐⭐
+
+| # | Fayl | Mövzu |
+|---|------|-------|
+| [42](42-feature-flags.md) | Feature Flags | Static/dynamic flags, targeting, percentage rollout, GrowthBook |
+| [43](43-load-testing.md) | Load Testing | `testing.B`, vegeta, k6, P95/P99, CI benchmark regression |
+| [44](44-secret-management.md) | Secret Management | Env var, AWS Secrets Manager, Vault dynamic secrets, secret scanning |
 
 ---
 

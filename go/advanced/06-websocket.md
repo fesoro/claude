@@ -467,8 +467,8 @@ PHP-də WebSocket üçün Ratchet/Swoole kimi ayrıca server tələb olunur — 
 
 ## Əlaqəli Mövzular
 
-- [33-http-server](33-http-server.md) — HTTP server əsasları
-- [35-middleware-and-routing](35-middleware-and-routing.md) — middleware
-- [57-advanced-concurrency-2](57-advanced-concurrency-2.md) — worker pool
-- [65-jwt-and-auth](65-jwt-and-auth.md) — WebSocket authentication
-- [73-microservices](73-microservices.md) — real-time microservice arxitekturası
+- [01-http-server](../backend/01-http-server.md) — HTTP server əsasları
+- [35-middleware-and-routing](../backend/03-middleware-and-routing.md) — middleware
+- [57-advanced-concurrency-2](02-advanced-concurrency-2.md) — worker pool
+- [65-jwt-and-auth](10-jwt-and-auth.md) — WebSocket authentication
+- [26-microservices](26-microservices.md) — real-time microservice arxitekturası

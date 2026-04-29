@@ -410,6 +410,6 @@ u.GetAd() // User.GetAd() çağırılır — promoted method
 - [10-structs](10-structs.md) — Structs əsasları
 - [11-pointers](11-pointers.md) — Pointer əsasları
 - [17-interfaces](17-interfaces.md) — Interface ilə composition
-- [43-pointers-advanced](43-pointers-advanced.md) — Pointer receiver vs value receiver
-- [55-repository-pattern](55-repository-pattern.md) — Struct-ların real arxitekturada istifadəsi
-- [59-design-patterns](59-design-patterns.md) — Design pattern-lər
+- [36-pointers-advanced](36-pointers-advanced.md) — Pointer receiver vs value receiver
+- [55-repository-pattern](../backend/19-repository-pattern.md) — Struct-ların real arxitekturada istifadəsi
+- [59-design-patterns](../advanced/04-design-patterns.md) — Design pattern-lər

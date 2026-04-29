@@ -287,7 +287,7 @@ Queue::push(new FetchOrdersJob)      →  g.Go(func() error { return fetchOrders
 
 ## Əlaqəli Mövzular
 
-- [27-goroutines-and-channels.md](27-goroutines-and-channels.md) — Goroutine əsasları
-- [28-context.md](28-context.md) — Context ilə ləğvetmə
-- [56-advanced-concurrency.md](56-advanced-concurrency.md) — sync paketi
-- [58-channel-patterns.md](58-channel-patterns.md) — Fan-in/fan-out pattern-lər
+- [27-goroutines-and-channels.md](../core/27-goroutines-and-channels.md) — Goroutine əsasları
+- [28-context.md](../core/28-context.md) — Context ilə ləğvetmə
+- [56-advanced-concurrency.md](../advanced/01-advanced-concurrency.md) — sync paketi
+- [58-channel-patterns.md](../advanced/03-channel-patterns.md) — Fan-in/fan-out pattern-lər

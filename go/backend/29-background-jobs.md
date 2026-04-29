@@ -289,9 +289,9 @@ ShouldBeUnique  →   asynq.Unique() + TaskID
 
 ## Əlaqəli Mövzular
 
-- [27-goroutines-and-channels.md](27-goroutines-and-channels.md) — goroutine əsasları
-- [28-context.md](28-context.md) — context ilə timeout/cancellation
-- [53-graceful-shutdown.md](53-graceful-shutdown.md) — in-flight task-ların tamamlanması
-- [63-caching.md](63-caching.md) — Redis inteqrasiyası
-- [72-message-queues.md](72-message-queues.md) — Kafka/RabbitMQ ilə fərq
-- [80-cron-scheduler.md](80-cron-scheduler.md) — alternativ cron yanaşması
+- [27-goroutines-and-channels.md](../core/27-goroutines-and-channels.md) — goroutine əsasları
+- [28-context.md](../core/28-context.md) — context ilə timeout/cancellation
+- [17-graceful-shutdown.md](17-graceful-shutdown.md) — in-flight task-ların tamamlanması
+- [63-caching.md](../advanced/08-caching.md) — Redis inteqrasiyası
+- [72-message-queues.md](../advanced/25-message-queues.md) — Kafka/RabbitMQ ilə fərq
+- [24-cron-scheduler.md](24-cron-scheduler.md) — alternativ cron yanaşması

@@ -202,4 +202,4 @@ func main() {
 - [10-structs.md](10-structs.md) — struct-lar
 - [07-functions.md](07-functions.md) — funksiyalarda parametrlər
 - [17-interfaces.md](17-interfaces.md) — interfeyslər
-- [43-pointers-advanced.md](43-pointers-advanced.md) — pointer-lər dərinləşmə
+- [36-pointers-advanced.md](36-pointers-advanced.md) — pointer-lər dərinləşmə

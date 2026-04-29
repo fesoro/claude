@@ -597,9 +597,9 @@ func (m *MockUserRepo) FindByID(id int) (*User, error) {
 
 ## Əlaqəli Mövzular
 
-- [17-interfaces](17-interfaces.md) — Interface əsasları
-- [24-testing](24-testing.md) — Go test əsasları
-- [36-httptest](36-httptest.md) — httptest dərin analiz
-- [42-struct-advanced](42-struct-advanced.md) — Struct composition
-- [55-repository-pattern](55-repository-pattern.md) — Repository interface mocking
-- [64-dependency-injection](64-dependency-injection.md) — DI ilə test
+- [17-interfaces](../core/17-interfaces.md) — Interface əsasları
+- [24-testing](../core/24-testing.md) — Go test əsasları
+- [04-httptest](04-httptest.md) — httptest dərin analiz
+- [42-struct-advanced](../core/35-struct-advanced.md) — Struct composition
+- [19-repository-pattern](19-repository-pattern.md) — Repository interface mocking
+- [64-dependency-injection](../advanced/09-dependency-injection.md) — DI ilə test

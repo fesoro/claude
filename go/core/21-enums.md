@@ -400,4 +400,4 @@ func main() {
 - [17-interfaces.md](17-interfaces.md) — `fmt.Stringer` interface və `String()` metodu
 - [18-error-handling.md](18-error-handling.md) — keçərsiz enum dəyəri xəta qaytarması
 - [10-structs.md](10-structs.md) — enum-ların struct sahəsi kimi istifadəsi
-- [37-database.md](37-database.md) — enum-ları DB-yə yazmaq/oxumaq
+- [05-database.md](../backend/05-database.md) — enum-ları DB-yə yazmaq/oxumaq

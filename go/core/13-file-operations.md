@@ -261,4 +261,4 @@ func main() {
 - [07-functions.md](07-functions.md) — defer ilə resurs idarəsi
 - [12-strings-and-strconv.md](12-strings-and-strconv.md) — string parse etmə
 - [20-json-encoding.md](20-json-encoding.md) — JSON fayl əməliyyatları
-- [49-files-advanced.md](49-files-advanced.md) — fayl əməliyyatları dərindən
+- [13-files-advanced.md](../backend/13-files-advanced.md) — fayl əməliyyatları dərindən

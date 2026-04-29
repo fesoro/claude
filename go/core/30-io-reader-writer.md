@@ -387,8 +387,8 @@ PHP stream funksiyaları prosedural-dır; Go-da `io.Reader` / `io.Writer` interf
 ## Əlaqəli Mövzular
 
 - `13-file-operations` — os.File (io.Reader + io.Writer)
-- `33-http-server` — http.Request.Body (io.ReadCloser)
-- `34-http-client` — response body oxuma
-- `49-files-advanced` — bufio, large file handling
-- `50-xml-and-url` — xml.NewDecoder(reader)
+- `../backend/01-http-server` — http.Request.Body (io.ReadCloser)
+- `../backend/02-http-client` — response body oxuma
+- `../backend/13-files-advanced` — bufio, large file handling
+- `../backend/14-xml-and-url` — xml.NewDecoder(reader)
 - `27-goroutines-and-channels` — io.Pipe ilə goroutine-lar arası stream

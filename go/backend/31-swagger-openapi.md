@@ -259,8 +259,8 @@ API Resource                →   Response struct + swag model
 
 ## Əlaqəli Mövzular
 
-- [33-http-server.md](33-http-server.md) — net/http server əsasları
-- [35-middleware-and-routing.md](35-middleware-and-routing.md) — route qurma
-- [82-api-versioning.md](82-api-versioning.md) — API versiyalaşdırma
-- [76-input-validation.md](76-input-validation.md) — validator ilə input yoxlama
-- [94-pagination.md](94-pagination.md) — pagination response strukturu
+- [01-http-server.md](01-http-server.md) — net/http server əsasları
+- [35-middleware-and-routing.md](03-middleware-and-routing.md) — route qurma
+- [25-api-versioning.md](25-api-versioning.md) — API versiyalaşdırma
+- [76-input-validation.md](21-input-validation.md) — validator ilə input yoxlama
+- [94-pagination.md](32-pagination.md) — pagination response strukturu

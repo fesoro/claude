@@ -181,7 +181,7 @@ os.Exit(1)       // defer-lər atlanır
 
 // Düzgün: os.Exit əvəzinə log.Fatal(err) istifadə edin
 // log.Fatal → os.Exit çağırır, amma bu da defer-i keçir
-// Əsl düzgün: graceful shutdown pattern (53-graceful-shutdown.md)
+// Əsl düzgün: graceful shutdown pattern (17-graceful-shutdown.md)
 
 // Anti-pattern 4: Signal channel-i unbuffered etmək
 sigCh := make(chan os.Signal) // buffer yox!
@@ -496,8 +496,8 @@ Nginx/Gunicorn kimi sadə process supervisor yazın. Worker proseslər çökərs
 
 ## Əlaqəli Mövzular
 
-- [28-context](28-context.md) — Context ilə komanda icrası timeout-u
-- [53-graceful-shutdown](53-graceful-shutdown.md) — Signal handling ilə server shutdown
-- [27-goroutines-and-channels](27-goroutines-and-channels.md) — Goroutine management
-- [70-docker-and-deploy](70-docker-and-deploy.md) — Container-də signal handling
-- [71-monitoring-and-observability](71-monitoring-and-observability.md) — Proses monitorinqi
+- [28-context](../core/28-context.md) — Context ilə komanda icrası timeout-u
+- [17-graceful-shutdown](17-graceful-shutdown.md) — Signal handling ilə server shutdown
+- [27-goroutines-and-channels](../core/27-goroutines-and-channels.md) — Goroutine management
+- [70-docker-and-deploy](../advanced/23-docker-and-deploy.md) — Container-də signal handling
+- [71-monitoring-and-observability](../advanced/24-monitoring-and-observability.md) — Proses monitorinqi

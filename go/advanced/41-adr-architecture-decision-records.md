@@ -1,4 +1,4 @@
-# Architecture Decision Records (Middle)
+# Architecture Decision Records (Senior)
 
 ## İcmal
 

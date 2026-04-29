@@ -222,5 +222,5 @@ func main() {
 - [12-strings-and-strconv.md](12-strings-and-strconv.md) — string manipulation əsasları, `strings.Contains`, `strings.Replace`
 - [18-error-handling.md](18-error-handling.md) — `regexp.Compile` xətasını idarə etmək
 - [20-json-encoding.md](20-json-encoding.md) — JSON field validasiyası ilə birlikdə istifadə
-- [33-http-server.md](33-http-server.md) — HTTP handler-lərdə giriş validasiyası
-- [35-middleware-and-routing.md](35-middleware-and-routing.md) — Router-da path pattern matching
+- [01-http-server.md](../backend/01-http-server.md) — HTTP handler-lərdə giriş validasiyası
+- [03-middleware-and-routing.md](../backend/03-middleware-and-routing.md) — Router-da path pattern matching

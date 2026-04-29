@@ -255,5 +255,5 @@ func main() {
 - [01-introduction.md](01-introduction.md) — Go-ya giriş
 - [07-functions.md](07-functions.md) — funksiyalar
 - [22-init-and-modules.md](22-init-and-modules.md) — `init` funksiyası və modullar dərindən
-- [39-environment-and-config.md](39-environment-and-config.md) — konfiqurasiya idarəsi
-- [54-project-structure.md](54-project-structure.md) — layihə strukturu
+- [07-environment-and-config.md](../backend/07-environment-and-config.md) — konfiqurasiya idarəsi
+- [18-project-structure.md](../backend/18-project-structure.md) — layihə strukturu

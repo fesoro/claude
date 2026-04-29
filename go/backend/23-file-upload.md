@@ -395,7 +395,7 @@ file.Seek(0, io.SeekStart)
 
 ## Əlaqəli Mövzular
 
-- [30-io-reader-writer.md](30-io-reader-writer.md) — io.Reader/Writer streaming
-- [49-files-advanced.md](49-files-advanced.md) — Fayl əməliyyatları
-- [62-security.md](62-security.md) — Fayl yükləmə güvənliyi
-- [33-http-server.md](33-http-server.md) — HTTP handler
+- [30-io-reader-writer.md](../core/30-io-reader-writer.md) — io.Reader/Writer streaming
+- [49-files-advanced.md](13-files-advanced.md) — Fayl əməliyyatları
+- [62-security.md](../advanced/07-security.md) — Fayl yükləmə güvənliyi
+- [01-http-server.md](01-http-server.md) — HTTP handler

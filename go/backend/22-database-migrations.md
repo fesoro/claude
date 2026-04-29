@@ -319,7 +319,7 @@ goose -dir migrations postgres "$DATABASE_URL" status
 
 ## Əlaqəli Mövzular
 
-- [37-database.md](37-database.md) — database/sql əsasları
-- [38-orm-and-sqlx.md](38-orm-and-sqlx.md) — GORM, sqlx
-- [31-go-embed.md](31-go-embed.md) — go:embed
-- [70-docker-and-deploy.md](70-docker-and-deploy.md) — CI/CD pipeline
+- [05-database.md](05-database.md) — database/sql əsasları
+- [38-orm-and-sqlx.md](06-orm-and-sqlx.md) — GORM, sqlx
+- [31-go-embed.md](../core/31-go-embed.md) — go:embed
+- [70-docker-and-deploy.md](../advanced/23-docker-and-deploy.md) — CI/CD pipeline

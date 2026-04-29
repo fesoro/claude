@@ -524,8 +524,8 @@ PHP-də bu tip paralel data processing ya həddən artıq mürəkkəb, ya da mü
 
 ## Əlaqəli Mövzular
 
-- [27-goroutines-and-channels](27-goroutines-and-channels.md) — channel əsasları
-- [56-advanced-concurrency](56-advanced-concurrency.md) — sync.Mutex, atomic
-- [57-advanced-concurrency-2](57-advanced-concurrency-2.md) — errgroup, worker pool
-- [28-context](28-context.md) — context ilə pipeline ləğvi
-- [51-rate-limiting](51-rate-limiting.md) — rate limiter pattern-ləri
+- [27-goroutines-and-channels](../core/27-goroutines-and-channels.md) — channel əsasları
+- [01-advanced-concurrency](01-advanced-concurrency.md) — sync.Mutex, atomic
+- [57-advanced-concurrency-2](02-advanced-concurrency-2.md) — errgroup, worker pool
+- [28-context](../core/28-context.md) — context ilə pipeline ləğvi
+- [51-rate-limiting](../backend/15-rate-limiting.md) — rate limiter pattern-ləri

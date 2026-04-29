@@ -590,8 +590,8 @@ Laravel-in `app()->make()` service container-indən fərqli olaraq Go-da compile
 
 ## Əlaqəli Mövzular
 
-- [17-interfaces](17-interfaces.md) — interface əsasları
-- [55-repository-pattern](55-repository-pattern.md) — repository pattern
-- [59-design-patterns](59-design-patterns.md) — factory, observer
-- [52-mocking-and-testify](52-mocking-and-testify.md) — mock yaratma
-- [74-clean-architecture](74-clean-architecture.md) — clean architecture
+- [17-interfaces](../core/17-interfaces.md) — interface əsasları
+- [19-repository-pattern](../backend/19-repository-pattern.md) — repository pattern
+- [59-design-patterns](04-design-patterns.md) — factory, observer
+- [52-mocking-and-testify](../backend/16-mocking-and-testify.md) — mock yaratma
+- [27-clean-architecture](27-clean-architecture.md) — clean architecture

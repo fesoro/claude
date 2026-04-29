@@ -325,5 +325,5 @@ func main() {
 - [18-error-handling.md](18-error-handling.md) — `error` interface istifadəsi
 - [19-type-assertions.md](19-type-assertions.md) — type assertion və type switch ətraflı
 - [29-generics.md](29-generics.md) — interface-lərin generics ilə birlikdə istifadəsi
-- [52-mocking-and-testify.md](52-mocking-and-testify.md) — interface ilə mock yaratmaq
-- [55-repository-pattern.md](55-repository-pattern.md) — real layihədə repository pattern
+- [16-mocking-and-testify.md](../backend/16-mocking-and-testify.md) — interface ilə mock yaratmaq
+- [19-repository-pattern.md](../backend/19-repository-pattern.md) — real layihədə repository pattern

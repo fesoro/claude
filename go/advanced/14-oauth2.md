@@ -376,7 +376,7 @@ Route::get('/auth/google/callback', function () {
 
 ## Əlaqəli Mövzular
 
-- [65-jwt-and-auth.md](65-jwt-and-auth.md) — JWT əsasları
-- [62-security.md](62-security.md) — Security principles
-- [35-middleware-and-routing.md](35-middleware-and-routing.md) — Auth middleware
-- [28-context.md](28-context.md) — Context propagation
+- [65-jwt-and-auth.md](10-jwt-and-auth.md) — JWT əsasları
+- [62-security.md](07-security.md) — Security principles
+- [../backend/03-middleware-and-routing.md](../backend/03-middleware-and-routing.md) — Auth middleware
+- [../core/28-context.md](../core/28-context.md) — Context propagation

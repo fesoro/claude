@@ -672,7 +672,7 @@ PHP/Laravel-də monitoring adətən xarici servislər vasitəsilə qurulur: Lara
 
 ## Əlaqəli Mövzular
 
-- [68-profiling-and-benchmarking.md](68-profiling-and-benchmarking.md) — pprof ilə performance profiling
-- [70-docker-and-deploy.md](70-docker-and-deploy.md) — Kubernetes health probe-ları
-- [53-graceful-shutdown.md](53-graceful-shutdown.md) — Graceful shutdown
-- [73-microservices.md](73-microservices.md) — Distributed tracing microservice-lərdə
+- [21-profiling-and-benchmarking.md](21-profiling-and-benchmarking.md) — pprof ilə performance profiling
+- [70-docker-and-deploy.md](23-docker-and-deploy.md) — Kubernetes health probe-ları
+- [../backend/17-graceful-shutdown.md](../backend/17-graceful-shutdown.md) — Graceful shutdown
+- [26-microservices.md](26-microservices.md) — Distributed tracing microservice-lərdə

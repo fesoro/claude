@@ -529,8 +529,8 @@ PHP/Laravel-də `.env` + `config/` qovluğu + `env()` helper funksiyası istifad
 
 ## Əlaqəli Mövzular
 
-- [37-database](37-database.md) — DB bağlantı string-inin konfiqurasiyası
-- [54-project-structure](54-project-structure.md) — `internal/config` qovluğu
-- [65-jwt-and-auth](65-jwt-and-auth.md) — JWT secret konfiqurasiyası
-- [70-docker-and-deploy](70-docker-and-deploy.md) — Container mühitində env idarəsi
-- [71-monitoring-and-observability](71-monitoring-and-observability.md) — Log level konfiqurasiyası
+- [05-database](05-database.md) — DB bağlantı string-inin konfiqurasiyası
+- [18-project-structure](18-project-structure.md) — `internal/config` qovluğu
+- [65-jwt-and-auth](../advanced/10-jwt-and-auth.md) — JWT secret konfiqurasiyası
+- [70-docker-and-deploy](../advanced/23-docker-and-deploy.md) — Container mühitində env idarəsi
+- [71-monitoring-and-observability](../advanced/24-monitoring-and-observability.md) — Log level konfiqurasiyası

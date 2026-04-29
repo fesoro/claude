@@ -463,8 +463,8 @@ PHP-də bu pattern-lər demək olar ki yoxdur çünki hər request izolə olunmu
 
 ## Əlaqəli Mövzular
 
-- [28-context](28-context.md) — context.WithCancel, WithTimeout
-- [53-graceful-shutdown](53-graceful-shutdown.md) — graceful shutdown pattern
-- [56-advanced-concurrency](56-advanced-concurrency.md) — sync primitiv-lər
-- [58-channel-patterns](58-channel-patterns.md) — fan-out/fan-in, pipeline
-- [71-monitoring-and-observability](71-monitoring-and-observability.md) — goroutine count monitoring
+- [28-context](../core/28-context.md) — context.WithCancel, WithTimeout
+- [17-graceful-shutdown](../backend/17-graceful-shutdown.md) — graceful shutdown pattern
+- [01-advanced-concurrency](01-advanced-concurrency.md) — sync primitiv-lər
+- [58-channel-patterns](03-channel-patterns.md) — fan-out/fan-in, pipeline
+- [71-monitoring-and-observability](24-monitoring-and-observability.md) — goroutine count monitoring

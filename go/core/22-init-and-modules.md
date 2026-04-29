@@ -298,6 +298,6 @@ import (
 
 - [14-packages-and-modules.md](14-packages-and-modules.md) — paket əsasları, import qaydaları
 - [18-error-handling.md](18-error-handling.md) — init() içindəki xəta idarəetməsi
-- [39-environment-and-config.md](39-environment-and-config.md) — konfiqürasiya idarəetməsi
-- [54-project-structure.md](54-project-structure.md) — Go layihə strukturu ətraflı
-- [37-database.md](37-database.md) — database driver qeydiyyatı (`_ import`)
+- [07-environment-and-config.md](../backend/07-environment-and-config.md) — konfiqürasiya idarəetməsi
+- [18-project-structure.md](../backend/18-project-structure.md) — Go layihə strukturu ətraflı
+- [05-database.md](../backend/05-database.md) — database driver qeydiyyatı (`_ import`)

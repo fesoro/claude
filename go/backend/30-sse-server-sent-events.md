@@ -336,8 +336,8 @@ while(true) { sleep(1); }  →   select { case <-ticker.C: }
 
 ## Əlaqəli Mövzular
 
-- [27-goroutines-and-channels.md](27-goroutines-and-channels.md) — channel əsasları
-- [33-http-server.md](33-http-server.md) — net/http əsasları
-- [61-websocket.md](61-websocket.md) — iki yönlü real-time
-- [83-event-bus.md](83-event-bus.md) — daxili pub/sub
-- [53-graceful-shutdown.md](53-graceful-shutdown.md) — open connection-ları təmiz bağlamaq
+- [27-goroutines-and-channels.md](../core/27-goroutines-and-channels.md) — channel əsasları
+- [01-http-server.md](01-http-server.md) — net/http əsasları
+- [61-websocket.md](../advanced/06-websocket.md) — iki yönlü real-time
+- [15-event-bus.md](../advanced/15-event-bus.md) — daxili pub/sub
+- [17-graceful-shutdown.md](17-graceful-shutdown.md) — open connection-ları təmiz bağlamaq
