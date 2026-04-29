@@ -401,3 +401,34 @@ $maxHeap = new SplMaxHeap();
 // SELECT * FROM products ORDER BY price LIMIT 10
 // MySQL internally top-K ucun heap istifade edir
 ```
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 215** — Kth Largest Element in an Array
+2. **LeetCode 347** — Top K Frequent Elements
+3. **LeetCode 295** — Find Median from Data Stream (two heaps)
+4. **LeetCode 23** — Merge K Sorted Lists (min-heap)
+5. **LeetCode 621** — Task Scheduler (max-heap + frequency)
+
+### Step-by-step: Kth Largest Element
+
+```
+nums=[3,2,1,5,6,4], k=2
+
+Min-heap (size k=2) saxla:
+push 3 → [3]
+push 2 → [2,3]  (size=2)
+push 1 → 1 < heap[0]=2, skip
+push 5 → 5 > heap[0]=2, pop 2, push 5 → [3,5]
+push 6 → 6 > heap[0]=3, pop 3, push 6 → [5,6]
+push 4 → 4 < heap[0]=5, skip
+
+heap[0] = 5 = 2nd largest ✓
+```
+
+## Əlaqəli Mövzular
+
+- [16-trees-basics.md](16-trees-basics.md) — Binary tree əsasları
+- [13-sorting-advanced.md](13-sorting-advanced.md) — Heap Sort
+- [21-greedy-algorithms.md](21-greedy-algorithms.md) — Greedy + priority queue (Dijkstra, Huffman)
+- [35-design-problems.md](35-design-problems.md) — Priority Queue dizaynı

@@ -479,3 +479,40 @@ function canPartition(array $nums): bool
 - **Pricing engine**: Discount/bundle hesablamalari knapsack problemidir
 - **Search suggestion**: Edit distance ile yaxin sozler tap
 - **Route planning**: Shortest path DP ile hell olunur
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 62** — Unique Paths (grid DP klassiki)
+2. **LeetCode 72** — Edit Distance (Levenshtein distance, 2D DP)
+3. **LeetCode 516** — Longest Palindromic Subsequence (interval DP)
+4. **LeetCode 312** — Burst Balloons (interval DP, last burst trick)
+5. **LeetCode 1312** — Minimum Insertions to Make String Palindrome
+
+### Step-by-step: Edit Distance ("horse" → "ros")
+
+```
+    ""  r  o  s
+""   0  1  2  3
+h    1  1  2  3
+o    2  2  1  2
+r    3  2  2  2
+s    4  3  3  2
+e    5  4  4  3  ← answer = 3
+
+dp[i][j] = min(
+  dp[i-1][j] + 1,    // delete
+  dp[i][j-1] + 1,    // insert
+  dp[i-1][j-1] + (s1[i]!=s2[j] ? 1 : 0)  // replace
+)
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [23-dynamic-programming.md](23-dynamic-programming.md) — DP nəzəriyyəsi və şablonları
+- [37-advanced-dp.md](37-advanced-dp.md) — Bitmask, Digit, Tree, Interval DP
+- [07-recursion.md](07-recursion.md) — Top-down həll yanaşması
+- [11-binary-search-patterns.md](11-binary-search-patterns.md) — DP + binary search (LIS O(n log n))

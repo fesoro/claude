@@ -426,3 +426,31 @@ function reverseWords(string $s): string
 - **Pagination merge**: Iki farkli source-dan siralanmis data merge
 - **Queue processing**: Fast/slow consumer pattern
 - **String processing**: Palindrome validation, string cleaning
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 167** — Two Sum II (sorted array)
+2. **LeetCode 15** — 3Sum
+3. **LeetCode 11** — Container With Most Water
+4. **LeetCode 42** — Trapping Rain Water
+5. **LeetCode 75** — Sort Colors (Dutch National Flag)
+
+### Step-by-step: Trapping Rain Water
+
+```
+heights = [0,1,0,2,1,0,1,3,2,1,2,1]
+
+left=0, right=11, leftMax=0, rightMax=0
+→ heights[left]=0 < heights[right]=1
+  leftMax=0, water+=0-0=0, left=1
+→ heights[left]=1 > heights[right]=1... (hər addımda min(leftMax,rightMax) - height)
+...
+Cəmi su = 6
+```
+
+## Əlaqəli Mövzular
+
+- [09-sliding-window.md](09-sliding-window.md) — Variable window (iki pointer eyni istiqamətdə)
+- [11-binary-search-patterns.md](11-binary-search-patterns.md) — Sorted array axtarışı
+- [29-interval-problems.md](29-interval-problems.md) — Interval merge/overlap
+- [03-linked-lists.md](03-linked-lists.md) — Fast/Slow pointer (Floyd's)

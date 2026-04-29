@@ -305,3 +305,40 @@ Kadane ekvivalentdir: `max(prefix[j] - min(prefix[0..j-1]))`. Prefix sum daha ç
   }, ['current' => $arr[0], 'max' => $arr[0]])['max'];
   ```
 - **Caching**: 2D Kadane hesablamaları ağırdır — Redis-də cachelə.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 53** — Maximum Subarray (Kadane klassiki)
+2. **LeetCode 918** — Maximum Sum Circular Subarray (total - min subarray)
+3. **LeetCode 152** — Maximum Product Subarray (min/max ikisi saxla)
+4. **LeetCode 121** — Best Time to Buy and Sell Stock (Kadane variasiyası)
+5. **LeetCode 1749** — Maximum Absolute Sum of Any Subarray (max + min Kadane)
+
+### Step-by-step: Maximum Product Subarray
+
+```
+nums = [2, 3, -2, 4]
+
+          i=0  i=1  i=2  i=3
+maxProd:   2    6   -2    4   ← max(nums[i], maxP*nums[i], minP*nums[i])
+minProd:   2    3  -12  -8   ← min(nums[i], maxP*nums[i], minP*nums[i])
+result:    2    6    6    6
+
+Mənfi ədəddə max↔min swap olur: -2*(-12)=24 — amma bu misalda 6 qalib.
+
+nums = [2, -5, -2, -4, 3]:
+maxProd:   2  -5   50  -100   3
+minProd:   2 -10    2   -50 -300
+result:    2   2   50    50   50 ✓
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [02-arrays.md](02-arrays.md) — Array əsasları
+- [23-dynamic-programming.md](23-dynamic-programming.md) — Kadane = 1D DP
+- [10-prefix-sum.md](10-prefix-sum.md) — Prefix sum ilə əlaqəsi (max prefix[j] - min prefix[i])
+- [30-matrix-problems.md](30-matrix-problems.md) — 2D Kadane (max sum submatrix)

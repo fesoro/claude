@@ -419,3 +419,37 @@ Range chmin/chmax (hər element ilə verilən qiyməti min/max etmək) kimi "tə
 - **Redis**: Sorted Set əsasən Skip List-dir, amma range aggregations üçün Redis Streams + in-memory seg tree kombinasiyası mümkündür.
 - **Version control sistemləri**: Persistent SegTree git-ə bənzər versiya sistemi ilə uyğun gəlir.
 - **Qeyd**: PHP-in CPU sürəti C++-dan yavaşdır; praktikada segtree-i Redis-in server-side script-lərində (Lua) və ya xüsusi mikroservisdə yazmaq daha yaxşıdır.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 307** — Range Sum Query - Mutable (Segment Tree vs Fenwick Tree)
+2. **LeetCode 699** — Falling Squares (coordinate compression + segment tree)
+3. **LeetCode 715** — Range Module (lazy propagation ilə range set/unset)
+4. **LeetCode 732** — My Calendar III (lazy segtree ilə max overlap count)
+5. **LeetCode 850** — Rectangle Area II (coordinate compression + sweep line)
+
+### Step-by-step: Lazy Propagation (range add, range sum)
+
+```
+arr = [1, 3, 5, 7, 9, 11]
+tree built → seqments: [0-5]=36, [0-2]=9, [3-5]=27, ...
+
+rangeAdd(1, 3, +2):  // arr[1..3] += 2
+  segment [0-5]: lazy[root] += 2*(3-1+1) = push to children lazily
+  [1-2] fully covered: lazy[node]+=2, tree[node]+=2*2=4
+  [3-3] fully covered: lazy[node]+=2, tree[node]+=2
+
+rangeSum(0,3): propagate lazy before querying
+  → correct sum without O(n) update ✓
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [43-fenwick-tree.md](43-fenwick-tree.md) — Fenwick Tree (daha sadə, yalnız prefix sum)
+- [44-sparse-table.md](44-sparse-table.md) — Sparse Table (statik RMQ, O(1) query)
+- [10-prefix-sum.md](10-prefix-sum.md) — Statik prefix sum (ən sadə range structure)
+- [16-trees-basics.md](16-trees-basics.md) — Binary tree əsasları

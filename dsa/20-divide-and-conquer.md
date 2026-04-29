@@ -402,3 +402,40 @@ function quickSelect(array &$arr, int $lo, int $hi, int $k): int
 - **Image processing**: Boyuk seklin hisselerini ayrica islemek
 - **Database sharding**: D&C prinsipi ile data bolgusu
 - **Recursive API calls**: Tree structure data yukleme
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 23** — Merge K Sorted Lists (D&C ilə iterativ birləşdirmə)
+2. **LeetCode 148** — Sort List (linked list üçün Merge Sort)
+3. **LeetCode 215** — Kth Largest Element in Array (QuickSelect)
+4. **LeetCode 53** — Maximum Subarray (D&C yanaşması ilə həll et)
+5. **LeetCode 169** — Majority Element (D&C yanaşması vs Boyer-Moore)
+
+### Step-by-step: Merge Sort trace
+
+```
+arr = [5, 2, 8, 1, 3]
+
+Divide:
+  [5, 2, 8]        [1, 3]
+  [5] [2, 8]       [1] [3]
+      [2] [8]
+
+Merge (bottom-up):
+  [2, 8]  →  [2, 5, 8]   +   [1, 3]
+  [1, 2, 3, 5, 8] ✓
+
+Hər merge addımda 2 sıralanmış hissəni birləşdiririk — O(n) işi O(log n) dəfə görürük.
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [07-recursion.md](07-recursion.md) — Rekursiya əsasları
+- [13-sorting-advanced.md](13-sorting-advanced.md) — Merge Sort, Quick Sort (D&C nümunəsi)
+- [23-dynamic-programming.md](23-dynamic-programming.md) — DP vs D&C (overlapping subproblems)
+- [22-backtracking.md](22-backtracking.md) — Backtracking (D&C + pruning)
+- [11-binary-search-patterns.md](11-binary-search-patterns.md) — Binary search (D&C-nin xüsusi halı)

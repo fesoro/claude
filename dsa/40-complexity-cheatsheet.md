@@ -489,3 +489,39 @@ foreach ($users as $user) {
 - **Space vs time trade-off** ilə hazır ol (hash map ilə O(n²) → O(n))
 - **Tipik pattern-ləri tanı**: two pointers, sliding window, DP, BFS/DFS
 - **Həll etdikdən sonra** complexity-ni dəqiq say və optimizasiya yollarını göstər
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 56** — Merge Intervals (O(n log n) — sort + O(n) scan = niyə log n?)
+2. **LeetCode 200** — Number of Islands (O(n×m) — hər cell bir dəfə ziyarət)
+3. **LeetCode 23** — Merge K Sorted Lists (O(N log K) — N element, K heap-də)
+4. **LeetCode 322** — Coin Change (O(amount × coins) — DP table complexity)
+5. **LeetCode 46** — Permutations (O(n! × n) — niyə n! deyil n×n!?)
+
+### Step-by-step: Complexity estimation workflow
+
+```
+Problem: "n ədəd var, hər cüt pair-in cəmini tap"
+
+Naive: iki loop → O(n²) — n=10⁴ → 10⁸ op → TLE
+Better: sort + two pointers → O(n log n) — n=10⁴ → ~10⁵ op ✓
+Hash: O(n) time, O(n) space — trade-off
+
+Qayda:
+  n ≤ 10:   O(n!) backtracking ✓
+  n ≤ 20:   O(2^n) bitmask DP ✓
+  n ≤ 500:  O(n³) DP ✓
+  n ≤ 5000: O(n²) ✓
+  n ≤ 10⁵:  O(n log n) ✓
+  n ≤ 10⁶:  O(n) lazım ✓
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [01-big-o-notation.md](01-big-o-notation.md) — Big O hesablama qaydaları
+- [41-leetcode-patterns.md](41-leetcode-patterns.md) — Pattern → complexity uyğunlaşdırması
+- [42-interview-strategy.md](42-interview-strategy.md) — Interview zamanı complexity analizi

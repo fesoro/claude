@@ -462,3 +462,33 @@ $pq->insert(['job' => 'alert'], 10);
 // Producer -> Queue -> Consumer
 // Laravel Horizon: Redis queue monitoring
 ```
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 200** — Number of Islands (BFS)
+2. **LeetCode 994** — Rotting Oranges (multi-source BFS)
+3. **LeetCode 239** — Sliding Window Maximum (deque)
+4. **LeetCode 102** — Binary Tree Level Order Traversal
+5. **LeetCode 621** — Task Scheduler (greedy + frequency)
+
+### Step-by-step: BFS Level Order
+
+```
+Ağac:      1
+          / \
+         2   3
+        / \
+       4   5
+
+Queue: [1]
+Level 1: dequeue 1, enqueue 2,3 → result: [[1]]
+Level 2: dequeue 2→enqueue 4,5; dequeue 3 → result: [[1],[2,3]]
+Level 3: dequeue 4,5 → result: [[1],[2,3],[4,5]]
+```
+
+## Əlaqəli Mövzular
+
+- [04-stacks.md](04-stacks.md) — Stack (Queue-nun LIFO versiyası)
+- [25-graphs-basics.md](25-graphs-basics.md) — BFS graph traversal
+- [31-monotonic-stack-queue.md](31-monotonic-stack-queue.md) — Monotonic Deque
+- [16-trees-basics.md](16-trees-basics.md) — Tree level order traversal

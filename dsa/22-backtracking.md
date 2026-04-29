@@ -381,3 +381,39 @@ echo "Combination sum for 7: " . count($combs) . "\n"; // 2: [2,2,3], [7]
 - **Permission checking**: Complex permission rule-lari backtracking ile
 - **Puzzle games**: Sudoku, crossword solver
 - **Configuration generator**: Valid config kombinasiyalarini yaratmaq
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 46** — Permutations (klassik backtracking başlanğıcı)
+2. **LeetCode 78** — Subsets (include/exclude qərar ağacı)
+3. **LeetCode 39** — Combination Sum (təkrarla kombinasiya)
+4. **LeetCode 51** — N-Queens (constraint validation ilə backtracking)
+5. **LeetCode 79** — Word Search (2D grid backtracking + visited array)
+
+### Step-by-step: Subsets [1,2,3]
+
+```
+decide(index=0, current=[]):
+  ├─ include 1 → decide(1, [1])
+  │    ├─ include 2 → decide(2, [1,2])
+  │    │    ├─ include 3 → [1,2,3] ✓
+  │    │    └─ skip 3   → [1,2]   ✓
+  │    └─ skip 2 → decide(2, [1])
+  │         ├─ include 3 → [1,3] ✓
+  │         └─ skip 3   → [1]   ✓
+  └─ skip 1 → ... (analoji)
+
+Nəticə: 8 subset = 2^3 ✓
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [07-recursion.md](07-recursion.md) — Rekursiya (backtracking-in əsası)
+- [21-greedy-algorithms.md](21-greedy-algorithms.md) — Greedy (daha sürətli, amma hər zaman optimal deyil)
+- [23-dynamic-programming.md](23-dynamic-programming.md) — DP (backtracking + memoization)
+- [25-graphs-basics.md](25-graphs-basics.md) — DFS (backtracking-in graph versiyası)
+- [30-matrix-problems.md](30-matrix-problems.md) — Matrix DFS + backtracking

@@ -761,3 +761,39 @@ Queue::push(new ProcessOrder($order));
 6. **Undo/Redo** - Stack-based design
 7. **Event streaming** - Circular buffer for metrics
 8. **Notification feeds** - Twitter-like design
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 146** — LRU Cache (Hash Map + Doubly Linked List)
+2. **LeetCode 460** — LFU Cache (freq map + min-heap və ya nested map)
+3. **LeetCode 295** — Find Median from Data Stream (2 heap)
+4. **LeetCode 355** — Design Twitter (heap + timestamp)
+5. **LeetCode 641** — Design Circular Deque (array ilə O(1) ops)
+
+### Step-by-step: LRU Cache operasiyaları
+
+```
+LRUCache(capacity=2)
+
+put(1,1): map={1:node1}, list=[1]
+put(2,2): map={1,2}, list=[1,2]
+get(1):   hit → move to front → list=[2,1], return 1
+put(3,3): capacity dolub → evict LRU (tail=2) → list=[1,3]
+          map={1:node1, 3:node3}
+get(2):   MISS → return -1
+
+DLL: head ↔ [3] ↔ [1] ↔ tail
+HashMap: O(1) lookup → O(1) delete + insert (DLL node pointer)
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [06-hash-tables.md](06-hash-tables.md) — LRU/LFU cache-in əsası
+- [18-heaps.md](18-heaps.md) — Priority queue dizaynı
+- [03-linked-lists.md](03-linked-lists.md) — LRU-da doubly linked list
+- [19-trie.md](19-trie.md) — Autocomplete / search dizaynı
+- [43-fenwick-tree.md](43-fenwick-tree.md) — Range query sistemi dizaynı

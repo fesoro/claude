@@ -395,3 +395,30 @@ Arr::pluck($records, 'name');               // Column extract
 // Migration: $table->json('tags');
 // Model: protected $casts = ['tags' => 'array'];
 ```
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 53** — Maximum Subarray (Kadane's)
+2. **LeetCode 238** — Product of Array Except Self
+3. **LeetCode 189** — Rotate Array
+4. **LeetCode 33** — Search in Rotated Sorted Array
+5. **LeetCode 121** — Best Time to Buy and Sell Stock
+
+### Step-by-step: In-place array rotation
+
+```
+arr = [1,2,3,4,5], k=2 → [4,5,1,2,3]
+
+Addım 1: Bütün massivi tərsinə çevir → [5,4,3,2,1]
+Addım 2: İlk k=2 elementi tərsinə → [4,5,3,2,1]
+Addım 3: Qalan hissəni tərsinə → [4,5,1,2,3] ✓
+O(n) vaxt, O(1) yer
+```
+
+## Əlaqəli Mövzular
+
+- [01-big-o-notation.md](01-big-o-notation.md) — Complexity analizi
+- [08-two-pointers.md](08-two-pointers.md) — Array üzərində two pointer texnikası
+- [09-sliding-window.md](09-sliding-window.md) — Subarray problemləri
+- [10-prefix-sum.md](10-prefix-sum.md) — Range sum optimizasiyası
+- [32-kadanes-algorithm.md](32-kadanes-algorithm.md) — Maximum subarray

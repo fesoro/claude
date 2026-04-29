@@ -450,3 +450,37 @@ function myAtoi(string $s): int
 - **Slug generation**: String manipulation
 - **Input validation**: Email, URL, phone format yoxlama
 - **Diff tools**: String comparison algoritmler (LCS)
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 28** — Find the Index of the First Occurrence (KMP)
+2. **LeetCode 686** — Repeated String Match (Rabin-Karp)
+3. **LeetCode 5** — Longest Palindromic Substring
+4. **LeetCode 796** — Rotate String (string doubling trick)
+5. **LeetCode 459** — Repeated Substring Pattern (KMP failure function)
+
+### Step-by-step: KMP Failure Function
+
+```
+Pattern: "ABABCABAB"
+Index:    0 1 2 3 4 5 6 7 8
+
+i=0: fail[0]=0
+i=1: A≠B → fail[1]=0
+i=2: A=A → fail[2]=1
+i=3: B=B → fail[3]=2
+i=4: A≠C → fall back: fail[1]=0; A≠C → fail[4]=0
+i=5: A=A → fail[5]=1
+i=6: B=B → fail[6]=2
+i=7: A=A → fail[7]=3
+i=8: B=B → fail[8]=4
+
+fail = [0,0,1,2,0,1,2,3,4]
+```
+
+## Əlaqəli Mövzular
+
+- [19-trie.md](19-trie.md) — Prefix tree (string axtarışı)
+- [38-advanced-string-algorithms.md](38-advanced-string-algorithms.md) — Z-algorithm, Manacher, Suffix Array
+- [06-hash-tables.md](06-hash-tables.md) — Rabin-Karp rolling hash
+- [22-backtracking.md](22-backtracking.md) — String permutation/combination

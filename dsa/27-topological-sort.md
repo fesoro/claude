@@ -478,3 +478,38 @@ function taskScheduler(array $tasks, array $deps, array $durations): int
 - **Webpack/Vite**: Asset bundling dependency order
 - **CI/CD pipeline**: Job/step ordering
 - **Database seeds**: Seed execution order (foreign key dependencies)
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 207** — Course Schedule (cycle varsa false, yoxdursa true)
+2. **LeetCode 210** — Course Schedule II (topological order qaytarır)
+3. **LeetCode 269** — Alien Dictionary (hərfdən order çıxar, topo sort)
+4. **LeetCode 2115** — Find All Possible Recipes (ingredients as dependencies)
+5. **LeetCode 329** — Longest Increasing Path in Matrix (DFS + memoization, topo sort kimi)
+
+### Step-by-step: Kahn's Algorithm
+
+```
+edges: 0→1, 0→2, 1→3, 2→3
+indegree: [0, 1, 1, 2]
+
+queue = [0]  (indegree=0)
+
+pop 0: result=[0], azalt 1→0, 2→0 → queue=[1,2]
+pop 1: result=[0,1], azalt 3→1   → queue=[2]
+pop 2: result=[0,1,2], azalt 3→0 → queue=[3]
+pop 3: result=[0,1,2,3] ✓
+
+len(result)==4 → cycle yoxdur
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [25-graphs-basics.md](25-graphs-basics.md) — DFS/BFS graph traversal
+- [26-graphs-advanced.md](26-graphs-advanced.md) — Shortest path in DAG
+- [23-dynamic-programming.md](23-dynamic-programming.md) — DP on DAG
+- [28-union-find.md](28-union-find.md) — Cycle detection (topo sort tələbi)

@@ -410,3 +410,38 @@ function findMinArrowShots(array $points): int
 - **Caching strategy**: LRU/LFU cache eviction greedy yanasmadi
 - **Compression**: Huffman coding file compression-da istifade olunur
 - **API rate limiting**: Greedy allocation of request quotas
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 455** — Assign Cookies (sadə greedy — başlanğıc məsələsi)
+2. **LeetCode 435** — Non-overlapping Intervals (interval scheduling, end-time sort)
+3. **LeetCode 45** — Jump Game II (minimum addımla sona çat)
+4. **LeetCode 763** — Partition Labels (hər hərfin son mövqeyindən greedy)
+5. **LeetCode 406** — Queue Reconstruction by Height (iki kriteriyalı greedy)
+
+### Step-by-step: Interval Scheduling (435)
+
+```
+intervals = [[1,2],[2,3],[3,4],[1,3]]
+Sort by end time: [[1,2],[2,3],[1,3],[3,4]]
+
+Greedy: saxla end ən kiçik olanı, sonrakı onunla overlap edirsə sil
+  [1,2] → saxla, end=2
+  [2,3] → start(2) >= end(2) → saxla, end=3
+  [1,3] → start(1) < end(3)  → SİL (+1 removed)
+  [3,4] → start(3) >= end(3) → saxla, end=4
+
+Nəticə: 1 silinən interval ✓
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [22-backtracking.md](22-backtracking.md) — Greedy işləməyəndə backtracking
+- [23-dynamic-programming.md](23-dynamic-programming.md) — DP (greedy-nin ümumi versiyası)
+- [36-graphs-mst.md](36-graphs-mst.md) — Kruskal/Prim (greedy MST)
+- [18-heaps.md](18-heaps.md) — Priority queue ilə greedy (Dijkstra, Huffman)
+- [29-interval-problems.md](29-interval-problems.md) — Interval scheduling (greedy klassiki)

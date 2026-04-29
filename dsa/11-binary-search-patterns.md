@@ -390,3 +390,31 @@ echo "Median: " . findMedianSortedArrays([1,3], [2]) . "\n"; // 2.0
 - **Rate limiting**: Optimal rate limit deyeri binary search ile tapmaq
 - **Load testing**: Maximum throughput binary search ile tapmaq
 - **Configuration tuning**: Optimal cache size, pool size tapmaq
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 704** — Binary Search (klassik)
+2. **LeetCode 33** — Search in Rotated Sorted Array
+3. **LeetCode 875** — Koko Eating Bananas (answer BS)
+4. **LeetCode 1011** — Capacity to Ship Packages
+5. **LeetCode 4** — Median of Two Sorted Arrays (çətin)
+
+### Step-by-step: Answer Binary Search şablonu
+
+```
+Sual: "Minimum X tap ki, şərt ödənsin"
+→ lo = minimum mümkün cavab
+→ hi = maximum mümkün cavab
+→ while lo < hi:
+    mid = (lo + hi) / 2
+    if check(mid): hi = mid    // mid ola bilər, daha kiçik axtaraq
+    else: lo = mid + 1         // mid az, böyütmək lazım
+→ return lo
+```
+
+## Əlaqəli Mövzular
+
+- [12-sorting-basic.md](12-sorting-basic.md) — Sorted array üçün binary search
+- [13-sorting-advanced.md](13-sorting-advanced.md) — Sort + search kombinasiyası
+- [21-greedy-algorithms.md](21-greedy-algorithms.md) — "Answer binary search" greedy check ilə
+- [14-searching.md](14-searching.md) — Digər axtarış texnikaları

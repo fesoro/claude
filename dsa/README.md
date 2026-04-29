@@ -11,7 +11,8 @@ Bu qovluq müsahibə hazırlığı üçün DSA mövzularını Junior-dan Archite
 | Junior | ⭐ | Fundamental data structures, Big O |
 | Middle | ⭐⭐ | Klassik patterns, sort/search |
 | Senior | ⭐⭐⭐ | Trees, Graphs, DP, axtarış alqoritmləri |
-| Lead | ⭐⭐⭐⭐ | Advanced topics, interview mastery |
+| Lead | ⭐⭐⭐⭐ | Advanced topics, range structures, interview mastery |
+| Architect | ⭐⭐⭐⭐⭐ | Network Flow, sistem səviyyəli alqoritmlər |
 
 ---
 
@@ -58,7 +59,7 @@ Bu qovluq müsahibə hazırlığı üçün DSA mövzularını Junior-dan Archite
 | 25 | Graphs - Basics | [25-graphs-basics.md](25-graphs-basics.md) |
 | 26 | Graphs - Advanced | [26-graphs-advanced.md](26-graphs-advanced.md) |
 | 27 | Topological Sort | [27-topological-sort.md](27-topological-sort.md) |
-| 28 | Union-Find | [28-union-find.md](28-union-find.md) |
+| 28 | Union-Find (DSU) | [28-union-find.md](28-union-find.md) |
 | 29 | Interval Problems | [29-interval-problems.md](29-interval-problems.md) |
 | 30 | Matrix Problems | [30-matrix-problems.md](30-matrix-problems.md) |
 | 31 | Monotonic Stack/Queue | [31-monotonic-stack-queue.md](31-monotonic-stack-queue.md) |
@@ -78,6 +79,14 @@ Bu qovluq müsahibə hazırlığı üçün DSA mövzularını Junior-dan Archite
 | 40 | Complexity Cheatsheet | [40-complexity-cheatsheet.md](40-complexity-cheatsheet.md) |
 | 41 | LeetCode Patterns | [41-leetcode-patterns.md](41-leetcode-patterns.md) |
 | 42 | Interview Strategy | [42-interview-strategy.md](42-interview-strategy.md) |
+| 43 | Fenwick Tree (BIT) | [43-fenwick-tree.md](43-fenwick-tree.md) |
+| 44 | Sparse Table / RMQ | [44-sparse-table.md](44-sparse-table.md) |
+
+### ⭐⭐⭐⭐⭐ Architect
+
+| # | Mövzu | Fayl |
+|---|-------|------|
+| 45 | Network Flow | [45-network-flow.md](45-network-flow.md) |
 
 ---
 
@@ -104,9 +113,21 @@ Bu qovluq müsahibə hazırlığı üçün DSA mövzularını Junior-dan Archite
 → 29–32 (Intervals, Matrix, Monotonic Stack, Kadane)
 
 **Həftə 8: Advanced + Review**
-→ 33–42 (Bit Manipulation, Design, MST, Advanced DP, LeetCode Patterns, Interview Strategy)
+→ 33–44 (Bit Manipulation, Design, MST, Advanced DP, Fenwick, Sparse Table, LeetCode Patterns, Interview Strategy)
 
 ### Tez Təkrar (2 həftə)
 
 → 40 (Complexity Cheatsheet) → 41 (LeetCode Patterns) → 42 (Interview Strategy)  
 → Sonra zəif hissələri hədəfləyin
+
+### Range Query Oxuma Yolu
+
+→ 10 (Prefix Sum) → 43 (Fenwick Tree) → 44 (Sparse Table) → 39 (Segment Tree Advanced)
+
+### Graph Mövzuları Oxuma Yolu
+
+→ 25 (Basics) → 26 (Advanced) → 27 (Topological) → 28 (Union-Find) → 36 (MST) → 45 (Network Flow)
+
+### DP Oxuma Yolu
+
+→ 07 (Recursion) → 23 (DP) → 24 (Classic Problems) → 37 (Advanced DP)

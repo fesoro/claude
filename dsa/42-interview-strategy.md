@@ -398,3 +398,52 @@ Müsahibədə tez-tez rast gəlinən problem tipləri:
 - **Hər müsahibə təcrübədir** — rədd cavabı uğursuzluq deyil, öyrənmədir
 - **Öz-özünə şübhə normaldır** — impostor syndrome çox təcrübəli developer-lərdə də var
 - **Prosesi sev, nəticəni çox da vacib tutma** — rollar və şirkətlər dəyişir, bacarıqların qalır
+
+---
+
+## Praktik Tapşırıqlar
+
+Mock interview məşqləri — hər birini 25 dəqiqə limiitilə həll et:
+
+1. **LeetCode 1** — Two Sum (giriş — clarify, brute → optimal, complexity)
+2. **LeetCode 206** — Reverse Linked List (data structure, edge cases: empty, single)
+3. **LeetCode 102** — Binary Tree Level Order Traversal (BFS, verbal izah)
+4. **LeetCode 200** — Number of Islands (DFS/BFS seçim, trade-off izah et)
+5. **LeetCode 56** — Merge Intervals (sort decision, invariant izah)
+
+### Step-by-step: UMPIRE metodu ilə Two Sum
+
+```
+U — Understand:
+  "İki ədəd tapmaq lazımdır ki, onların cəmi target olsun"
+  Suallar: duplicates ola bilərmi? həmişə bir cavab var?
+
+M — Match:
+  Array + cüt axtarış → Hash Map pattern
+
+P — Plan:
+  map = {}
+  hər num üçün: complement = target - num
+  əgər complement map-dədirsə → cavab tapıldı
+  yoxdursa map[num] = index
+
+I — Implement:
+  (2-3 dəqiqədə yaz)
+
+R — Review:
+  [2,7,11,15], target=9:
+  i=0(2): map={2:0}
+  i=1(7): complement=2, map-dədir → [map[2],1]=[0,1] ✓
+
+E — Evaluate:
+  Time: O(n), Space: O(n)
+  Edge case: [3,3], target=6 → işləyir (indeks fərqlidir)
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [40-complexity-cheatsheet.md](40-complexity-cheatsheet.md) — Complexity sürətli baxış
+- [41-leetcode-patterns.md](41-leetcode-patterns.md) — Pattern recognition
+- [01-big-o-notation.md](01-big-o-notation.md) — Complexity analizi əsasları

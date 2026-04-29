@@ -362,3 +362,35 @@ function knapsack(array $weights, array $values, int $capacity): int
 - **Text diff**: `diff` aleti DP (LCS) istifade edir
 - **Pricing calculations**: Discount/tax hesablamalari DP pattern
 - **Auto-complete**: Edit distance ile en yaxin sozleri tap
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 70** — Climbing Stairs (DP-ə giriş, Fibonacci pattern)
+2. **LeetCode 322** — Coin Change (unbounded knapsack klassiki)
+3. **LeetCode 198** — House Robber (adjacent element DP)
+4. **LeetCode 300** — Longest Increasing Subsequence (O(n²) sonra O(n log n))
+5. **LeetCode 1143** — Longest Common Subsequence (2D DP)
+
+### Step-by-step: Coin Change [1,5,6,9], amount=11
+
+```
+dp[0] = 0
+dp[1] = dp[0]+1 = 1  (1 sikkə: [1])
+dp[5] = dp[0]+1 = 1  (1 sikkə: [5])
+dp[6] = min(dp[5]+1, dp[0]+1) = 1  ([6])
+dp[9] = min(dp[8]+1, dp[3]+1, dp[0]+1) = 1 ([9])
+dp[10] = min(dp[9]+1, dp[5]+1, dp[4]+1) = 2 ([1,9])
+dp[11] = min(dp[10]+1, dp[6]+1, dp[5]+1, dp[2]+1) = 2 ([5,6]) ✓
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [07-recursion.md](07-recursion.md) — Top-down DP = memoized recursion
+- [22-backtracking.md](22-backtracking.md) — Backtracking + memoization = DP
+- [24-dp-classic-problems.md](24-dp-classic-problems.md) — Klassik DP məsələləri
+- [37-advanced-dp.md](37-advanced-dp.md) — Bitmask, Digit, Tree, Interval DP
+- [21-greedy-algorithms.md](21-greedy-algorithms.md) — Greedy (DP-nin xüsusi halı)

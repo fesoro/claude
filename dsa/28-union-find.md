@@ -385,3 +385,34 @@ echo "Components 5 nodes: " . countComponents(5, [[0,1],[1,2],[3,4]]) . "\n"; //
 - **Image segmentation**: Oxsar pixel-leri birlesdirmek
 - **Network connectivity**: Server cluster sagligi
 - **Equivalence classes**: Synonym grouping, duplicate detection
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 684** — Redundant Connection (cycle yaradanı tap)
+2. **LeetCode 721** — Accounts Merge (email ilə accounts birləşdir)
+3. **LeetCode 990** — Satisfiability of Equality Equations (a==b, a!=c yoxla)
+4. **LeetCode 1202** — Smallest String With Swaps (swap-ları komponent kimi DSU)
+5. **LeetCode 765** — Couples Holding Hands (minimum swaps)
+
+### Step-by-step: Redundant Connection
+
+```
+edges: [1-2, 1-3, 2-3]
+
+process 1-2: find(1)=1, find(2)=2 → union → parent=[0,1,1,3]
+process 1-3: find(1)=1, find(3)=3 → union → parent=[0,1,1,1]
+process 2-3: find(2)=1, find(3)=1 → SAME ROOT → redundant edge = [2,3] ✓
+
+Path compression: find(2) → 2→1 (bir addım)
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [25-graphs-basics.md](25-graphs-basics.md) — Graph connected components
+- [36-graphs-mst.md](36-graphs-mst.md) — Kruskal MST (DSU istifadə edir)
+- [27-topological-sort.md](27-topological-sort.md) — Cycle detection
+- [29-interval-problems.md](29-interval-problems.md) — Interval grouping (DSU ilə)

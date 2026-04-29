@@ -389,3 +389,38 @@ function minCostRepair(int $n, array $connections, array $broken): int
 - **Clustering**: Oxsar data point-leri qruplasdirmaq (MST-based clustering)
 - **Circuit design**: Minimum wiring problem
 - **Laravel**: Distributed system-lerde node-lari birlesdirmek, cache invalidation network
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 1584** — Min Cost to Connect All Points (Prim vs Kruskal)
+2. **LeetCode 1135** — Connecting Cities With Minimum Cost (Kruskal + DSU)
+3. **LeetCode 1168** — Optimize Water Distribution in a Village (virtual node MST)
+4. **LeetCode 1489** — Find Critical and Pseudo-Critical Edges in MST
+5. **LeetCode 1579** — Remove Max Number of Edges to Keep Graph Fully Traversable
+
+### Step-by-step: Kruskal's Algorithm
+
+```
+edges (sorted by weight): (1-2,1), (3-4,2), (1-3,3), (2-4,4), (2-3,5)
+nodes: 1,2,3,4 | DSU: each node is own parent
+
+process (1-2,w=1): find(1)≠find(2) → union → MST cost=1
+process (3-4,w=2): find(3)≠find(4) → union → MST cost=3
+process (1-3,w=3): find(1)≠find(3) → union → MST cost=6
+process (2-4,w=4): find(2)==find(4) → SKIP (cycle yaradar)
+
+MST edges: [(1-2),(3-4),(1-3)], total weight=6 ✓
+n-1 = 3 edge → tamamlandı
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [25-graphs-basics.md](25-graphs-basics.md) — Graph reprezentasiyası, BFS/DFS
+- [28-union-find.md](28-union-find.md) — Kruskal-da DSU istifadəsi
+- [18-heaps.md](18-heaps.md) — Prim-da min-heap
+- [26-graphs-advanced.md](26-graphs-advanced.md) — Dijkstra (shortest path, MST ilə fərqi)
+- [45-network-flow.md](45-network-flow.md) — Minimum cut (MST ilə əlaqəsi)

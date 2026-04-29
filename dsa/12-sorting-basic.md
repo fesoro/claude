@@ -380,3 +380,28 @@ function sortByDistance(array &$points): void
 - **Small dataset sorting**: Config, dropdown options kimi kicik listeler ucun
 - **Teaching**: Bu algoritmler sorting konseptini basqa algoritmlere kecirir
 - **Timsort**: Python ve Java istifade edir - insertion sort + merge sort hibrididir
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 75** — Sort Colors (3-way partition, Dutch National Flag)
+2. **LeetCode 912** — Sort an Array (merge sort implementasiyası)
+3. **LeetCode 147** — Insertion Sort List
+4. **LeetCode 148** — Sort List (merge sort on linked list)
+5. **LeetCode 315** — Count of Smaller Numbers After Self
+
+### Step-by-step: Insertion Sort vizualı
+
+```
+[5, 3, 4, 1, 2]
+ ^key=3: 5>3 → shift → [3,5,4,1,2]
+   ^key=4: 5>4 → shift, 3<4 → stop → [3,4,5,1,2]
+     ^key=1: 5>1,4>1,3>1 → shift → [1,3,4,5,2]
+       ^key=2: 5>2,4>2,3>2 → shift, 1<2 → [1,2,3,4,5]
+```
+
+## Əlaqəli Mövzular
+
+- [13-sorting-advanced.md](13-sorting-advanced.md) — Merge Sort, Quick Sort, Heap Sort
+- [01-big-o-notation.md](01-big-o-notation.md) — O(n²) vs O(n log n) fərqi
+- [18-heaps.md](18-heaps.md) — Heap Sort üçün heap strukturu
+- [11-binary-search-patterns.md](11-binary-search-patterns.md) — Sorted array + binary search

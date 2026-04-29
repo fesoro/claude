@@ -364,3 +364,39 @@ Current state-də mismatch olanda, ən uzun uyğun "suffix of path"-ə keç. KMP
 - **Log analysis**: eyni anda 100+ error pattern axtarmaq — Aho-Corasick.
 - **Laravel validator**: böyük input-larda palindrome/pattern yoxlanışı → Z və Manacher custom rule kimi istifadə oluna bilər.
 - **Performance**: PHP string əməliyyatları C-də işlədiyi üçün sürətli. Amma mürəkkəb strukturlar (suffix automaton) PHP array-lərinin overhead-i səbəbindən C++/Go-dan yavaş olur — yüksək yüklü sistemlərdə xüsusi mikroservis.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 28** — Find the Index of the First Occurrence in a String (KMP)
+2. **LeetCode 214** — Shortest Palindrome (KMP failure function tətbiqi)
+3. **LeetCode 1392** — Longest Happy Prefix (KMP failure function birbaşa)
+4. **LeetCode 5** — Longest Palindromic Substring (Manacher O(n))
+5. **LeetCode 686** — Repeated String Match (Rabin-Karp ilə)
+
+### Step-by-step: KMP Failure Function
+
+```
+pattern = "ABABC"
+
+failure = [0, 0, 1, 2, 0]
+
+hesab:
+  i=0(A): f[0]=0 (başlanğıc)
+  i=1(B): A≠B → f[1]=0
+  i=2(A): A==A → f[2]=1
+  i=3(B): B==B → f[3]=2 (prefix "AB" == suffix "AB")
+  i=4(C): j=2, B≠C → j=f[1]=0, A≠C → f[4]=0
+
+Axtarış zamanı mismatch-də sıfırdan başlamaq əvəzinə f[j-1]-ə qayıdırıq.
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [15-string-algorithms.md](15-string-algorithms.md) — KMP, Rabin-Karp əsasları
+- [19-trie.md](19-trie.md) — Prefix tree (Aho-Corasick-in əsası)
+- [06-hash-tables.md](06-hash-tables.md) — Rolling hash (Rabin-Karp)
+- [37-advanced-dp.md](37-advanced-dp.md) — Suffix Array + DP kombinasiyası

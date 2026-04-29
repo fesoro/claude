@@ -399,3 +399,35 @@ function validUtf8(array $data): bool
 - **Color manipulation**: RGB bit operations
 - **Network**: IP address, subnet mask bit emeliyyatlari
 - **Encryption**: XOR cipher, hash functions
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 136** — Single Number (XOR ilə duplicatesiz element)
+2. **LeetCode 191** — Number of 1 Bits (Hamming weight)
+3. **LeetCode 338** — Counting Bits (DP + bit trick)
+4. **LeetCode 371** — Sum of Two Integers (toplamasız cəm — bit ilə)
+5. **LeetCode 268** — Missing Number (XOR ilə itən ədədi tap)
+
+### Step-by-step: Single Number ilə XOR
+
+```
+nums = [4, 1, 2, 1, 2]
+
+4 XOR 1 = 0100 XOR 0001 = 0101 = 5
+5 XOR 2 = 0101 XOR 0010 = 0111 = 7
+7 XOR 1 = 0111 XOR 0001 = 0110 = 6
+6 XOR 2 = 0110 XOR 0010 = 0100 = 4 ✓
+
+Əsas property: a XOR a = 0, a XOR 0 = a
+Cüt sayda görünən hər ədəd öz-özünü cancel edir.
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [34-math-problems.md](34-math-problems.md) — Riyazi alqoritmlər
+- [37-advanced-dp.md](37-advanced-dp.md) — Bitmask DP (state compression)
+- [01-big-o-notation.md](01-big-o-notation.md) — Bit ops O(1) complexity

@@ -515,3 +515,41 @@ class RequestMonitor
 3. **Log analysis** - error burst detection
 4. **Queue management** - priority-based message processing
 5. **E-commerce** - price history trend analysis
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 739** — Daily Temperatures (növbəti isti gün — monotonic stack)
+2. **LeetCode 496** — Next Greater Element I (monotonic stack + hash map)
+3. **LeetCode 84** — Largest Rectangle in Histogram (stack ilə O(n))
+4. **LeetCode 239** — Sliding Window Maximum (monotonic deque)
+5. **LeetCode 901** — Online Stock Span (monotonic stack, span sayma)
+
+### Step-by-step: Daily Temperatures
+
+```
+temps = [73, 74, 75, 71, 69, 72, 76, 73]
+stack = [] (indekslər saxlayır)
+result = [0, 0, 0, 0, 0, 0, 0, 0]
+
+i=0(73): stack=[0]
+i=1(74): 74>73 → result[0]=1-0=1, pop. stack=[1]
+i=2(75): 75>74 → result[1]=2-1=1, pop. stack=[2]
+i=3(71): stack=[2,3]
+i=4(69): stack=[2,3,4]
+i=5(72): 72>69→result[4]=1, 72>71→result[3]=2, stop. stack=[2,5]
+i=6(76): 76>72→result[5]=1, 76>75→result[2]=4. stack=[6]
+i=7(73): stack=[6,7]
+
+result = [1,1,4,2,1,1,0,0] ✓
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [04-stacks.md](04-stacks.md) — Stack əsasları
+- [05-queues.md](05-queues.md) — Deque əsasları
+- [09-sliding-window.md](09-sliding-window.md) — Sliding window maximum (deque ilə)
+- [29-interval-problems.md](29-interval-problems.md) — Interval min/max tapma

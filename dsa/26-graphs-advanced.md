@@ -506,3 +506,40 @@ function findCheapestPrice(int $n, array $flights, int $src, int $dst, int $k): 
 - **Task scheduling**: Laravel queue job dependency-leri topological sort ile hell olunur
 - **Network analysis**: Mikroservisler arasi latency hesablamasi
 - **Build tools**: Composer/webpack dependency resolution topological sort istifade edir
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 743** — Network Delay Time (Dijkstra klassiki)
+2. **LeetCode 787** — Cheapest Flights Within K Stops (Bellman-Ford variasiyası)
+3. **LeetCode 1631** — Path With Minimum Effort (Dijkstra + binary search)
+4. **LeetCode 778** — Swim in Rising Water (Dijkstra + binary search)
+5. **LeetCode 1334** — Find the City With Smallest Number of Neighbors (Floyd-Warshall)
+
+### Step-by-step: Dijkstra trace
+
+```
+graph: 1→2(4), 1→3(1), 3→2(2), 2→4(3), 3→4(5)
+start=1
+
+dist = [∞, 0, ∞, ∞, ∞]
+heap = [(0,1)]
+
+pop (0,1): relax 2→4, 3→1 → dist=[∞,0,4,1,∞], heap=[(1,3),(4,2)]
+pop (1,3): relax 2→3, 4→6 → dist=[∞,0,3,1,6],  heap=[(3,2),(4,2_old),(6,4)]
+pop (3,2): relax 4→6      → dist=[∞,0,3,1,6],  heap=[(6,4),(6,4_old)]
+pop (6,4): done
+
+dist[4] = 6 ✓
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [25-graphs-basics.md](25-graphs-basics.md) — BFS, DFS, graph reprezentasiyası
+- [27-topological-sort.md](27-topological-sort.md) — DAG-da sıralama
+- [36-graphs-mst.md](36-graphs-mst.md) — Minimum Spanning Tree
+- [45-network-flow.md](45-network-flow.md) — Max flow / min cut
+- [28-union-find.md](28-union-find.md) — Kruskal üçün DSU

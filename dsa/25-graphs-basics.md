@@ -486,3 +486,40 @@ function isBipartite(array $graph): bool
 - **Dependency resolution**: Composer paket dependency-leri graph-dir
 - **Recommendation system**: User-item graph ile oxsar istifadecileri tap
 - **Database relations**: Laravel Eloquent relationships aslinda graph traversal-dir
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 200** — Number of Islands (BFS/DFS grid traversal)
+2. **LeetCode 133** — Clone Graph (DFS ilə deep copy)
+3. **LeetCode 207** — Course Schedule (cycle detection ilə graph)
+4. **LeetCode 695** — Max Area of Island (DFS + area sayma)
+5. **LeetCode 994** — Rotting Oranges (multi-source BFS)
+
+### Step-by-step: Number of Islands BFS
+
+```
+grid:
+  1 1 0 0
+  1 0 0 1
+  0 0 1 1
+
+island sayı = 0
+(0,0)=1 → BFS başlat: mark (0,0),(0,1),(1,0) → island++ = 1
+(0,3) yox, (1,3)=1 → BFS: mark (1,3),(2,3),(2,2) → island++ = 2
+
+Nəticə: 2 island ✓
+
+BFS quyruğu hər addımda qonşuları əlavə edir, ziyarət ediləni 0-a çevirir.
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [26-graphs-advanced.md](26-graphs-advanced.md) — Dijkstra, Bellman-Ford, Floyd-Warshall
+- [27-topological-sort.md](27-topological-sort.md) — DAG sıralama
+- [28-union-find.md](28-union-find.md) — Graph component-lərini birləşdir
+- [16-trees-basics.md](16-trees-basics.md) — Tree (xüsusi connected acyclic graph)
+- [45-network-flow.md](45-network-flow.md) — Max flow / min cut

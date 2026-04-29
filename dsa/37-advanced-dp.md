@@ -376,3 +376,42 @@ n matris var, amma dimensions n+1 ədəddir: M_i = dims[i] × dims[i+1]. İki ma
 - **Analytics**: müəyyən xassəli ID-ləri saymaq (digit DP) — hesabat filterlərində.
 - **Laravel Nova fields**: tree DP ilə category hierarchy üzərində aggregations.
 - **Qeyd**: PHP-in rekursiya stack-i 256 dərinliklə məhduddur; böyük tree DP-lərdə iterativ yanaşma və ya `xdebug.max_nesting_level` artırılması lazım ola bilər.
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 309** — Best Time to Buy and Sell Stock with Cooldown (state machine DP)
+2. **LeetCode 1235** — Maximum Profit in Job Scheduling (DP + binary search)
+3. **LeetCode 410** — Split Array Largest Sum (binary search + greedy və ya DP)
+4. **LeetCode 664** — Strange Printer (interval DP)
+5. **LeetCode 1547** — Minimum Cost to Cut a Stick (interval DP, stone game tip)
+
+### Step-by-step: Stock with Cooldown (state machine)
+
+```
+prices = [1, 2, 3, 0, 2]
+
+States: hold / sold / rest
+Transitions:
+  hold[i] = max(hold[i-1], rest[i-1] - price[i])
+  sold[i] = hold[i-1] + price[i]
+  rest[i] = max(rest[i-1], sold[i-1])
+
+i=0(p=1): hold=-1, sold=-∞,   rest=0
+i=1(p=2): hold=-1, sold=1,    rest=0
+i=2(p=3): hold=-1, sold=2,    rest=1
+i=3(p=0): hold=1,  sold=-1,   rest=2
+i=4(p=2): hold=1,  sold=3,    rest=2
+
+answer = max(sold[4], rest[4]) = 3 ✓
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [23-dynamic-programming.md](23-dynamic-programming.md) — DP əsasları
+- [24-dp-classic-problems.md](24-dp-classic-problems.md) — Klassik DP məsələləri
+- [33-bit-manipulation.md](33-bit-manipulation.md) — Bitmask DP üçün bit ops
+- [16-trees-basics.md](16-trees-basics.md) — Tree DP (post-order traversal)

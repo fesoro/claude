@@ -457,3 +457,32 @@ try {
 // @push('scripts')   -> stack-e elave
 // @stack('scripts')  -> stack-i render
 ```
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 20** — Valid Parentheses
+2. **LeetCode 739** — Daily Temperatures (monotonic stack)
+3. **LeetCode 84** — Largest Rectangle in Histogram
+4. **LeetCode 394** — Decode String
+5. **LeetCode 155** — Min Stack
+
+### Step-by-step: Valid Parentheses
+
+```
+s = "({[]})"
+
+char '(' → push → stack: ['(']
+char '{' → push → stack: ['(', '{']
+char '[' → push → stack: ['(', '{', '[']
+char ']' → map[']']='[', top='[' ✓ pop → stack: ['(', '{']
+char '}' → map['}']='{'', top='{' ✓ pop → stack: ['(']
+char ')' → map[')']='(', top='(' ✓ pop → stack: []
+Stack boşdur → true ✓
+```
+
+## Əlaqəli Mövzular
+
+- [03-linked-lists.md](03-linked-lists.md) — Linked list əsaslı stack implementasiyası
+- [07-recursion.md](07-recursion.md) — Call stack konsepsi
+- [31-monotonic-stack-queue.md](31-monotonic-stack-queue.md) — Monotonic Stack pattern
+- [22-backtracking.md](22-backtracking.md) — DFS ilə backtracking

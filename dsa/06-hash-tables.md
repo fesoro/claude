@@ -510,3 +510,33 @@ C: PHP array hash map-dir -- her element ~72 byte. SplFixedArray fixed-size mass
 $users = collect($users)->keyBy('id');
 $user = $users[42]; // O(1) evezine $users->find(42) O(n)
 ```
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 1** — Two Sum (hash map ilə O(n))
+2. **LeetCode 49** — Group Anagrams
+3. **LeetCode 128** — Longest Consecutive Sequence
+4. **LeetCode 560** — Subarray Sum Equals K (prefix sum + hash)
+5. **LeetCode 146** — LRU Cache
+
+### Step-by-step: Group Anagrams
+
+```
+["eat","tea","tan","ate","nat","bat"]
+
+"eat" → sort → "aet" → groups["aet"] = ["eat"]
+"tea" → sort → "aet" → groups["aet"] = ["eat","tea"]
+"tan" → sort → "ant" → groups["ant"] = ["tan"]
+"ate" → sort → "aet" → groups["aet"] = ["eat","tea","ate"]
+"nat" → sort → "ant" → groups["ant"] = ["tan","nat"]
+"bat" → sort → "abt" → groups["abt"] = ["bat"]
+
+Nəticə: [["eat","tea","ate"],["tan","nat"],["bat"]]
+```
+
+## Əlaqəli Mövzular
+
+- [01-big-o-notation.md](01-big-o-notation.md) — O(1) average, O(n) worst case
+- [02-arrays.md](02-arrays.md) — Array vs Hash Table müqayisəsi
+- [10-prefix-sum.md](10-prefix-sum.md) — Prefix sum + hash map pattern
+- [35-design-problems.md](35-design-problems.md) — LRU/LFU cache dizaynı

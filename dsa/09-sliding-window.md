@@ -388,3 +388,33 @@ function findAnagrams(string $s, string $p): array
 - **Log analysis**: Son 1 saatdeki error sayi (monitoring)
 - **Stream processing**: Laravel Horizon queue monitoring
 - **Cache TTL**: Sliding window ile cache expiry
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 3** — Longest Substring Without Repeating Characters
+2. **LeetCode 76** — Minimum Window Substring
+3. **LeetCode 239** — Sliding Window Maximum (deque)
+4. **LeetCode 424** — Longest Repeating Character Replacement
+5. **LeetCode 209** — Minimum Size Subarray Sum
+
+### Step-by-step: Minimum Window Substring
+
+```
+s="ADOBECODEBANC", t="ABC"
+need={A:1, B:1, C:1}, formed=0, required=3
+
+right=0 'A': have={A:1}, formed=1
+right=1 'D': have={A:1,D:1}
+...
+right=5 'C': have={A:1,B:1,C:1}, formed=3
+  → valid! shrink: left→'A' çıx, window="DOBEC"
+  → 'A' çıxdı, formed=2
+...minWindow tapılır = "BANC"
+```
+
+## Əlaqəli Mövzular
+
+- [08-two-pointers.md](08-two-pointers.md) — Opposite direction pointers
+- [10-prefix-sum.md](10-prefix-sum.md) — Prefix sum ilə subarray sum
+- [31-monotonic-stack-queue.md](31-monotonic-stack-queue.md) — Sliding window maximum üçün deque
+- [06-hash-tables.md](06-hash-tables.md) — Frequency counter pattern

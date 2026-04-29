@@ -390,3 +390,30 @@ function findMin(array $nums): int
 - **Laravel Scout**: Full-text search, amma daxili binary search istifade edir
 - **Pagination**: Binary search ile sehife nomresini tapmaq
 - **Rate limiter**: Sorted timestamp array-de binary search
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 704** — Binary Search
+2. **LeetCode 374** — Guess Number Higher or Lower (binary search)
+3. **LeetCode 162** — Find Peak Element
+4. **LeetCode 74** — Search a 2D Matrix
+5. **LeetCode 278** — First Bad Version (binary search on answer)
+
+### Step-by-step: Interpolation Search
+
+```
+arr = [10,20,30,40,50,60,70,80,90,100], target=70
+
+pos = lo + (target-arr[lo]) * (hi-lo) / (arr[hi]-arr[lo])
+    = 0 + (70-10) * 9 / 90 = 6
+
+arr[6] = 70 == target → tapıldı! (1 addımda)
+Binary search 3 addım alardı.
+```
+
+## Əlaqəli Mövzular
+
+- [11-binary-search-patterns.md](11-binary-search-patterns.md) — Answer BS, rotated array, peak element
+- [02-arrays.md](02-arrays.md) — Array traversal əsasları
+- [06-hash-tables.md](06-hash-tables.md) — O(1) hash-based search
+- [16-trees-basics.md](16-trees-basics.md) — BST search O(log n)

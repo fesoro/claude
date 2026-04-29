@@ -574,3 +574,38 @@ function weightedRandom(array $weights): int
 5. **Scheduling** - LCM ile periodic tasks (CRON)
 6. **A/B testing** - statistical significance calculations
 7. **Game development** - probability tables, damage calculations
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 204** — Count Primes (Sieve of Eratosthenes)
+2. **LeetCode 50** — Pow(x, n) (fast exponentiation — binary method)
+3. **LeetCode 172** — Factorial Trailing Zeros (5-in faktorları say)
+4. **LeetCode 367** — Valid Perfect Square (binary search vs Newton)
+5. **LeetCode 263** — Ugly Number (2/3/5 faktor yoxlama)
+
+### Step-by-step: Fast Exponentiation x^10
+
+```
+pow(x, 10):
+  10 = 1010 (binary)
+
+  x^10 = x^8 * x^2
+
+n=10, result=1, base=x
+  n=10 (even): base = x²,    n=5
+  n=5  (odd):  result = x²,  base = x⁴,  n=2
+  n=2  (even): base = x⁸,    n=1
+  n=1  (odd):  result = x²*x⁸ = x¹⁰ ✓
+
+O(log n) çarpma — n=1000 üçün 10 addım.
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [33-bit-manipulation.md](33-bit-manipulation.md) — Bit əsaslı riyazi trikslər
+- [37-advanced-dp.md](37-advanced-dp.md) — Combinatorics + DP
+- [11-binary-search-patterns.md](11-binary-search-patterns.md) — Binary search (riyazi monotonic functions)

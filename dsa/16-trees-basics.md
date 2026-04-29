@@ -427,3 +427,29 @@ function buildTree(array $items, ?int $parentId = null): array {
 // 6. Expression parsing (AST - Abstract Syntax Tree)
 // Blade template compiler tree structure
 ```
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 104** — Maximum Depth of Binary Tree
+2. **LeetCode 226** — Invert Binary Tree
+3. **LeetCode 543** — Diameter of Binary Tree
+4. **LeetCode 110** — Balanced Binary Tree
+5. **LeetCode 235** — Lowest Common Ancestor of BST
+
+### Step-by-step: Inorder Traversal (iterative)
+
+```
+Stack əsaslı:
+1. curr = root
+2. curr null deyilsə: stack-ə push, curr = curr.left (sol tərəfə get)
+3. curr null isə: pop, result-ə əlavə et, curr = curr.right
+4. Stack boş + curr null → bitdi
+```
+
+## Əlaqəli Mövzular
+
+- [17-trees-advanced.md](17-trees-advanced.md) — AVL, Red-Black Tree, self-balancing
+- [18-heaps.md](18-heaps.md) — Complete binary tree (heap)
+- [19-trie.md](19-trie.md) — Prefix tree (string üçün ağac)
+- [25-graphs-basics.md](25-graphs-basics.md) — Tree xüsusi graph növüdür
+- [07-recursion.md](07-recursion.md) — Rekursiv tree traversal

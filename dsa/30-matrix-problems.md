@@ -598,3 +598,43 @@ $seats = DB::table('seats')
 3. **Matrix operations**: Machine learning features
 4. **Reporting**: Cross-tab/pivot reports
 5. **Image filters**: Blur, sharpen, edge detection
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 48** — Rotate Image (in-place 90° rotation)
+2. **LeetCode 73** — Set Matrix Zeroes (O(1) space ilə)
+3. **LeetCode 542** — 01 Matrix (multi-source BFS)
+4. **LeetCode 240** — Search a 2D Matrix II (staircase axtarışı)
+5. **LeetCode 329** — Longest Increasing Path in Matrix (DFS + memo)
+
+### Step-by-step: Rotate Image 90°
+
+```
+matrix:
+  1 2 3       7 4 1
+  4 5 6  →    8 5 2
+  7 8 9       9 6 3
+
+Addım 1 — Transpose (swap matrix[i][j] ↔ matrix[j][i]):
+  1 4 7
+  2 5 8
+  3 6 9
+
+Addım 2 — Reverse hər sətri:
+  7 4 1
+  8 5 2
+  9 6 3  ✓
+
+In-place, O(1) extra space.
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [25-graphs-basics.md](25-graphs-basics.md) — Matrix = implicit graph, BFS/DFS
+- [10-prefix-sum.md](10-prefix-sum.md) — 2D prefix sum (matrix range query)
+- [22-backtracking.md](22-backtracking.md) — Matrix DFS + backtracking
+- [44-sparse-table.md](44-sparse-table.md) — 2D range minimum query

@@ -558,3 +558,32 @@ for ($i = 1; $i < count($prices); $i++) {
 3. **Heatmap generation** - user activity analysis
 4. **Log aggregation** - error counts over time
 5. **Resource usage tracking** - CPU/memory history
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 303** — Range Sum Query - Immutable (klassik prefix sum)
+2. **LeetCode 304** — Range Sum Query 2D - Immutable (2D prefix sum)
+3. **LeetCode 560** — Subarray Sum Equals K (prefix sum + hash map)
+4. **LeetCode 974** — Subarray Sums Divisible by K
+5. **LeetCode 370** — Range Addition (difference array)
+
+### Step-by-step: Subarray Sum Equals K
+
+```
+nums = [1, 2, 3], k = 3
+map = {0: 1}, sum = 0
+
+i=0: sum=1, sum-k=-2 → yoxdur.  map={0:1, 1:1}
+i=1: sum=3, sum-k=0  → map[0]=1, count=1. map={0:1,1:1,3:1}
+i=2: sum=6, sum-k=3  → map[3]=1, count=2.
+
+Nəticə: 2 subarray ([1,2] və [3])
+```
+
+## Əlaqəli Mövzular
+
+- [02-arrays.md](02-arrays.md) — Array əsasları
+- [43-fenwick-tree.md](43-fenwick-tree.md) — Dinamik prefix sum (update dəstəkləyir)
+- [44-sparse-table.md](44-sparse-table.md) — Statik RMQ üçün O(1) query
+- [30-matrix-problems.md](30-matrix-problems.md) — 2D prefix sum tətbiqləri
+- [32-kadanes-algorithm.md](32-kadanes-algorithm.md) — Maximum subarray (prefix sum ilə əlaqəsi)

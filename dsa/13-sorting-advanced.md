@@ -404,3 +404,32 @@ function sortArray(array &$nums): array
 - **Database ORDER BY**: Database oz sort algoritmini istifade edir (merge sort variant)
 - **Pagination**: Siralanmis data ucun LIMIT/OFFSET
 - **Leaderboard**: Heap sort ile top-K tapmaq effektivdir
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 912** — Sort an Array (quick sort / merge sort)
+2. **LeetCode 148** — Sort List (merge sort on linked list)
+3. **LeetCode 315** — Count of Smaller Numbers After Self (merge sort + count)
+4. **LeetCode 493** — Reverse Pairs (merge sort trick)
+5. **LeetCode 164** — Maximum Gap (bucket/radix sort)
+
+### Step-by-step: Quick Sort partisyonu
+
+```
+arr = [3, 6, 8, 10, 1, 2, 1], pivot=arr[last]=1
+
+lo=-1
+i=0: 3>1, skip
+i=1: 6>1, skip
+...
+i=4: 1<=1 → lo++, swap(arr[0],arr[4]) → [1,6,8,10,3,2,1]
+i=5: 2>1, skip
+Swap pivot ile lo+1: [1,1,8,10,3,2,6]... (simplified)
+```
+
+## Əlaqəli Mövzular
+
+- [12-sorting-basic.md](12-sorting-basic.md) — O(n²) sort alqoritmləri
+- [18-heaps.md](18-heaps.md) — Heap Sort (in-place, O(n log n))
+- [20-divide-and-conquer.md](20-divide-and-conquer.md) — Merge Sort D&C nümunəsi
+- [11-binary-search-patterns.md](11-binary-search-patterns.md) — Sorted data üçün binary search

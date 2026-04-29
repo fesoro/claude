@@ -419,3 +419,33 @@ usort($arr, $callback);     // same with custom comparator
 //     $user->posts; // Her user ucun ayri query = O(n) queries
 // }
 ```
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 1** — Two Sum (O(n) vs O(n²) həll müqayisəsi)
+2. **LeetCode 217** — Contains Duplicate (hash set ilə O(n))
+3. **LeetCode 242** — Valid Anagram (frequency counter O(n))
+4. **LeetCode 347** — Top K Frequent Elements (heap ilə O(n log k))
+5. **LeetCode 238** — Product of Array Except Self (O(n), no division)
+
+### Step-by-step: Complexity hesablama
+
+```
+function foo(array $arr): void {
+    // Blok 1: O(n)
+    for ($i = 0; $i < count($arr); $i++) { ... }
+
+    // Blok 2: O(n^2)
+    for ($i = 0; $i < count($arr); $i++) {
+        for ($j = 0; $j < count($arr); $j++) { ... }
+    }
+}
+// Cəmi: O(n) + O(n²) = O(n²)  ← dominant term saxlanır
+```
+
+## Əlaqəli Mövzular
+
+- [02-arrays.md](02-arrays.md) — Array əməliyyatlarının complexity-si
+- [07-recursion.md](07-recursion.md) — Rekursiv complexity analizi
+- [40-complexity-cheatsheet.md](40-complexity-cheatsheet.md) — Bütün kompleksliklərin cədvəli
+- [41-leetcode-patterns.md](41-leetcode-patterns.md) — Constraint-ə görə complexity seçimi

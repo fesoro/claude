@@ -436,3 +436,32 @@ class LinkedListIterator implements Iterator {
     public function valid(): bool { return $this->current !== null; }
 }
 ```
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 206** — Reverse Linked List
+2. **LeetCode 21** — Merge Two Sorted Lists
+3. **LeetCode 141** — Linked List Cycle (Floyd's)
+4. **LeetCode 19** — Remove Nth Node From End
+5. **LeetCode 234** — Palindrome Linked List
+
+### Step-by-step: Reverse Linked List
+
+```
+Başlanğıc: 1 → 2 → 3 → 4 → null
+prev=null, curr=1
+
+Step 1: next=2, 1→null, prev=1, curr=2
+Step 2: next=3, 2→1,    prev=2, curr=3
+Step 3: next=4, 3→2,    prev=3, curr=4
+Step 4: next=null, 4→3, prev=4, curr=null
+
+Nəticə: 4 → 3 → 2 → 1 → null
+```
+
+## Əlaqəli Mövzular
+
+- [04-stacks.md](04-stacks.md) — Stack Linked List üzərində qurula bilər
+- [05-queues.md](05-queues.md) — Doubly linked list ilə O(1) dequeue
+- [25-graphs-basics.md](25-graphs-basics.md) — Adjacency list graph reprezentasiyası
+- [35-design-problems.md](35-design-problems.md) — LRU Cache (Hash + Doubly Linked List)

@@ -512,3 +512,54 @@ Array `[1..n]` və ya `[0..n-1]` diapazonundakı ədədlərlə dolu olanda. Hər
 - **Eloquent N+1**: reallıqda Graph BFS-ə bənzər problem — child relation-ları batch yüklə (`with()`).
 - **Job Queue**: Topological Sort ilə job dependency-lərini planla.
 - **Pagination + Cursor**: Two Pointers kimi — başlanğıc və son göstəriciləri.
+
+---
+
+## Praktik Tapşırıqlar
+
+Pattern tanıma məşqləri — hər problemi görmədən əvvəl "hansı pattern?" sualını ver:
+
+1. **LeetCode 3** — Longest Substring Without Repeating (Sliding Window — variable)
+2. **LeetCode 15** — 3Sum (Two Pointers — sorted array)
+3. **LeetCode 102** — Binary Tree Level Order Traversal (BFS — level-by-level)
+4. **LeetCode 647** — Palindromic Substrings (Expand Around Center)
+5. **LeetCode 416** — Partition Equal Subset Sum (0/1 Knapsack DP)
+
+### Step-by-step: Pattern identification flowchart
+
+```
+Problem gördükdə sorğular:
+
+1. Array/String + subarray/substring?
+   → Sliding Window və ya Two Pointers
+
+2. "K-cu böyük/kiçik"?
+   → Heap (priority queue)
+
+3. Tree/Graph traversal?
+   → BFS (level, shortest path) və ya DFS (paths, cycles)
+
+4. Optimal substructure (alt problem nəticəsi lazım)?
+   → Dynamic Programming
+
+5. "Bütün kombinasiyalar/permutasiyalar"?
+   → Backtracking
+
+6. Sorted array + O(log n)?
+   → Binary Search
+
+7. Range query + update?
+   → Fenwick Tree / Segment Tree
+
+Əvvəlcə brute force → pattern tanı → optimallaşdır.
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [42-interview-strategy.md](42-interview-strategy.md) — Problem yanaşma framework
+- [40-complexity-cheatsheet.md](40-complexity-cheatsheet.md) — Constraint → complexity cədvəli
+- [08-two-pointers.md](08-two-pointers.md) — Two Pointer pattern
+- [09-sliding-window.md](09-sliding-window.md) — Sliding Window pattern
+- [23-dynamic-programming.md](23-dynamic-programming.md) — DP pattern recognition

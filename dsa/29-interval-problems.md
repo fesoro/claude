@@ -369,3 +369,35 @@ echo "Arrows [[10,16],[2,8],[1,6],[7,12]]: " .
 - **Time tracking**: Is saatlari merge/hesablama
 - **Rate limiting**: Vaxt penceresi overlap yoxlama
 - **Cron jobs**: Job overlap prevention
+
+---
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 56** — Merge Intervals (sort + greedy birləşdirmə)
+2. **LeetCode 57** — Insert Interval (sorted-a interval əlavə et)
+3. **LeetCode 435** — Non-overlapping Intervals (minimum silinən count)
+4. **LeetCode 252** — Meeting Rooms (overlap var/yox — bool)
+5. **LeetCode 253** — Meeting Rooms II (eyni vaxtdakı max iclas sayı)
+
+### Step-by-step: Merge Intervals
+
+```
+[[1,3],[2,6],[8,10],[15,18]]
+
+Sort by start: artıq sıralı
+
+result = [[1,3]]
+[2,6]: start(2)<=end(3) → overlap → merge → result=[[1,6]]
+[8,10]: start(8)>end(6) → no overlap → append → result=[[1,6],[8,10]]
+[15,18]: start(15)>end(10) → append → result=[[1,6],[8,10],[15,18]] ✓
+```
+
+---
+
+## Əlaqəli Mövzular
+
+- [08-two-pointers.md](08-two-pointers.md) — Two pointer merge texnikası
+- [18-heaps.md](18-heaps.md) — Meeting rooms II (min-heap ilə)
+- [31-monotonic-stack-queue.md](31-monotonic-stack-queue.md) — Interval max/min
+- [21-greedy-algorithms.md](21-greedy-algorithms.md) — Activity selection (greedy)

@@ -376,3 +376,29 @@ function letterCombinations(string $digits): array
 - **JSON/XML parsing**: Nested structure-lerin recursive parse
 - **Laravel collections**: `flatten()`, `map()` daxili olaraq recursion istifade edir
 - **Eloquent**: `$category->children` recursive eager loading
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 104** — Maximum Depth of Binary Tree
+2. **LeetCode 21** — Merge Two Sorted Lists (recursive)
+3. **LeetCode 17** — Letter Combinations of a Phone Number
+4. **LeetCode 78** — Subsets
+5. **LeetCode 46** — Permutations
+
+### Step-by-step: Tower of Hanoi (n=3)
+
+```
+hanoi(3, A, C, B):
+  hanoi(2, A, B, C)   → A→C, A→B, C→B
+  Disk 3: A → C
+  hanoi(2, B, C, A)   → B→A, B→C, A→C
+
+Toplam: 2^3 - 1 = 7 hərəkət
+```
+
+## Əlaqəli Mövzular
+
+- [22-backtracking.md](22-backtracking.md) — Recursion + state undo
+- [23-dynamic-programming.md](23-dynamic-programming.md) — Memoized recursion = top-down DP
+- [16-trees-basics.md](16-trees-basics.md) — Tree traversal rekursiv həll
+- [20-divide-and-conquer.md](20-divide-and-conquer.md) — Recursive divide & conquer

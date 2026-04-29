@@ -451,3 +451,35 @@ C: Fenwick daha sadedir ve az yaddas istifade edir. Amma yalniz prefix emeliyyat
 // 7. Route matching (radix tree / trie variant)
 // Laravel router daxili olaraq trie-benze struktur istifade edir
 ```
+
+## Praktik Tapşırıqlar
+
+1. **LeetCode 108** — Convert Sorted Array to Binary Search Tree (balanced BST)
+2. **LeetCode 450** — Delete Node in a BST
+3. **LeetCode 98** — Validate Binary Search Tree
+4. **LeetCode 1382** — Balance a Binary Search Tree (AVL rotations)
+5. **LeetCode 230** — Kth Smallest Element in a BST
+
+### Step-by-step: AVL Left Rotation
+
+```
+Balansız ağac (Right-Heavy):
+    10 (bf=-2)
+      \
+      20 (bf=-1)
+        \
+        30
+
+Sol rotation (10 üzərindən):
+    20
+   /  \
+  10   30
+bf = 0, 0, 0 → balanced ✓
+```
+
+## Əlaqəli Mövzular
+
+- [16-trees-basics.md](16-trees-basics.md) — BST, tree traversal əsasları
+- [18-heaps.md](18-heaps.md) — Complete binary tree (heap)
+- [23-dynamic-programming.md](23-dynamic-programming.md) — Tree DP (diameter, path sum)
+- [39-segment-tree-advanced.md](39-segment-tree-advanced.md) — Range query tree strukturu
