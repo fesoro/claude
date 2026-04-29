@@ -3,7 +3,7 @@
 > **Oxucu:** Senior Laravel developerlər, etibarlı sistem qurucular
 > **Ön şərtlər:** Redis, middleware, event pattern, Laravel cache
 > **Tarix:** 2026-04-21
-> **Modellər:** `claude-sonnet-4-5`, `claude-opus-4-5`, `claude-haiku-4-5`
+> **Modellər:** `claude-sonnet-4-6`, `claude-opus-4-7`, `claude-haiku-4-5`
 
 ---
 
@@ -141,7 +141,7 @@ $key = IdempotencyKey::for(
     userId: 1001,
     action: 'summarize_document',
     prompt: "Bu sənədi xülasələ: ...",
-    model: 'claude-sonnet-4-5',
+    model: 'claude-sonnet-4-6',
     params: ['max_tokens' => 500, 'temperature' => 0.0],
 );
 // → "aiop:a7f4..."
@@ -296,7 +296,7 @@ $key = IdempotencyKey::for(...);
 
 $result = $store->remember($key, function () use ($claude, $prompt) {
     return $claude->chat([
-        'model' => 'claude-sonnet-4-5',
+        'model' => 'claude-sonnet-4-6',
         'messages' => [['role' => 'user', 'content' => $prompt]],
     ]);
 });
@@ -354,7 +354,7 @@ class CircuitBreakerConfig
 }
 ```
 
-Praktik konfiq `claude-sonnet-4-5` üçün:
+Praktik konfiq `claude-sonnet-4-6` üçün:
 - 1 dəqiqədə 10+ sorğu olmalı (dəyərli signal üçün)
 - 50%+ fail → OPEN
 - OPEN 30 saniyə
@@ -533,7 +533,7 @@ Strateji ardıcıllıq: **primary → fallback model → cached response → gra
 │  İstifadəçi sorğusu                                       │
 │         │                                                 │
 │         ▼                                                 │
-│  [1] Primary: claude-sonnet-4-5                           │
+│  [1] Primary: claude-sonnet-4-6                           │
 │         │                                                 │
 │         ├── uğurlu? ──▶ cavab qaytar                      │
 │         │                                                 │
@@ -558,7 +558,7 @@ Strateji ardıcıllıq: **primary → fallback model → cached response → gra
 
 ### Niyə `haiku` Fallback-dur?
 
-`claude-haiku-4-5` `claude-sonnet-4-5`-dən:
+`claude-haiku-4-5` `claude-sonnet-4-6`-dən:
 - ~5x ucuz
 - ~3x daha sürətli
 - Rate limit daha səxavətli
@@ -821,7 +821,7 @@ class ResilientSummarizer
             ->add('primary', function () use ($text) {
                 $breaker = new CircuitBreaker('anthropic-sonnet');
                 return $breaker->execute(fn() => $this->callModel(
-                    'claude-sonnet-4-5', $text, maxTokens: 500
+                    'claude-sonnet-4-6', $text, maxTokens: 500
                 ));
             })
             ->add('fallback_model', function () use ($text) {
@@ -1035,7 +1035,7 @@ test('primary fail olanda fallback_model işləyir', function () {
 
     $mock->shouldReceive('chat')
         ->once()
-        ->with(Mockery::on(fn($args) => $args['model'] === 'claude-sonnet-4-5'))
+        ->with(Mockery::on(fn($args) => $args['model'] === 'claude-sonnet-4-6'))
         ->andThrow(new \Exception('sonnet down'));
 
     $mock->shouldReceive('chat')

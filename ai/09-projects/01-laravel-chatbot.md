@@ -19,7 +19,7 @@ ConversationService
     └── Token Büdcəsi Meneceri
     │
     ▼
-Claude API (claude-sonnet-4-5)
+Claude API (claude-sonnet-4-6)
     │  Server-Sent Events axını
     ▼
 Verilənlər Bazası (söhbətlər + mesajlar)
@@ -54,7 +54,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('tenant_id')->nullable()->constrained()->nullOnDelete();
             $table->string('title')->nullable(); // İlk mesajdan avtomatik yaradılır
-            $table->string('model')->default('claude-sonnet-4-5');
+            $table->string('model')->default('claude-sonnet-4-6');
             $table->string('status')->default('active'); // active, archived, deleted
             $table->json('system_prompt_override')->nullable(); // Söhbət üzrə sistem prompt-u
             $table->json('metadata')->nullable(); // Çevik açar-dəyər anbarı
@@ -747,7 +747,7 @@ class ConversationService
 
     private function logUsage(Conversation $conversation, int $inputTokens, int $outputTokens): void
     {
-        // Təxmini xərci hesabla (claude-sonnet-4-5 qiymətləndirməsi)
+        // Təxmini xərci hesabla (claude-sonnet-4-6 qiymətləndirməsi)
         $inputCost = ($inputTokens / 1_000_000) * 3.00;   // 1M giriş tokeninə $3
         $outputCost = ($outputTokens / 1_000_000) * 15.00; // 1M çıxış tokeninə $15
 
@@ -1003,7 +1003,7 @@ class ChatController extends Controller
     public function store(Request $request): Conversation
     {
         $conversation = auth()->user()->conversations()->create([
-            'model' => $request->input('model', 'claude-sonnet-4-5'),
+            'model' => $request->input('model', 'claude-sonnet-4-6'),
             'tenant_id' => auth()->user()->tenant_id,
         ]);
 
@@ -1093,7 +1093,7 @@ class Chatbot extends Component
         // Söhbət yoxdursa yarat
         if (!$this->conversation) {
             $this->conversation = auth()->user()->conversations()->create([
-                'model' => 'claude-sonnet-4-5',
+                'model' => 'claude-sonnet-4-6',
                 'tenant_id' => auth()->user()->tenant_id,
             ]);
         }
@@ -1445,7 +1445,7 @@ public function view(User $user, Conversation $conversation): bool
 
 return [
     // Standart model — söhbət üzrə ləğv edilə bilər
-    'default_model' => env('CHATBOT_MODEL', 'claude-sonnet-4-5'),
+    'default_model' => env('CHATBOT_MODEL', 'claude-sonnet-4-6'),
 
     // Arxa plan tapşırıqları üçün sürətli model (başlıq yaratma, xülasələmə)
     'fast_model' => env('CHATBOT_FAST_MODEL', 'claude-haiku-4-5'),

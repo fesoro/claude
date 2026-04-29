@@ -30,7 +30,7 @@ HrChatService
         └── AuditLogger
         │
         ▼
-Claude API (claude-sonnet-4-5)
+Claude API (claude-sonnet-4-6)
         │
         ▼
 Post message back to Slack (chat.postMessage, Block Kit)
@@ -915,7 +915,7 @@ use GuzzleHttp\Client;
 
 class HrChatService
 {
-    private const MODEL = 'claude-sonnet-4-5';
+    private const MODEL = 'claude-sonnet-4-6';
 
     public function __construct(
         private Client $anthropic,

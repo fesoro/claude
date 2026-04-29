@@ -106,7 +106,7 @@ Güclü model (Claude, GPT-4o) zəif modeli train etmək üçün data yaradır.
 
 ```
 Tövsiyə olunan:
-  Teacher model: claude-sonnet-4-5 (keyfiyyətli data yaratır)
+  Teacher model: claude-sonnet-4-6 (keyfiyyətli data yaratır)
   Student model: Llama 3.3 70B (fine-tune olunacaq)
 ```
 
@@ -148,7 +148,7 @@ class DatasetGenerator
                 'content' => $instruction . "\n\n" . $input,
             ]],
             systemPrompt: $this->buildSystemPrompt(),
-            model: 'claude-sonnet-4-5',
+            model: 'claude-sonnet-4-6',
             maxTokens: 1500,
             temperature: 0.3,  // Aşağı temp → daha dəqiq, ardıcıl data
         );
@@ -159,7 +159,7 @@ class DatasetGenerator
             'output'      => $response,
             'type'        => $type,
             'generated_at' => now()->toIso8601String(),
-            'model'       => 'claude-sonnet-4-5',
+            'model'       => 'claude-sonnet-4-6',
         ];
     }
 

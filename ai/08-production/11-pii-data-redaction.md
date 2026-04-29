@@ -347,7 +347,7 @@ class SupportChatService
 
         // 2. LLM-ə göndər (placeholder-li mətn)
         $response = $this->claude->messages([
-            'model' => 'claude-sonnet-4-5',
+            'model' => 'claude-sonnet-4-6',
             'messages' => [
                 ['role' => 'user', 'content' => $result->text],
             ],
@@ -589,7 +589,7 @@ DB::table('pii_redaction_log')->insert([
     'findings_count' => count($result->findings),
     'findings_types' => json_encode(array_column($result->findings, 'type')),
     // NOT: original values saxlama
-    'model' => 'claude-sonnet-4-5',
+    'model' => 'claude-sonnet-4-6',
     'created_at' => now(),
 ]);
 ```

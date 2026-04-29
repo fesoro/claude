@@ -335,7 +335,7 @@ class LLMJudgeService
             : '';
 
         $judgment = $this->claude->complete(
-            model: 'claude-sonnet-4-5',
+            model: 'claude-sonnet-4-6',
             prompt: <<<PROMPT
             Siz ekspert qiymətləndiricisisiniz. Prompta verilən AI cavabını qiymətləndirin.
 
@@ -377,7 +377,7 @@ class LLMJudgeService
     public function compare(string $prompt, string $responseA, string $responseB): array
     {
         $result = $this->claude->complete(
-            model: 'claude-sonnet-4-5',
+            model: 'claude-sonnet-4-6',
             prompt: <<<PROMPT
             Eyni prompta verilən bu iki AI cavabını müqayisə edin.
 
@@ -581,7 +581,7 @@ class TokenCounterTest extends TestCase
             ['role' => 'user', 'content' => str_repeat('word ', 100)],
         ];
 
-        $result = $this->counter->validateRequest($messages, 1000, 'claude-sonnet-4-5');
+        $result = $this->counter->validateRequest($messages, 1000, 'claude-sonnet-4-6');
         $this->assertTrue($result->valid);
     }
 
@@ -591,7 +591,7 @@ class TokenCounterTest extends TestCase
             ['role' => 'user', 'content' => str_repeat('word ', 60000)], // ~75k token
         ];
 
-        $result = $this->counter->validateRequest($messages, 150000, 'claude-sonnet-4-5');
+        $result = $this->counter->validateRequest($messages, 150000, 'claude-sonnet-4-6');
         $this->assertFalse($result->valid);
         $this->assertTrue($result->willExceedWindow);
     }
@@ -626,14 +626,14 @@ class ModelRouterTest extends TestCase
     public function test_routes_complex_reasoning_to_opus(): void
     {
         $model = $this->router->route('complex-reasoning', 'Səbəb-nəticə amillərini analiz et...');
-        $this->assertEquals('claude-opus-4-5', $model);
+        $this->assertEquals('claude-opus-4-7', $model);
     }
 
     public function test_complex_long_input_routes_to_sonnet_or_opus(): void
     {
         $longInput = str_repeat('Bu mürəkkəb bir analizdir. ', 500);
         $model = $this->router->route('summarize', $longInput);
-        $this->assertContains($model, ['claude-sonnet-4-5', 'claude-opus-4-5']);
+        $this->assertContains($model, ['claude-sonnet-4-6', 'claude-opus-4-7']);
     }
 }
 ```

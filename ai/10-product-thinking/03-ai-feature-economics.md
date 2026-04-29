@@ -2,7 +2,7 @@
 
 > Hədəf auditoriyası: AI feature-ləri qurub satan senior PHP/Laravel developer-lər, product manager-lər və founder-lər. "Nə qədər başa gəlir?", "Neçə manata satım?", "Kim qazanc gətirir, kim batırır?" suallarına cavab axtaranlar.
 
-> Tarix: 2026-04-21. Bütün qiymətlər bu tarixə görə. Modellər: `claude-sonnet-4-5`, `claude-haiku-4-5`.
+> Tarix: 2026-04-21. Bütün qiymətlər bu tarixə görə. Modellər: `claude-sonnet-4-6`, `claude-haiku-4-5`.
 
 ---
 
@@ -67,7 +67,7 @@ COGS_call = (input_tokens × input_price_per_M / 1_000_000)
 
 | Model              | Input   | Output  | Cached Input | Qeyd                         |
 |--------------------|---------|---------|--------------|------------------------------|
-| claude-sonnet-4-5  | $3.00   | $15.00  | $0.30        | Balanced workhorse           |
+| claude-sonnet-4-6  | $3.00   | $15.00  | $0.30        | Balanced workhorse           |
 | claude-haiku-4-5   | $0.25   | $1.25   | $0.025       | 12x ucuz, 80% keyfiyyət      |
 | voyage-3 (embed)   | $0.12   | —       | —            | 1M token embedding           |
 | text-embedding-3-sm| $0.02   | —       | —            | OpenAI, ucuz embedding       |
@@ -152,7 +152,7 @@ class UsageTracker
         string $model, int $in, int $out, int $cached,
     ): int {
         $prices = [
-            'claude-sonnet-4-5' => ['in' => 300, 'out' => 1500, 'cache' => 30],
+            'claude-sonnet-4-6' => ['in' => 300, 'out' => 1500, 'cache' => 30],
             'claude-haiku-4-5'  => ['in' => 25,  'out' => 125,  'cache' => 2.5],
         ]; // sent/1M token
         $p = $prices[$model];
@@ -670,7 +670,7 @@ cost_row = {
   tenant_id,
   user_id,
   feature,        // "chatbot", "summarizer", "search"
-  model,          // claude-sonnet-4-5
+  model,          // claude-sonnet-4-6
   input_tokens,
   output_tokens,
   cached_tokens,

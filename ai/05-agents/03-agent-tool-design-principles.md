@@ -3,7 +3,7 @@
 > **Oxucu:** Baş Laravel/PHP developerlər, agent sistemləri quran arxitektlər
 > **Ön şərtlər:** Claude tool-use API, JSON Schema, Laravel service container
 > **Tarix:** 2026-04-21
-> **Modellər:** `claude-sonnet-4-5`, `claude-opus-4-5`, `claude-haiku-4-5`
+> **Modellər:** `claude-sonnet-4-6`, `claude-opus-4-7`, `claude-haiku-4-5`
 
 ---
 
@@ -482,7 +482,7 @@ Hər list cavabı meta-data daxil etsin ki, model növbəti hərəkəti təyin e
 
 ## 8. Ölçü Büdcəsi — 10MB JSON Qaytarma
 
-LLM tool response-lərini tokenləşdirir. 1MB JSON → ~250k token. `claude-sonnet-4-5` üçün bu, 1M kontekstin 25%-dir. Bir neçə belə çağırış model-i susuzlaşdırır.
+LLM tool response-lərini tokenləşdirir. 1MB JSON → ~250k token. `claude-sonnet-4-6` üçün bu, 1M kontekstin 25%-dir. Bir neçə belə çağırış model-i susuzlaşdırır.
 
 ### Ölçü Limitləri
 

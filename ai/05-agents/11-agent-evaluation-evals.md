@@ -365,7 +365,7 @@ final class JudgmentResult
 
 class LlmJudge
 {
-    private const JUDGE_MODEL = 'claude-opus-4-5'; // Hakimlik üçün ən güclü model
+    private const JUDGE_MODEL = 'claude-opus-4-7'; // Hakimlik üçün ən güclü model
     private const JUDGE_PROMPT = <<<'PROMPT'
     You are an expert evaluator for AI systems. Your job is to objectively assess AI outputs against specified criteria.
 

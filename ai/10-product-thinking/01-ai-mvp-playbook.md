@@ -88,7 +88,7 @@ use Anthropic\Anthropic;
 $client = Anthropic::client(env('ANTHROPIC_API_KEY'));
 
 $response = $client->messages()->create([
-    'model' => 'claude-sonnet-4-5',
+    'model' => 'claude-sonnet-4-6',
     'max_tokens' => 500,
     'messages' => [[
         'role' => 'user',
@@ -145,7 +145,7 @@ Hələ də pis? **Use-case səhvdir** — day 0-a qayıt.
 ✓ 10 test input hazır
 ✓ Prompt v1 draft
 ✓ 8/10 accuracy əldə edildi
-✓ Model seçildi: claude-sonnet-4-5
+✓ Model seçildi: claude-sonnet-4-6
 ✓ Token sayı per request: ~500 input + 100 output
 ```
 
@@ -224,7 +224,7 @@ class EmailClassifier
     public function classify(string $emailBody): array
     {
         $response = $this->claude->messages()->create([
-            'model' => 'claude-sonnet-4-5',
+            'model' => 'claude-sonnet-4-6',
             'max_tokens' => 200,
             'messages' => [[
                 'role' => 'user',
@@ -524,7 +524,7 @@ return [
     ],
     'models' => [
         'cheap' => 'claude-haiku-4-5',
-        'smart' => 'claude-sonnet-4-5',
+        'smart' => 'claude-sonnet-4-6',
     ],
     'budgets' => [
         'daily_usd' => env('AI_DAILY_BUDGET_USD', 10),
@@ -538,7 +538,7 @@ abstract class BaseAiService
 {
     public function __construct(protected Anthropic\Anthropic $claude) {}
 
-    protected function call(array $messages, string $model = 'claude-sonnet-4-5', int $maxTokens = 500): array
+    protected function call(array $messages, string $model = 'claude-sonnet-4-6', int $maxTokens = 500): array
     {
         // Budget check
         $spent = Cache::get('ai.daily_spent', 0);
@@ -564,9 +564,9 @@ abstract class BaseAiService
         // Haiku 4.5: $1/M in, $5/M out; Sonnet 4.5: $3/M in, $15/M out
         $rates = [
             'claude-haiku-4-5' => ['in' => 1.0, 'out' => 5.0],
-            'claude-sonnet-4-5' => ['in' => 3.0, 'out' => 15.0],
+            'claude-sonnet-4-6' => ['in' => 3.0, 'out' => 15.0],
         ];
-        $r = $rates[$model] ?? $rates['claude-sonnet-4-5'];
+        $r = $rates[$model] ?? $rates['claude-sonnet-4-6'];
         return ($usage->input_tokens * $r['in'] + $usage->output_tokens * $r['out']) / 1_000_000;
     }
 }
@@ -588,7 +588,7 @@ Real bir tətbiq — SaaS B2B şirkəti, legal team həftədə 50 müqavilə rev
 ```php
 $contract = file_get_contents('sample_contract.pdf'); // extract text
 $response = $claude->messages()->create([
-    'model' => 'claude-opus-4-5',  // Opus — legal accuracy lazım
+    'model' => 'claude-opus-4-7',  // Opus — legal accuracy lazım
     'system' => 'You are a legal contract reviewer for SaaS B2B deals...',
     'messages' => [['role' => 'user', 'content' => "Extract all risky clauses:\n{$contract}"]],
 ]);

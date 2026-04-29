@@ -1,8 +1,8 @@
 # Agent Reasoning Pattern-ləri: ReAct, Reflexion, Tree-of-Thoughts və Plan-and-Execute (Senior)
 
 > **Oxucu:** Senior PHP/Laravel tərtibatçılar, production agent quran arxitektlər
-> **Ön şərtlər:** Agent dövrü (24), multi-agent (25), agent memory (27), Claude Agent SDK (31), tool dizaynı (32)
-> **Diff vs 24-32:** 24-cü fayl "agent nədir", 25 multi-agent topologiyası, 27 yaddaş, 31-32 SDK/tool mexanikası haqqındadır. Bu fayl isə **agent-in başının içində hansı alqoritm dönür** — nə "reason" edir, nə əsasda növbəti addımı seçir, necə öz səhvlərini düzəldir. Başqa sözlə: **cognitive pattern-lər**, infrastruktur deyil.
+> **Ön şərtlər:** Agent dövrü (`01-ai-agents-overview.md`), multi-agent (`07-multi-agent-systems.md`), agent memory (`04-agent-memory-systems.md`), Claude Agent SDK (`06-claude-agent-sdk-deep.md`), tool dizaynı (`03-agent-tool-design-principles.md`)
+> **Diff vs digər agent faylları:** `01-ai-agents-overview.md` "agent nədir", `07-multi-agent-systems.md` multi-agent topologiyası, `04-agent-memory-systems.md` yaddaş, `06-claude-agent-sdk-deep.md` + `03-agent-tool-design-principles.md` SDK/tool mexanikası haqqındadır. Bu fayl isə **agent-in başının içində hansı alqoritm dönür** — nə "reason" edir, nə əsasda növbəti addımı seçir, necə öz səhvlərini düzəldir. Başqa sözlə: **cognitive pattern-lər**, infrastruktur deyil.
 > **Tarix:** 2026-04-24
 
 ---
@@ -480,7 +480,7 @@ class ReActAgent
 
         while ($iteration++ < $this->maxIterations) {
             $response = $this->client->messages([
-                'model' => 'claude-sonnet-4-5',
+                'model' => 'claude-sonnet-4-6',
                 'max_tokens' => 4096,
                 'tools' => $this->tools->toSchema(),
                 'messages' => $messages,
@@ -691,7 +691,7 @@ class ReflexionSqlAgent
         PROMPT;
 
         $resp = $this->client->messages([
-            'model' => 'claude-sonnet-4-5',
+            'model' => 'claude-sonnet-4-6',
             'max_tokens' => 1024,
             'messages' => [['role' => 'user', 'content' => $prompt]],
         ]);

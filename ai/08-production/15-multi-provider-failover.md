@@ -95,7 +95,7 @@ class LlmResponse
         public array $toolCalls,
         public array $usage,
         public string $stopReason,
-        public string $providerId,   // "claude-sonnet-4-5"
+        public string $providerId,   // "claude-sonnet-4-6"
         public string $providerName, // "anthropic"
     ) {}
 }
@@ -126,8 +126,8 @@ return [
             'driver' => \App\Services\Ai\Drivers\ClaudeDriver::class,
             'api_key' => env('ANTHROPIC_API_KEY'),
             'models' => [
-                'frontier' => 'claude-opus-4-5',
-                'smart' => 'claude-sonnet-4-5',
+                'frontier' => 'claude-opus-4-7',
+                'smart' => 'claude-sonnet-4-6',
                 'fast' => 'claude-haiku-4-5',
             ],
         ],

@@ -29,7 +29,7 @@ Message Batches API, Anthropic-in asinxron toplu emal endpointidir. Bir sorğu g
     {
       "custom_id": "product-123",
       "params": {
-        "model": "claude-opus-4-5",
+        "model": "claude-opus-4-7",
         "max_tokens": 1024,
         "messages": [
           {
@@ -151,7 +151,7 @@ final class BatchProcessor
     private readonly Client $http;
 
     public function __construct(
-        private readonly string $model = 'claude-opus-4-5',
+        private readonly string $model = 'claude-opus-4-7',
     ) {
         $this->http = new Client([
             'base_uri' => 'https://api.anthropic.com/v1/',
@@ -906,7 +906,7 @@ Batch sorğularında sistem promptunda `cache_control` istifadə edin — cache 
 
 ```php
 $params = [
-    'model'      => 'claude-opus-4-5',
+    'model'      => 'claude-opus-4-7',
     'max_tokens' => 512,
     'system'     => [
         [

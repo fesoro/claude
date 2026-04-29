@@ -65,7 +65,7 @@ class ClaudeStreamingService
      */
     public function stream(
         array  $messages,
-        string $model = 'claude-sonnet-4-5',
+        string $model = 'claude-sonnet-4-6',
         string $systemPrompt = '',
         int    $maxTokens = 2048,
     ): Generator {
@@ -102,7 +102,7 @@ class ClaudeStreamingService
     /**
      * Axınlı cavablar üçün SSE controller idarəedicisi.
      */
-    public function streamToSSE(array $messages, string $model = 'claude-sonnet-4-5'): \Symfony\Component\HttpFoundation\StreamedResponse
+    public function streamToSSE(array $messages, string $model = 'claude-sonnet-4-6'): \Symfony\Component\HttpFoundation\StreamedResponse
     {
         return response()->stream(function () use ($messages, $model) {
             if (ob_get_level()) ob_end_clean();
@@ -261,7 +261,7 @@ class ParallelAIService
 
         // Mərhələ 3: Yaratma (axın)
         $response = $this->claude->complete(
-            model: 'claude-sonnet-4-5',
+            model: 'claude-sonnet-4-6',
             prompt: $this->buildPrompt($query, $chunks),
         );
 
@@ -395,7 +395,7 @@ class PromptPreWarmer
         try {
             // Keşi isitmək üçün minimal "ping" sorğusu göndərin
             $this->claude->complete(
-                model: 'claude-sonnet-4-5',
+                model: 'claude-sonnet-4-6',
                 systemPrompt: $systemPrompt,
                 prompt: 'Salam',
                 maxTokens: 5,
@@ -423,7 +423,7 @@ class PromptPreWarmer
             if (Cache::has($cacheKey)) continue;
 
             $response = $this->claude->complete(
-                model: 'claude-sonnet-4-5',
+                model: 'claude-sonnet-4-6',
                 prompt: $query,
             );
 

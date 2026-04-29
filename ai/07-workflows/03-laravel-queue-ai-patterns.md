@@ -3,7 +3,7 @@
 > **Oxucu:** Senior Laravel developerlər, platform mühəndisləri
 > **Ön şərtlər:** Laravel Queue, Horizon, Redis, əsas Claude API
 > **Tarix:** 2026-04-21
-> **Modellər:** `claude-sonnet-4-5`, `claude-opus-4-5`, `claude-haiku-4-5`
+> **Modellər:** `claude-sonnet-4-6`, `claude-opus-4-7`, `claude-haiku-4-5`
 
 ---
 
@@ -241,7 +241,7 @@ class GenerateCaseAnalysisJob extends AbstractAIJob
 
     public function __construct(public int $caseId) { parent::__construct(); }
 
-    public function model(): string { return 'claude-opus-4-5'; }
+    public function model(): string { return 'claude-opus-4-7'; }
 
     public function handle(\App\AI\ClaudeGateway $claude): void { /* ... */ }
 }
@@ -283,7 +283,7 @@ class ChatCompletionJob extends AbstractAIJob
         ];
     }
 
-    public function model(): string { return 'claude-sonnet-4-5'; }
+    public function model(): string { return 'claude-sonnet-4-6'; }
 
     public function handle(\App\AI\ClaudeGateway $claude): void
     {
@@ -382,7 +382,7 @@ class GenerateSummaryJob extends AbstractAIJob
     public int $tries = 5;
     public function backoff(): array { return [2, 5, 15, 45]; }
     public function retryUntil(): \DateTime { return now()->addMinutes(10); }
-    public function model(): string { return 'claude-sonnet-4-5'; }
+    public function model(): string { return 'claude-sonnet-4-6'; }
 }
 ```
 
@@ -581,7 +581,7 @@ class BulkSummarizeJob extends AbstractAIJob
         public array $documentIds,
     ) { parent::__construct(); }
 
-    public function model(): string { return 'claude-sonnet-4-5'; }
+    public function model(): string { return 'claude-sonnet-4-6'; }
 
     public function handle(\App\AI\ClaudeGateway $claude): void
     {
@@ -873,7 +873,7 @@ class ExpensiveAIJob extends AbstractAIJob
         public string $prompt,
     ) { parent::__construct(); }
 
-    public function model(): string { return 'claude-opus-4-5'; }
+    public function model(): string { return 'claude-opus-4-7'; }
 
     public function handle(\App\AI\ClaudeGateway $claude, TokenBudget $budget): void
     {

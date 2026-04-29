@@ -163,7 +163,7 @@ Hər faylı real, işlək Laravel tətbiq skeleti — migration, controller, que
 | [05-agents/](05-agents/) | 13 | ⭐×1 ⭐⭐⭐×5 ⭐⭐⭐⭐×7 | Agent tərif, reasoning pattern (ReAct/Reflexion/ToT), tool dizayn, memory, multi-agent, orchestration, HITL, Claude SDK dərin, Claude Code skills, eval, **agent security** |
 | [06-fine-tuning/](06-fine-tuning/) | 9 | ⭐⭐×3 ⭐⭐⭐×3 ⭐⭐⭐⭐×3 | FT overview, FT vs RAG, open-source/Ollama, LoRA/QLoRA, custom FT, distillation, **DPO/ORPO alignment**, **dataset curation**, **vLLM serving** |
 | [07-workflows/](07-workflows/) | 9 | ⭐⭐×2 ⭐⭐⭐×5 ⭐⭐⭐⭐×2 | Pipeline, workflow pattern, queue, idempotency+CB, webhook, streaming UI, A/B, **semantic caching**, **event-driven Kafka** |
-| [08-production/](08-production/) | 16 | ⭐⭐⭐×7 ⭐⭐⭐⭐×6 ⭐⭐⭐⭐⭐×3 | System design, observability (ümumi + LLM), cost/latency, testing, drift, guardrail, security, prompt injection, PII, red team, content moderation, canary/shadow, multi-provider failover, governance (EU AI Act/ISO 42001) |
+| [08-production/](08-production/) | 16 | ⭐⭐⭐×7 ⭐⭐⭐⭐×7 ⭐⭐⭐⭐⭐×2 | System design, observability (ümumi + LLM), cost/latency, testing, drift, guardrail, security, prompt injection, PII, red team, content moderation, canary/shadow, multi-provider failover, governance (EU AI Act/ISO 42001) |
 | [09-projects/](09-projects/) | 10 | ⭐⭐×3 ⭐⭐⭐×4 ⭐⭐⭐⭐×3 | 10 işlək Laravel AI tətbiqi — chatbot, RAG, MCP, code review, extractor, voice, CS bot, HR bot, email classifier, SQL assistant |
 | [10-product-thinking/](10-product-thinking/) | 6 | ⭐⭐×2 ⭐⭐⭐×3 ⭐⭐⭐⭐×1 | Feature economics, UX pattern, MVP playbook, build-vs-buy, **AI KPI framework**, **responsible AI** |
 
@@ -206,7 +206,7 @@ Vaxt azdır, amma "Claude ilə nə etmişəm?" sualına cavab vermək lazımdır
 - [05-agents/01-ai-agents-overview.md](05-agents/01-ai-agents-overview.md)
 - [08-production/01-ai-system-design.md](08-production/01-ai-system-design.md)
 - [08-production/10-prompt-injection-defenses.md](08-production/10-prompt-injection-defenses.md)
-- [10-product-thinking/01-ai-feature-economics.md](10-product-thinking/01-ai-feature-economics.md)
+- [10-product-thinking/03-ai-feature-economics.md](10-product-thinking/03-ai-feature-economics.md)
 
 **3 gün (orta hazırlıq):** Yuxarıdakı + Yol 1 + Yol 7 (production).
 

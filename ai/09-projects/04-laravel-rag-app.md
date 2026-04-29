@@ -952,7 +952,7 @@ class RagQueryService
         $outputTokens = 0;
 
         $stream = Anthropic::messages()->createStreamed([
-            'model' => 'claude-sonnet-4-5',
+            'model' => 'claude-sonnet-4-6',
             'max_tokens' => 2048,
             'system' => $systemPrompt,
             'messages' => [['role' => 'user', 'content' => $userPrompt]],

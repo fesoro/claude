@@ -405,7 +405,7 @@ return [
 
     'variants' => [
         'blue' => [
-            'model' => 'claude-sonnet-4-5',
+            'model' => 'claude-sonnet-4-6',
             'system_prompt_path' => 'prompts/v1.4.2.md',
             'rag_config' => [
                 'corpus_version' => 'corpus_2026_03_15',
@@ -528,7 +528,7 @@ name: support_bot
 version: 1.1.0
 sha: auto-computed
 released: 2026-04-20
-model: claude-sonnet-4-5
+model: claude-sonnet-4-6
 temperature: 0.3
 max_tokens: 2000
 tools:
@@ -639,7 +639,7 @@ public function chat(Request $request)
 
     $model = Feature::for($user)->active('model_sonnet_4_6')
         ? 'claude-sonnet-4-6'
-        : 'claude-sonnet-4-5';
+        : 'claude-sonnet-4-6';
 
     $prompt = app(PromptLoader::class)->load('support_bot', $promptVersion);
 

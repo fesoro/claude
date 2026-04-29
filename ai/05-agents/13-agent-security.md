@@ -527,7 +527,7 @@ class SecureAgentService
                 messages:  $messages,
                 systemPrompt: $this->buildSecureSystemPrompt(),
                 tools:     $this->getAllowedToolDefinitions(),
-                model:     'claude-sonnet-4-5',
+                model:     'claude-sonnet-4-6',
             );
 
             // 3. Tool çağırışları yoxdursa — cavab hazırdır

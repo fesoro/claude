@@ -401,7 +401,7 @@ Bu HITL-in ən çətin texniki tərəfidir. Agent-i "dondurmaq" və sonra davam 
 {
   "version": 2,
   "created_at": "2026-04-24T10:00:00Z",
-  "model": "claude-sonnet-4-5",
+  "model": "claude-sonnet-4-6",
   "system_prompt_hash": "sha256:abc123...",
   "iteration": 4,
   "max_iterations": 10,

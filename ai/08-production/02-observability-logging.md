@@ -119,7 +119,7 @@ class AIObserver
 
     private function calculateCost(array $context): float
     {
-        $model  = $context['model'] ?? 'claude-sonnet-4-5';
+        $model  = $context['model'] ?? 'claude-sonnet-4-6';
         $usage  = $context['usage'] ?? [];
 
         return app(TokenCostCalculator::class)->calculate(
@@ -162,13 +162,13 @@ class TokenCostCalculator
      * Anthropic qiymətləri dəyişdirdikdə yeniləyin.
      */
     private array $pricing = [
-        'claude-opus-4-5' => [
+        'claude-opus-4-7' => [
             'input'      => 15.00,
             'output'     => 75.00,
             'cache_read' => 1.50,   // Adi giriş qiymətinə nisbətən 90% endirim
             'cache_write'=> 18.75,  // Keş yazma üçün 25% əlavə
         ],
-        'claude-sonnet-4-5' => [
+        'claude-sonnet-4-6' => [
             'input'      => 3.00,
             'output'     => 15.00,
             'cache_read' => 0.30,
@@ -198,7 +198,7 @@ class TokenCostCalculator
         int    $cacheRead = 0,
         int    $cacheWrite = 0,
     ): float {
-        $rates = $this->pricing[$model] ?? $this->pricing['claude-sonnet-4-5'];
+        $rates = $this->pricing[$model] ?? $this->pricing['claude-sonnet-4-6'];
 
         $regularInput = max(0, $inputTokens - $cacheRead - $cacheWrite);
 
@@ -368,7 +368,7 @@ class RAGChatService
             return $this->tracer->span('generate', fn() =>
                 $this->claude->complete(
                     prompt: $this->buildPrompt($query, $chunks),
-                    model: 'claude-sonnet-4-5',
+                    model: 'claude-sonnet-4-6',
                 )
             );
         });
@@ -569,7 +569,7 @@ class MetricsController extends Controller
         }
 
         // Circuit breaker vəziyyətləri
-        $models = ['claude-sonnet-4-5', 'claude-haiku-4-5', 'claude-opus-4-5'];
+        $models = ['claude-sonnet-4-6', 'claude-haiku-4-5', 'claude-opus-4-7'];
         $lines[] = '# HELP ai_circuit_breaker_state Circuit breaker vəziyyəti (0=qapalı, 1=açıq, 2=yarıaçıq)';
         $lines[] = '# TYPE ai_circuit_breaker_state gauge';
         foreach ($models as $model) {

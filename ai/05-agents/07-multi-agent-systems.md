@@ -220,7 +220,7 @@ class OrchestratorAgent
     private function plan(string $goal, string $sessionId): array
     {
         $response = $this->claude->messages()->create([
-            'model' => 'claude-opus-4-5',
+            'model' => 'claude-opus-4-7',
             'max_tokens' => 1024,
             'system' => 'You are a research orchestrator. Break down the research goal into parallel subtasks. Return JSON only.',
             'messages' => [
@@ -278,7 +278,7 @@ class OrchestratorAgent
             ->join("\n\n");
 
         $response = $this->claude->messages()->create([
-            'model' => 'claude-opus-4-5',
+            'model' => 'claude-opus-4-7',
             'max_tokens' => 4096,
             'system' => 'You are a research synthesizer. Combine findings into a coherent, well-structured report.',
             'messages' => [
@@ -524,7 +524,7 @@ class FactCheckAgent
     public function run(string $claim, string $sessionId): string
     {
         $response = $this->claude->messages()->create([
-            'model' => 'claude-sonnet-4-5', // Fakt yoxlama üçün daha yaxşı mühakimə
+            'model' => 'claude-sonnet-4-6', // Fakt yoxlama üçün daha yaxşı mühakimə
             'max_tokens' => 1024,
             'system' => 'You are a rigorous fact-checker. Evaluate claims for accuracy. Be specific about confidence levels.',
             'messages' => [

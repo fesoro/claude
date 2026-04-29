@@ -672,7 +672,7 @@ class RAGGenerationService
 
         // 4. Claude ilə yarat
         $response = $this->anthropic->messages()->create([
-            'model' => 'claude-opus-4-5',
+            'model' => 'claude-opus-4-7',
             'max_tokens' => 1024,
             'system' => $prompt['system'],
             'messages' => $prompt['messages'],
@@ -736,7 +736,7 @@ class RAGGenerationService
 
         // Yaradılmış cavabı axınla göndər
         $stream = $this->anthropic->messages()->stream([
-            'model' => 'claude-opus-4-5',
+            'model' => 'claude-opus-4-7',
             'max_tokens' => 1024,
             'system' => $prompt['system'],
             'messages' => $prompt['messages'],

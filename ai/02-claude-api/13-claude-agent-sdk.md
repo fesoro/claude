@@ -151,7 +151,7 @@ ANTHROPIC_API_KEY=sk-ant-...
 import { ClaudeAgent } from '@anthropic-ai/claude-agent-sdk';
 
 const agent = new ClaudeAgent({
-  model: 'claude-sonnet-4-5',
+  model: 'claude-sonnet-4-6',
   systemPrompt: 'You are a helpful DevOps assistant.',
 });
 
@@ -164,7 +164,7 @@ console.log(result.finalMessage);
 from claude_agent_sdk import ClaudeAgent
 
 agent = ClaudeAgent(
-    model="claude-sonnet-4-5",
+    model="claude-sonnet-4-6",
     system_prompt="You are a helpful DevOps assistant.",
 )
 
@@ -229,7 +229,7 @@ System prompt — agent-in "kimliyi" və "təlimatları"dır:
 
 ```typescript
 const agent = new ClaudeAgent({
-  model: 'claude-sonnet-4-5',
+  model: 'claude-sonnet-4-6',
   systemPrompt: `
     You are a senior Laravel developer assistant.
     
@@ -282,7 +282,7 @@ const readFileTool = tool({
 });
 
 const agent = new ClaudeAgent({
-  model: 'claude-sonnet-4-5',
+  model: 'claude-sonnet-4-6',
   systemPrompt: '...',
   tools: [readFileTool, writeFileTool, runTestsTool],
 });
@@ -360,20 +360,20 @@ Subagent pattern mürəkkəb tapşırıqları kiçik specializədə agent-lərə
 ```typescript
 const securityReviewer = new ClaudeAgent({
   name: 'security_reviewer',
-  model: 'claude-opus-4-5',
+  model: 'claude-opus-4-7',
   systemPrompt: 'You are a security expert. Find vulnerabilities.',
   tools: [readFileTool, runSemgrepTool],
 });
 
 const performanceReviewer = new ClaudeAgent({
   name: 'performance_reviewer',
-  model: 'claude-sonnet-4-5',
+  model: 'claude-sonnet-4-6',
   systemPrompt: 'You are a performance engineer. Find bottlenecks.',
   tools: [readFileTool, profilerTool],
 });
 
 const mainAgent = new ClaudeAgent({
-  model: 'claude-sonnet-4-5',
+  model: 'claude-sonnet-4-6',
   systemPrompt: 'Orchestrate code review by delegating to specialists.',
   subagents: [securityReviewer, performanceReviewer],
 });
@@ -404,7 +404,7 @@ Model Context Protocol (MCP) — tool-ları agent-dən ayrı server-lər kimi t�
 
 ```typescript
 const agent = new ClaudeAgent({
-  model: 'claude-sonnet-4-5',
+  model: 'claude-sonnet-4-6',
   mcpServers: [
     { name: 'github', command: 'npx', args: ['-y', '@github/mcp-server'] },
     { name: 'postgres', command: 'mcp-postgres', env: { DB_URL: '...' } },
@@ -435,7 +435,7 @@ Hook-lar agent-in həyat dövriyyəsinə daxil olmağa imkan verir:
 
 ```typescript
 const agent = new ClaudeAgent({
-  model: 'claude-sonnet-4-5',
+  model: 'claude-sonnet-4-6',
   tools: [...],
   hooks: {
     onBeforeToolUse: async (toolName, input, context) => {
@@ -482,7 +482,7 @@ Permission model agent-in nə edə biləcəyinə nəzarət edir:
 
 ```typescript
 const agent = new ClaudeAgent({
-  model: 'claude-sonnet-4-5',
+  model: 'claude-sonnet-4-6',
   tools: [readFileTool, writeFileTool, runShellTool],
   permissions: {
     allow: [
@@ -567,7 +567,7 @@ agent.on('iteration', (data) => {
 
 ```typescript
 const agent = new ClaudeAgent({
-  model: 'claude-sonnet-4-5',
+  model: 'claude-sonnet-4-6',
   maxCostUsd: 1.00,  // agent $1-dan artıq xərcləməz
   maxIterations: 20,
 });
@@ -642,7 +642,7 @@ const runTests = tool({
 
 // Agent
 const agent = new ClaudeAgent({
-  model: 'claude-sonnet-4-5',
+  model: 'claude-sonnet-4-6',
   systemPrompt: `
     You are a Laravel debugging assistant.
     When a test fails:
@@ -849,7 +849,7 @@ class ClaudeAgent
     public function __construct(
         private readonly ClaudeClient $client,
         private readonly PricingCalculator $pricing,
-        private readonly string $model = 'claude-sonnet-4-5',
+        private readonly string $model = 'claude-sonnet-4-6',
         private readonly string $systemPrompt = '',
         private readonly int $maxIterations = 20,
         private readonly float $maxCostUsd = 5.0,
@@ -1058,7 +1058,7 @@ use App\Services\AI\Agent\Tools\SearchCodeTool;
 use App\Services\AI\Agent\Tools\RunPhpunitTool;
 
 $agent = app(ClaudeAgent::class, [
-    'model' => 'claude-sonnet-4-5',
+    'model' => 'claude-sonnet-4-6',
     'systemPrompt' => <<<'PROMPT'
         You are a Laravel debugging assistant.
         When asked to fix a failing test:

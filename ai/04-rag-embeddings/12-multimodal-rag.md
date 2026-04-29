@@ -188,7 +188,7 @@ class MultimodalIngester
                     ],
                 ],
             ]],
-            model: 'claude-sonnet-4-5',
+            model: 'claude-sonnet-4-6',
         );
 
         return $response;
@@ -399,7 +399,7 @@ class MultimodalRAGService
         $answer = $this->claude->messages(
             messages: [['role' => 'user', 'content' => $contentBlocks]],
             systemPrompt: "Sən multimodal RAG sistemidir. Mətn və şəkil mənbələrindən istifadə edərək dəqiq cavablar verirsin.",
-            model: 'claude-sonnet-4-5',
+            model: 'claude-sonnet-4-6',
         );
 
         return [

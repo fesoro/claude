@@ -223,7 +223,7 @@ final class CachedPromptBuilder
     public function buildPayload(array $messages, array $extraOptions = []): array
     {
         $payload = array_merge([
-            'model'      => config('services.anthropic.model', 'claude-opus-4-5'),
+            'model'      => config('services.anthropic.model', 'claude-opus-4-7'),
             'max_tokens' => 4096,
         ], $extraOptions);
 

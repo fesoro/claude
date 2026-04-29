@@ -80,9 +80,9 @@ Bir model bir ox üzrə qalib gəldikdə, adətən başqasında uduzur. Senior d
 ### Modellər (2026-04)
 
 ```
-claude-opus-4-5      → Flaqman. Kompleks reasoning, agents, uzun multi-step
+claude-opus-4-7      → Flaqman. Kompleks reasoning, agents, uzun multi-step
                        tapşırıqlar. Bahalı, yavaş, amma ağıllı.
-claude-sonnet-4-5    → İş ati. Production-un 80%-i. Keyfiyyət/qiymət
+claude-sonnet-4-6    → İş ati. Production-un 80%-i. Keyfiyyət/qiymət
                        arasında ideal balans.
 claude-haiku-4-5     → Sürətli/ucuz. Sadə tapşırıqlar, klassifikasiya,
                        extraction, yüksək həcm.
@@ -114,7 +114,7 @@ $response = Http::withHeaders([
     'x-api-key' => config('services.anthropic.key'),
     'anthropic-version' => '2023-06-01',
 ])->post('https://api.anthropic.com/v1/messages', [
-    'model' => 'claude-sonnet-4-5',
+    'model' => 'claude-sonnet-4-6',
     'max_tokens' => 1024,
     'system' => 'You are a Laravel support assistant.',
     'messages' => [
@@ -370,7 +370,7 @@ Tool use (function calling) — agent sistemlərinin özəyi. Sənaye rəyi:
 ### Anthropic (Tier-1 yeni hesab, 2026-04)
 
 ```
-claude-sonnet-4-5:
+claude-sonnet-4-6:
   Requests per minute (RPM):       50
   Input tokens per minute (ITPM):  50,000
   Output tokens per minute (OTPM): 10,000
@@ -591,7 +591,7 @@ Laravel-də bu şəkildə:
 ```php
 // config/services.php
 'llm' => [
-    'primary' => env('LLM_PRIMARY', 'claude-sonnet-4-5'),
+    'primary' => env('LLM_PRIMARY', 'claude-sonnet-4-6'),
     'fallback' => env('LLM_FALLBACK', 'gpt-4o'),
     'cheap' => env('LLM_CHEAP', 'claude-haiku-4-5'),
 ],

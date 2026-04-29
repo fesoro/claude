@@ -1,4 +1,4 @@
-# LLM-lərin İncə Tənzimlənməsi: Tam Bələdçi (Middle)
+# LLM-lərin İncə Tənzimlənməsi: Tam Bələdçi (Senior) ⭐⭐⭐
 
 ## İncə Tənzimləmə Nədir?
 
@@ -241,7 +241,7 @@ Yerləşdirməzdən əvvəl aşağıdakılara qarşı qiymətləndirin:
 1. **Birləşdir və ixrac et**: LoRA adapterlərini əsas modellə birləşdirin → tək model faylı → Ollama, vLLM, llama.cpp-ə yerləşdirin
 2. **Adapter xidməti**: əsas modeli saxlayın + adaptərləri ayrıca xidmət göstərin (HuggingFace PEFT)
 3. **Bulud incə tənzimləmə API-ləri**: OpenAI, Anthropic, Together AI — məlumatları yükləyin, onlar incə tənzimləyir və host edir
-4. **GGUF-a ixrac edin**: Ollama lokal yerləşdirməsi üçün (31-ci faylə bax)
+4. **GGUF-a ixrac edin**: Ollama lokal yerləşdirməsi üçün (`03-open-source-models-ollama.md`)
 
 ---
 
@@ -270,7 +270,7 @@ Keyfiyyət küylü məlumatla aşağı düşür. 10.000 uyuşmaz nümunədə öy
 
 İncə tənzimləmə **ardıcıl format və üslubda** üstündür. Lakin mürəkkəb mühakimə üçün, son texnoloji prompt-la işlənən model (Claude Opus, GPT-4o) çox vaxt incə tənzimlənmiş kiçik modeldən üstündür — çünki daha böyük modelin daha çox xam qabiliyyəti var.
 
-30-cu fayldakı qərar çərçivəsindən istifadə edin.
+`02-fine-tuning-vs-rag.md` faylındakı qərar çərçivəsindən istifadə edin.
 
 ### Yanlış Anlayış 4: "İncə tənzimləmə çox bahalıdır"
 

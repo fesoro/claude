@@ -531,7 +531,7 @@ class ClaudeReviewService
 
         try {
             $response = Anthropic::messages()->create([
-                'model' => 'claude-sonnet-4-5',
+                'model' => 'claude-sonnet-4-6',
                 'max_tokens' => 2048,
                 'system' => $this->systemPrompt,
                 'messages' => [['role' => 'user', 'content' => $prompt]],

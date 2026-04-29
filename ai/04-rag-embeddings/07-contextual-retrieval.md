@@ -4,7 +4,7 @@
 > **Bu faylın qonşu fayllarla fərqi:**
 > - `04-chunking-strategies.md` — chunk-ların necə kəsildiyi (strategiyalar, ölçülər). Bu fayl chunk-ı dəyişmir, **onun ətrafına kontekst əlavə edir**.
 > - `06-reranking-hybrid-search.md` — retrieval-dan sonra sıralama. Bu fayl **retrieval-dan əvvəl indexing fazasında** işləyir.
-> - `18-embeddings-and-vectorstores.md` — embedding fundamental-ları. Bu fayl isə embed ediləcək **mətni dəyişdirir**, modeli yox.
+> - `01-embeddings-vector-search.md` — embedding fundamental-ları. Bu fayl isə embed ediləcək **mətni dəyişdirir**, modeli yox.
 > - `03-rag-architecture.md` — tam RAG pipeline. Bu fayl pipeline-a bir ingestion addımı əlavə edir.
 > - `11-rag-evaluation-rerank.md` — eval metrikaleri. Burada contextualization-ın eval-i haqqında danışılır, amma faylın özü indexing texnikası haqqındadır.
 

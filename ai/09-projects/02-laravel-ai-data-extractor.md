@@ -58,7 +58,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('page_count')->default(1);
             $table->string('document_type'); // invoice, cv, id_document, receipt, form
             $table->string('status')->default('pending'); // pending, processing, completed, review, failed
-            $table->string('extraction_model')->default('claude-opus-4-5');
+            $table->string('extraction_model')->default('claude-opus-4-7');
             $table->float('overall_confidence')->nullable(); // 0.0 - 1.0
             $table->boolean('needs_review')->default(false);
             $table->string('review_reason')->nullable();
@@ -447,9 +447,9 @@ use Illuminate\Support\Facades\Log;
 
 class DocumentExtractionService
 {
-    // Model seçimi: sənədlər üçün dəqiqlik baxımından claude-opus-4-5 istifadə edin
+    // Model seçimi: sənədlər üçün dəqiqlik baxımından claude-opus-4-7 istifadə edin
     // claude-haiku-4-5 10x ucuzdur, lakin mürəkkəb sənədlərdə daha az dəqiqdir
-    private string $model = 'claude-opus-4-5';
+    private string $model = 'claude-opus-4-7';
 
     // Çıxarmanın etibarlı hesab edilməsi üçün mütləq olması lazım olan sahələr
     private array $requiredFields = [
@@ -878,7 +878,7 @@ class ExtractionController extends Controller
             'file_size' => $file->getSize(),
             'page_count' => min($pageCount, 10), // Maksimum 10 səhifəylə məhdudlaşdır
             'document_type' => $request->input('type'),
-            'extraction_model' => config('extraction.model', 'claude-opus-4-5'),
+            'extraction_model' => config('extraction.model', 'claude-opus-4-7'),
             'webhook_url' => $request->input('webhook_url'),
             'webhook_secret' => $request->input('webhook_secret'),
         ]);

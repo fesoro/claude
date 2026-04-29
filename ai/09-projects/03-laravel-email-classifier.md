@@ -691,7 +691,7 @@ use GuzzleHttp\Client;
 
 class ReplyGenerator
 {
-    private const MODEL = 'claude-sonnet-4-5';
+    private const MODEL = 'claude-sonnet-4-6';
     private const COST_IN = 3.00 / 1_000_000;
     private const COST_OUT = 15.00 / 1_000_000;
 

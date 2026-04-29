@@ -150,7 +150,7 @@ $chain = (new PromptChain($claude))
     ), validate: true)
     ->step('hesabat-yarat', fn($facts) => $claude->complete(
         prompt: "Bu yoxlanılmış faktlara əsasən icra xülasəsi yazın: {$facts}",
-        model: 'claude-sonnet-4-5',  // son sintez üçün güclü model
+        model: 'claude-sonnet-4-6',  // son sintez üçün güclü model
     ));
 
 $result = $chain->run($documentContent);
@@ -429,7 +429,7 @@ class Router
 $router = (new Router($claude))
     ->route('texniki', 'Kod, API, infrastruktur haqqında texniki suallar', function ($input) use ($claude) {
         return $claude->complete(
-            model: 'claude-sonnet-4-5',
+            model: 'claude-sonnet-4-6',
             system: 'Siz baş proqram arxitektisisiniz. Dəqiq və texniki olun.',
             prompt: $input,
         );
@@ -547,7 +547,7 @@ class OrchestratorWorkers
                 ->implode("\n\n");
 
         $response = $this->claude->complete(
-            model: 'claude-sonnet-4-5',
+            model: 'claude-sonnet-4-6',
             prompt: <<<PROMPT
             Siz bir orchestrator-sunuz. Məqsədiniz: {$goal}
 
@@ -670,7 +670,7 @@ class EvaluatorOptimizer
     {
         return function (string $output, string $task) use ($rubric): EvalResult {
             $response = $this->claude->complete(
-                model: 'claude-sonnet-4-5',
+                model: 'claude-sonnet-4-6',
                 prompt: <<<PROMPT
                 Aşağıdakı çıxışı tapşırıq və rubrikə qarşı qiymətləndirin.
 

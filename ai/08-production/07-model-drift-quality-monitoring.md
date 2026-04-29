@@ -92,11 +92,11 @@ Bu, RAG content-inin düzgün maintain olunmaması problemidir.
 
 ### Model Drift (ən insidious)
 
-Klassik ML-də modeli siz owner-siniz. `model_v42.pkl` — binary fayldır, dəyişmir. LLM-də provider-in serverindədir. Alias (`claude-sonnet-4-5`) arxasında daxili weight-lər dəyişə bilər.
+Klassik ML-də modeli siz owner-siniz. `model_v42.pkl` — binary fayldır, dəyişmir. LLM-də provider-in serverindədir. Alias (`claude-sonnet-4-6`) arxasında daxili weight-lər dəyişə bilər.
 
 Bəzi provider-lərin davranışı:
 
-- **Anthropic**: `claude-sonnet-4-5` alias-ı əksər hallarda stabil, amma minor revisiya (`claude-sonnet-4-5-20260115` vs `claude-sonnet-4-5-20260301`) alias-ın arxasında fərqli performance gətirə bilər
+- **Anthropic**: `claude-sonnet-4-6` alias-ı əksər hallarda stabil, amma minor revisiya (`claude-sonnet-4-6-20260115` vs `claude-sonnet-4-6-20260301`) alias-ın arxasında fərqli performance gətirə bilər
 - **OpenAI**: `gpt-4-turbo` kimi alias-lar periyodik olaraq yeni snapshot-a point edir
 - **Google Gemini**: `gemini-2.0-pro` daxili update-lər alır
 
@@ -506,8 +506,8 @@ class Scorer
 
 | Format | Nümunə | Üstünlüyü | Riski |
 |--------|--------|-----------|-------|
-| Alias | `claude-sonnet-4-5` | Provider update-lərini otomatik alır | Silent drift |
-| Snapshot | `claude-sonnet-4-5-20260115` | Reproducible | Əl ilə update |
+| Alias | `claude-sonnet-4-6` | Provider update-lərini otomatik alır | Silent drift |
+| Snapshot | `claude-sonnet-4-6-20260115` | Reproducible | Əl ilə update |
 | Version aware | `claude-opus-4-7@latest` vs `@stable` | İki-sıralı channel | Provider-dən asılıdır |
 
 ### Production Pattern
@@ -518,7 +518,7 @@ return [
     'models' => [
         'support-bot' => [
             'primary'   => env('AI_SUPPORT_MODEL', 'claude-opus-4-7-20260115'),
-            'fallback'  => env('AI_SUPPORT_FALLBACK', 'claude-sonnet-4-5-20260115'),
+            'fallback'  => env('AI_SUPPORT_FALLBACK', 'claude-sonnet-4-6-20260115'),
         ],
         'email-classifier' => [
             'primary' => env('AI_CLASSIFIER_MODEL', 'claude-haiku-4-20260115'),

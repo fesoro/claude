@@ -103,7 +103,7 @@ Sürət:          Sürətli, sürət-imkan balansı yaxşı
 
 ---
 
-### Claude Opus 4.6 (`claude-opus-4-6`)
+### Claude Opus 4.6 (`claude-opus-4-7`)
 
 ```
 Parametrlər:     ~Naməlum (ailənin ən böyüyü)

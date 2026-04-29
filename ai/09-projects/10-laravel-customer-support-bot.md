@@ -25,7 +25,7 @@ SupportChatService
     └── HandoffDetector (confidence/keyword)
     │
     ▼
-Claude API (claude-sonnet-4-5 — əsas; claude-haiku-4-5 — intent/klassifikasiya)
+Claude API (claude-sonnet-4-6 — əsas; claude-haiku-4-5 — intent/klassifikasiya)
     │
     ▼
 PostgreSQL (pgvector) + Redis (rate limit, cache) + Horizon (ingestion jobs)
@@ -1040,7 +1040,7 @@ use GuzzleHttp\Client;
 
 class SupportChatService
 {
-    private const MODEL = 'claude-sonnet-4-5';
+    private const MODEL = 'claude-sonnet-4-6';
     private const MAX_TOKENS = 1024;
     private const HISTORY_LIMIT = 20;
 
@@ -1717,7 +1717,7 @@ it('records cost correctly for sonnet', function () {
         'daily_limit_usd' => 100.0,
     ]);
 
-    $cost = app(BudgetGuard::class)->recordUsage($session, 'claude-sonnet-4-5', 1_000_000, 1_000_000);
+    $cost = app(BudgetGuard::class)->recordUsage($session, 'claude-sonnet-4-6', 1_000_000, 1_000_000);
     expect($cost)->toEqualWithDelta(18.0, 0.01);
 });
 ```

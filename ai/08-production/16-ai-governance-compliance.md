@@ -588,7 +588,7 @@ model_name: support_bot_production
 version: 1.5.0
 date: 2026-04-20
 model_provider: Anthropic
-base_model: claude-sonnet-4-5-20260220
+base_model: claude-sonnet-4-6-20260220
 fine_tuning: none
 
 purpose: |
@@ -685,7 +685,7 @@ generated_at: 2026-04-20
 
 components:
   - type: foundation_model
-    name: claude-sonnet-4-5
+    name: claude-sonnet-4-6
     provider: Anthropic
     version: 20260220
     license: Anthropic Commercial Terms

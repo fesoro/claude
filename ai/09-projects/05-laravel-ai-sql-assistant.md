@@ -366,7 +366,7 @@ class SqlGenerator
             : '';
 
         $response = $this->claude->messages([
-            'model' => 'claude-sonnet-4-5',
+            'model' => 'claude-sonnet-4-6',
             'max_tokens' => 1000,
             'system' => [[
                 'type' => 'text',
@@ -599,7 +599,7 @@ class ResultSummarizer
         $sampleJson = json_encode($sample, JSON_UNESCAPED_UNICODE);
 
         $response = $this->claude->messages([
-            'model' => 'claude-sonnet-4-5',
+            'model' => 'claude-sonnet-4-6',
             'max_tokens' => 800,
             'messages' => [[
                 'role' => 'user',

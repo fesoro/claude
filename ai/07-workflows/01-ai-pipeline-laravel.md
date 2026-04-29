@@ -106,7 +106,7 @@ abstract class BaseAIJob implements ShouldQueue
      * Sınanacaq modellərin sıralı siyahısı. Birincisi = əsas.
      */
     protected array $modelFallbackChain = [
-        'claude-sonnet-4-5',
+        'claude-sonnet-4-6',
         'claude-haiku-4-5',
         'ollama/llama3',
     ];
@@ -350,7 +350,7 @@ class DocumentBatchProcessor
             ->when($filters['status'] ?? null, fn($q, $s) => $q->where('status', $s))
             ->whereNull('summarized_at')
             ->orderBy('id')
-            ->cursor()
+            ->lazy(100)
             ->chunk(100)
             ->each(function ($chunk) use (&$jobs, $batch) {
                 $chunkJobs = $chunk->map(fn($doc) => new SummarizeDocumentJob($doc->id))->toArray();

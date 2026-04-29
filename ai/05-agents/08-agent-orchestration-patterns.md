@@ -1,8 +1,8 @@
 # Agent Orchestration Pattern-ləri: Supervisor, Hierarchical, Swarm və Blackboard (Lead)
 
 > **Oxucu:** Senior PHP/Laravel tərtibatçılar, multi-agent sistem quran arxitektlər
-> **Ön şərtlər:** Agent dövrü (24), multi-agent sistemlər (25), agent memory (27), Claude Agent SDK (31), tool dizaynı (32), reasoning pattern-lər (33)
-> **Diff vs 24-33:** 25 multi-agent sistemlərin yüksək səviyyəli baxışıdır — "niyə multi-agent, nə vaxt multi-agent". Bu fayl isə **konkret coordination pattern-ləri**: agent-lər bir-birini necə çağırır, state-i necə paylaşır, message-lər necə axır, observability necə qurulur. 33-cü fayl tək agent-in başındakı reasoning-dir; bu fayl agent-lər arasındakı dance-dir.
+> **Ön şərtlər:** Agent dövrü (`01-ai-agents-overview.md`), multi-agent sistemlər (`07-multi-agent-systems.md`), agent memory (`04-agent-memory-systems.md`), Claude Agent SDK (`06-claude-agent-sdk-deep.md`), tool dizaynı (`03-agent-tool-design-principles.md`), reasoning pattern-lər (`02-agent-reasoning-patterns.md`)
+> **Diff vs digər agent faylları:** `07-multi-agent-systems.md` multi-agent sistemlərin yüksək səviyyəli baxışıdır — "niyə multi-agent, nə vaxt multi-agent". Bu fayl isə **konkret coordination pattern-ləri**: agent-lər bir-birini necə çağırır, state-i necə paylaşır, message-lər necə axır, observability necə qurulur. `02-agent-reasoning-patterns.md` tək agent-in başındakı reasoning-dir; bu fayl agent-lər arasındakı dance-dir.
 > **Tarix:** 2026-04-24
 
 ---
@@ -590,26 +590,26 @@ class AgentTracer
 
 ## 14. Claude Agent SDK subagents
 
-31-ci faylda SDK-nı təfsilatla açmışdıq. Burada orchestration kontekstində:
+`06-claude-agent-sdk-deep.md` faylında SDK-nı təfsilatla açmışdıq. Burada orchestration kontekstində:
 
 ```ts
 const researchAgent = subagent({
   name: "researcher",
   description: "Dərin web araşdırma aparır",
-  model: "claude-sonnet-4-5",
+  model: "claude-sonnet-4-6",
   tools: [webSearch, webFetch],
 });
 
 const writerAgent = subagent({
   name: "writer",
   description: "Araşdırma nəticələrindən məqalə yazır",
-  model: "claude-opus-4-5",
+  model: "claude-opus-4-7",
   tools: [markdownFormatter],
 });
 
 const mainAgent = await query({
   prompt: "React Server Components haqqında məqalə yaz",
-  model: "claude-opus-4-5",
+  model: "claude-opus-4-7",
   subagents: [researchAgent, writerAgent],
 });
 ```

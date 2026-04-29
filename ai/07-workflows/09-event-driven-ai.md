@@ -79,8 +79,6 @@ Kafka (separate consumer groups):
 
 ```bash
 # PHP üçün ən yaxşı Kafka client
-composer require junges/laravel-kafka
-# və ya
 composer require mateusjunges/laravel-kafka
 ```
 

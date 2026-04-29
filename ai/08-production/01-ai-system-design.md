@@ -174,7 +174,7 @@ class ChatService
         $response = $this->claude->messages(
             messages: $messages,
             systemPrompt: $this->buildSystemPrompt($conversation->tenant, $context),
-            model: $conversation->tenant->preferred_model ?? 'claude-sonnet-4-5',
+            model: $conversation->tenant->preferred_model ?? 'claude-sonnet-4-6',
         );
 
         // Saxla (yan effektlər burada, sonda baş verir)

@@ -1,6 +1,6 @@
 # Model Distillation: Böyük Modellərdən Kiçik, Sürətli Modellər Çıxarmaq (Lead)
 
-> **Kim üçündür**: Laravel/PHP arxa plan mühəndisləri ki, komandası böyük model API xərclərindən şikayət edir və ya latency tələbləri ilə qarşılaşır. 29-cu fayl ümumi fine-tuning-dən, 30-cu fayl RAG vs FT seçimindən, 34-cü fayl LoRA/QLoRA-dan bəhs edir. Bu fayl isə fərqli sualı cavablandırır: **"Claude Sonnet bizim use case-də əla işləyir, amma ayda $30K kəsir. Onun "beynindən" daha kiçik və ucuz model çıxara bilərikmi?"** Bəli, edə bilərsiniz — texnika distillation adlanır. Burada Python kodu və real training workflow-ları var.
+> **Kim üçündür**: Laravel/PHP arxa plan mühəndisləri ki, komandası böyük model API xərclərindən şikayət edir və ya latency tələbləri ilə qarşılaşır. `01-fine-tuning-overview.md` ümumi fine-tuning-dən, `02-fine-tuning-vs-rag.md` RAG vs FT seçimindən, `04-lora-qlora-peft.md` LoRA/QLoRA-dan bəhs edir. Bu fayl isə fərqli sualı cavablandırır: **"Claude Sonnet bizim use case-də əla işləyir, amma ayda $30K kəsir. Onun "beynindən" daha kiçik və ucuz model çıxara bilərikmi?"** Bəli, edə bilərsiniz — texnika distillation adlanır. Burada Python kodu və real training workflow-ları var.
 
 ## Məzmun
 
@@ -372,7 +372,7 @@ SEED_TOPICS = [
 
 async def generate_prompt_for_topic(topic: str, count: int = 20) -> list[str]:
     response = await client.messages.create(
-        model="claude-opus-4-5",
+        model="claude-opus-4-7",
         max_tokens=4096,
         messages=[{
             "role": "user",
@@ -1159,7 +1159,7 @@ async def collect_cot_data(prompts: list[str]) -> list[dict]:
     records = []
     for prompt in prompts:
         response = await claude.messages.create(
-            model="claude-opus-4-5",
+            model="claude-opus-4-7",
             max_tokens=8192,
             system="Think step by step inside <think></think> tags, "
                    "then provide final answer.",

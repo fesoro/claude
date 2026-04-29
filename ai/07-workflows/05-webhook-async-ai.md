@@ -493,7 +493,7 @@ class SSEController extends Controller
             // Claude-dan gəldikləri kimi tokenləri axıt
             $claude->stream(
                 prompt: $request->input('prompt'),
-                model: 'claude-sonnet-4-5',
+                model: 'claude-sonnet-4-6',
                 onToken: function (string $token) {
                     $this->sendSSEEvent('token', ['text' => $token]);
                     flush();

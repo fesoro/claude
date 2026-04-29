@@ -624,7 +624,7 @@ class AdvancedRAGPipeline
 
         // Addım 5: Nəsil
         $response = $this->anthropic->messages()->create([
-            'model' => $config['model'] ?? 'claude-opus-4-5',
+            'model' => $config['model'] ?? 'claude-opus-4-7',
             'max_tokens' => $config['max_tokens'] ?? 1024,
             'system' => $prompt['system'],
             'messages' => $prompt['messages'],

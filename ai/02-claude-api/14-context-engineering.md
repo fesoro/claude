@@ -282,8 +282,8 @@ namespace App\Services\AI;
 class TokenBudgetManager
 {
     private const MODEL_LIMITS = [
-        'claude-opus-4-5'   => 200_000,
-        'claude-sonnet-4-5' => 200_000,
+        'claude-opus-4-7'   => 200_000,
+        'claude-sonnet-4-6' => 200_000,
         'claude-haiku-4-5'  => 200_000,
     ];
 
@@ -510,7 +510,7 @@ class ContextEngineeringService
 
         // 3. Token büdcəsini bölüşdür
         $allocated = $this->budgetManager->allocate(
-            model: 'claude-sonnet-4-5',
+            model: 'claude-sonnet-4-6',
             systemPrompt: $systemPrompt,
             history: $history,
             userMessage: $userMessage,
@@ -528,7 +528,7 @@ class ContextEngineeringService
         $response = $this->claude->messages(
             messages:     $messages,
             systemPrompt: $allocated['system'],
-            model:        'claude-sonnet-4-5',
+            model:        'claude-sonnet-4-6',
         );
 
         // 6. Tarixə əlavə et
@@ -594,7 +594,7 @@ composer require anthropics/anthropic-sdk-php
 
 // Token sayımı
 $response = $client->messages->create([
-    'model'      => 'claude-sonnet-4-5',
+    'model'      => 'claude-sonnet-4-6',
     'max_tokens' => 1,
     'messages'   => [['role' => 'user', 'content' => 'Hello']],
 ]);

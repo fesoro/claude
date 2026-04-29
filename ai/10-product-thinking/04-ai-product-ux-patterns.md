@@ -2,7 +2,7 @@
 
 > Hədəf auditoriyası: AI məhsullarını real istifadəçilərə gətirən senior developer-lər, product designer-lər və product manager-lər. "Niyə chat-im boş hiss verir?", "İstifadəçi niyə ilk cəhddən sonra gedir?" suallarına cavab axtaranlar.
 
-> Tarix: 2026-04-21. Referans modellər: `claude-sonnet-4-5`, `claude-haiku-4-5`. Referans məhsullar: Linear, Notion, Cursor, Claude Code, Perplexity, Intercom Fin, GitHub Copilot.
+> Tarix: 2026-04-21. Referans modellər: `claude-sonnet-4-6`, `claude-haiku-4-5`. Referans məhsullar: Linear, Notion, Cursor, Claude Code, Perplexity, Intercom Fin, GitHub Copilot.
 
 ---
 
@@ -99,7 +99,7 @@ public function stream(Request $request): StreamedResponse
     return response()->stream(function () use ($message, $history) {
         $client = new Anthropic\Client(config('services.anthropic.key'));
         $stream = $client->messages()->createStream([
-            'model' => 'claude-sonnet-4-5',
+            'model' => 'claude-sonnet-4-6',
             'max_tokens' => 2048,
             'messages' => [...$history, ['role' => 'user', 'content' => $message]],
         ]);

@@ -85,7 +85,7 @@ ping                    (ürək döyüşü, nəzərə almayın)
     "type": "message",
     "role": "assistant",
     "content": [],
-    "model": "claude-opus-4-5",
+    "model": "claude-opus-4-7",
     "stop_reason": null,
     "stop_sequence": null,
     "usage": { "input_tokens": 25, "output_tokens": 1 }
@@ -178,7 +178,7 @@ final class StreamingService
 
     public function __construct(
         private readonly string $apiKey = '',
-        private readonly string $model = 'claude-opus-4-5',
+        private readonly string $model = 'claude-opus-4-7',
         private readonly string $baseUri = 'https://api.anthropic.com/v1/',
     ) {
         $this->http = new Client([
@@ -852,7 +852,7 @@ final class StreamAccumulator
 // app/Providers/AppServiceProvider.php
 $this->app->singleton(StreamingService::class, fn () => new StreamingService(
     apiKey: config('services.anthropic.key'),
-    model:  config('services.anthropic.model', 'claude-opus-4-5'),
+    model:  config('services.anthropic.model', 'claude-opus-4-7'),
 ));
 
 $this->app->singleton(ResilientStreamingService::class, fn (Application $app) =>

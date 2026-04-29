@@ -687,7 +687,7 @@ PROMPT;
 
         // 7. Cavab yaradın
         $response = $this->anthropic->messages()->create([
-            'model' => 'claude-opus-4-5',
+            'model' => 'claude-opus-4-7',
             'max_tokens' => 1024,
             'system' => self::SYSTEM_PROMPT,
             'messages' => $prompt['messages'],

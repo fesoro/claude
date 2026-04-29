@@ -78,7 +78,7 @@ Server HTTP xidməti kimi işləyir. İstemci sorğular üçün adi HTTP POST va
 - Uzaq serverləre imkan verir
 - Bir serveri çoxlu hostların paylaşmasına imkan verir
 - Server fərqli maşında olmalı olduqda tələb olunur
-- Autentifikasiya üçün OAuth 2.0 əlavə edilə bilər (17-ci fayla bax)
+- Autentifikasiya üçün OAuth 2.1 əlavə edilə bilər (`08-mcp-oauth-auth.md`)
 
 2025-03-26 spesifikasiya yeniləməsi **Streamable HTTP** təqdim etdi — həm sorğuları, həm streamləri idarə edən tək endpoint, HTTP nəqlini sadələşdirir.
 

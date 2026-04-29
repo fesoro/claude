@@ -119,7 +119,7 @@ ANTHROPIC_API_KEY_TEST=sk-ant-api03-test-...
 |----------|---------------|------------|----------|
 | `claude-haiku-4-5-20251001` | 200,000 | 8,192 | Yüksək həcmli, sürətli tapşırıqlar |
 | `claude-sonnet-4-6` | 200,000 | 8,192 | Ümumi produksiya istifadəsi |
-| `claude-opus-4-6` | 200,000 | 4,096 | Mürəkkəb, yüksək əhəmiyyətli tapşırıqlar |
+| `claude-opus-4-7` | 200,000 | 4,096 | Mürəkkəb, yüksək əhəmiyyətli tapşırıqlar |
 
 ### Qiymətləndirmə (təxmini, console.anthropic.com-da yoxlayın)
 
@@ -838,7 +838,7 @@ readonly class ApiResponse
         $pricing = [
             'claude-haiku-4-5'   => ['input' => 0.0008, 'output' => 0.004, 'cache_write' => 0.001, 'cache_read' => 0.00008],
             'claude-sonnet-4-6'  => ['input' => 0.003,  'output' => 0.015, 'cache_write' => 0.00375, 'cache_read' => 0.0003],
-            'claude-opus-4-6'    => ['input' => 0.015,  'output' => 0.075, 'cache_write' => 0.01875, 'cache_read' => 0.0015],
+            'claude-opus-4-7'    => ['input' => 0.015,  'output' => 0.075, 'cache_write' => 0.01875, 'cache_read' => 0.0015],
         ];
 
         // Model prefiksini uyğunlaşdırın
@@ -886,7 +886,7 @@ return [
     'models' => [
         'fast'     => 'claude-haiku-4-5-20251001',
         'balanced' => 'claude-sonnet-4-6',
-        'powerful' => 'claude-opus-4-6',
+        'powerful' => 'claude-opus-4-7',
     ],
 
     'rate_limits' => [

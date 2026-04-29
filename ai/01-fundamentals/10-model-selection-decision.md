@@ -54,13 +54,13 @@ Anthropic model ailəsi üç səviyyədə qurulub. Hər səviyyənin öz "iş ye
 
 ```
                      +---------------------+
-                     |  claude-opus-4-5    |   Flagship
+                     |  claude-opus-4-7    |   Flagship
                      |  Ən güclü mühakimə  |   Az istifadə olunur
                      +---------------------+   Yüksək xərc
                     /                       \
                    /                         \
            +---------------------+
-           |  claude-sonnet-4-5  |            Production workhorse
+           |  claude-sonnet-4-6  |            Production workhorse
            |  Balans: sürət+keyfiyyət |       Əksər use-case
            +---------------------+
           /                       \
@@ -134,8 +134,8 @@ Bu üçbucaqda hansı küncdə durduğunu bilmək, doğru model seçməyin birin
 
 | Model | Input | Output | Cache Write (5m) | Cache Read | Batch (50% off) |
 |-------|-------|--------|------------------|------------|-----------------|
-| claude-opus-4-5 | $15.00 | $75.00 | $18.75 | $1.50 | $7.50 / $37.50 |
-| claude-sonnet-4-5 | $3.00 | $15.00 | $3.75 | $0.30 | $1.50 / $7.50 |
+| claude-opus-4-7 | $15.00 | $75.00 | $18.75 | $1.50 | $7.50 / $37.50 |
+| claude-sonnet-4-6 | $3.00 | $15.00 | $3.75 | $0.30 | $1.50 / $7.50 |
 | claude-haiku-4-5 | $1.00 | $5.00 | $1.25 | $0.10 | $0.50 / $2.50 |
 
 ### Nisbi Xərc
@@ -439,9 +439,9 @@ class ModelRouter
 {
     private const MODELS = [
         'SIMPLE'   => 'claude-haiku-4-5',
-        'MEDIUM'   => 'claude-sonnet-4-5',
-        'COMPLEX'  => 'claude-opus-4-5',
-        'CRITICAL' => 'claude-opus-4-5',
+        'MEDIUM'   => 'claude-sonnet-4-6',
+        'COMPLEX'  => 'claude-opus-4-7',
+        'CRITICAL' => 'claude-opus-4-7',
     ];
 
     public function __construct(
@@ -570,8 +570,8 @@ class CascadeClaudeService
 {
     private const LEVELS = [
         'claude-haiku-4-5',
-        'claude-sonnet-4-5',
-        'claude-opus-4-5',
+        'claude-sonnet-4-6',
+        'claude-opus-4-7',
     ];
 
     public function ask(string $prompt, callable $validator): array
@@ -623,7 +623,7 @@ class ModelExperiment
         $bucket = hexdec(substr(md5($userId), 0, 4)) % 100;
 
         // 90% Haiku (kontrol), 10% Sonnet (variant)
-        $model = $bucket < 90 ? 'claude-haiku-4-5' : 'claude-sonnet-4-5';
+        $model = $bucket < 90 ? 'claude-haiku-4-5' : 'claude-sonnet-4-6';
 
         $response = $this->client->messages()->create([
             'model' => $model,

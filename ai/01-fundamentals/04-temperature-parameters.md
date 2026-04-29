@@ -367,7 +367,7 @@ Model aşağıdakı hallarda dayanır:
 Claude-un limitləri:
   claude-haiku-4-5:    8,192 maksimum çıxış tokeni
   claude-sonnet-4-6:   8,192 maksimum çıxış tokeni
-  claude-opus-4-6:     4,096 maksimum çıxış tokeni (yazıldığı vaxt)
+  claude-opus-4-7:     4,096 maksimum çıxış tokeni (yazıldığı vaxt)
 
 Praktiki təlimatlar:
   Söhbət cavabı:            256 - 1024

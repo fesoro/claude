@@ -430,7 +430,7 @@ class SyntheticPreferenceGenerator
                 'role'    => 'user',
                 'content' => $this->buildJudgePrompt($prompt, $responseA, $responseB),
             ]],
-            model: 'claude-sonnet-4-5',  // Daha güclü model judge kimi
+            model: 'claude-sonnet-4-6',  // Daha güclü model judge kimi
         );
 
         $preferred = $this->parseJudgment($judgment);

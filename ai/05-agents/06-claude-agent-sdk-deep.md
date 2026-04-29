@@ -1,7 +1,7 @@
 # Claude Agent SDK Dərindən: Production Agent Qurmaq (TS + Laravel Eşdəyər) (Lead)
 
 > **Oxucu:** Senior PHP/Laravel tərtibatçılar
-> **Ön şərtlər:** Agent dövrü (24-ci fayl), tool calling, Laravel queues, əsas TypeScript
+> **Ön şərtlər:** Agent dövrü (`01-ai-agents-overview.md`), tool calling, Laravel queues, əsas TypeScript
 > **Tarix:** 2026-04-21
 
 ---
@@ -81,7 +81,7 @@ const searchTickets = tool({
 });
 ```
 
-Vacib qayda: **`description` adı əvəzlədir**. Model tool-u adından daha çox description-dan oxuyur. (Bunu 32-ci faylda detallı açacağıq.)
+Vacib qayda: **`description` adı əvəzlədir**. Model tool-u adından daha çox description-dan oxuyur. (Bunu `03-agent-tool-design-principles.md` faylında detallı açacağıq.)
 
 ### 2.3 Subagents
 
@@ -89,14 +89,14 @@ Vacib qayda: **`description` adı əvəzlədir**. Model tool-u adından daha ço
 const codeReviewer = subagent({
   name: "code_reviewer",
   description: "Kod diff-ləri nəzərdən keçirir, security risklərini tapır.",
-  model: "claude-sonnet-4-5",
+  model: "claude-sonnet-4-6",
   tools: [readFile, runLinter],
   systemPrompt: "Sən təcrübəli code reviewer-sən...",
 });
 
 const mainAgent = await query({
   prompt: "Bu PR-i nəzərdən keçir: #1234",
-  model: "claude-opus-4-5",
+  model: "claude-opus-4-7",
   subagents: [codeReviewer],
   // ...
 });
@@ -323,7 +323,7 @@ const securityReviewer = subagent({
   name: "security_reviewer",
   description:
     "Hesab ilə bağlı şübhəli aktivlik varmı? Login-lər, IP-lər, ödəniş anomaliyaları.",
-  model: "claude-sonnet-4-5",
+  model: "claude-sonnet-4-6",
   tools: [getCustomerHistory, /* read-only audit log tool-ları */],
   systemPrompt: `Sən security analyst-sən. Müştəri tarixçəsində şübhəli
 naxış axtar. Cavabın qısa olsun: {risk_level, findings[]}.`,
@@ -333,7 +333,7 @@ naxış axtar. Cavabın qısa olsun: {risk_level, findings[]}.`,
 
 export async function triageTicket(ticketId: string) {
   const result = await query({
-    model: "claude-sonnet-4-5",
+    model: "claude-sonnet-4-6",
     systemPrompt: `Sən customer support triage agent-isən. Yeni ticket-ə baxırsan.
 Məqsədin: ticket-i təsnif etmək, tarixçəsini anlamaq və ya avtomatik cavab
 hazırlamaq, ya da insan agent-ə escalate etmək. Heç vaxt müştəri məlumatlarını
@@ -603,7 +603,7 @@ class AgentRunner
 
     /**
      * @param array $config = [
-     *   'model' => 'claude-sonnet-4-5',
+     *   'model' => 'claude-sonnet-4-6',
      *   'system' => '...',
      *   'prompt' => '...',
      *   'max_turns' => 12,
@@ -625,7 +625,7 @@ class AgentRunner
             $this->enforceBudget($config, $totalUsage);
 
             $response = $this->client->messages([
-                'model' => $config['model'] ?? 'claude-sonnet-4-5',
+                'model' => $config['model'] ?? 'claude-sonnet-4-6',
                 'system' => $config['system'] ?? null,
                 'messages' => $messages,
                 'tools' => $this->registry->toApiFormat($config['allowed_tools'] ?? null),
@@ -756,7 +756,7 @@ namespace App\AI;
 class ClaudeAgent
 {
     private array $config = [
-        'model' => 'claude-sonnet-4-5',
+        'model' => 'claude-sonnet-4-6',
         'max_turns' => 12,
         'allowed_tools' => ['*'],
         'denied_tools' => [],
@@ -784,7 +784,7 @@ class ClaudeAgent
 
 ```php
 $result = app(ClaudeAgent::class)
-    ->model('claude-sonnet-4-5')
+    ->model('claude-sonnet-4-6')
     ->system('Sən research agent-sən...')
     ->maxTurns(15)
     ->denyTools(['delete_*'])
@@ -863,7 +863,7 @@ class SpawnSubagentTool implements Tool
 
 ### 8.2 HTTP pattern (separate service)
 
-Agent öz Node.js service-də işləyir, Laravel HTTP ilə çağırır. 54-cü faylda detallı.
+Agent öz Node.js service-də işləyir, Laravel HTTP ilə çağırır. `../08-production/15-multi-provider-failover.md` faylında detallı.
 
 ---
 
@@ -1092,7 +1092,7 @@ class ResearchController extends Controller
         ]);
 
         $result = $agent
-            ->model('claude-sonnet-4-5')
+            ->model('claude-sonnet-4-6')
             ->system(<<<SYS
             Sən research assistant-sən. İstifadəçi sualı cavablandırmaq üçün:
             1. Əvvəl search_internal_docs-dan yoxla (ucuz və dəqiq).
@@ -1178,8 +1178,8 @@ Laravel event listener-lər hər tool çağırışını `events` cədvəlinə ya
 | Budget | Tenant başına gündəlik limit. Redis counter. |
 | Timeout | Hər tool execute 30s, bütün agent 5 dəq. |
 | Retry | Yalnız API-nin 5xx/timeout-ları retry. Tool xətaları retry etmə. |
-| PII | Request və log redaction (53-cü faylda). |
-| Multi-provider | Anthropic outage olanda fallback. (54-cü faylda.) |
+| PII | Request və log redaction (`../08-production/11-pii-data-redaction.md`). |
+| Multi-provider | Anthropic outage olanda fallback. (`../08-production/15-multi-provider-failover.md`.) |
 | Streaming | SSE ilə browser-ə real-time göndər. |
 | Session | DB-də JSON blob, `session_id` ilə resume. |
 

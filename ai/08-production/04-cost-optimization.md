@@ -17,8 +17,8 @@ AI xərcləri super-xətti artır. İstifadəçiləri 10x artırdığınızda AI
 
 | Model               | Giriş    | Çıxış    | Qeydlər                              |
 |---------------------|----------|----------|--------------------------------------|
-| claude-opus-4-5     | $15.00   | $75.00   | Ən yaxşı keyfiyyət; bahalı           |
-| claude-sonnet-4-5   | $3.00    | $15.00   | Mükəmməl keyfiyyət; balanslaşdırılmış|
+| claude-opus-4-7     | $15.00   | $75.00   | Ən yaxşı keyfiyyət; bahalı           |
+| claude-sonnet-4-6   | $3.00    | $15.00   | Mükəmməl keyfiyyət; balanslaşdırılmış|
 | claude-haiku-4-5    | $0.25    | $1.25    | Sürətli; Opus-dan 60x ucuz           |
 | Keşlənmiş giriş     | $0.30    | —        | Prompt keşi ilə Sonnet               |
 | Ollama (yerli)      | $0.00    | $0.00    | Yalnız avadanlıq xərci               |
@@ -78,11 +78,11 @@ class TokenCounter
     public function validateRequest(
         array  $messages,
         int    $requestedMaxTokens,
-        string $model = 'claude-sonnet-4-5',
+        string $model = 'claude-sonnet-4-6',
     ): ValidationResult {
         $contextWindows = [
-            'claude-opus-4-5'   => 200_000,
-            'claude-sonnet-4-5' => 200_000,
+            'claude-opus-4-7'   => 200_000,
+            'claude-sonnet-4-6' => 200_000,
             'claude-haiku-4-5'  => 200_000,
         ];
 
@@ -332,8 +332,8 @@ class ModelRouter
      */
     private array $tiers = [
         'haiku'  => 'claude-haiku-4-5',
-        'sonnet' => 'claude-sonnet-4-5',
-        'opus'   => 'claude-opus-4-5',
+        'sonnet' => 'claude-sonnet-4-6',
+        'opus'   => 'claude-opus-4-7',
     ];
 
     /**

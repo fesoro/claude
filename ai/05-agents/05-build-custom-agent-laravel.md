@@ -602,7 +602,7 @@ class DataAnalysisAgent
     private function callLLM(array $messages, AgentSession $session): mixed
     {
         return $this->claude->messages()->create([
-            'model' => 'claude-opus-4-5',
+            'model' => 'claude-opus-4-7',
             'max_tokens' => 4096,
             'system' => self::SYSTEM_PROMPT,
             'tools' => $this->tools->schemas(),
@@ -927,7 +927,7 @@ DB::table('agent_costs')->insert([
     'input_tokens'  => $usage->inputTokens,
     'output_tokens' => $usage->outputTokens,
     'cost_usd'      => $inputCost + $outputCost,
-    'model'         => 'claude-opus-4-5',
+    'model'         => 'claude-opus-4-7',
     'created_at'    => now(),
 ]);
 ```

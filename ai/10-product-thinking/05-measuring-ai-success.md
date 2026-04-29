@@ -149,7 +149,7 @@ class TokenUsageTracker
     private function calculateCost(string $model, int $input, int $output): float
     {
         $pricing = [
-            'claude-sonnet-4-5' => ['input' => 3.0, 'output' => 15.0],
+            'claude-sonnet-4-6' => ['input' => 3.0, 'output' => 15.0],
             'claude-haiku-4-5'  => ['input' => 0.80, 'output' => 4.0],
         ];
 
@@ -243,7 +243,7 @@ class LLMQualityJudge
 
         $judgment = $this->claude->messages(
             messages: [['role' => 'user', 'content' => $judgePrompt]],
-            model: 'claude-sonnet-4-5',
+            model: 'claude-sonnet-4-6',
             temperature: 0.0,
         );
 

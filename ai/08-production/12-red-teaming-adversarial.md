@@ -576,7 +576,7 @@ Hər release-dən əvvəl 10 maddə üzərində mini-checklist: "son 3 ayda hər
 
 ```bash
 pip install garak
-garak --model_type anthropic --model_name claude-sonnet-4-5 \
+garak --model_type anthropic --model_name claude-sonnet-4-6 \
       --probes dan.DanInTheWild,encoding.InjectBase64,promptinject
 ```
 
@@ -817,7 +817,7 @@ PROMPT;
 
         $judgeResponse = app(AiGateway::class)->chat(
             [['role' => 'user', 'content' => $judgePrompt]],
-            ['model' => 'claude-sonnet-4-5', 'response_format' => 'json']
+            ['model' => 'claude-sonnet-4-6', 'response_format' => 'json']
         );
 
         $parsed = json_decode($judgeResponse->text, true);

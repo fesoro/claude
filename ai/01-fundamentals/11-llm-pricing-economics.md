@@ -83,8 +83,8 @@ Qiymət hesablarkən həmişə "real token" say, "simvol/4" kimi yanlış təqri
 
 | Model | Input | Output | Cache Write 5min | Cache Write 1h | Cache Read | Batch Input | Batch Output |
 |-------|-------|--------|-----------------|---------------|-----------|-------------|--------------|
-| claude-opus-4-5 | $15.00 | $75.00 | $18.75 | $30.00 | $1.50 | $7.50 | $37.50 |
-| claude-sonnet-4-5 | $3.00 | $15.00 | $3.75 | $6.00 | $0.30 | $1.50 | $7.50 |
+| claude-opus-4-7 | $15.00 | $75.00 | $18.75 | $30.00 | $1.50 | $7.50 | $37.50 |
+| claude-sonnet-4-6 | $3.00 | $15.00 | $3.75 | $6.00 | $0.30 | $1.50 | $7.50 |
 | claude-haiku-4-5 | $1.00 | $5.00 | $1.25 | $2.00 | $0.10 | $0.50 | $2.50 |
 
 ### Asimmetriyalar
@@ -686,13 +686,13 @@ namespace App\Services\AI;
 class PricingCalculator
 {
     private const PRICES = [
-        'claude-opus-4-5' => [
+        'claude-opus-4-7' => [
             'input' => 15.00,
             'output' => 75.00,
             'cache_write_5m' => 18.75,
             'cache_read' => 1.50,
         ],
-        'claude-sonnet-4-5' => [
+        'claude-sonnet-4-6' => [
             'input' => 3.00,
             'output' => 15.00,
             'cache_write_5m' => 3.75,
@@ -893,7 +893,7 @@ Bu, "kəsdir" düyməsinə basmaq imkanı verir → yarımçıq output qısalır
 use Anthropic\Laravel\Facades\Anthropic;
 
 $count = Anthropic::messages()->countTokens([
-    'model' => 'claude-sonnet-4-5',
+    'model' => 'claude-sonnet-4-6',
     'messages' => [...],
 ])['input_tokens'];
 

@@ -110,7 +110,7 @@ class AIExperiment extends Model
      * variants formatı:
      * [
      *   'control'   => ['model' => 'claude-haiku-4-5', 'traffic_pct' => 50, 'config' => [...]],
-     *   'treatment' => ['model' => 'claude-sonnet-4-5', 'traffic_pct' => 50, 'config' => [...]],
+     *   'treatment' => ['model' => 'claude-sonnet-4-6', 'traffic_pct' => 50, 'config' => [...]],
      * ]
      */
 
@@ -355,12 +355,12 @@ class AICallObserver
     private function calculateCost(string $model, array $usage): float
     {
         $rates = [
-            'claude-opus-4-5'   => ['input' => 15.00, 'output' => 75.00],  // 1M token başına
-            'claude-sonnet-4-5' => ['input' => 3.00,  'output' => 15.00],
+            'claude-opus-4-7'   => ['input' => 15.00, 'output' => 75.00],  // 1M token başına
+            'claude-sonnet-4-6' => ['input' => 3.00,  'output' => 15.00],
             'claude-haiku-4-5'  => ['input' => 0.25,  'output' => 1.25],
         ];
 
-        $rate = $rates[$model] ?? $rates['claude-sonnet-4-5'];
+        $rate = $rates[$model] ?? $rates['claude-sonnet-4-6'];
 
         return (($usage['input_tokens'] ?? 0) * $rate['input'] / 1_000_000)
              + (($usage['output_tokens'] ?? 0) * $rate['output'] / 1_000_000);
