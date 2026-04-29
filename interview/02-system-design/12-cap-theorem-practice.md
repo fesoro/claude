@@ -291,8 +291,8 @@ Result: Hybrid approach
 - Vector clocks manual simulation: causal consistency nümunəsi
 
 ## Əlaqəli Mövzular
-- [06-database-selection.md] — CP/AP database seçimi
-- [23-eventual-consistency.md] — Eventual consistency patterns
-- [17-distributed-transactions.md] — Cross-service consistency
-- [13-idempotency-design.md] — Idempotency with eventual consistency
-- [07-database-sharding.md] — Consistency in sharded systems
+- [06-database-selection.md](06-database-selection.md) — CP/AP database seçimi
+- [23-eventual-consistency.md](23-eventual-consistency.md) — Eventual consistency patterns
+- [17-distributed-transactions.md](17-distributed-transactions.md) — Cross-service consistency
+- [13-idempotency-design.md](13-idempotency-design.md) — Idempotency with eventual consistency
+- [07-database-sharding.md](07-database-sharding.md) — Consistency in sharded systems

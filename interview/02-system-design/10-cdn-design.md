@@ -311,8 +311,8 @@ DDoS:
 - Origin Shield konseptini Varnish ilə test edin
 
 ## Əlaqəli Mövzular
-- [05-caching-strategies.md] — Caching patterns
-- [04-load-balancing.md] — Global load balancing
-- [03-scalability-fundamentals.md] — Scale fundamentals
-- [09-rate-limiting.md] — Edge rate limiting
-- [20-monitoring-observability.md] — CDN metrics
+- [05-caching-strategies.md](05-caching-strategies.md) — Caching patterns
+- [04-load-balancing.md](04-load-balancing.md) — Global load balancing
+- [03-scalability-fundamentals.md](03-scalability-fundamentals.md) — Scale fundamentals
+- [09-rate-limiting.md](09-rate-limiting.md) — Edge rate limiting
+- [20-monitoring-observability.md](20-monitoring-observability.md) — CDN metrics

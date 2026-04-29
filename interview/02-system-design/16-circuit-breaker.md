@@ -371,8 +371,8 @@ Recovery Test:
 - CB metric-lərini Grafana-da vizualizasiya edin
 
 ## Əlaqəli Mövzular
-- [09-rate-limiting.md] — Rate limiting ilə əlaqə
-- [08-message-queues.md] — Queue-based fallback
+- [09-rate-limiting.md](09-rate-limiting.md) — Rate limiting ilə əlaqə
+- [08-message-queues.md](08-message-queues.md) — Queue-based fallback
 - [16-circuit-breaker.md] ← bu fayl
-- [21-backpressure.md] — Backpressure ilə kombinasiya
-- [20-monitoring-observability.md] — CB metrics, alerting
+- [21-backpressure.md](21-backpressure.md) — Backpressure ilə kombinasiya
+- [20-monitoring-observability.md](20-monitoring-observability.md) — CB metrics, alerting

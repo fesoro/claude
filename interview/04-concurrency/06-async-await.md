@@ -1,4 +1,4 @@
-# Async/Await Patterns (Middle ⭐⭐)
+# Async/Await Patterns (Senior ⭐⭐⭐)
 
 ## İcmal
 Async/await — asynchronous kodu synchronous kimi yazan sintaktik şəkərdir. Callback hell-dən Promise-ə, Promise-dən async/await-ə keçid — bu əsas abstraction-ların hər birini başa düşmək lazımdır. Bu mövzu interview-da I/O-bound task-ları effektiv idarə etmə bacarığınızı yoxlayır.

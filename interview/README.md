@@ -18,7 +18,7 @@ Səviyyə: Junior → Lead
 
 Algorithm anlayışları, Big O analizi, əsas data structure-lar, dynamic programming, graph alqoritmləri. FAANG/top tech şirkətlər bu bölməyə güclü fokus edir. Hər mövzu LeetCode pattern-ləri ilə əlaqəlidir.
 
-### 02. System Design (20 mövzu)
+### 02. System Design (25 mövzu)
 📁 [02-system-design/](02-system-design/)
 Səviyyə: Senior → Architect
 
@@ -30,11 +30,11 @@ Səviyyə: Middle → Lead
 
 SQL vs NoSQL, ACID, indexing, query optimization, transactions, replication, sharding. Backend developer-in gündəlik işi ilə birbaşa əlaqəli. ORM-dən WAL-ə qədər geniş əhatə.
 
-### 04. Concurrency (5 mövzu)
+### 04. Concurrency (15 mövzu)
 📁 [04-concurrency/](04-concurrency/)
-Səviyyə: Middle → Senior
+Səviyyə: Middle → Lead
 
-Thread vs process, race condition, mutex, deadlock, thread pool. Performans kritik sistemlər üçün vacib. Go/Java rolları üçün xüsusilə tələb olunur.
+Thread vs process, race condition, mutex, deadlock, thread pool, async/await, event loop, actor model, lock-free data structures, concurrent collections. Performans kritik sistemlər üçün vacib. Go/Java rolları üçün xüsusilə tələb olunur.
 
 ### 05. Networking (16 mövzu)
 📁 [05-networking/](05-networking/)
@@ -42,9 +42,9 @@ Səviyyə: Middle → Lead
 
 TCP/UDP, HTTP versiyaları, TLS/SSL, DNS, REST/GraphQL/gRPC, WebSocket, OAuth/JWT, CORS, REST API Design Principles (resource naming, status codes, RFC 7807, pagination, idempotency, HATEOAS). API dizaynı ilə yanaşı gedən vacib networking bilikləri.
 
-### 06. Design Patterns (6 mövzu)
+### 06. Design Patterns (16 mövzu)
 📁 [06-design-patterns/](06-design-patterns/)
-Səviyyə: Middle → Senior
+Səviyyə: Middle → Lead
 
 SOLID prinsipləri, creational, structural, behavioral patterns. Code quality, maintainability, refactoring müzakirələrinin əsası.
 
@@ -54,7 +54,7 @@ Səviyyə: Senior → Architect
 
 Monolith vs microservices, DDD, Clean Architecture, event sourcing, CQRS, service mesh, saga pattern, feature flags, zero-downtime deploy, Background Job Patterns (retry, DLQ, idempotency, fan-out, cron locking). Arxitektura qərar vermə müzakirələri üçün kritik.
 
-### 08. Security (8 mövzu)
+### 08. Security (15 mövzu)
 📁 [08-security/](08-security/)
 Səviyyə: Junior → Senior
 
@@ -66,7 +66,7 @@ Səviyyə: Middle → Lead
 
 Profiling, query optimization, caching layers, lazy loading, connection pool tuning, memory leak detection, pagination, async processing, APM tools, load testing, API Performance Optimization (N+1 fix, latency breakdown, async 202 pattern, compression, HTTP/2, ETag caching). Production sistemlərinin sağlamlığı üçün vacib.
 
-### 10. Behavioral & Leadership (6 mövzu)
+### 10. Behavioral & Leadership (15 mövzu)
 📁 [10-behavioral/](10-behavioral/)
 Səviyyə: Middle → Lead
 

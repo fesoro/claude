@@ -438,8 +438,8 @@ User POST /posts
 - Anti-entropy simulation: 2 node, 10% data diff → Merkle tree reconciliation
 
 ## Əlaqəli Mövzular
-- [12-cap-theorem-practice.md] — CAP theorem, C vs A tradeoff
-- [07-database-sharding.md] — Replication strategies
-- [17-distributed-transactions.md] — Strong consistency alternative
-- [25-outbox-pattern.md] — Reliable event delivery with eventual consistency
-- [24-leader-election.md] — Consistency in leader-based systems
+- [12-cap-theorem-practice.md](12-cap-theorem-practice.md) — CAP theorem, C vs A tradeoff
+- [07-database-sharding.md](07-database-sharding.md) — Replication strategies
+- [17-distributed-transactions.md](17-distributed-transactions.md) — Strong consistency alternative
+- [25-outbox-pattern.md](25-outbox-pattern.md) — Reliable event delivery with eventual consistency
+- [24-leader-election.md](24-leader-election.md) — Consistency in leader-based systems

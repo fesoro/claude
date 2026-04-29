@@ -6,16 +6,12 @@ API performance — yalnız "sorğu sürətli cavab verirmi?" sualı deyil. Bu r
 
 Senior developer kimi müsahibədə gözlənilən: yavaş endpoint-i necə debug edərsiniz, scale etmək lazım gəldikdə nə edərsiniz, və hansı trade-off-lara hazırsınız.
 
----
-
 ## Niyə Vacibdir
 
 - API latency-si birbaşa istifadəçi təcrübəsinə təsir edir: 100ms artım dönüşümü azaldır
 - Yavaş API-lər mobil cihazlarda daha pis görünür — network + latency ikiqat olur
 - Yüksək latency-li endpoint-lər server resursu tüketir — qalan sorğulara yer qalmır
 - Bir pis endpoint bütün sistemi yavaşlada bilər (thread pool saturation)
-
----
 
 ## Əsas Anlayışlar
 
@@ -419,8 +415,6 @@ Pis yanaşma (retry storm):
 Jitter bunu həll edir — hər client fərqli vaxt gözləyir
 ```
 
----
-
 ## Praktik Baxış
 
 ### Performance Budget
@@ -448,8 +442,6 @@ Müsahibədə "API-nız nə qədər sürətli olmalıdır?" sualına hazır ol:
 - P50-yə baxmaq, P99-u ignore etmək (istifadəçilərin 1%-i ən pis təcrübəni yaşayır)
 - Cache invalidation-ı düşünmədən hər şeyi cache etmək
 - Load test etmədən "scale edir" demək
-
----
 
 ## Nümunələr
 
@@ -637,8 +629,6 @@ k6 ilə öz API-nızı test edin:
 - P95 latency neçədən keçdikdə artmağa başlayır?
 - Xəta ilk dəfə neçə RPS-də görünür?
 - Bottleneck haradır — CPU? DB? Memory?
-
----
 
 ## Əlaqəli Mövzular
 

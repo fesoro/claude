@@ -460,8 +460,8 @@ Migration (small → large tier):
 - Hotspot simulation: Auto-increment ID vs UUID v7 insert distribution müqayisə edin
 
 ## Əlaqəli Mövzular
-- [07-database-sharding.md] — Sharding deep dive, replication
-- [11-consistent-hashing.md] — Shard routing, rebalancing
-- [12-cap-theorem-practice.md] — Consistency model partition ilə
-- [06-database-selection.md] — DB seçimi partition-a görə
-- [19-cqrs-practice.md] — Read model cross-partition query üçün
+- [07-database-sharding.md](07-database-sharding.md) — Sharding deep dive, replication
+- [11-consistent-hashing.md](11-consistent-hashing.md) — Shard routing, rebalancing
+- [12-cap-theorem-practice.md](12-cap-theorem-practice.md) — Consistency model partition ilə
+- [06-database-selection.md](06-database-selection.md) — DB seçimi partition-a görə
+- [19-cqrs-practice.md](19-cqrs-practice.md) — Read model cross-partition query üçün

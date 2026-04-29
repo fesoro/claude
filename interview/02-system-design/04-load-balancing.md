@@ -274,8 +274,8 @@ Internet
 - Canary deployment: 90/10 weighted traffic split konfiqurasiya edin
 
 ## Əlaqəli Mövzular
-- [03-scalability-fundamentals.md] — Scale etmə prinsipləri
-- [09-rate-limiting.md] — Rate limiting strategiyaları
-- [16-circuit-breaker.md] — Circuit breaker pattern
-- [11-consistent-hashing.md] — Consistent hashing
-- [15-service-discovery.md] — Service discovery
+- [03-scalability-fundamentals.md](03-scalability-fundamentals.md) — Scale etmə prinsipləri
+- [09-rate-limiting.md](09-rate-limiting.md) — Rate limiting strategiyaları
+- [16-circuit-breaker.md](16-circuit-breaker.md) — Circuit breaker pattern
+- [11-consistent-hashing.md](11-consistent-hashing.md) — Consistent hashing
+- [15-service-discovery.md](15-service-discovery.md) — Service discovery

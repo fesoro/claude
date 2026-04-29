@@ -1,6 +1,6 @@
 # 06 — Design Patterns (Interview Hazırlığı)
 
-Bu bölmə backend developer interview-larında ən çox soruşulan design pattern mövzularını əhatə edir. Middle-dan Lead səviyyəsinə qədər 15 mövzu, real interview sualları, güclü cavab nümunələri və production kod nümunələri. Hər pattern üçün "nə vaxt istifadə etmək, nə vaxt etməmək" trade-off-ları ayrıca izah olunub.
+Bu bölmə backend developer interview-larında ən çox soruşulan design pattern mövzularını əhatə edir. Middle-dan Lead səviyyəsinə qədər 16 mövzu, real interview sualları, güclü cavab nümunələri və production kod nümunələri. Hər pattern üçün "nə vaxt istifadə etmək, nə vaxt etməmək" trade-off-ları ayrıca izah olunub.
 
 ---
 
@@ -35,6 +35,7 @@ Bu bölmə backend developer interview-larında ən çox soruşulan design patte
 | 13 | [13-proxy-pattern.md](13-proxy-pattern.md) | Proxy Pattern |
 | 14 | [14-chain-of-responsibility.md](14-chain-of-responsibility.md) | Chain of Responsibility |
 | 15 | [15-specification-pattern.md](15-specification-pattern.md) | Specification Pattern |
+| 16 | [16-state-pattern.md](16-state-pattern.md) | State Pattern |
 
 ---
 
@@ -69,6 +70,7 @@ Object-lər arasında kommunikasiya və məsuliyyət bölgüsü:
 5. [12-template-method.md](12-template-method.md) — Template Method: inheritance-based algorithm skeleton
 6. [14-chain-of-responsibility.md](14-chain-of-responsibility.md) — CoR: middleware pipeline, request processing
 7. [15-specification-pattern.md](15-specification-pattern.md) — Specification: composable business rules
+8. [16-state-pattern.md](16-state-pattern.md) — State: object state machine, illegal transition prevention
 
 ### PHP/Laravel Developer — Interview Hazırlığı (1 həftə)
 
@@ -90,3 +92,4 @@ Laravel backend developer üçün ən vacib pattern-lər sıra ilə:
 4. [15-specification-pattern.md](15-specification-pattern.md) — DDD, composable business rules
 5. [10-builder-pattern.md](10-builder-pattern.md) — Fluent API, Laravel Factory
 6. [12-template-method.md](12-template-method.md) — Template Method vs Strategy trade-off
+7. [16-state-pattern.md](16-state-pattern.md) — State machine: Order/Payment lifecycle, illegal transition prevention

@@ -358,8 +358,8 @@ High Availability:
 - Request aggregation: 3 service-dən data birləşdirin
 
 ## Əlaqəli Mövzular
-- [09-rate-limiting.md] — Gateway-də rate limiting
-- [15-service-discovery.md] — Gateway service discovery
-- [16-circuit-breaker.md] — Gateway circuit breaking
-- [04-load-balancing.md] — Gateway backend load balancing
-- [20-monitoring-observability.md] — Gateway metrics, tracing
+- [09-rate-limiting.md](09-rate-limiting.md) — Gateway-də rate limiting
+- [15-service-discovery.md](15-service-discovery.md) — Gateway service discovery
+- [16-circuit-breaker.md](16-circuit-breaker.md) — Gateway circuit breaking
+- [04-load-balancing.md](04-load-balancing.md) — Gateway backend load balancing
+- [20-monitoring-observability.md](20-monitoring-observability.md) — Gateway metrics, tracing

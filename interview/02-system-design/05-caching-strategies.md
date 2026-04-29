@@ -262,8 +262,8 @@ DEL product:12345  // on update
 - Write-through vs cache-aside performance müqayisəsi
 
 ## Əlaqəli Mövzular
-- [03-scalability-fundamentals.md] — Scalability patterns
-- [06-database-selection.md] — DB seçimi ilə cache əlaqəsi
-- [09-rate-limiting.md] — Rate limiting üçün Redis
-- [12-cap-theorem-practice.md] — Consistency trade-offs
-- [23-eventual-consistency.md] — Eventual consistency
+- [03-scalability-fundamentals.md](03-scalability-fundamentals.md) — Scalability patterns
+- [06-database-selection.md](06-database-selection.md) — DB seçimi ilə cache əlaqəsi
+- [09-rate-limiting.md](09-rate-limiting.md) — Rate limiting üçün Redis
+- [12-cap-theorem-practice.md](12-cap-theorem-practice.md) — Consistency trade-offs
+- [23-eventual-consistency.md](23-eventual-consistency.md) — Eventual consistency

@@ -334,8 +334,8 @@ Service registry (without Kubernetes):
 - kube-dns resolution tracing (kubectl exec → nslookup)
 
 ## Əlaqəli Mövzular
-- [14-api-gateway.md] — Gateway ilə service discovery
-- [16-circuit-breaker.md] — Health check → circuit breaking
-- [04-load-balancing.md] — Service-level load balancing
-- [20-monitoring-observability.md] — Service dependency tracking
-- [03-scalability-fundamentals.md] — Dynamic scaling
+- [14-api-gateway.md](14-api-gateway.md) — Gateway ilə service discovery
+- [16-circuit-breaker.md](16-circuit-breaker.md) — Health check → circuit breaking
+- [04-load-balancing.md](04-load-balancing.md) — Service-level load balancing
+- [20-monitoring-observability.md](20-monitoring-observability.md) — Service dependency tracking
+- [03-scalability-fundamentals.md](03-scalability-fundamentals.md) — Dynamic scaling

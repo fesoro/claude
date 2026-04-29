@@ -40,8 +40,6 @@ Orta çətinliklı suallar üçün vacib mövzular. Junior-u bitirdikdən sonra 
 | 11 | [11-bfs-dfs.md](11-bfs-dfs.md) | BFS and DFS Traversal |
 | 12 | [12-two-pointers.md](12-two-pointers.md) | Two Pointers Technique |
 | 13 | [13-sliding-window.md](13-sliding-window.md) | Sliding Window Technique |
-| 14 | [14-dynamic-programming.md](14-dynamic-programming.md) | Dynamic Programming Fundamentals |
-| 15 | [15-graph-fundamentals.md](15-graph-fundamentals.md) | Graph Fundamentals |
 
 ---
 
@@ -49,6 +47,8 @@ Orta çətinliklı suallar üçün vacib mövzular. Junior-u bitirdikdən sonra 
 
 | # | Fayl | Mövzu |
 |---|---|---|
+| 14 | [14-dynamic-programming.md](14-dynamic-programming.md) | Dynamic Programming Fundamentals |
+| 15 | [15-graph-fundamentals.md](15-graph-fundamentals.md) | Graph Fundamentals |
 | 16 | [16-heap-priority-queue.md](16-heap-priority-queue.md) | Heap / Priority Queue |
 | 17 | [17-trie.md](17-trie.md) | Trie (Prefix Tree) |
 | 18 | [18-greedy-algorithms.md](18-greedy-algorithms.md) | Greedy Algorithms |
@@ -57,8 +57,6 @@ Orta çətinliklı suallar üçün vacib mövzular. Junior-u bitirdikdən sonra 
 | 21 | [21-topological-sort.md](21-topological-sort.md) | Topological Sort |
 | 22 | [22-union-find.md](22-union-find.md) | Union-Find (Disjoint Set) |
 | 23 | [23-shortest-path.md](23-shortest-path.md) | Shortest Path Algorithms |
-| 24 | [24-balanced-bst.md](24-balanced-bst.md) | Balanced BST (AVL, Red-Black) |
-| 25 | [25-segment-tree.md](25-segment-tree.md) | Segment Tree |
 
 ---
 
@@ -66,10 +64,19 @@ Orta çətinliklı suallar üçün vacib mövzular. Junior-u bitirdikdən sonra 
 
 | # | Fayl | Mövzu |
 |---|---|---|
+| 24 | [24-balanced-bst.md](24-balanced-bst.md) | Balanced BST (AVL, Red-Black) |
+| 25 | [25-segment-tree.md](25-segment-tree.md) | Segment Tree |
 | 26 | [26-fenwick-tree.md](26-fenwick-tree.md) | Fenwick Tree (Binary Indexed Tree) |
 | 27 | [27-string-matching.md](27-string-matching.md) | String Matching (KMP, Rabin-Karp) |
 | 28 | [28-bit-manipulation.md](28-bit-manipulation.md) | Bit Manipulation |
 | 29 | [29-bloom-filter.md](29-bloom-filter.md) | Bloom Filter |
+
+---
+
+### Architect ⭐⭐⭐⭐⭐
+
+| # | Fayl | Mövzu |
+|---|---|---|
 | 30 | [30-np-complete.md](30-np-complete.md) | NP-Complete Problems |
 
 ---

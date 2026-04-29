@@ -401,8 +401,8 @@ Monitoring:
 - Distributed tracing: correlation ID bütün event chain-dən axır
 
 ## Əlaqəli Mövzular
-- [08-message-queues.md] — Kafka event streaming
-- [17-distributed-transactions.md] — Saga with events
-- [19-cqrs-practice.md] — CQRS + Event Sourcing
-- [25-outbox-pattern.md] — Reliable event publishing
-- [13-idempotency-design.md] — Idempotent event consumers
+- [08-message-queues.md](08-message-queues.md) — Kafka event streaming
+- [17-distributed-transactions.md](17-distributed-transactions.md) — Saga with events
+- [19-cqrs-practice.md](19-cqrs-practice.md) — CQRS + Event Sourcing
+- [25-outbox-pattern.md](25-outbox-pattern.md) — Reliable event publishing
+- [13-idempotency-design.md](13-idempotency-design.md) — Idempotent event consumers

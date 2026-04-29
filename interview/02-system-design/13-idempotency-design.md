@@ -349,8 +349,8 @@ Client ──RETRY──► POST /payments (same Idempotency-Key)
 - Load test: 100 concurrent request ilə eyni idempotency key → yalnız 1 charge
 
 ## Əlaqəli Mövzular
-- [08-message-queues.md] — At-least-once vs exactly-once
-- [17-distributed-transactions.md] — Saga idempotency
-- [25-outbox-pattern.md] — Reliable event delivery
+- [08-message-queues.md](08-message-queues.md) — At-least-once vs exactly-once
+- [17-distributed-transactions.md](17-distributed-transactions.md) — Saga idempotency
+- [25-outbox-pattern.md](25-outbox-pattern.md) — Reliable event delivery
 - [13-idempotency-design.md] ← bu fayl
-- [23-eventual-consistency.md] — Eventual consistency with idempotency
+- [23-eventual-consistency.md](23-eventual-consistency.md) — Eventual consistency with idempotency

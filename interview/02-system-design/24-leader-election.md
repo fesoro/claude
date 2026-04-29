@@ -484,8 +484,8 @@ Monitoring:
 - ZooKeeper ephemeral nodes: Election recipe, herd effect test edin
 
 ## Əlaqəli Mövzular
-- [12-cap-theorem-practice.md] — CAP: Partition zamanı consistency vs availability
-- [17-distributed-transactions.md] — Leader coordination cross-service
-- [15-service-discovery.md] — Leader-based service registry
-- [23-eventual-consistency.md] — Consistency models
-- [16-circuit-breaker.md] — Failure detection, leader awareness
+- [12-cap-theorem-practice.md](12-cap-theorem-practice.md) — CAP: Partition zamanı consistency vs availability
+- [17-distributed-transactions.md](17-distributed-transactions.md) — Leader coordination cross-service
+- [15-service-discovery.md](15-service-discovery.md) — Leader-based service registry
+- [23-eventual-consistency.md](23-eventual-consistency.md) — Consistency models
+- [16-circuit-breaker.md](16-circuit-breaker.md) — Failure detection, leader awareness

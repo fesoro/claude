@@ -305,8 +305,8 @@ S2_v3         S0_v1
 - Rendezvous hashing-i consistent hashing ilə müqayisə edin
 
 ## Əlaqəli Mövzular
-- [07-database-sharding.md] — Sharding strategies
-- [22-data-partitioning.md] — Partitioning patterns
-- [05-caching-strategies.md] — Distributed cache design
-- [06-database-selection.md] — Cassandra, DynamoDB
-- [03-scalability-fundamentals.md] — Scale fundamentals
+- [07-database-sharding.md](07-database-sharding.md) — Sharding strategies
+- [22-data-partitioning.md](22-data-partitioning.md) — Partitioning patterns
+- [05-caching-strategies.md](05-caching-strategies.md) — Distributed cache design
+- [06-database-selection.md](06-database-selection.md) — Cassandra, DynamoDB
+- [03-scalability-fundamentals.md](03-scalability-fundamentals.md) — Scale fundamentals

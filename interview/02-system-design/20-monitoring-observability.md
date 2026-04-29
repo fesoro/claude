@@ -432,8 +432,8 @@ rate(payment_errors_total[5m]) by (error_type)
 - Chaos experiment: DB latency inject → trace ilə bottleneck tap
 
 ## Əlaqəli Mövzular
-- [01-system-design-approach.md] — Production readiness
-- [16-circuit-breaker.md] — CB metrics monitoring
-- [14-api-gateway.md] — Gateway-level metrics
-- [08-message-queues.md] — Consumer lag monitoring
-- [03-scalability-fundamentals.md] — Capacity planning metrics
+- [01-system-design-approach.md](01-system-design-approach.md) — Production readiness
+- [16-circuit-breaker.md](16-circuit-breaker.md) — CB metrics monitoring
+- [14-api-gateway.md](14-api-gateway.md) — Gateway-level metrics
+- [08-message-queues.md](08-message-queues.md) — Consumer lag monitoring
+- [03-scalability-fundamentals.md](03-scalability-fundamentals.md) — Capacity planning metrics

@@ -363,5 +363,5 @@ $results = $bench->benchmark($data);
 - `09-async-batch-processing.md` — Böyük fayl/data sıxma
 - `11-apm-tools.md` — Bandwidth metrikalarını izlə
 - `03-caching-layers.md` — Sıxılmış cache
-- `14-frontend-performance.md` — Static asset compression
+- `14-api-performance.md` — API-level compression strategies
 - `02-query-optimization.md` — DB-də TOAST ilə böyük data

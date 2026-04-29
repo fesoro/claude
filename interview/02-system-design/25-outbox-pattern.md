@@ -522,8 +522,8 @@ Replay:
 - Cleanup job: Partitioned outbox table, partition drop performance ölçün
 
 ## Əlaqəli Mövzular
-- [17-distributed-transactions.md] — Saga + Outbox reliable event delivery
-- [08-message-queues.md] — Kafka topic design, consumer groups
-- [13-idempotency-design.md] — Idempotent consumer implementation
-- [18-event-driven-architecture.md] — Event-driven systems
-- [23-eventual-consistency.md] — At-least-once + idempotency = eventually consistent
+- [17-distributed-transactions.md](17-distributed-transactions.md) — Saga + Outbox reliable event delivery
+- [08-message-queues.md](08-message-queues.md) — Kafka topic design, consumer groups
+- [13-idempotency-design.md](13-idempotency-design.md) — Idempotent consumer implementation
+- [18-event-driven-architecture.md](18-event-driven-architecture.md) — Event-driven systems
+- [23-eventual-consistency.md](23-eventual-consistency.md) — At-least-once + idempotency = eventually consistent

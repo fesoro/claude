@@ -392,8 +392,8 @@ Scale independently:
 - Multiple read models: eyni event, fərqli 3 read model
 
 ## Əlaqəli Mövzular
-- [18-event-driven-architecture.md] — Event-driven patterns
-- [17-distributed-transactions.md] — Saga with CQRS
-- [06-database-selection.md] — Polyglot persistence for read models
-- [23-eventual-consistency.md] — CQRS eventual consistency
-- [05-caching-strategies.md] — Read model caching
+- [18-event-driven-architecture.md](18-event-driven-architecture.md) — Event-driven patterns
+- [17-distributed-transactions.md](17-distributed-transactions.md) — Saga with CQRS
+- [06-database-selection.md](06-database-selection.md) — Polyglot persistence for read models
+- [23-eventual-consistency.md](23-eventual-consistency.md) — CQRS eventual consistency
+- [05-caching-strategies.md](05-caching-strategies.md) — Read model caching

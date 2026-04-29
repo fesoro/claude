@@ -306,8 +306,8 @@ orders.confirmed              inventory.reserved
 - Exactly-once Kafka transaction implement edin
 
 ## Əlaqəli Mövzular
-- [18-event-driven-architecture.md] — Event-driven patterns
-- [21-backpressure.md] — Backpressure management
-- [13-idempotency-design.md] — Idempotent consumers
-- [25-outbox-pattern.md] — Reliable event publishing
-- [17-distributed-transactions.md] — Saga pattern with queues
+- [18-event-driven-architecture.md](18-event-driven-architecture.md) — Event-driven patterns
+- [21-backpressure.md](21-backpressure.md) — Backpressure management
+- [13-idempotency-design.md](13-idempotency-design.md) — Idempotent consumers
+- [25-outbox-pattern.md](25-outbox-pattern.md) — Reliable event publishing
+- [17-distributed-transactions.md](17-distributed-transactions.md) — Saga pattern with queues

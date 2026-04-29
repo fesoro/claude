@@ -12,7 +12,6 @@ Bu bölmə backend developer müsahibələrinin performance mövzularını əhat
 |---|------|-------|
 | 04 | [04-lazy-loading.md](04-lazy-loading.md) | Lazy Loading Strategies |
 | 08 | [08-pagination-strategies.md](08-pagination-strategies.md) | Pagination (Offset, Cursor, Keyset) |
-| 14 | [14-api-performance.md](14-api-performance.md) | API Performance Optimization |
 
 ### Senior ⭐⭐⭐
 
@@ -25,6 +24,7 @@ Bu bölmə backend developer müsahibələrinin performance mövzularını əhat
 | 09 | [09-async-batch-processing.md](09-async-batch-processing.md) | Async and Batch Processing |
 | 10 | [10-compression-techniques.md](10-compression-techniques.md) | Compression Techniques |
 | 11 | [11-apm-tools.md](11-apm-tools.md) | APM Tools and Observability |
+| 14 | [14-api-performance.md](14-api-performance.md) | API Performance Optimization |
 | 15 | [15-indexing-strategy.md](15-indexing-strategy.md) | Database Indexing Strategy |
 
 ### Lead ⭐⭐⭐⭐

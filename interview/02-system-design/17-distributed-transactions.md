@@ -404,8 +404,8 @@ START
 - AWS Step Functions ilə visual saga dizayn edin
 
 ## Əlaqəli Mövzular
-- [25-outbox-pattern.md] — Reliable event publishing for saga
-- [08-message-queues.md] — Kafka for choreography saga
-- [13-idempotency-design.md] — Saga step idempotency
-- [23-eventual-consistency.md] — Consistency in distributed systems
-- [18-event-driven-architecture.md] — Event-driven saga
+- [25-outbox-pattern.md](25-outbox-pattern.md) — Reliable event publishing for saga
+- [08-message-queues.md](08-message-queues.md) — Kafka for choreography saga
+- [13-idempotency-design.md](13-idempotency-design.md) — Saga step idempotency
+- [23-eventual-consistency.md](23-eventual-consistency.md) — Consistency in distributed systems
+- [18-event-driven-architecture.md](18-event-driven-architecture.md) — Event-driven saga

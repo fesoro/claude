@@ -342,8 +342,8 @@ function isAllowed(userId, endpoint):
 - Bypass attempts: IP rotation, user rotation test edin
 
 ## Əlaqəli Mövzular
-- [14-api-gateway.md] — API Gateway-də rate limiting
-- [04-load-balancing.md] — LB-level rate limiting
-- [05-caching-strategies.md] — Redis usage patterns
-- [16-circuit-breaker.md] — Circuit breaker with rate limiting
-- [21-backpressure.md] — Backpressure mechanisms
+- [14-api-gateway.md](14-api-gateway.md) — API Gateway-də rate limiting
+- [04-load-balancing.md](04-load-balancing.md) — LB-level rate limiting
+- [05-caching-strategies.md](05-caching-strategies.md) — Redis usage patterns
+- [16-circuit-breaker.md](16-circuit-breaker.md) — Circuit breaker with rate limiting
+- [21-backpressure.md](21-backpressure.md) — Backpressure mechanisms

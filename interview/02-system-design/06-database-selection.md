@@ -259,8 +259,8 @@ Analytics  → ETL → BigQuery
 - Redis Sorted Set ilə leaderboard implementasiya edin
 
 ## Əlaqəli Mövzular
-- [07-database-sharding.md] — Horizontal sharding
-- [05-caching-strategies.md] — Cache layer
-- [12-cap-theorem-practice.md] — Consistency guarantees
-- [22-data-partitioning.md] — Partitioning strategies
-- [19-cqrs-practice.md] — CQRS with multiple data stores
+- [07-database-sharding.md](07-database-sharding.md) — Horizontal sharding
+- [05-caching-strategies.md](05-caching-strategies.md) — Cache layer
+- [12-cap-theorem-practice.md](12-cap-theorem-practice.md) — Consistency guarantees
+- [22-data-partitioning.md](22-data-partitioning.md) — Partitioning strategies
+- [19-cqrs-practice.md](19-cqrs-practice.md) — CQRS with multiple data stores

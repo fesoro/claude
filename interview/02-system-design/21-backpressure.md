@@ -361,8 +361,8 @@ Bounded buffers at each tier:
 - Nginx rate limiting ilə load shedding test edin
 
 ## Əlaqəli Mövzular
-- [08-message-queues.md] — Kafka consumer groups, lag
-- [09-rate-limiting.md] — Rate limiting as backpressure
-- [16-circuit-breaker.md] — Circuit breaker as backpressure
-- [04-load-balancing.md] — LB-level backpressure
-- [03-scalability-fundamentals.md] — Scale triggers
+- [08-message-queues.md](08-message-queues.md) — Kafka consumer groups, lag
+- [09-rate-limiting.md](09-rate-limiting.md) — Rate limiting as backpressure
+- [16-circuit-breaker.md](16-circuit-breaker.md) — Circuit breaker as backpressure
+- [04-load-balancing.md](04-load-balancing.md) — LB-level backpressure
+- [03-scalability-fundamentals.md](03-scalability-fundamentals.md) — Scale triggers

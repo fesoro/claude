@@ -286,8 +286,8 @@ Replica     Replica     Replica
 - Hotspot simulation: 1 user-ə 100x daha çox write
 
 ## Əlaqəli Mövzular
-- [11-consistent-hashing.md] — Consistent hashing algoritmi
-- [22-data-partitioning.md] — Partitioning vs sharding
-- [17-distributed-transactions.md] — Cross-shard transactions
-- [12-cap-theorem-practice.md] — Consistency in sharded systems
-- [06-database-selection.md] — Sharding-friendly databases
+- [11-consistent-hashing.md](11-consistent-hashing.md) — Consistent hashing algoritmi
+- [22-data-partitioning.md](22-data-partitioning.md) — Partitioning vs sharding
+- [17-distributed-transactions.md](17-distributed-transactions.md) — Cross-shard transactions
+- [12-cap-theorem-practice.md](12-cap-theorem-practice.md) — Consistency in sharded systems
+- [06-database-selection.md](06-database-selection.md) — Sharding-friendly databases

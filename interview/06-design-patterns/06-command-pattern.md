@@ -239,6 +239,81 @@ class CommandHistory
 }
 ```
 
+### Anti-Pattern Nümunəsi
+
+**Problem:** Business logic birbaşa controller-da, hər action üçün transaction + logging əl ilə.
+
+```php
+// ❌ Anti-pattern — God Controller
+class OrderController extends Controller
+{
+    public function place(Request $request): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $order = Order::create([
+                'user_id' => auth()->id(),
+                'items'   => $request->items,
+                'status'  => 'placed',
+            ]);
+
+            foreach ($request->items as $item) {
+                Inventory::where('product_id', $item['id'])
+                    ->decrement('stock', $item['qty']);
+            }
+
+            Mail::to(auth()->user())->send(new OrderConfirmation($order));
+
+            AuditLog::create([
+                'action'   => 'place_order',
+                'order_id' => $order->id,
+                'user_id'  => auth()->id(),
+            ]);
+
+            DB::commit();
+            return response()->json($order);
+        } catch (\Throwable $e) {
+            DB::rollback();
+            throw $e;
+        }
+        // Problem 1: Test edilmir — DB, Mail, Inventory mock etmək çətindir
+        // Problem 2: CancelOrderController, RefundOrderController-da eyni boilerplate
+        // Problem 3: Yeni cross-cutting concern (rate limiting) → hər controller-da əl ilə
+        // Problem 4: Audit log business logic-ə qarışıb, ayrıla bilmir
+    }
+}
+
+// ✅ Command Pattern + Command Bus ilə
+class PlaceOrderCommand
+{
+    public function __construct(
+        public readonly int   $userId,
+        public readonly array $items,
+    ) {}
+}
+
+// Middleware-lər bir dəfə yazılır, bütün command-lara avtomatik tətbiq olunur
+$bus->addMiddleware(new DatabaseTransactionMiddleware());
+$bus->addMiddleware(new AuditLogMiddleware());
+
+// Controller sadə qalır
+class OrderController extends Controller
+{
+    public function place(PlaceOrderRequest $request): JsonResponse
+    {
+        $order = $this->bus->dispatch(new PlaceOrderCommand(
+            userId: auth()->id(),
+            items:  $request->validated('items'),
+        ));
+        return response()->json($order);
+    }
+}
+```
+
+**Niyə Command Bus daha yaxşıdır:** Transaction + AuditLog bütün command-lara bir dəfə yazılır. Handler yalnız business logic-i bilir. Test zamanı yalnız handler test edilir, middleware-lər ayrıca test edilir.
+
+---
+
 ## Praktik Tapşırıqlar
 
 - CQRS qurun: `PlaceOrderCommand` yazır, `GetUserOrdersQuery` oxuyur (ayrı handler-lar)
